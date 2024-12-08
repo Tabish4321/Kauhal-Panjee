@@ -1,0 +1,56 @@
+package com.kaushalpanjee.common
+
+import android.os.Bundle
+import android.view.View
+import androidx.navigation.fragment.findNavController
+import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.log
+import com.kaushalpanjee.core.util.onRightDrawableClicked
+import com.kaushalpanjee.core.util.setRightDrawablePassword
+import com.kaushalpanjee.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+
+@AndroidEntryPoint
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate){
+
+  private var showPassword = true
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        init()
+    }
+
+    private fun init(){
+        listeners()
+    }
+
+    private fun listeners(){
+        binding.tvRegister.setOnClickListener {
+
+            if (userPreferences.getIsRegistered()){
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
+            }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+        }
+
+        binding.tvForgotPassword.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
+        }
+
+        binding.etPassword.onRightDrawableClicked {
+
+            log("onRightDrawableClicked", "onRightDrawableClicked")
+
+            if (showPassword){
+                showPassword = false
+                binding.etPassword.setRightDrawablePassword(true)
+            }
+            else {
+                showPassword = true
+                binding.etPassword.setRightDrawablePassword(false)
+            }
+
+        }
+    }
+}

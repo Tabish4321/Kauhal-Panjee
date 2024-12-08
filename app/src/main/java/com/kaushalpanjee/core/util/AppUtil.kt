@@ -1,0 +1,194 @@
+package com.kaushalpanjee.core.util
+
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kaushalpanjee.R
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.GregorianCalendar
+import java.util.Locale
+import java.util.TimeZone
+
+object AppUtil {
+
+    fun createFileName(userId: Int?): String {
+        return "${userId}_${System.currentTimeMillis()}.jpg"
+    }
+
+    fun getTimeZone(): String {
+        return TimeZone.getDefault().id
+    }
+
+    fun getTimeZoneOffset():Int{
+        val offset: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ZonedDateTime.now().offset.totalSeconds/60
+        } else {
+            val tz = TimeZone.getDefault()
+            val cal = GregorianCalendar.getInstance(tz)
+            tz.getOffset(cal.timeInMillis)/1000*60
+        }
+        return offset
+    }
+
+    fun getAndroidDeviceInfo():String{
+        return "MODEL : ${Build.MODEL}, MANUFACTURER : ${Build.MANUFACTURER}, DEVICE : ${Build.DEVICE}"
+    }
+
+    fun getProgressDialog(context: Context?): AlertDialog? {
+        if (context == null) return null
+        return MaterialAlertDialogBuilder(context)
+            .setView(R.layout.layout_progress)
+            .setBackground(ColorDrawable(Color.TRANSPARENT))
+            .setCancelable(false)
+            .create()
+    }
+
+    fun isNetworkAvailable(context: Context?): Boolean {
+        if (context == null) return false
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> return true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> return true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> return true
+        }
+        return false
+    }
+
+
+    fun formatScheduleTimeIntoDateTime(dateTimeString: String): Pair<String, String> {
+        // Parse the input string into a ZonedDateTime object
+        val zonedDateTime = ZonedDateTime.parse(dateTimeString)
+
+        // Define the formatter for the date part
+        val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.getDefault())
+
+        // Format the date part
+        val formattedDate = zonedDateTime.format(dateFormatter)
+
+        // Define the formatter for the time part
+        val timeFormatter = DateTimeFormatter.ofPattern("hh:mma", Locale.ENGLISH)
+
+        // Format the time part
+        val formattedTime = zonedDateTime.format(timeFormatter).lowercase()
+
+        return Pair(formattedDate, formattedTime)
+    }
+
+
+    fun parseDateTime(dateString: String, timeString: String): String {
+        // Define the formatter for parsing the input date
+        val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH)
+        // Parse the date string into a LocalDateTime object
+        val datePart = LocalDateTime.parse(dateString, dateFormatter)
+
+        // Define the formatter for parsing the input time
+        val timeFormatter = DateTimeFormatter.ofPattern("h : mm a", Locale.ENGLISH)
+        // Parse the time string into a LocalDateTime object
+        val timePart = LocalDateTime.parse(timeString, timeFormatter)
+
+        // Combine the date and time parts
+        val combinedDateTime = datePart.withHour(timePart.hour).withMinute(timePart.minute)
+
+        // Format the combined date and time to ISO format with 'Z' to indicate UTC time
+        val isoDateTime = combinedDateTime.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
+
+        return isoDateTime
+    }
+
+
+    fun formatUtcDateTimeIntoReminderDate(input: String): String {
+        // Parse the input date-time string
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val parsedDateTime = LocalDateTime.parse(input, inputFormatter)
+
+        // Define the output formatter
+        val outputFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mma", Locale.ENGLISH)
+
+        // Format the parsed date-time
+        val formattedDateTime = parsedDateTime.format(outputFormatter)
+
+        return formattedDateTime
+    }
+
+    fun formatUtcDateTimeIntoReminderDateNew(input: String): String {
+        // Parse the input date-time string without milliseconds and timezone
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
+        val parsedDateTime = ZonedDateTime.parse(input, inputFormatter)
+
+        // Define the output formatter (without timezone information)
+        val outputFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mma", Locale.ENGLISH)
+
+        // Format the parsed date-time
+        val formattedDateTime = parsedDateTime.format(outputFormatter)
+
+        return formattedDateTime
+    }
+
+
+    fun formatReminderDateIntoUtcDateTime(input: String): String {
+
+        val inputFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy, hh:mma", Locale.ENGLISH)
+        val parsedDateTime = LocalDateTime.parse(input, inputFormatter)
+
+        // Convert the local date-time to a ZonedDateTime in the system default time zone
+        val localZonedDateTime = parsedDateTime.atZone(ZoneId.systemDefault())
+
+        // Convert the ZonedDateTime to UTC
+        val utcZonedDateTime = localZonedDateTime.withZoneSameInstant(ZoneId.of("UTC"))
+
+        // Define the output formatter
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+
+        // Format the parsed date-time
+        val formattedDateTime = utcZonedDateTime.format(outputFormatter)
+
+        return formattedDateTime
+    }
+
+    fun combineDateTime(date: String, time: String): String {
+        // Parse the date and time strings
+        val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+        val timeFormatter = DateTimeFormatter.ofPattern("hh:mma")
+
+        val parsedDate = LocalDate.parse(date, dateFormatter)
+        val parsedTime = LocalTime.parse(time, timeFormatter)
+
+        // Combine date and time
+        val dateTime = parsedDate.atTime(parsedTime)
+
+        // Define the output formatter
+        ///val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+        ///val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+        val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+
+        // Format the combined date-time
+        val formattedDateTime = dateTime.format(outputFormatter)
+
+        return formattedDateTime//.toLowerCase()  // Convert AM/PM to lowercase as per your requirement
+    }
+
+    fun formatTimeToLowercaseAMPM(inputTime: String): String {
+        // Check if the input time ends with "AM" or "PM"
+        return when {
+            inputTime.endsWith("AM", ignoreCase = true) -> inputTime.replace("AM", "am")
+            inputTime.endsWith("PM", ignoreCase = true) -> inputTime.replace("PM", "pm")
+            else -> inputTime // Return the original string if it doesn't end with AM or PM
+        }
+    }
+
+
+}

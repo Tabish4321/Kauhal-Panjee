@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Kaushal Panjee</string>
+    <string name="login_id">Login Id</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="welcome_back">Hey, Let\'s shine today!</string>
+    <string name="welcome_msg">Hi there, You\'ve been missed.</string>
+    <string name="register"><u>Register</u></string>
+    <string name="forgot_password"><u>Forgot Password Or Id?</u></string>
+    <string name="create_an_account">Create an account</string>
+    <string name="create_an_account_msg">Just join and explore new opportunities</string>
+    <string name="email">Enter Email</string>
+    <string name="enter_phone">Enter Phone Number</string>
+    <string name="entrt_otp">Enter OTP</string>
+    <string name="enter_code">Enter OTP</string>
+    <string name="not_receive_code">Did\'t receive a code!</string>
+    <string name="send_again"><u>Send Again</u></string>
+    <string name="verify">Verify</string>
+    <string name="enter_code_msg">Please enter 4 digit OTP sent to your phone number</string>
+    <string name="enter_code_email_msg">Please enter 4 digit OPT sent to your email address</string>
+    <string name="state_name">State Name</string>
+    <string name="select_state">Select State</string>
+    <string name="slected_state">Selected State</string>
+    <string name="blank"><u></u></string>
+</resources>
