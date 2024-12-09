@@ -1,6 +1,5 @@
 package com.kaushalpanjee.common.model
 
-import com.google.gson.annotations.SerializedName
 
 data class StateDataResponse(
     val responseCode: Int,

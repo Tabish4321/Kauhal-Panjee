@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:name=".KaushalPanjeeApplication"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icon_app_svg"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.KaushalPanjee"
         tools:targetApi="31">

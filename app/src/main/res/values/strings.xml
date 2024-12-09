@@ -22,4 +22,5 @@
     <string name="select_state">Select State</string>
     <string name="slected_state">Selected State</string>
     <string name="blank"><u></u></string>
+    <string name="aadhaar">Enter aadhaar number</string>
 </resources>

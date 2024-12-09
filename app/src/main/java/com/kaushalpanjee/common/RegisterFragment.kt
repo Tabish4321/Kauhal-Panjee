@@ -323,6 +323,14 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     private fun addTextWatchers() {
 
+        binding.etPhone.doOnTextChanged { text, start, before, count ->
+
+          val input : String  = binding.etPhone.text.toString()
+            if (!input.startsWith("6789") && input.isNotEmpty()) {
+                binding.etPhone.error = "Number must start with 6789"
+            }
+        }
+
         binding.etEmail.doOnTextChanged { text, _, _, _ ->
             if (!TextUtils.isEmpty(text.toString()) &&
                 android.util.Patterns.EMAIL_ADDRESS.matcher(text.toString()).matches()

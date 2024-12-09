@@ -20,8 +20,8 @@
         <!-- Customize your theme here. -->
         <!--    <item name="bottomSheetDialogTheme">@style/theme_bottom_sheet</item>-->
 
-        <item name="android:windowSplashScreenBackground">@color/color_dark_green</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/kaushal_panjee_home</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/color_green</item>
+        <item name="android:windowSplashScreenBackground">@color/color_blue_btn</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/icon_app_svg</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/color_blue_btn</item>
     </style>
 </resources>

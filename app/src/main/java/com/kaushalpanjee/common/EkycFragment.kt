@@ -2,6 +2,7 @@ package com.kaushalpanjee.common
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,8 +28,8 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private val commonViewModel: CommonViewModel by viewModels()
     private var stateList: MutableList<WrappedList> = mutableListOf()
-    private var selectedState = ""
 
+    private var selectedState = ""
     private val stateAdaptor by lazy {
         StateAdaptor(object : StateAdaptor.ItemClickListener {
             override fun onItemClick(position: Int) {
@@ -43,7 +44,8 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                 lifecycleScope.launch {
                     delay(1000)
-                    binding.recyclerView.scrollToPosition(1)
+                  //  binding.recyclerView.scrollToPosition(1)
+
                 }
 
             }
@@ -59,6 +61,7 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         listener()
         setUI()
         collectStateResponse()
+        addTextWatchers()
         commonViewModel.getStateListApi()
 
     }
@@ -69,14 +72,43 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
     private fun listener() {
+        if (binding.etAadhaar.text.length ==12){
+            binding.aadhaarVerifyButton.root.visible()
+        }
+        binding.aadhaarVerifyButton.centerButton.setOnClickListener {
+
+          if(binding.etAadhaar.text.length !=12 ){
+
+              showSnackBar("Please enter valid aadhaar number")
+          }
+            else{
+              showSnackBar("success")
+
+
+          }
+
+        }
 
         binding.progressButton.centerButton.setOnClickListener {
+
+            binding.recyclerView.gone()
+            binding.progressButton.root.gone()
+            binding.etAadhaar.visible()
+            if (binding.etAadhaar.text.isNotEmpty()){
+                binding.etAadhaar.setText("")
+            }
+
         }
 
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
             binding.tvWelcomeMsg.gone()
             binding.tvWelcome.text = getString(R.string.select_state)
+            binding.etAadhaar.gone()
+            binding.progressButton.root.visible()
+            binding.etAadhaar.gone()
+            binding.aadhaarVerifyButton.root.gone()
+
         }
 
 
@@ -102,6 +134,9 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         it.data?.let { getStateResponse ->
                             if (getStateResponse.responseCode == 200) {
                                 stateList = getStateResponse.wrappedList
+
+
+
                                 stateAdaptor.setData(stateList)
                             } else showSnackBar("Something went wrong")
 
@@ -110,6 +145,18 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 }
             }
         }
+    }
+
+    private fun addTextWatchers(){
+
+        binding.etAadhaar.doOnTextChanged { text, start, before, count ->
+
+            if (text?.length == 12) {
+                binding.aadhaarVerifyButton.root.visible()
+            } else binding.aadhaarVerifyButton.root.gone()
+
+        }
+
     }
 
 }
