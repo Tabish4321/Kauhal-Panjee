@@ -24,7 +24,11 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.kaushalpanjee.common.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
-        tools:layout="@layout/fragment_forgot_password"/>
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.kaushalpanjee.common.RegisterFragment"
@@ -33,6 +37,9 @@
         <action
             android:id="@+id/action_registerFragment_to_ekycFragment"
             app:destination="@id/ekycFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/ekycFragment"
@@ -42,5 +49,8 @@
         <action
             android:id="@+id/action_ekycFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_ekycFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
 </navigation>

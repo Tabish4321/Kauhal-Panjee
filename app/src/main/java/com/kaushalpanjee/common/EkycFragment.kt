@@ -14,6 +14,9 @@ import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.gone
+import com.kaushalpanjee.core.util.log
+import com.kaushalpanjee.core.util.onRightDrawableClicked
+import com.kaushalpanjee.core.util.setRightDrawablePassword
 import com.kaushalpanjee.core.util.setUnderline
 import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.toastShort
@@ -30,6 +33,8 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var stateList: MutableList<WrappedList> = mutableListOf()
 
     private var selectedState = ""
+    private var showPassword = true
+
     private val stateAdaptor by lazy {
         StateAdaptor(object : StateAdaptor.ItemClickListener {
             override fun onItemClick(position: Int) {
@@ -90,7 +95,6 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
 
         binding.progressButton.centerButton.setOnClickListener {
-
             binding.recyclerView.gone()
             binding.progressButton.root.gone()
             binding.etAadhaar.visible()
@@ -102,12 +106,26 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
-            binding.tvWelcomeMsg.gone()
-            binding.tvWelcome.text = getString(R.string.select_state)
+            //binding.tvWelcomeMsg.gone()
+           // binding.tvWelcome.text = getString(R.string.slected_state)
+            binding.tvWelcomeMsg.text = selectedState
             binding.etAadhaar.gone()
             binding.progressButton.root.visible()
             binding.etAadhaar.gone()
             binding.aadhaarVerifyButton.root.gone()
+        }
+        binding.etAadhaar.onRightDrawableClicked {
+
+            log("onRightDrawableClicked", "onRightDrawableClicked")
+
+            if (showPassword){
+                showPassword = false
+                binding.etAadhaar.setRightDrawablePassword(true)
+            }
+            else {
+                showPassword = true
+                binding.etAadhaar.setRightDrawablePassword(false)
+            }
 
         }
 

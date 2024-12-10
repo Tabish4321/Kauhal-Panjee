@@ -52,6 +52,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun listeners() {
+        binding.progressBackButton.setOnClickListener {
+
+            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+
+
+
+        }
 
 
         binding.progressButton.centerButton.setOnClickListener {
