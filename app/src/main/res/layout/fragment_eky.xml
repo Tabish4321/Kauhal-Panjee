@@ -8,19 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/dp_20">
-        <ImageView
-            android:id="@+id/progressBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="0dp"
-            android:layout_marginBottom="30dp"
-            android:elevation="@dimen/dp_10"
-            android:visibility="visible"
-            android:src="@drawable/ic_arrow_back_ios_new"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/tvWelcome"
-            />
+
 
         <TextView
             android:id="@+id/tvWelcome"
@@ -77,12 +65,12 @@
             style="@style/EditText"
             android:layout_marginTop="@dimen/dp_135"
             android:drawableEnd="@drawable/close_eye"
-            android:drawableStart="@drawable/icon_aadhaar"
-            android:hint="@string/aadhaar"
+            android:drawableLeft="@drawable/icon_aadhaar"
+            android:hint="@string/aadhaar_number"
             android:imeOptions="actionNext"
             android:maxLength="12"
             android:drawablePadding="@dimen/dp_10"
-            android:inputType="numberPassword"
+            android:inputType="number"
             android:paddingHorizontal="@dimen/dp_20"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

@@ -123,6 +123,19 @@ dependencies {
 
     implementation (libs.androidx.core.splashscreen)
 
+    //Xml
+    implementation(libs.jackson.dataformat.xml)
+    implementation("com.thoughtworks.xstream:xstream:1.4.7") {
+        exclude(group = "xmlpull", module = "xmlpull")
+    }
+
+    implementation(libs.bcprov.jdk16)
+    implementation(libs.jsr105.api)
+    implementation("org.apache.santuario:xmlsec:2.0.3") {
+        exclude(group = "org.codehaus.woodstox")
+    }
+    implementation(libs.stax.api)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 

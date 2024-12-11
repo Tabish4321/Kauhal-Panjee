@@ -6,7 +6,8 @@
     <string name="welcome_back">Hey, Let\'s shine today!</string>
     <string name="welcome_msg">Hi there, You\'ve been missed.</string>
     <string name="register"><u>Register</u></string>
-    <string name="forgot_password"><u>Forgot Password Or Id?</u></string>
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="forgot_id"><u>Forgot id?</u></string>
     <string name="create_an_account">Create an account</string>
     <string name="create_an_account_msg">Just join and explore new opportunities</string>
     <string name="email">Enter Email</string>
@@ -23,4 +24,6 @@
     <string name="slected_state">Selected State</string>
     <string name="blank"><u></u></string>
     <string name="aadhaar">Enter aadhaar number</string>
+    <string name="login_to_your_account">Login to your account</string>
+    <string name="aadhaar_number">Enter aadhaar</string>
 </resources>

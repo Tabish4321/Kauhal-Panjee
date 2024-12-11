@@ -2,7 +2,9 @@ package com.kaushalpanjee.common
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onRightDrawableClicked
@@ -28,11 +30,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
 
-            /*if (userPreferences.getIsRegistered()){
+            if (userPreferences.getIsRegistered()){
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
-            }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())*/
+            }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
         }
 
         binding.tvForgotPassword.setOnClickListener {
@@ -42,18 +44,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         binding.etPassword.onRightDrawableClicked {
 
             log("onRightDrawableClicked", "onRightDrawableClicked")
-
             if (showPassword){
                 showPassword = false
-                binding.etPassword.setRightDrawablePassword(true)
+                binding.etPassword.setRightDrawablePassword(true,null,null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye),null)
             }
             else {
                 showPassword = true
-                binding.etPassword.setRightDrawablePassword(false)
+
+                binding.etPassword.setRightDrawablePassword(true,null,null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye),null)
+
             }
 
         }
     }
-
 
 }

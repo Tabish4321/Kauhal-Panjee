@@ -2,14 +2,13 @@ package com.kaushalpanjee.common
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
-import com.kaushalpanjee.common.model.StateDataResponse
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.Resource
@@ -18,7 +17,6 @@ import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setRightDrawablePassword
 import com.kaushalpanjee.core.util.setUnderline
-import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentEkyBinding
@@ -27,7 +25,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflate) {
+class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by viewModels()
     private var stateList: MutableList<WrappedList> = mutableListOf()
@@ -74,6 +72,10 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private fun setUI() {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = stateAdaptor
+
+        binding.etAadhaar.setRightDrawablePassword(false,
+            ContextCompat.getDrawable(requireContext(), R.drawable.icon_aadhaar),null,
+            ContextCompat.getDrawable(requireContext(), R.drawable.close_eye),null)
     }
 
     private fun listener() {
@@ -88,7 +90,6 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
           }
             else{
               showSnackBar("success")
-
 
           }
 
@@ -114,21 +115,34 @@ class EkycFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             binding.etAadhaar.gone()
             binding.aadhaarVerifyButton.root.gone()
         }
+
         binding.etAadhaar.onRightDrawableClicked {
 
             log("onRightDrawableClicked", "onRightDrawableClicked")
 
             if (showPassword){
                 showPassword = false
-                binding.etAadhaar.setRightDrawablePassword(true)
+                binding.etAadhaar.setRightDrawablePassword(true,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_aadhaar),null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye),null)
             }
             else {
                 showPassword = true
-                binding.etAadhaar.setRightDrawablePassword(false)
+
+                binding.etAadhaar.setRightDrawablePassword(true,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.icon_aadhaar),null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye),null)
+
             }
 
         }
 
+        /*binding.progressBackButton.setOnClickListener {
+
+            findNavController().navigateUp()
+           // findNavController().navigate(R.id.loginFragment)
+        }
+*/
 
     }
 

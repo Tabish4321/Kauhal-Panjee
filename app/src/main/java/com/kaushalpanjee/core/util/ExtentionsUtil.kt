@@ -378,23 +378,25 @@ fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
         hasConsumed
     }
 }
-fun EditText.setRightDrawablePassword(isOpen: Boolean) {
+fun EditText.setRightDrawablePassword(isOpen: Boolean, leftDrawable : Drawable ?= null,
+                                      topDrawable : Drawable ? = null, rightDrawable: Drawable? = null,
+                                      bottomDrawable: Drawable?=null) {
     if (isOpen) {
         setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(this.context, R.drawable.ic_open_eye),
-            null
+            leftDrawable,
+            topDrawable,
+            rightDrawable,
+            bottomDrawable
         )
         inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
         transformationMethod = HideReturnsTransformationMethod.getInstance()
 
     } else {
         setCompoundDrawablesWithIntrinsicBounds(
-            null,
-            null,
-            ContextCompat.getDrawable(this.context, R.drawable.close_eye),
-            null
+            leftDrawable,
+            topDrawable,
+            rightDrawable,
+            bottomDrawable
         )
         inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         transformationMethod = PasswordTransformationMethod.getInstance()

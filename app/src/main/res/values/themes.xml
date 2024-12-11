@@ -18,12 +18,19 @@
 
         <!-- Customize your theme here. -->
         <!--    <item name="bottomSheetDialogTheme">@style/theme_bottom_sheet</item>-->
-
-        <item name="android:windowSplashScreenBackground">@color/color_dark_green</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/kaushal_panjee_home</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/color_dark_green</item>
+        <!--<item name="android:windowSplashScreenBackground">@color/color_dark_green</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_white</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/color_dark_green</item>-->
 
         </style>
+
+    <style name="Theme.Splash" parent="Base.Theme.KaushalPanjee">
+        <item name="windowSplashScreenBackground">@color/color_dark_green</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/gradiant_splash</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item> <!-- Animation duration in ms -->
+        <item name="postSplashScreenTheme">@style/Base.Theme.KaushalPanjee</item> <!-- Main theme -->
+    </style>
+
 
     <style name="CircleImageView" parent="">
         <item name="cornerFamily">rounded</item>

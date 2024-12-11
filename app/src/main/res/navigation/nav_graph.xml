@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/ekycFragment"
-        android:name="com.kaushalpanjee.common.EkycFragment"
+        android:name="com.kaushalpanjee.common.EKYCFragment"
         android:label="EkycFragment"
         tools:layout="@layout/fragment_eky">
         <action
