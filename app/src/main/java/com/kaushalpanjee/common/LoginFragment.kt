@@ -36,6 +36,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
             }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())*/
         }
+        binding.tvLogin.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+        }
 
         binding.tvForgotPassword.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())

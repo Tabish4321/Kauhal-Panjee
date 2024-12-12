@@ -33,7 +33,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
 
        /* splashScreen.setOnExitAnimationListener {splashScreenView->
 

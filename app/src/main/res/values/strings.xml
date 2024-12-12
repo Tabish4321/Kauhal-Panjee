@@ -26,4 +26,12 @@
     <string name="aadhaar">Enter aadhaar number</string>
     <string name="login_to_your_account">Login to your account</string>
     <string name="aadhaar_number">Enter aadhaar</string>
+    <string name="secc_information">SECC Information</string>
+    <string name="address_information">Address Information</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="educational_information">Educational Information</string>
+    <string name="employment_information">Employment Information</string>
+    <string name="training_information">Training Information</string>
+    <string name="state">State</string>
+    <string name="district">District</string>
 </resources>
