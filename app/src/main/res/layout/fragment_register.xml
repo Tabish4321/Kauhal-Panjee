@@ -9,10 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        >
-        <ImageView
+        android:layout_height="wrap_content">
+       <!-- <ImageView
             android:id="@+id/ivDDT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,8 +44,50 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/dp_30"
-            />
+            />-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_top_round"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="">
 
+           <!-- <ImageView
+                android:id="@+id/progressBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_15"
+                android:elevation="@dimen/dp_10"
+                android:src="@drawable/ic_arrow_back_ios_new"
+                android:visibility="visible" />-->
+
+            <ImageView
+                android:id="@+id/ivTopLogo"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_0"
+                android:src="@drawable/ic_top_logo"
+                android:visibility="visible"/>
+        </androidx.appcompat.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/progressBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_15"
+            android:src="@drawable/ic_arrow_back_ios_new"
+            android:elevation="@dimen/dp_10"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/dp_30"
+            />
         <TextView
             android:id="@+id/tvWelcome"
             android:layout_width="match_parent"
@@ -59,7 +99,7 @@
             android:textColor="@color/color_dark_green"
             android:textSize="@dimen/sp_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivDDT" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <TextView
             android:id="@+id/tvWelcomeMsg"

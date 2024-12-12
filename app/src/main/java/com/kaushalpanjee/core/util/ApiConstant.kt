@@ -21,10 +21,10 @@ object ApiConstant {
 
     private const val API_VERSION = "v1/"
 
-    private const val API_FOLDER_BACKEND = "backend/"
-    private const val API_FOLDER_CITIZEN = "citizen/"
-     const val  API_SMS_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}smsOTP"
-     const val  API_EMAIL_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}mailOTP"
+    private const val API_FOLDER_BACKEND = "kaushalpanjee/"
+    private const val API_FOLDER_CITIZEN = "panjeeapi/"
+     const val  API_SMS_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateMobileOtp"
+     const val  API_EMAIL_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateMailOtp"
      const val  API_STATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}stateList"
 
 

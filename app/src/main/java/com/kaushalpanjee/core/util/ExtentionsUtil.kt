@@ -2,6 +2,7 @@
 
 package com.kaushalpanjee.core.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DownloadManager
 import android.app.NotificationManager
@@ -364,6 +365,7 @@ fun getDeviceSuperInfo(): String {
     return s
 }
 
+@SuppressLint("ClickableViewAccessibility")
 fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
     this.setOnTouchListener { v, event ->
         var hasConsumed = false

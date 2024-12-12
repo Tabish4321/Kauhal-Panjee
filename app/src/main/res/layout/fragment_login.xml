@@ -11,13 +11,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+        <!-- Toolbar Section -->
+        <!-- Toolbar Section -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_top_round"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:title="">
 
+            <!-- Add your custom toolbar items here -->
+
+            <ImageView
+                android:id="@+id/ivTopLogo"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginTop="@dimen/dp_0"
+                android:src="@drawable/ic_top_logo"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        </androidx.appcompat.widget.Toolbar>
+      <!--
         <ImageView
             android:id="@+id/ivDDT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_0"
             android:src="@drawable/ic_top_round"
+            android:gravity="center"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -30,11 +63,12 @@
             android:layout_height="@dimen/dp_200"
             android:layout_marginTop="@dimen/dp_0"
             android:src="@drawable/ic_top_logo"
+            android:gravity="center"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/ivDDT"
             app:layout_constraintTop_toTopOf="@+id/ivDDT"
             app:layout_constraintEnd_toEndOf="@+id/ivDDT"
-            app:layout_constraintBottom_toBottomOf="@+id/ivDDT"/>
+            app:layout_constraintBottom_toBottomOf="@+id/ivDDT"/>-->
 
 
         <TextView
@@ -49,7 +83,7 @@
             android:textSize="@dimen/sp_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivDDT" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
         <!--
 
                 <TextView
@@ -71,6 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvWelcome">

@@ -18,7 +18,7 @@
     <string name="send_again"><u>Send Again</u></string>
     <string name="verify">Verify</string>
     <string name="enter_code_msg">Please enter 4 digit OTP sent to your phone number</string>
-    <string name="enter_code_email_msg">Please enter 4 digit OPT sent to your email address</string>
+    <string name="enter_code_email_msg">Please enter 4 digit OTP sent to your email address</string>
     <string name="state_name">State Name</string>
     <string name="select_state">Select State</string>
     <string name="slected_state">Selected State</string>

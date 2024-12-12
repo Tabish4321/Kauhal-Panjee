@@ -63,7 +63,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             log("setOnClickListener", "setOnClickListener")
 
             if (AppUtil.isNetworkAvailable(requireContext())){
-                binding.clOTP.visible()
                 binding.progressButton.root.gone()
                 binding.tvSendOtpAgain.isEnabled = false
                 binding.tvSendOtpAgain.setTextColor(
@@ -245,9 +244,14 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
                                 mobileOTP = sendMobileOTPResponse.otp
+                                binding.clOTP.visible()
                                 if (BuildConfig.DEBUG)
                                     showSnackBar(sendMobileOTPResponse.otp)
-                            } else showSnackBar("Something went wrong")
+                            }    else if (sendMobileOTPResponse.responseCode==201)
+                                showSnackBar("Incorrect mobile number")
+
+                            else showSnackBar("Internal Sever Error")
+
 
                         } ?: showSnackBar("Internal Sever Error")
                     }
@@ -274,10 +278,16 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         hideProgressBar()
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
+                                binding.clOTP.visible()
                                 emailOTP = sendMobileOTPResponse.otp
                                 if (BuildConfig.DEBUG)
                                     showSnackBar(sendMobileOTPResponse.otp)
-                            } else showSnackBar("Something went wrong")
+                            }
+                            else if (sendMobileOTPResponse.responseCode==201)
+                             showSnackBar("Incorrect mobile number")
+
+                            else showSnackBar("Internal Sever Error")
+
 
                         } ?: showSnackBar("Internal Sever Error")
                     }
@@ -327,14 +337,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun addTextWatchers() {
-
-        binding.etPhone.doOnTextChanged { text, start, before, count ->
-
-          val input : String  = binding.etPhone.text.toString()
-            if (!input.startsWith("6789") && input.isNotEmpty()) {
-                binding.etPhone.error = "Number must start with 6789"
-            }
-        }
 
         binding.etEmail.doOnTextChanged { text, _, _, _ ->
             if (!TextUtils.isEmpty(text.toString()) &&

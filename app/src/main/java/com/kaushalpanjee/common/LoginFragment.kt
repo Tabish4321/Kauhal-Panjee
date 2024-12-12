@@ -30,11 +30,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
-           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+/*
             if (userPreferences.getIsRegistered()){
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
-            }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+            }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())*/
         }
 
         binding.tvForgotPassword.setOnClickListener {

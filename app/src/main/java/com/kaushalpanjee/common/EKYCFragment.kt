@@ -47,7 +47,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                 lifecycleScope.launch {
                     delay(1000)
-                  //  binding.recyclerView.scrollToPosition(1)
+                    binding.recyclerView.smoothScrollToPosition(0)
 
                 }
 
@@ -166,7 +166,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         it.data?.let { getStateResponse ->
                             if (getStateResponse.responseCode == 200) {
                                 stateList = getStateResponse.wrappedList
-
 
 
                                 stateAdaptor.setData(stateList)
