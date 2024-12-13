@@ -81,4 +81,24 @@
         <item name="android:paddingEnd">@dimen/dp_12</item>
     </style>
 
-    </resources>
+
+    <style name="editTextHome" parent="Base.Theme.KaushalPanjee">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_dark_green</item>
+        <item name="android:background">@drawable/shape_rectangle_white</item>
+        <item name="android:fontFamily">@font/avenir_next_demi_bold</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:layout_marginHorizontal">@dimen/dp_30</item>
+        <item name="android:paddingVertical">@dimen/dp_15</item>
+        <item name="android:paddingStart">@dimen/dp_25</item>
+        <item name="android:paddingEnd">@dimen/dp_8</item>
+    </style>
+<!--
+    <style name="ShapeAppearanceOverlay.CircularImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>-->
+
+</resources>

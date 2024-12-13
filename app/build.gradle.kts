@@ -113,6 +113,11 @@ dependencies {
     implementation (libs.bundles.retrofitBundle)
     implementation (libs.chucker)
 
+    //circle image
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.datastore.preferences.core)
     implementation(libs.androidx.datastore.preferences)

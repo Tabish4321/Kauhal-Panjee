@@ -34,4 +34,9 @@
     <string name="training_information">Training Information</string>
     <string name="state">State</string>
     <string name="district">District</string>
+    <string name="select_district">Select district</string>
+    <string name="g_name">Guardian name</string>
+    <string name="guardian_name">Guardian Name</string>
+    <string name="mother_name">Mother name</string>
+    <string name="guardian_alternative_number">Guardian /Alternative number</string>
 </resources>
