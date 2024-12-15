@@ -2,12 +2,15 @@ package com.kaushalpanjee.common
 
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.StateDataResponse
+import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
 import com.kaushalpanjee.core.di.AppModule
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
+import rural.ekyc.ui.ekyc.models.UidaiResp
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -32,4 +35,12 @@ class CommonRepository @Inject constructor(
             appLevelApi.getStateListAPI()
         }
     }
+
+
+    suspend fun postOnAUAFaceAuthNREGA(url:String, uidaiKycRequest: UidaiKycRequest): Flow<Resource<out Response<UidaiResp>>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.postOnAUAFaceAuthNREGA(url,uidaiKycRequest)
+        }
+    }
+
 }

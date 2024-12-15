@@ -175,28 +175,29 @@
             android:id="@+id/tvRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_50"
             android:fontFamily="@font/avenir_next_medium"
             android:gravity="center"
             android:text="@string/register"
             android:textColor="@color/color_dark_green"
             android:textSize="@dimen/sp_16"
-            app:layout_constraintBottom_toTopOf="@+id/tvLogin"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+
+            />
 
 
         <TextView
             android:id="@+id/tvLogin"
             style="@style/Button"
-            android:layout_marginBottom="@dimen/dp_50"
+            android:layout_marginBottom="@dimen/dp_20"
             android:drawableEnd="@drawable/ic_right_arrow"
             android:drawablePadding="@dimen/dp_20"
             android:text="@string/login"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-
 
             />
 

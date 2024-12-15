@@ -7,9 +7,10 @@
     android:layout_marginTop="@dimen/dp_10"
     android:padding="@dimen/dp_10"
     android:id="@+id/container"
+    android:elevation="@dimen/dp_1"
     android:layout_marginHorizontal="@dimen/dp_20"
-
-    android:background="@drawable/shape_rectangle_light_grey">
+    android:background="@color/color_background_light_grey"
+   >
 
     <TextView
         android:id="@+id/tvStateName"

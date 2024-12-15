@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.StateDataResponse
+import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import retrofit2.Response
+import rural.ekyc.ui.ekyc.models.UidaiResp
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,4 +56,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             }
         }
     }
+
+    private var _postOnAUAFaceAuthNREGA = MutableSharedFlow<Resource<out Response<UidaiResp>>>()
+    val postOnAUAFaceAuthNREGA = _postOnAUAFaceAuthNREGA.asSharedFlow()
+
+
+    fun postOnAUAFaceAuthNREGA(url:String, uidaiKycRequest: UidaiKycRequest){
+        viewModelScope.launch {
+            commonRepository.postOnAUAFaceAuthNREGA(url, uidaiKycRequest).collectLatest {
+                _postOnAUAFaceAuthNREGA.emit(it)
+            }
+        }
+    }
+
+
 }

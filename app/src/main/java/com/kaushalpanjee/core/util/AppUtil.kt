@@ -9,6 +9,8 @@ import android.os.Build
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.R
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -16,6 +18,8 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Date
 import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
@@ -188,6 +192,25 @@ object AppUtil {
             inputTime.endsWith("PM", ignoreCase = true) -> inputTime.replace("PM", "pm")
             else -> inputTime // Return the original string if it doesn't end with AM or PM
         }
+    }
+
+    fun convertUTCtoIST(utcFormat: String, istFormat: String, dateToFormat: String): String{
+        val utcFormat: DateFormat = SimpleDateFormat(utcFormat)
+        utcFormat.timeZone = TimeZone.getTimeZone("GMT")
+
+        val indianFormat: DateFormat = SimpleDateFormat(istFormat)
+        utcFormat.timeZone = TimeZone.getTimeZone("IST")
+
+        val timestamp: Date = utcFormat.parse(dateToFormat)
+        return indianFormat.format(timestamp)
+    }
+
+
+    fun getCurrentDateTime():String{
+        val calendar = Calendar.getInstance();
+        val dateFormat =  SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return dateFormat.format(calendar.getTime());
+
     }
 
 

@@ -1,4 +1,4 @@
-package com.utilize.core.util
+package com.kaushalpanjee.core.util
 
 object AppConstant {
 
@@ -10,6 +10,7 @@ object AppConstant {
         const val BUCKET_PROFILE= "profile/"
         const val BUCKET_DOCUMENTS= "documents/"
         const val BUCKET_CATEGORY= "category/"
+        const val FACE_AUTH_UIADI= "https://nregarep1.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
     }
 
     object Constants{
@@ -21,10 +22,19 @@ object AppConstant {
         const val CAPTURE_INTENT_RESPONSE_DATA = "response"
         const val DEVICE_CHECK_INTENT_RESULT = "in.gov.uidai.rdservice.face.CHECK_DEVICE_RESULT"
         const val WADH_KEY = "sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
-        var ENVIRONMENT_TAG = "PP"//"S"
+        var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
+
+        const val PRE_PRODUCTION: String = "preProduction"
+        const val PRODUCTION: String = "production"
+        const val ENGLISH: String = "english"
+        const val STAGING_CODE: String = "S"
+        const val PRE_PRODUCTION_CODE: String = "PP"
+        const val PRODUCTION_CODE: String = "P"
 
         const val CRYPT_ID = "8080808080808080"
         const val CRYPT_IV = "8080808080808080"
+
+
     }
 }

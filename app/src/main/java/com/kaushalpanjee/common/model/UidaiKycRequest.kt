@@ -1,4 +1,4 @@
-package rural.ekyc.ui.ekyc.models
+package com.kaushalpanjee.common.model
 
 data class UidaiKycRequest(
     val input: String,

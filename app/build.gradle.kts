@@ -107,15 +107,15 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
 
     implementation(libs.androidx.room.ktx)
-    implementation ("androidx.room:room-runtime:2.5.2")
-    kapt ("androidx.room:room-compiler:2.5.2")
+    implementation (libs.androidx.room.runtime)
+    kapt (libs.androidx.room.compiler)
 
     implementation (libs.bundles.retrofitBundle)
     implementation (libs.chucker)
 
     //circle image
 
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation (libs.circleimageview)
 
 
     implementation(libs.kotlinx.coroutines.android)

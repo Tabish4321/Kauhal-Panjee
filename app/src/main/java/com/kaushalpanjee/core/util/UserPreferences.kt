@@ -34,6 +34,7 @@ private const val USER_NAME = "USER_NAME"
 private const val USER_IMAGE = "USER_IMAGE"
 private const val USER_ROLE_ID = "USER_ROLE_ID"
 private const val IS_REGISTERED = "IS_REGISTERED"
+private const val SELECTED_SCHEME_CODE = "SELECTED_SCHEME_CODE"
 
 
 class UserPreferences @Inject constructor(@ApplicationContext context: Context) {
@@ -370,6 +371,26 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
         runBlocking {
             value = appContext.dataStore.data.map {
                 it[key] ?: false
+            }.first()
+        }
+        return value
+    }
+
+    fun saveSchemeCode(userImage: String) {
+        val key = stringPreferencesKey(SELECTED_SCHEME_CODE)
+        coroutineScope.launch {
+            appContext.dataStore.edit {
+                it[key] = userImage
+            }
+        }
+    }
+
+    fun getSchemeCode(): String {
+        val key = stringPreferencesKey(SELECTED_SCHEME_CODE)
+        var value = ""
+        runBlocking {
+            value = appContext.dataStore.data.map {
+                it[key] ?: ""
             }.first()
         }
         return value

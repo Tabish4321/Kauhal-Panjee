@@ -1,13 +1,10 @@
 package com.kaushalpanjee.common
 
 import android.R
-import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
-import androidx.core.animation.addListener
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
@@ -15,7 +12,8 @@ import com.kaushalpanjee.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    private var isSeccVisible = false
+    private var isPersonalVisible = true
+    private var isAddressVisible = true
 
     private lateinit var districtAdapter: ArrayAdapter<String>
     private val district = ArrayList<String>()
@@ -35,14 +33,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopPersonal.setOnClickListener {
 
-            if (isSeccVisible){
-                isSeccVisible = false
-               // binding.clSecc.gone()
-                binding.viewSecc.gone()
-            }else {
-                isSeccVisible = true
-             //   binding.clSecc.visible()
+            if (isPersonalVisible){
+                isPersonalVisible = false
+                binding.personalExpand.visible()
                 binding.viewSecc.visible()
+            }else {
+                isPersonalVisible = true
+                binding.personalExpand.gone()
+                binding.viewSecc.gone()
+            }
+        }
+
+        binding.llTopAddress.setOnClickListener {
+
+            if (isAddressVisible){
+                isAddressVisible = false
+                binding.expandAddress.visible()
+                binding.viewAddress.visible()
+            }else {
+                isAddressVisible = true
+                binding.expandAddress.gone()
+                binding.viewAddress.gone()
             }
         }
 
