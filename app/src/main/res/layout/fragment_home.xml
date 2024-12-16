@@ -16,21 +16,206 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
+
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/dp_100">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ConsProfile"
+            style="@style/editTextHome"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="@dimen/dp_50"
+            android:elevation="@dimen/dp_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/circleImageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle"
+                android:src="@drawable/person"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearance="ShapeAppearanceOverlay"/>
+
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/candidate_name"
+                android:textColor="@color/color_dark_green"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circleImageView"/>
+
+            <TextView
+                android:id="@+id/tvProfileCompletion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You profile is 40% complete"
+                android:textColor="@color/color_dark_green"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvName"/>
+
+            <!-- Label -->
+            <TextView
+                android:id="@+id/tvAdharEkycComp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="Your Aadhaar eKYC is completed"
+                android:textColor="@color/color_dark_green"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfileCompletion"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_verified"
+                android:layout_marginStart="@dimen/dp_6"
+                app:layout_constraintStart_toEndOf="@+id/tvAdharEkycComp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/llmobile"
+                android:layout_marginTop="@dimen/dp_6"
+                android:layout_marginStart="80dp"
+                app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:src="@drawable/phonee" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="7763027544"
+                    android:fontFamily="@font/avenir_next_semi_bold"
+                    android:textColor="@color/color_dark_green"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_verified"
+                    android:layout_marginStart="@dimen/dp_6"/>
+
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/lldob"
+                android:layout_marginTop="@dimen/dp_8">
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:src="@drawable/dobb" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date_of_birth"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:textSize="11sp"
+                    android:layout_gravity="center"/>
+
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="12-06-1997"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:textColor="@color/color_dark_green"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/avenir_next_semi_bold"
+
+                    android:layout_gravity="center"/>
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/llpermanentAdd"
+                    android:layout_marginTop="@dimen/dp_8">
+                    <ImageView
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:src="@drawable/location" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/PermanentAddress"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:textSize="11sp"
+                        android:layout_gravity="center"/>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/s_o_name_siwan_841226_bihar_india"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:textColor="@color/color_dark_green"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/avenir_next_semi_bold"
+
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/tvConsPer"
                 style="@style/editTextHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_100"
-                android:elevation="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_20"
+                android:elevation="@dimen/dp_2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/ConsProfile">
 
 
                 <LinearLayout
@@ -105,94 +290,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/personalExpand"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_marginTop="@dimen/dp_12"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llTopPersonal">
 
 
-                <ImageView
-                    android:id="@+id/circleImageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@drawable/circle"
-                    android:src="@drawable/person"
-                    android:layout_marginTop="@dimen/dp_12"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-
-
-                    <!-- Label -->
-                    <TextView
-                        android:id="@+id/tvName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/candidate_name"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="16sp"
-                        android:layout_marginEnd="@dimen/dp_35"
-                        android:layout_marginTop="@dimen/dp_20"
-                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/lldob"
-                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginRight="@dimen/dp_80"
-                        app:layout_constraintTop_toBottomOf="@+id/tvName">
-                        <ImageView
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:src="@drawable/dobb" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="12/06/97"
-                            android:textColor="@color/black"
-                            android:layout_marginStart="@dimen/dp_10"
-                            android:textSize="10sp"
-                            android:layout_gravity="center"/>
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:id="@+id/llmobile"
-                        android:layout_marginRight="65dp"
-                        android:layout_marginTop="@dimen/dp_6"
-                        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/lldob">
-                        <ImageView
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:src="@drawable/phonee" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="7763027544"
-                            android:textColor="@color/black"
-                            android:layout_marginStart="@dimen/dp_10"
-                            android:textSize="10sp"
-                            android:layout_gravity="center"/>
-
-
-                    </LinearLayout>
 
              <!--   <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -207,37 +311,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/llGName"
-                    android:orientation="vertical"
-                    android:layout_marginTop="30dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/circleImageView">
-
-                    <!-- Label -->
-                    <TextView
-                        android:id="@+id/tvGuardianName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/guardian_name"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <EditText
-                        android:id="@+id/etGName"
-                        style="@style/EditText"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/guardian_name"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"/>
-                </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -246,8 +319,8 @@
                         android:layout_marginTop="@dimen/dp_10"
                         android:id="@+id/llFName"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llGName">
+                        app:layout_constraintTop_toBottomOf="@+id/viewSecc"
+                        tools:ignore="NotSibling">
 
                         <!-- Label -->
                         <TextView
@@ -1129,14 +1202,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/tvAddressCons"
                 style="@style/editTextHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginTop="16dp"
                 android:elevation="@dimen/dp_5"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvConsPer">
 
@@ -1216,18 +1291,18 @@
 
                     <TextView
                         android:id="@+id/tvStateName"
-                       style="@style/EditText"
-                        android:text="New Delhi"
+                        style="@style/EditText"
                         android:layout_marginStart="@dimen/dp_3"
+                        android:text="Bihar"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvState" />
 
 
                     <LinearLayout
+                        android:id="@+id/llDistrict"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llDistrict"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvStateName">
@@ -1240,8 +1315,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/district"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1250,9 +1324,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_district"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerDistrict"
                                 style="@style/EditText"
@@ -1266,12 +1341,12 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
+
                     <LinearLayout
+                        android:id="@+id/llBlock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llBlock"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llDistrict">
@@ -1284,8 +1359,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/Block"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1294,9 +1368,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_Block"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerBlock"
                                 style="@style/EditText"
@@ -1310,14 +1385,13 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/llGp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llGp"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llBlock">
@@ -1330,8 +1404,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/Gp"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1340,9 +1413,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_gp"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerGp"
                                 style="@style/EditText"
@@ -1356,13 +1430,12 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llVillage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llVillage"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llGp">
@@ -1375,8 +1448,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/Village"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1385,9 +1457,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_Village"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerVillage"
                                 style="@style/EditText"
@@ -1401,17 +1474,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llAdressLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llAdressLine"
-                        android:orientation="vertical"
                         android:layout_marginTop="30dp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llVillage">
 
                         <!-- Label -->
@@ -1419,50 +1491,50 @@
                             android:id="@+id/tvAdressLine"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
                             android:text="@string/AdressLine"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
+                            android:textSize="16sp" />
 
                         <!-- EditText with custom background -->
                         <EditText
                             android:id="@+id/etAdressLine"
                             style="@style/EditText"
                             android:layout_height="wrap_content"
-                            android:hint="@string/AdressLine"
                             android:background="@drawable/edittext_background"
+                            android:hint="@string/AdressLine"
                             android:padding="12dp"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llPresenrAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:id="@+id/llPresenrAddress"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llAdressLine">
 
                         <TextView
                             android:id="@+id/tvPresenrAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
                             android:text="@string/PresenrAddress"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tvPresenrAddressSame"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
                             android:text="@string/PresenrAddressSame"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
+                            android:textSize="16sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1472,42 +1544,42 @@
 
 
                             <TextView
+                                android:id="@+id/optionllSamePermanentYesSelect"
                                 android:layout_width="0dp"
                                 android:layout_height="40dp"
+                                android:layout_margin="8dp"
                                 android:layout_weight="1"
-                                android:text="Yes"
-                                android:gravity="center"
-                                android:id="@+id/optionllSamePermanentYesSelect"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
                                 android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
+                                android:elevation="4dp"
+                                android:gravity="center"
+                                android:text="Yes"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16" />
 
                             <TextView
+                                android:id="@+id/optionSamePermanentNoSelect"
                                 android:layout_width="0dp"
                                 android:layout_height="40dp"
+                                android:layout_margin="8dp"
                                 android:layout_weight="1"
-                                android:text="No"
-                                android:gravity="center"
-                                android:id="@+id/optionSamePermanentNoSelect"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
                                 android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
+                                android:elevation="4dp"
+                                android:gravity="center"
+                                android:text="No"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16" />
                         </LinearLayout>
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/llPresentAddressState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:id="@+id/llPresentAddressState"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPresenrAddress">
 
                         <TextView
@@ -1522,17 +1594,16 @@
                         <TextView
                             android:id="@+id/tvPresentAddressStateName"
                             style="@style/EditText"
-                            android:text="New Delhi"
-                            android:layout_marginStart="@dimen/dp_3" />
+                            android:layout_marginStart="@dimen/dp_3"
+                            android:text="New Delhi" />
 
                     </LinearLayout>
 
 
-
                     <LinearLayout
+                        android:id="@+id/llPresentAddressDistrict"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llPresentAddressDistrict"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPresentAddressState">
@@ -1545,8 +1616,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/district"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1555,9 +1625,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_district"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerPresentAddressDistrict"
                                 style="@style/EditText"
@@ -1571,12 +1642,12 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
+
                     <LinearLayout
+                        android:id="@+id/llPresentAddressBlock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llPresentAddressBlock"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPresentAddressDistrict">
@@ -1589,8 +1660,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/Block"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1599,9 +1669,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_Block"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerPresentAddressBlock"
                                 style="@style/EditText"
@@ -1615,14 +1686,13 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
 
 
                     <LinearLayout
+                        android:id="@+id/llPresentAddressGp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llPresentAddressGp"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPresentAddressBlock">
@@ -1635,8 +1705,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/Gp"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1645,9 +1714,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_gp"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerPresentAddressGp"
                                 style="@style/EditText"
@@ -1661,13 +1731,12 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llPresentAddressVillage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llPresentAddressVillage"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPresentAddressGp">
@@ -1680,8 +1749,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
                             android:text="@string/Village"
-                            android:textColor="@color/color_dark_green"
-                            />
+                            android:textColor="@color/color_dark_green" />
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1690,9 +1758,10 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:hint="@string/select_Village"
+                            android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green"
-                            android:padding="1dp">
+                            app:boxStrokeColor="@color/color_dark_green">
+
                             <AutoCompleteTextView
                                 android:id="@+id/spinnerPresentAddressVillage"
                                 style="@style/EditText"
@@ -1706,17 +1775,16 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/llPresentAddressAdressLine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/llPresentAddressAdressLine"
-                        android:orientation="vertical"
                         android:layout_marginTop="30dp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:orientation="vertical"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPresentAddressVillage">
 
                         <!-- Label -->
@@ -1724,43 +1792,30 @@
                             android:id="@+id/tvPresentAddressAdressLine"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
                             android:text="@string/AdressLine"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
+                            android:textSize="16sp" />
 
                         <!-- EditText with custom background -->
                         <EditText
                             android:id="@+id/etPresentAddressAdressLine"
                             style="@style/EditText"
                             android:layout_height="wrap_content"
-                            android:hint="@string/AdressLine"
                             android:background="@drawable/edittext_background"
+                            android:hint="@string/AdressLine"
                             android:padding="12dp"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/btnPAddressSubmit"
+                            android:id="@+id/btnAddressSubmit"
                             style="@style/Button"
-                            android:drawableEnd="@drawable/ic_right_arrow"
-                            android:drawablePadding="@dimen/dp_20"
                             android:layout_marginTop="@dimen/dp_15"
-                            android:text="@string/submit" />
+                            android:drawablePadding="@dimen/dp_20"
+                            android:text="@string/submit"
+                            app:drawableEndCompat="@drawable/ic_right_arrow" />
                     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1768,8 +1823,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvEducationalCons"
             style="@style/editTextHome"
             android:layout_width="match_parent"
@@ -1842,6 +1896,273 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewEducational">
+
+
+            <LinearLayout
+                android:id="@+id/llHighestEducation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/tvHighestEducation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:padding="@dimen/dp_4"
+                    android:text="@string/select_HighestEducation"
+                    android:textColor="@color/color_dark_green" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:hint="@string/select_HighestEducation"
+                    android:padding="1dp"
+                    android:textColorHint="@color/color_dark_green"
+                    app:boxStrokeColor="@color/color_dark_green">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinnerHighestEducation"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llYearOfPassing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llHighestEducation">
+
+                <TextView
+                    android:id="@+id/tvYearOfPassing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:padding="@dimen/dp_4"
+                    android:text="@string/select_YearOfPassing"
+                    android:textColor="@color/color_dark_green" />
+
+
+                    <TextView
+                        android:id="@+id/tvClickYearOfPassing"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:hint="@string/select_YearOfPassing"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:id="@+id/llTechnicalEducation"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llGender">
+
+                    <TextView
+                        android:id="@+id/tvTechnicalEducation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/anyTechnicalEducation"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="Yes"
+                            android:gravity="center"
+                            android:id="@+id/optionTechnicalEducationYesSelect"
+                            android:textColor="@color/black"
+                            android:elevation="4dp"
+                            android:textSize="@dimen/sp_16"
+                            android:background="@drawable/card_background"
+                            android:layout_margin="8dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="No"
+                            android:gravity="center"
+                            android:id="@+id/optionTechnicalEducationNoSelect"
+                            android:elevation="4dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_16"
+                            android:background="@drawable/card_background"
+                            android:layout_margin="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llTechEducation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:id="@+id/tvTechEducation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/TechnicalEducation1"
+                        android:textColor="@color/color_dark_green" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:hint="@string/TechnicalEducation1"
+                        android:padding="1dp"
+                        android:textColorHint="@color/color_dark_green"
+                        app:boxStrokeColor="@color/color_dark_green">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerTechnicalEducation"
+                            style="@style/EditText"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llYearOfPassingTech"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llTechEducation">
+
+                    <TextView
+                        android:id="@+id/tvYearOfPassingTech"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/select_YearOfPassingTech"
+                        android:textColor="@color/color_dark_green" />
+
+
+                    <TextView
+                        android:id="@+id/tvClickYearOfPassingTech"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:hint="@string/select_YearOfPassingTech"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor" />
+
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDomainOfTech"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <TextView
+                        android:id="@+id/tvDomainOfTech"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/DomainOfTech"
+                        android:textColor="@color/color_dark_green" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:hint="@string/DomainOfTech"
+                        android:padding="1dp"
+                        android:textColorHint="@color/color_dark_green"
+                        app:boxStrokeColor="@color/color_dark_green">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerDomainOfTech"
+                            style="@style/EditText"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btnEIddressSubmit"
+                    style="@style/Button"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:drawablePadding="@dimen/dp_20"
+                    android:text="@string/submit"
+                    app:drawableEndCompat="@drawable/ic_right_arrow" />
+
+            </LinearLayout>
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -1922,6 +2243,405 @@
                     app:layout_constraintTop_toBottomOf="@+id/viewEmployment">
 
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llcurentlyEmployed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvcurentlyEmployed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/curentlyEmployed"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Yes"
+                                android:gravity="center"
+                                android:id="@+id/optionCurentlyEmployedYesSelect"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="No"
+                                android:gravity="center"
+                                android:id="@+id/optionCurentlyEmployedNoSelect"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llnatureOfEmpl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llcurentlyEmployed">
+
+                        <TextView
+                            android:id="@+id/tvnatureOfEmpl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/natureOfEmpl"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Yes"
+                                android:gravity="center"
+                                android:id="@+id/optionnatureOfEmplYesSelect"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="No"
+                                android:gravity="center"
+                                android:id="@+id/optionnatureOfEmpldNoSelect"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llIntrestedIn"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llnatureOfEmpl">
+
+                        <TextView
+                            android:id="@+id/tvIntrestedIn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/IntrestedIn"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Direct Job"
+                                android:gravity="center"
+                                android:id="@+id/optionDirectJob"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Training"
+                                android:gravity="center"
+                                android:id="@+id/optionTraining"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Both"
+                                android:gravity="center"
+                                android:id="@+id/optionBoth"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llEmploymentPreference"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llIntrestedIn">
+
+                        <TextView
+                            android:id="@+id/tvEmploymentPreference"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/EmploymentPreference"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Wage"
+                                android:gravity="center"
+                                android:id="@+id/optionWage"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Self"
+                                android:gravity="center"
+                                android:id="@+id/optionSelf"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Both"
+                                android:gravity="center"
+                                android:id="@+id/optionEmpBoth"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llJobLocationPreference"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llEmploymentPreference">
+
+                        <TextView
+                            android:id="@+id/tvJobLocationPreference"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/JobLocationPreference"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Within District"
+                                android:gravity="center"
+                                android:id="@+id/optionWithinDistrict"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Within State"
+                                android:gravity="center"
+                                android:id="@+id/optionWithinState"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Outside State"
+                                android:gravity="center"
+                                android:id="@+id/optionOutsideState"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="OutsideCountry"
+                                android:gravity="center"
+                                android:id="@+id/optionOutsideCountry"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/llCurrentEarning"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llJobLocationPreference">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvCurrentEarning"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/CurrentEarning"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etCurrentEarning"
+                            style="@style/EditText"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/CurrentEarningHint"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/llExpectationSalary"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llCurrentEarning">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvExpectationSalary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ExpectationSalary"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etExpectationSalary"
+                            style="@style/EditText"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/ExpectationSalary"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -1994,10 +2714,244 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_12"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewTraining">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llrecievedAnyTrainingBefore"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvrecievedAnyTrainingBefore"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/recievedAnyTrainingBefore"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="Yes"
+                                android:gravity="center"
+                                android:id="@+id/optionrecievedAnyTrainingBeforeYesSelect"
+                                android:textColor="@color/black"
+                                android:elevation="4dp"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_weight="1"
+                                android:text="No"
+                                android:gravity="center"
+                                android:id="@+id/optionrecievedAnyTrainingBeforeNoSelect"
+                                android:elevation="4dp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_16"
+                                android:background="@drawable/card_background"
+                                android:layout_margin="8dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llPreviousComTraining"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toBottomOf="@+id/llrecievedAnyTrainingBefore">
+
+
+                        <TextView
+                            android:id="@+id/tvPreviousComTraining"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:padding="@dimen/dp_4"
+                            android:textSize="@dimen/sp_16"
+                            android:text="@string/PreviousComTraining"
+                            android:textColor="@color/black" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:hint="@string/selectScheme"
+                            android:padding="1dp"
+                            android:textColorHint="@color/color_dark_green"
+                            app:boxStrokeColor="@color/color_dark_green">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/spinnerPreviousComTraining"
+                                style="@style/EditText"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:inputType="none"
+                                android:textColor="@color/color_dark_green"
+                                android:textSize="15sp"
+                                tools:ignore="LabelFor" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llPreveiouscompTrainingMOnth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">
+
+                        <TextView
+                            android:id="@+id/tvPreviouscompTrainingMOnth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/select_PreviouscompTrainingMOnth"
+                            android:textColor="@color/black" />
+
+
+                        <TextView
+                            android:id="@+id/tvClickPreviouslycompletedduring"
+                            style="@style/EditText"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:hint="@string/select_PreviouscompTrainingMOnth"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:id="@+id/llHeardAboutddugky"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">
+
+                            <TextView
+                                android:id="@+id/tvHeardAboutddugky"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/HeardAboutddugky"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:layout_marginBottom="8dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenir_next_demi_bold"
+                                android:hint="@string/selectScheme"
+                                android:padding="1dp"
+                                android:textColorHint="@color/color_dark_green"
+                                app:boxStrokeColor="@color/color_dark_green">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/spinnerHeardAboutddugky"
+                                    style="@style/EditText"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:inputType="none"
+                                    android:textColor="@color/color_dark_green"
+                                    android:textSize="15sp"
+                                    tools:ignore="LabelFor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </LinearLayout>
+
+                <!--        <LinearLayout
+                            android:id="@+id/llTechEducation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <TextView
+                                android:id="@+id/tvTechEducation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="@dimen/dp_16"
+                                android:fontFamily="@font/avenir_next_demi_bold"
+                                android:padding="@dimen/dp_4"
+                                android:text="@string/TechnicalEducation1"
+                                android:textColor="@color/color_dark_green" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenir_next_demi_bold"
+                                android:hint="@string/TechnicalEducation1"
+                                android:padding="1dp"
+                                android:textColorHint="@color/color_dark_green"
+                                app:boxStrokeColor="@color/color_dark_green">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/spinnerTechnicalEducation"
+                                    style="@style/EditText"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:inputType="none"
+                                    android:textColor="@color/color_dark_green"
+                                    android:textSize="15sp"
+                                    tools:ignore="LabelFor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                        </LinearLayout>
+
+
+
+
+                        <TextView
+                            android:id="@+id/btnEIddressSubmit"
+                            style="@style/Button"
+                            android:layout_marginTop="@dimen/dp_15"
+                            android:drawablePadding="@dimen/dp_20"
+                            android:text="@string/submit"
+                            app:drawableEndCompat="@drawable/ic_right_arrow" />-->
+
+                    </LinearLayout>
+
+
+
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

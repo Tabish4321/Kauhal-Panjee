@@ -42,7 +42,7 @@
     <string name="guardian_alternative_number">Guardian /Alternative number</string>
     <string name="consent_text_short">I agree to voluntary share my identity information with e-kyc App. Read More</string>
     <string name="consent_text">I agree to voluntary share my identity information with e-kyc App.</string>
-    <string name="candidate_name">Candidate name\n</string>
+    <string name="candidate_name">Candidate name</string>
     <string name="father_name">Father name</string>
     <string name="category">Category</string>
     <string name="marital">Marital status</string>
@@ -70,4 +70,27 @@
     <string name="Employment_information">Employment Information</string>
     <string name="Training_information">Training Information</string>
     <string name="Banking_information">Banking Information</string>
+    <string name="select_HighestEducation">Highest Education</string>
+    <string name="select_YearOfPassing">Year of passing of highest qualification</string>
+    <string name="select_YearOfPassingTech">Year of passing of technical qualification</string>
+    <string name="anyTechnicalEducation">Technical Education?</string>
+    <string name="TechnicalEducation1">Technical Education</string>
+    <string name="DomainOfTech">Domain of Technical Education</string>
+    <string name="curentlyEmployed">Are you currently emplyed?</string>
+    <string name="natureOfEmpl">What is the nature of employment?</string>
+    <string name="IntrestedIn">Interested in</string>
+    <string name="EmploymentPreference">Employment Preference</string>
+    <string name="JobLocationPreference">Job Location Preference</string>
+    <string name="CurrentEarning">What is personal current monthly earning in Rupees?</string>
+    <string name="CurrentEarningHint">Current Salary</string>
+    <string name="ExpectationSalary">Expected Minimum Monthly Salary (Rs.)</string>
+    <string name="recievedAnyTrainingBefore">Have you received any training before?</string>
+    <string name="PreviousComTraining">Previously completed training in</string>
+    <string name="selectScheme">Select Scheme</string>
+    <string name="select_PreviouscompTrainingMOnth">Previously completed during</string>
+    <string name="HeardAboutddugky">Where have you heard about DDUGKY/RSETI before?</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="PermanentAddress">Permanent Address</string>
+    <string name="s_o_name_siwan_841226_bihar_india">S/O: Name,Siwan\n 841226,Bihar,India</string>
+
 </resources>

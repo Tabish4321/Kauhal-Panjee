@@ -1,6 +1,8 @@
 package com.kaushalpanjee.common
 
 import android.R
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -9,14 +11,23 @@ import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentHomeBinding
+import java.util.Calendar
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private var isPersonalVisible = true
     private var isAddressVisible = true
+    private var isEducationalInfoVisible = true
+    private var isEmploymentInfoVisible = true
 
     private lateinit var districtAdapter: ArrayAdapter<String>
     private val district = ArrayList<String>()
+
+    // Calendar instance to get current date
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,8 +38,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun init() {
         listener()
+        districtSPinner()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun listener() {
 
         binding.llTopPersonal.setOnClickListener {
@@ -57,14 +70,93 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+        binding.llTopEducational.setOnClickListener {
 
-        district.add("Barpeta")
-        district.add("Jorhat")
-        district.add("Kamrup")
+            if (isEducationalInfoVisible){
+                isEducationalInfoVisible = false
+                binding.expandEducational.visible()
+                binding.viewEducational.visible()
+            }else {
+                isEducationalInfoVisible = true
+                binding.expandEducational.gone()
+                binding.viewEducational.gone()
+            }
+        }
+
+        binding.llTopEmployment.setOnClickListener {
+
+            if (isEmploymentInfoVisible){
+                isEmploymentInfoVisible = false
+                binding.expandEmployment.visible()
+                binding.viewEmployment.visible()
+            }else {
+                isEmploymentInfoVisible = true
+                binding.expandEmployment.gone()
+                binding.viewEmployment.gone()
+            }
+        }
+
+
+        binding.tvClickYearOfPassing.setOnClickListener {
+
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Save and display the selected date
+                    val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                    binding.tvClickYearOfPassing.text = formattedDate.toString()
+                },
+                year, month, day
+            )
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
+            datePickerDialog.show()
+            datePickerDialog.show()
+        }
+
+        binding.tvClickYearOfPassingTech.setOnClickListener {
+
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Save and display the selected date
+                    val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                    binding.tvClickYearOfPassingTech.text = formattedDate.toString()
+                },
+                year, month, day
+            )
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
+            datePickerDialog.show()
+            datePickerDialog.show()
+        }
+
+        binding.tvClickPreviouslycompletedduring.setOnClickListener {
+
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Save and display the selected date
+                    val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                    binding.tvClickPreviouslycompletedduring.text = formattedDate.toString()
+                },
+                year, month, day
+            )
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
+            datePickerDialog.show()
+            datePickerDialog.show()
+        }
+
+
+
+
+    }
+    fun districtSPinner(){
+        district.add("Siwan")
+        district.add("muzzafarpur")
+        district.add("Chapra")
 
         // Create an ArrayAdapter
         districtAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, district)
-      //  districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        //  districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         // Set the adapter to the Spinner
         binding.spinnerDistrict.setAdapter(districtAdapter)
@@ -80,6 +172,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 // Handle case where no item is selected
             }
         }
+
     }
 
     }

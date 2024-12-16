@@ -104,7 +104,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         collectStateResponse()
         addTextWatchers()
         commonViewModel.getStateListApi()
-      //  initEKYC()
+        initEKYC()
 
     }
 
@@ -131,8 +131,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                 showSnackBar("Please enter valid aadhaar number")
             } else {
-                showSnackBar("success")
-               // invokeCaptureIntent()
+              //  showSnackBar("success")
+                invokeCaptureIntent()
 
             }
 

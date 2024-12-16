@@ -110,6 +110,11 @@
         <item name="android:paddingStart">@dimen/dp_25</item>
         <item name="android:paddingEnd">@dimen/dp_8</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.Circle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 <!--
     <style name="ShapeAppearanceOverlay.CircularImageView">
         <item name="cornerFamily">rounded</item>
