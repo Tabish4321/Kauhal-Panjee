@@ -91,6 +91,17 @@
     <string name="HeardAboutddugky">Where have you heard about DDUGKY/RSETI before?</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="PermanentAddress">Permanent Address</string>
-    <string name="s_o_name_siwan_841226_bihar_india">S/O: Name,Siwan\n 841226,Bihar,India</string>
+    <string name="s_o_name_siwan_841226_bihar_india">C/O:Guardian Name,purani quila Siwan,\n Siwan,Siwan,Bihar841226,India</string>
+    <string name="gender">Gender</string>
+    <string name="which_sector_are_you_interested_in">Which Sector are you interested in?</string>
+    <string name="design">Design</string>
+    <string name="mechanical">Mechanical</string>
+    <string name="which_trade_are_you_interested_in">Which Trade are you interested in?</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="bank_account_number">Bank Account Number</string>
+    <string name="enter_ifsc_code">Enter IFSC Code</string>
+    <string name="ifsc_code">IFSC Code</string>
+    <string name="pan_no">PAN No</string>
+    <string name="enter_pan_no">Enter PAN No</string>
 
 </resources>

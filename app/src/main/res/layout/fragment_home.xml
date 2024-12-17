@@ -29,46 +29,26 @@
             android:id="@+id/ConsProfile"
             style="@style/editTextHome"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_50"
             android:elevation="@dimen/dp_2"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/circleImageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/dp_90"
+                android:layout_height="@dimen/dp_90"
                 android:scaleType="centerCrop"
-                android:background="@drawable/circle"
+                app:shapeAppearanceOverlay="@style/CustomCircleShape"
+                app:strokeColor="@color/color_dark_green"
+                app:strokeWidth="1dp"
                 android:src="@drawable/person"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="ShapeAppearanceOverlay"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <!-- Label -->
-            <TextView
-                android:id="@+id/tvName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:text="@string/candidate_name"
-                android:textColor="@color/color_dark_green"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/circleImageView"/>
-
-            <TextView
-                android:id="@+id/tvProfileCompletion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="You profile is 40% complete"
-                android:textColor="@color/color_dark_green"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvName"/>
 
             <!-- Label -->
             <TextView
@@ -80,7 +60,7 @@
                 android:textColor="@color/color_dark_green"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvProfileCompletion"/>
+                app:layout_constraintTop_toBottomOf="@+id/llmobile"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -92,20 +72,29 @@
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/llmobile"
                 android:layout_marginTop="@dimen/dp_6"
-                android:layout_marginStart="80dp"
-                app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circleImageView">
+
+                <TextView
+                    android:id="@+id/tvAaadharName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/candidate_name"
+                    android:textColor="@color/color_dark_green"
+                    android:textSize="16sp" />
 
 
-            <LinearLayout
+
+                <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dp_8">
 
 
                 <ImageView
@@ -117,6 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="7763027544"
+                    android:id="@+id/tvAaadharMobile"
                     android:fontFamily="@font/avenir_next_semi_bold"
                     android:textColor="@color/color_dark_green"
                     android:layout_marginStart="@dimen/dp_10"
@@ -133,8 +123,41 @@
             </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dp_8">
+                    <ImageView
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:src="@drawable/gender" />
 
-            <LinearLayout
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gender"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:textSize="11sp"
+                        android:layout_gravity="center"/>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:id="@+id/tvAaadharGender"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:textColor="@color/color_dark_green"
+                    android:textSize="11sp"
+                    android:fontFamily="@font/avenir_next_semi_bold"
+                    android:layout_gravity="center"/>
+
+
+
+                <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -162,6 +185,7 @@
                     android:text="12-06-1997"
                     android:layout_marginStart="@dimen/dp_20"
                     android:textColor="@color/color_dark_green"
+                    android:id="@+id/tvAaadharDob"
                     android:textSize="11sp"
                     android:fontFamily="@font/avenir_next_semi_bold"
 
@@ -197,6 +221,7 @@
                     android:text="@string/s_o_name_siwan_841226_bihar_india"
                     android:layout_marginStart="@dimen/dp_20"
                     android:textColor="@color/color_dark_green"
+                    android:id="@+id/tvAaadharAddress"
                     android:textSize="11sp"
                     android:fontFamily="@font/avenir_next_semi_bold"
 
@@ -290,7 +315,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/personalExpand"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dp_12"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -665,77 +690,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:id="@+id/llGender"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llMarital">
-
-                        <!-- Label -->
-                        <TextView
-                            android:id="@+id/tvGender"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/marital"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
-
-
-                        <!-- Card Container -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
-
-
-                            <!-- ST Card -->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Male"
-                                android:gravity="center"
-                                android:id="@+id/optionMaleSelect"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Female"
-                                android:id="@+id/optionFemaleSelect"
-                                android:gravity="center"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-
-                            <!-- Other Card -->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Transgender"
-                                android:gravity="center"
-                                android:id="@+id/optionTransgenderSelect"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-                        </LinearLayout>
-                    </LinearLayout>
 
 
                     <LinearLayout
@@ -746,7 +700,7 @@
                         android:id="@+id/llMinority"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llGender">
+                        app:layout_constraintTop_toBottomOf="@+id/llMarital">
 
                         <TextView
                             android:id="@+id/tvMinority"
@@ -2714,7 +2668,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_12"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/viewTraining">
@@ -2892,60 +2846,168 @@
 
                         </LinearLayout>
 
-                <!--        <LinearLayout
-                            android:id="@+id/llTechEducation"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:id="@+id/llwhichSectorRUIntrested"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-
                             <TextView
-                                android:id="@+id/tvTechEducation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="@dimen/dp_16"
-                                android:fontFamily="@font/avenir_next_demi_bold"
-                                android:padding="@dimen/dp_4"
-                                android:text="@string/TechnicalEducation1"
-                                android:textColor="@color/color_dark_green" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                                android:id="@+id/tvwhichSectorRUIntrested"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenir_next_demi_bold"
-                                android:hint="@string/TechnicalEducation1"
-                                android:padding="1dp"
-                                android:textColorHint="@color/color_dark_green"
-                                app:boxStrokeColor="@color/color_dark_green">
+                                android:text="@string/which_sector_are_you_interested_in"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:layout_marginBottom="8dp" />
 
-                                <AutoCompleteTextView
-                                    android:id="@+id/spinnerTechnicalEducation"
-                                    style="@style/EditText"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:inputType="none"
-                                    android:textColor="@color/color_dark_green"
-                                    android:textSize="15sp"
-                                    tools:ignore="LabelFor" />
 
-                            </com.google.android.material.textfield.TextInputLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3">
 
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="IT"
+                                    android:gravity="center"
+                                    android:id="@+id/optionItSectorRUIntrestedSelect"
+                                    android:textColor="@color/black"
+                                    android:elevation="4dp"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/design"
+                                    android:gravity="center"
+                                    android:id="@+id/optionDesignSectorRUIntrestedSelect"
+                                    android:textColor="@color/black"
+                                    android:elevation="4dp"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/mechanical"
+                                    android:gravity="center"
+                                    android:id="@+id/optionMechanicalSectorRUIntrestedSelect"
+                                    android:elevation="4dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:id="@+id/llTradeRUIntrestedSelect"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/llEmploymentPreference">
+
+                            <TextView
+                                android:id="@+id/tvTradeRUIntrestedSelect"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/which_trade_are_you_interested_in"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:layout_marginBottom="8dp" />
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="Within District"
+                                    android:gravity="center"
+                                    android:id="@+id/optionTrade"
+                                    android:textColor="@color/black"
+                                    android:elevation="4dp"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="Within State"
+                                    android:gravity="center"
+                                    android:id="@+id/optionTrade2"
+                                    android:elevation="4dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp" />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="Outside State"
+                                    android:gravity="center"
+                                    android:id="@+id/optionTrade3"
+                                    android:textColor="@color/black"
+                                    android:elevation="4dp"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:text="OutsideCountry"
+                                    android:gravity="center"
+                                    android:id="@+id/optionTrade4"
+                                    android:elevation="4dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/sp_16"
+                                    android:background="@drawable/card_background"
+                                    android:layout_margin="8dp" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
 
 
 
-                        <TextView
-                            android:id="@+id/btnEIddressSubmit"
-                            style="@style/Button"
-                            android:layout_marginTop="@dimen/dp_15"
-                            android:drawablePadding="@dimen/dp_20"
-                            android:text="@string/submit"
-                            app:drawableEndCompat="@drawable/ic_right_arrow" />-->
+
+
+
 
                     </LinearLayout>
 
@@ -3029,7 +3091,140 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewBanking">
+                    app:layout_constraintTop_toBottomOf="@+id/llTopBanking">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llBankName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/viewBanking"
+                        tools:ignore="NotSibling">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvBankName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bank_name"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etBankName"
+                            style="@style/EditText"
+                            android:hint="@string/bank_name"
+                            android:background="@drawable/edittext_background"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llBankAcNo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llBankName"
+                        tools:ignore="NotSibling">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvBankAcNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bank_account_number"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etBankAcNo"
+                            style="@style/EditText"
+                            android:hint="@string/bank_account_number"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:inputType="number"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llIfscCode"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llBankAcNo"
+                        tools:ignore="NotSibling">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvIfscCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ifsc_code"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etIfscCode"
+                            style="@style/EditText"
+                            android:hint="@string/enter_ifsc_code"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:id="@+id/llPanNumber"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llIfscCode"
+                        tools:ignore="NotSibling">
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvPanNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pan_no"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etPanNumber"
+                            style="@style/EditText"
+                            android:hint="@string/enter_pan_no"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+
+
+
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

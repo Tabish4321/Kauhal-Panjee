@@ -1,10 +1,15 @@
 package com.kaushalpanjee.common
 
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,8 +41,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private var mobileOTP: String? = null
     private var emailOTP: String? = null
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         init()
     }

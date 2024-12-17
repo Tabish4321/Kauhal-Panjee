@@ -1,9 +1,15 @@
 package com.kaushalpanjee.common
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.log
@@ -18,14 +24,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
   private var showPassword = true
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         init()
     }
 
+
     private fun init(){
         listeners()
+        showBottomSheet()
     }
 
     private fun listeners(){
@@ -64,4 +76,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }
     }
 
+    private fun showBottomSheet() {
+        // Initialize the BottomSheetDialog
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+
+        // Inflate the layout
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
+
+        // Handle button click inside Bottom Sheet
+binding.tvWelcome.setOnClickListener {
+    bottomSheetDialog.dismiss() // Close Bottom Sheet
+
+}
+
+        // Set the view and show the Bottom Sheet
+        bottomSheetDialog.setContentView(view)
+        bottomSheetDialog.show()
+    }
 }

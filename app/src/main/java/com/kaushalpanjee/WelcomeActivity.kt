@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.Interpolator
@@ -30,10 +31,15 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
 
       // installSplashScreen()
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
+        // Hide the status bar based on API level
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // API 30 and above
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            // For older versions
+            @Suppress("DEPRECATION")
+      window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
 
        /* splashScreen.setOnExitAnimationListener {splashScreenView->
 

@@ -5,8 +5,11 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
@@ -30,11 +33,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     val day = calendar.get(Calendar.DAY_OF_MONTH)
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         init()
     }
+
+
 
     private fun init() {
         listener()

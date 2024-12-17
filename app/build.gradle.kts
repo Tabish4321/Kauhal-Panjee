@@ -87,8 +87,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
+    implementation (libs.material.v150)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.viewbinding)
     implementation(libs.play.services.location)
