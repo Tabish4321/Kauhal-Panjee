@@ -2,15 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/dp_10"
-    android:padding="@dimen/dp_10"
-    android:elevation="@dimen/dp_2"
     android:id="@+id/container"
     android:layout_marginHorizontal="@dimen/dp_20"
-
-    android:background="@drawable/shape_rectangle_light_grey">
+    android:elevation="@dimen/dp_8"
+    android:layout_marginTop="@dimen/dp_8"
+    style="@style/EditText">
 
     <TextView
         android:id="@+id/tvStateName"
@@ -18,11 +14,13 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/dp_10"
         android:layout_marginHorizontal="@dimen/dp_20"
-        android:fontFamily="@font/avenir_next_bold"
+        android:fontFamily="@font/avenir_next_demi_bold"
         android:text="@string/state_name"
         android:textColor="@color/color_dark_green"
         android:textSize="@dimen/sp_14"
+        android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

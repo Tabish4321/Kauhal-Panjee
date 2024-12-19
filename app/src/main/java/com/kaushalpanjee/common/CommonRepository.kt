@@ -1,6 +1,8 @@
 package com.kaushalpanjee.common
 
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
+import com.kaushalpanjee.common.model.SendOTPRequest
+import com.kaushalpanjee.common.model.SendOtpEmailReq
 import com.kaushalpanjee.common.model.StateDataResponse
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.core.data.local.database.AppDatabase
@@ -20,13 +22,13 @@ class CommonRepository @Inject constructor(
 
     suspend fun sendMobileOTP(mobileNumber : String): Flow<Resource<out SendMobileOTPResponse>> {
        return networkBoundResourceWithoutDb {
-            appLevelApi.sendMobileOTP(mobileNumber)
+            appLevelApi.sendMobileOTP(SendOTPRequest(mobileNumber))
         }
     }
 
     suspend fun sendEmailOTP(email : String): Flow<Resource<out SendMobileOTPResponse>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.sendEmailTP(email)
+            appLevelApi.sendEmailTP(SendOtpEmailReq(email))
         }
     }
 

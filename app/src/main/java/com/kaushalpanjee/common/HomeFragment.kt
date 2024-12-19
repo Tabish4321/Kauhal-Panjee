@@ -22,6 +22,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var isAddressVisible = true
     private var isEducationalInfoVisible = true
     private var isEmploymentInfoVisible = true
+    private var isTrainingInfoVisible = true
+    private var isBankingInfoVisible = true
+    private var isSeccInfoVisible = true
 
     private lateinit var districtAdapter: ArrayAdapter<String>
     private val district = ArrayList<String>()
@@ -63,6 +66,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+        binding.llTopSecc.setOnClickListener {
+            if (isSeccInfoVisible){
+
+                isSeccInfoVisible = false
+                binding.expandSecc.visible()
+                binding.viewSeccc.visible()
+            }else {
+                isSeccInfoVisible = true
+                binding.expandSecc.gone()
+                binding.viewSeccc.gone()
+            }
+
+        }
+
         binding.llTopAddress.setOnClickListener {
 
             if (isAddressVisible){
@@ -101,6 +118,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.viewEmployment.gone()
             }
         }
+
+        binding.llTopBanking.setOnClickListener {
+
+            if (isBankingInfoVisible){
+                isBankingInfoVisible = false
+                binding.expandBanking.visible()
+                binding.viewBanking.visible()
+            }else {
+                isBankingInfoVisible = true
+                binding.expandBanking.gone()
+                binding.viewBanking.gone()
+            }
+        }
+        binding.llTopTraining.setOnClickListener {
+
+            if (isTrainingInfoVisible){
+                isTrainingInfoVisible = false
+                binding.expandTraining.visible()
+                binding.viewTraining.visible()
+            }else {
+                isTrainingInfoVisible = true
+                binding.expandTraining.gone()
+                binding.viewTraining.gone()
+            }
+        }
+
 
 
         binding.tvClickYearOfPassing.setOnClickListener {

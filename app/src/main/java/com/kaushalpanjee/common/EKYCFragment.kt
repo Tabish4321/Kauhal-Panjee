@@ -13,6 +13,7 @@ import android.text.TextUtils
 import android.util.Base64
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -111,6 +112,10 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
     private fun init() {
+        binding.aadhaarVerifyButton.root.visible()
+        binding.etAadhaar.visible()
+        binding.recyclerView.gone()
+
         listener()
         setUI()
         collectStateResponse()
@@ -131,6 +136,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         )
     }
 
+
+
     private fun listener() {
         if (binding.etAadhaar.text.length == 12) {
             binding.aadhaarVerifyButton.root.visible()
@@ -143,7 +150,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                 showSnackBar("Please enter valid aadhaar number")
             } else {
-              //  showSnackBar("success")
+                //  showSnackBar("success")
                 invokeCaptureIntent()
 
             }
@@ -197,11 +204,11 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         }
 
-       /* binding.progressBackButton.setOnClickListener {
+        /* binding.progressBackButton.setOnClickListener {
 
-            findNavController().navigateUp()
-           // findNavController().navigate(R.id.loginFragment)
-        }*/
+             findNavController().navigateUp()
+            // findNavController().navigate(R.id.loginFragment)
+         }*/
 
 
     }
@@ -295,14 +302,14 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             IntentModel::class.java
         )
 
-     /*   userPreferences.saveSchemeCode(intentModel.scheme)
+        /*   userPreferences.saveSchemeCode(intentModel.scheme)
 
-        stateCode = intentModel.State_Code
-        applicantId = intentModel.applicant_id
-        ekycId = intentModel.ekyc_id
-*/
+           stateCode = intentModel.State_Code
+           applicantId = intentModel.applicant_id
+           ekycId = intentModel.ekyc_id
+   */
         collectFaceAuthResponse()
-       // setConsentText()
+        // setConsentText()
     }
 
 
@@ -318,7 +325,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)
                         ?.let { it1 ->
                             handleCaptureResponse(it1)
-                        binding.tvWelcome.text = it1
+                            binding.tvWelcome.text = it1
                             it1.copyToClipboard(requireContext())
                         }
                 }
@@ -336,7 +343,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         )
         startUidaiAuthResult.launch(intent1)
 
-       // val packageName = "com.example.otherapp" // Replace with the target app's package name
+        // val packageName = "com.example.otherapp" // Replace with the target app's package name
         val intent = requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
         intent?.putExtra(
             AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
@@ -350,7 +357,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     private fun createPidOptions(txnId: String, purpose: String): String {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${getEnvironment(PRODUCTION)}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "<Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${getEnvironment(PRE_PRODUCTION_CODE)}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "<Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
 
     private fun getEnvironment(environmentType: String): String {
@@ -403,10 +410,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
-  /*  override fun onResume() {
-        super.onResume()
-        checkCameraPermission()
-    }*/
 
     private fun checkCameraPermission(): Boolean {
         val permissionsNotGranted = java.util.ArrayList<String>()
@@ -456,42 +459,42 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
-  /*  private fun setConsentText() {
+    /*  private fun setConsentText() {
 
-        val ss = SpannableString(getString(R.string.consent_text_short))
-        val clickableSpan: ClickableSpan = object : ClickableSpan() {
-            override fun onClick(textView: View) {
-                makeConsentDialog()
-            }
+          val ss = SpannableString(getString(R.string.consent_text_short))
+          val clickableSpan: ClickableSpan = object : ClickableSpan() {
+              override fun onClick(textView: View) {
+                  makeConsentDialog()
+              }
 
-            override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
-                ds.isUnderlineText = true
-            }
-        }
+              override fun updateDrawState(ds: TextPaint) {
+                  super.updateDrawState(ds)
+                  ds.isUnderlineText = true
+              }
+          }
 
-        ss.setSpan(clickableSpan, 66, 75, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        binding.tvConsent.text = ss
-        binding.tvConsent.movementMethod = LinkMovementMethod.getInstance()
-        binding.tvConsent.highlightColor = Color.TRANSPARENT
+          ss.setSpan(clickableSpan, 66, 75, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+          binding.tvConsent.text = ss
+          binding.tvConsent.movementMethod = LinkMovementMethod.getInstance()
+          binding.tvConsent.highlightColor = Color.TRANSPARENT
 
-    }
-    private fun makeConsentDialog() {
-        AlertDialog.Builder(context)
-            .setTitle("Consent")
-            .setMessage(getString(R.string.consent_text))
-            .setPositiveButton(
-                "Agree"
-            ) { dialog, _ ->
-                dialog.dismiss()
-                binding.checkBoxConsent.isChecked = true
-            }.setNegativeButton("Disagree") { dialog, which ->
-                dialog.dismiss()
-                binding.checkBoxConsent.isChecked = false
-            }
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .show()
-    }*/
+      }
+      private fun makeConsentDialog() {
+          AlertDialog.Builder(context)
+              .setTitle("Consent")
+              .setMessage(getString(R.string.consent_text))
+              .setPositiveButton(
+                  "Agree"
+              ) { dialog, _ ->
+                  dialog.dismiss()
+                  binding.checkBoxConsent.isChecked = true
+              }.setNegativeButton("Disagree") { dialog, which ->
+                  dialog.dismiss()
+                  binding.checkBoxConsent.isChecked = false
+              }
+              .setIcon(android.R.drawable.ic_dialog_alert)
+              .show()
+      }*/
 
 
 
@@ -524,10 +527,15 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                     val kycResp =
                                         XstreamCommonMethods.respDecodedXmlToPojoEkyc(response.body()?.PostOnAUA_Face_authResult)
-                                  //  val poiType: Poa = XstreamCommonMethos.rarDecodedXmlToPojo(response.body()?.PostOnAUA_Face_authResult)
+                                    //  val poiType: Poa = XstreamCommonMethos.rarDecodedXmlToPojo(response.body()?.PostOnAUA_Face_authResult)
 
-                                 //   Toast.makeText(this, poiType.getName(), Toast.LENGTH_SHORT).show()
-                               //     kycResp.uidData.name
+                                    response.body()?.PostOnAUA_Face_authResult?.let { it1 ->
+                                        toastLong(
+                                            it1
+                                        )
+                                    }
+                                    //     kycResp.uidData.name
+
 
                                     if (kycResp.isSuccess){
 
@@ -535,15 +543,15 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             Base64.decode(kycResp.uidData.pht, Base64.DEFAULT)
                                         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
-                                      //  binding.ivPersonImg.setImageBitmap(bitmap)
+                                        //  binding.ivPersonImg.setImageBitmap(bitmap)
 
-                                       val  photo = kycResp.uidData.pht
-                                       val  name = kycResp.uidData.name
-                                       val  gender = kycResp.uidData.gender
-                                       val  dob = kycResp.uidData.dob
+                                        val  photo = kycResp.uidData.pht
+                                        val  name = kycResp.uidData.name
+                                        val  gender = kycResp.uidData.gender
+                                        val  dob = kycResp.uidData.dob
 
 
-                                        showSnackBar(name.toString()+"gender"+gender.toString())
+                                        showSnackBar(name.toString()+"gender"+name.toString())
 
 
 
@@ -555,7 +563,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                     }
 
-                                   toastShort( "Last Auth Done: ${
+                                    toastShort( "Last Auth Done: ${
                                         if (TextUtils.isEmpty(dateTime)) "NA" else dateTime?.let { it1 ->
                                             AppUtil.convertUTCtoIST(
                                                 inDateFormat,

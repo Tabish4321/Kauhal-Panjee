@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/top_card_bg"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/circleImageViewMH"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_70"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:shapeAppearanceOverlay="@style/CustomCircleShape"
+            app:strokeColor="@color/color_dark_green"
+            app:strokeWidth="1dp"
+            android:src="@drawable/person"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_55"
+            android:src="@drawable/language"
+            android:id="@+id/change_language"
+            android:layout_marginTop="@dimen/dp_45"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/circleImageViewMH"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="@dimen/dp_70"
+            android:src="@drawable/top_frame"
+            android:id="@+id/sher"
+            android:layout_marginTop="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_20"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/dp_10"
+            android:id="@+id/search_bar"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:elevation="@dimen/dp_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sher">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <!-- Search Icon -->
+                <ImageView
+                    android:id="@+id/iv_search_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/baseline_search_24"
+                   android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Search EditText -->
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/search"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:padding="0dp"
+                    android:drawablePadding="8dp"
+                    android:singleLine="true" />
+
+                <!-- Microphone Icon -->
+                <ImageView
+                    android:id="@+id/iv_mic_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="@dimen/dp_40"
+                    android:src="@drawable/baseline_mic_24"
+                   android:layout_marginStart="8dp"
+                  android:layout_marginEnd="8dp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_50"
+            app:layout_constraintTop_toBottomOf="@+id/search_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <View
+            android:id="@+id/viewBanner"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_6"
+            android:background="#F5E2E0E0"
+            android:layout_marginTop="@dimen/dp_10"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView"/>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_200"
+            android:id="@+id/meterCard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:cardCornerRadius="@dimen/dp_12"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewBanner">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:elevation="@dimen/dp_4"
+                android:scaleX="1.6"
+                android:src="@drawable/meter_cardd"/>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <View
+            android:id="@+id/viewMeter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_6"
+            android:background="#F5E2E0E0"
+            android:layout_marginTop="@dimen/dp_10"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meterCard"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/services_provided"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewMeter"
+            android:text="@string/services_for_you"
+            android:textColor="@color/color_dark_green"
+            android:layout_marginStart="@dimen/dp_20"
+            android:textSize="@dimen/sp_20"
+            android:fontFamily="@font/avenir_next_bold"
+            />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="@dimen/dp_113"
+            android:layout_height="@dimen/dp_113"
+            android:layout_marginTop="@dimen/dp_20"
+            android:id="@+id/personal_image_logo"
+            android:src="@drawable/person_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/services_provided"
+            android:layout_marginStart="@dimen/dp_20"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="@dimen/dp_113"
+            android:layout_height="@dimen/dp_113"
+            android:layout_marginTop="@dimen/dp_20"
+            android:id="@+id/training_image_logo"
+            android:src="@drawable/training_log"
+            app:layout_constraintStart_toEndOf="@+id/personal_image_logo"
+            app:layout_constraintTop_toBottomOf="@+id/services_provided"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

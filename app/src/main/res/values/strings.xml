@@ -103,5 +103,10 @@
     <string name="ifsc_code">IFSC Code</string>
     <string name="pan_no">PAN No</string>
     <string name="enter_pan_no">Enter PAN No</string>
+    <string name="image">Image</string>
+    <string name="search">Search</string>
+    <string name="services_for_you">Services for you</string>
+    <string name="unableto_find_yourself_in_secc_drop_down">Unableto find yourself in SECC drop_down?</string>
+    <string name="ahl_tin">AHL-TIN</string>
 
 </resources>

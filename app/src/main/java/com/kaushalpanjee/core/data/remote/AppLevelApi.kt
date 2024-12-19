@@ -1,6 +1,8 @@
 package com.kaushalpanjee.core.data.remote
 
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
+import com.kaushalpanjee.common.model.SendOTPRequest
+import com.kaushalpanjee.common.model.SendOtpEmailReq
 import com.kaushalpanjee.common.model.StateDataResponse
 import com.kaushalpanjee.core.util.ApiConstant
 import retrofit2.Response
@@ -15,11 +17,11 @@ import rural.ekyc.ui.ekyc.models.UidaiResp
 interface AppLevelApi {
 
     @GET(ApiConstant.API_SMS_OTP)
-    suspend fun sendMobileOTP(@Query ("mobileNo") mobileNumber : String):SendMobileOTPResponse
+    suspend fun sendMobileOTP(@Body sendOTPRequest: SendOTPRequest):SendMobileOTPResponse
 
 
     @GET(ApiConstant.API_EMAIL_OTP)
-    suspend fun sendEmailTP(@Query ("email") mailOtp : String):SendMobileOTPResponse
+    suspend fun sendEmailTP(@Body sendOtpEmailReq: SendOtpEmailReq):SendMobileOTPResponse
 
     @GET(ApiConstant.API_STATE)
     suspend fun getStateListAPI():StateDataResponse

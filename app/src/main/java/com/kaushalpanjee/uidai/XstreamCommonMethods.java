@@ -10,7 +10,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.UUID;
 
-
 public class XstreamCommonMethods {
 
 
