@@ -101,6 +101,66 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var  selectedbVillageLgdCodeItem=""
     private var selectedVillageItem=""
 
+    //  Present Address Variables
+
+
+    // State var
+    private var statePresentList: MutableList<WrappedList> = mutableListOf()
+    private lateinit var statePresentAdapter: ArrayAdapter<String>
+    private var statePresent = ArrayList<String>()
+    private var statePresentCode = ArrayList<String>()
+    private var statePresentLgdCode = ArrayList<String>()
+    private var selectedStatePresentCodeItem=""
+    private var  selectedStatePresentLgdCodeItem=""
+    private var selectedStatePresentItem=""
+
+    // district var
+    private var districtPresentList: MutableList<DistrictList> = mutableListOf()
+    private lateinit var districtPresentAdapter: ArrayAdapter<String>
+    private var districtPresent = ArrayList<String>()
+    private var districtPresentCode = ArrayList<String>()
+    private var districtPresentLgdCode = ArrayList<String>()
+    private var selectedDistrictPresentCodeItem=""
+    private var  selectedDistrictPresentLgdCodeItem=""
+    private var selectedDistrictPresentItem=""
+
+
+    //block var
+    private var blockListPresent: MutableList<BlockList> = mutableListOf()
+    private lateinit var blockPresentAdapter: ArrayAdapter<String>
+    private var blockPresent = ArrayList<String>()
+    private var blockPresentCode = ArrayList<String>()
+    private var blockPresentLgdCode = ArrayList<String>()
+    private var selectedBlockPresentCodeItem=""
+    private var  selectedbBlockPresentLgdCodeItem=""
+    private var selectedBlockPresentItem=""
+
+
+
+    //GP var
+    private var gpPresentList: MutableList<GrampanchayatList> = mutableListOf()
+    private lateinit var gpPresentAdapter: ArrayAdapter<String>
+    private var gpPresent = ArrayList<String>()
+    private var gpPresentCode = ArrayList<String>()
+    private var gpPresentLgdCode = ArrayList<String>()
+    private var selectedGpPresentCodeItem=""
+    private var  selectedbGpPresentLgdCodeItem=""
+    private var selectedGpPresentItem=""
+
+
+    //Village var
+    private var villagePresentList: MutableList<VillageList> = mutableListOf()
+    private lateinit var villagePresentAdapter: ArrayAdapter<String>
+    private var villagePresent = ArrayList<String>()
+    private var villagePresentCode = ArrayList<String>()
+    private var villagePresentLgdCode = ArrayList<String>()
+    private var selectedVillagePresentCodeItem=""
+    private var  selectedbVillagePresentLgdCodeItem=""
+    private var selectedVillagePresentItem=""
+
+
+
+    //yaha tak
 
     // Calendar instance to get current date
     val calendar = Calendar.getInstance()
@@ -393,7 +453,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in village.indices) {
                 selectedVillageCodeItem = villageCode[position]
                 selectedbVillageLgdCodeItem = villageLgdCode[position]
-                commonViewModel.getVillageListApi(selectedVillageCodeItem)
 
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
