@@ -1,23 +1,36 @@
 package com.kaushalpanjee.common
-
-import android.R
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.response.BlockList
+import com.kaushalpanjee.common.model.response.DistrictList
+import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.VillageList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentHomeBinding
+import kotlinx.coroutines.launch
 import java.util.Calendar
+import com.kaushalpanjee.R
+import com.kaushalpanjee.core.util.toastLong
+
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
+    val commonViewModel: CommonViewModel by activityViewModels()
+
+
+    //Boolean Values
     private var isPersonalVisible = true
     private var isAddressVisible = true
     private var isEducationalInfoVisible = true
@@ -25,9 +38,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var isTrainingInfoVisible = true
     private var isBankingInfoVisible = true
     private var isSeccInfoVisible = true
+    private var isClickedPermanentYes = false
+    private var isClickedPermanentNo = false
 
+      //Other Values
+      var addressLine1 =""
+      var addressLine2 =""
+      var pinCode =""
+
+
+    // State var
+    private var stateList: MutableList<WrappedList> = mutableListOf()
+    private lateinit var stateAdapter: ArrayAdapter<String>
+    private var state = ArrayList<String>()
+    private var stateCode = ArrayList<String>()
+    private var stateLgdCode = ArrayList<String>()
+    private var selectedStateCodeItem=""
+    private var  selectedStateLgdCodeItem=""
+    private var selectedStateItem=""
+
+           // district var
+    private var districtList: MutableList<DistrictList> = mutableListOf()
     private lateinit var districtAdapter: ArrayAdapter<String>
-    private val district = ArrayList<String>()
+    private var district = ArrayList<String>()
+    private var districtCode = ArrayList<String>()
+    private var districtLgdCode = ArrayList<String>()
+    private var selectedDistrictCodeItem=""
+    private var  selectedDistrictLgdCodeItem=""
+    private var selectedDistrictItem=""
+
+
+    //block var
+    private var blockList: MutableList<BlockList> = mutableListOf()
+    private lateinit var blockAdapter: ArrayAdapter<String>
+    private var block = ArrayList<String>()
+    private var blockCode = ArrayList<String>()
+    private var blockLgdCode = ArrayList<String>()
+    private var selectedBlockCodeItem=""
+    private var  selectedbBlockLgdCodeItem=""
+    private var selectedBlockItem=""
+
+
+
+    //GP var
+    private var gpList: MutableList<GrampanchayatList> = mutableListOf()
+    private lateinit var gpAdapter: ArrayAdapter<String>
+    private var gp = ArrayList<String>()
+    private var gpCode = ArrayList<String>()
+    private var gpLgdCode = ArrayList<String>()
+    private var selectedGpCodeItem=""
+    private var  selectedbGpLgdCodeItem=""
+    private var selectedGpItem=""
+
+
+    //Village var
+    private var villageList: MutableList<VillageList> = mutableListOf()
+    private lateinit var villageAdapter: ArrayAdapter<String>
+    private var village = ArrayList<String>()
+    private var villageCode = ArrayList<String>()
+    private var villageLgdCode = ArrayList<String>()
+    private var selectedVillageCodeItem=""
+    private var  selectedbVillageLgdCodeItem=""
+    private var selectedVillageItem=""
+
 
     // Calendar instance to get current date
     val calendar = Calendar.getInstance()
@@ -37,8 +110,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
 
         init()
     }
@@ -47,11 +124,72 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun init() {
         listener()
-        districtSPinner()
-    }
+        collectStateResponse()
+        collectDistrictResponse()
+        collectBlockResponse()
+        collectGpResponse()
+        collectVillageResponse()
+        commonViewModel.getStateListApi()
+
+
+        }
+
 
     @SuppressLint("SetTextI18n")
     private fun listener() {
+
+
+        //Adapter state setting
+        stateAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            state
+        )
+
+        binding.SpinnerStateName.setAdapter(stateAdapter)
+
+
+        //Adapter District setting
+
+        districtAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            district
+        )
+
+        binding.spinnerDistrict.setAdapter(districtAdapter)
+
+
+        //Adapter Block setting
+
+        blockAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            block
+        )
+
+        binding.spinnerBlock.setAdapter(blockAdapter)
+
+        //Adapter GP setting
+
+       gpAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            gp
+        )
+
+        binding.spinnerGp.setAdapter(gpAdapter)
+
+
+        //Adapter Village setting
+
+        villageAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            village
+        )
+
+        binding.spinnerVillage.setAdapter(villageAdapter)
 
         binding.llTopPersonal.setOnClickListener {
 
@@ -66,6 +204,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+/*
         binding.llTopSecc.setOnClickListener {
             if (isSeccInfoVisible){
 
@@ -79,6 +218,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
         }
+*/
 
         binding.llTopAddress.setOnClickListener {
 
@@ -144,8 +284,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-
-
         binding.tvClickYearOfPassing.setOnClickListener {
 
             val datePickerDialog = DatePickerDialog(
@@ -196,32 +334,295 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-
-    }
-    fun districtSPinner(){
-        district.add("Siwan")
-        district.add("muzzafarpur")
-        district.add("Chapra")
-
-        // Create an ArrayAdapter
-        districtAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, district)
-        //  districtAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        // Set the adapter to the Spinner
-        binding.spinnerDistrict.setAdapter(districtAdapter)
-
-        // Handle item selection
-        binding.spinnerDistrict.onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                val selectedItem = district[position]
-                Toast.makeText(requireContext(), "Selected: $selectedItem", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onNothingSelected(parent: android.widget.AdapterView<*>?) {
-                // Handle case where no item is selected
+        //State selection
+        binding.SpinnerStateName.setOnItemClickListener { parent, view, position, id ->
+             selectedStateItem = parent.getItemAtPosition(position).toString()
+            if (position in state.indices) {
+                 selectedStateCodeItem = stateCode[position]
+               selectedStateLgdCodeItem = stateLgdCode[position]
+                commonViewModel.getDistrictListApi(selectedStateCodeItem)
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
         }
 
-    }
+
+
+        //District selection
+        binding.spinnerDistrict.setOnItemClickListener { parent, view, position, id ->
+            selectedDistrictItem = parent.getItemAtPosition(position).toString()
+            if (position in district.indices) {
+                selectedDistrictCodeItem = districtCode[position]
+                selectedDistrictLgdCodeItem = districtLgdCode[position]
+                commonViewModel.getBlockListApi(selectedDistrictCodeItem)
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //Block Spinner
+        binding.spinnerBlock.setOnItemClickListener { parent, view, position, id ->
+            selectedBlockItem= parent.getItemAtPosition(position).toString()
+            if (position in block.indices) {
+                selectedBlockCodeItem = blockCode[position]
+                selectedbBlockLgdCodeItem = blockLgdCode[position]
+                commonViewModel.getGpListApi(selectedBlockCodeItem)
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        //GP Spinner
+        binding.spinnerGp.setOnItemClickListener { parent, view, position, id ->
+            selectedGpItem= parent.getItemAtPosition(position).toString()
+            if (position in gp.indices) {
+                selectedGpCodeItem = gpCode[position]
+                selectedbGpLgdCodeItem = gpLgdCode[position]
+                commonViewModel.getVillageListApi(selectedGpCodeItem)
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        //Village Spinner
+        binding.spinnerVillage.setOnItemClickListener { parent, view, position, id ->
+            selectedVillageItem= parent.getItemAtPosition(position).toString()
+            if (position in village.indices) {
+                selectedVillageCodeItem = villageCode[position]
+                selectedbVillageLgdCodeItem = villageLgdCode[position]
+                commonViewModel.getVillageListApi(selectedVillageCodeItem)
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        // If Present Address is same as permanent
+
+        binding.optionllSamePermanentYesSelect.setOnClickListener {
+
+
+
+                binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+                binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+
+                isClickedPermanentYes=true
+                isClickedPermanentNo= false
+                toastLong("isClickedPermanentNo: $isClickedPermanentNo+ isClickedPermanentYes: $isClickedPermanentYes")
+
+
+
+        }
+
+        binding.optionSamePermanentNoSelect.setOnClickListener {
+            isClickedPermanentNo= true
+            isClickedPermanentYes=false
+
+            binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+                binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+            toastLong("isClickedPermanentYe: $isClickedPermanentNo+ isClickedPermanentYes: $isClickedPermanentYes")
+
+        }
+
 
     }
+    private fun collectStateResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getStateList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getStateResponse ->
+                            if (getStateResponse.responseCode == 200) {
+                                stateList = getStateResponse.stateList
+                                state.clear()
+                                stateCode.clear()
+                                stateLgdCode.clear()
+
+                                for (x in stateList) {
+                                    state.add(x.stateName)
+                                    stateCode.add(x.stateCode) // Replace with actual field
+                                    stateLgdCode.add(x.lgdStateCode) // Replace with actual field
+                                }
+                                stateAdapter.notifyDataSetChanged()
+                            } else if (getStateResponse.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectDistrictResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getDistrictResponse ->
+                            if (getDistrictResponse.responseCode == 200) {
+                                districtList = getDistrictResponse.districtList
+                                district.clear()
+                                districtCode.clear()
+                                districtLgdCode.clear()
+
+                                for (x in districtList) {
+                                    district.add(x.districtName)
+                                    districtCode.add(x.districtCode) // Replace with actual field
+                                    districtLgdCode.add(x.lgdDistrictCode) // Replace with actual field
+                                }
+                                districtAdapter.notifyDataSetChanged()
+                            } else if (getDistrictResponse.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectBlockResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getBlockList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getBlockResponse ->
+                            if (getBlockResponse.responseCode == 200) {
+                                blockList = getBlockResponse.blockList
+                                block.clear()
+                                blockCode.clear()
+                                blockLgdCode.clear()
+
+                                for (x in blockList) {
+                                    block.add(x.blockName)
+                                    blockCode.add(x.blockCode) // Replace with actual field
+                                    blockLgdCode.add(x.lgdBlockCode) // Replace with actual field
+                                }
+                                blockAdapter.notifyDataSetChanged()
+                            } else if (getBlockResponse.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectGpResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getGpList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getGpResponse ->
+                            if (getGpResponse.responseCode == 200) {
+                                gpList = getGpResponse.grampanchayatList
+                                gp.clear()
+                                gpCode.clear()
+                                gpLgdCode.clear()
+
+                                for (x in gpList) {
+                                    gp.add(x.gpName)
+                                    gpCode.add(x.gpCode) // Replace with actual field
+                                    gpLgdCode.add(x.lgdGpCode) // Replace with actual field
+                                }
+                                blockAdapter.notifyDataSetChanged()
+                            } else if (getGpResponse.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectVillageResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getVillageList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getVillageResponse ->
+                            if (getVillageResponse.responseCode == 200) {
+                                villageList = getVillageResponse.villageList
+                                village.clear()
+                                villageCode.clear()
+                                villageLgdCode.clear()
+
+                                for (x in villageList) {
+                                    village.add(x.villageName)
+                                    villageCode.add(x.villageCode) // Replace with actual field
+                                    villageLgdCode.add(x.lgdVillageCode) // Replace with actual field
+                                }
+                                villageAdapter.notifyDataSetChanged()
+                            } else if (getVillageResponse.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+}

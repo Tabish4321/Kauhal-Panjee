@@ -63,27 +63,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
  }
 
 
-    // Start the auto-scrolling task
-    private fun startAutoScroll() {
-        val scrollRunnable = Runnable {
-            // Smooth scroll to the next item
-            binding.recyclerView.smoothScrollToPosition(scrollPosition)
-            scrollPosition++
-            if (scrollPosition >= adapter.itemCount) {
-                // If we reach the end, scroll back to the start
-                scrollPosition = 0
-            }
-        }
-
-        // Start auto-scroll with a delay of 2 seconds (2000 milliseconds)
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                scrollRunnable.run()
-                handler.postDelayed(this, 3000) // Scroll every 3 seconds
-            }
-        }, 3000)
-    }
-
     private fun autoScroll(){
         val scrollRunnable = Runnable {
             // Scroll to the next position
@@ -104,7 +83,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 scrollRunnable.run()
                 handler.postDelayed(this, 3000) // Scroll every 2 seconds
             }
-        }, 3000) // Delay the first scroll action by 2 seconds
+        }, 0) // Delay the first scroll action by 2 seconds
     }
 
     // Cleanup handler to stop auto-scrolling when activity is destroyed

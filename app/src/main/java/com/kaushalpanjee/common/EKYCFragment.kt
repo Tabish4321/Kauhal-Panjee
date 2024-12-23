@@ -66,8 +66,8 @@ import kotlin.random.Random
 const val CAMERA_REQUEST = 101
 @AndroidEntryPoint
 class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflate) {
-
     private val commonViewModel: CommonViewModel by viewModels()
+
     private var stateList: MutableList<WrappedList> = mutableListOf()
 
     private var selectedState = ""
@@ -77,12 +77,12 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         StateAdaptor(object : StateAdaptor.ItemClickListener {
             override fun onItemClick(position: Int) {
 
-                selectedState = stateList[position].state_name
+                selectedState = stateList[position].stateName
                 binding.tvWelcome.text = getString(R.string.slected_state)
                 binding.tvWelcomeMsg.text = selectedState
                 binding.tvWelcomeMsg.visible()
                 binding.tvWelcomeMsg.setUnderline(selectedState)
-                toastShort("${stateList[position].state_name} ,  ${stateList[position].state_code}")
+                toastShort("${stateList[position].stateName} ,  ${stateList[position].stateCode}")
                 binding.progressButton.root.visible()
 
                 lifecycleScope.launch {
@@ -112,10 +112,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
     private fun init() {
-        binding.aadhaarVerifyButton.root.visible()
-        binding.etAadhaar.visible()
-        binding.recyclerView.gone()
-
         listener()
         setUI()
         collectStateResponse()
@@ -232,11 +228,16 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         hideProgressBar()
                         it.data?.let { getStateResponse ->
                             if (getStateResponse.responseCode == 200) {
-                                stateList = getStateResponse.wrappedList
+                                stateList = getStateResponse.stateList
 
 
                                 stateAdaptor.setData(stateList)
-                            } else showSnackBar("Something went wrong")
+                            }
+                            else if(getStateResponse.responseCode==301){
+
+                                showSnackBar("Please Update from PlayStore")}
+
+                            else showSnackBar("Something went wrong")
 
                         } ?: showSnackBar("Internal Sever Error")
                     }

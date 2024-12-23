@@ -474,12 +474,11 @@ android:background="@color/color_light_grey">
                     <EditText
                         android:id="@+id/etllVoterId"
                         style="@style/EditText"
-                        android:hint="@string/voter_id"
                         android:background="@drawable/edittext_background"
+                        android:hint="@string/voter_id"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -1210,7 +1209,7 @@ android:background="@color/color_light_grey">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewAddress">
@@ -1226,14 +1225,35 @@ android:background="@color/color_light_grey">
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tvStateName"
-                    style="@style/EditText"
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/statespinn"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:hint="@string/select_state"
+                    android:padding="1dp"
                     android:layout_marginStart="@dimen/dp_3"
-                    android:text="Bihar"
+                    android:textColorHint="@color/color_dark_green"
+                    app:boxStrokeColor="@color/color_dark_green"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvState" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvState" >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/SpinnerStateName"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 <LinearLayout
@@ -1242,7 +1262,7 @@ android:background="@color/color_light_grey">
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvStateName">
+                    app:layout_constraintTop_toBottomOf="@+id/statespinn">
 
                     <TextView
                         android:id="@+id/tvDistrict"
@@ -1446,6 +1466,70 @@ android:background="@color/color_light_grey">
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llAdressLine2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llAdressLine">
+
+                    <!-- Label -->
+                    <TextView
+                        android:id="@+id/tvAdressLine2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/AdressLine2"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <!-- EditText with custom background -->
+                    <EditText
+                        android:id="@+id/etAdressLine2"
+                        style="@style/EditText"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:hint="@string/AdressLine2"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llPinCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llAdressLine2">
+
+                    <!-- Label -->
+                    <TextView
+                        android:id="@+id/tvPinCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/pin_code"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <!-- EditText with custom background -->
+                    <EditText
+                        android:id="@+id/etPinCode"
+                        style="@style/EditText"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:hint="@string/pin_code"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:id="@+id/llPresenrAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1453,7 +1537,7 @@ android:background="@color/color_light_grey">
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llAdressLine">
+                    app:layout_constraintTop_toBottomOf="@+id/llPinCode">
 
                     <TextView
                         android:id="@+id/tvPresenrAddress"
@@ -1489,7 +1573,7 @@ android:background="@color/color_light_grey">
                             android:background="@drawable/card_background"
                             android:elevation="4dp"
                             android:gravity="center"
-                            android:text="Yes"
+                            android:text="@string/yes"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_16" />
 
@@ -1502,7 +1586,7 @@ android:background="@color/color_light_grey">
                             android:background="@drawable/card_background"
                             android:elevation="4dp"
                             android:gravity="center"
-                            android:text="No"
+                            android:text="@string/no"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_16" />
                     </LinearLayout>
@@ -1744,6 +1828,49 @@ android:background="@color/color_light_grey">
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
+
+
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvPresentAdressLine2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/AdressLine2"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etPresentLine2"
+                            style="@style/EditText"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background"
+                            android:hint="@string/AdressLine2"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"/>
+
+                        <!-- Label -->
+                        <TextView
+                            android:id="@+id/tvPresentPinCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/pin_code"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
+
+                        <!-- EditText with custom background -->
+                        <EditText
+                            android:id="@+id/etPresentPinCode"
+                            style="@style/EditText"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background"
+                            android:hint="@string/pin_code"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/btnAddressSubmit"
@@ -3214,6 +3341,7 @@ android:background="@color/color_light_grey">
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+<!--
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvSecCons"
             style="@style/editTextHome"
@@ -3308,8 +3436,7 @@ android:background="@color/color_light_grey">
                     android:textColorHint="@color/color_dark_green"
                     app:boxStrokeColor="@color/color_dark_green"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvStateSecc">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <AutoCompleteTextView
                         android:id="@+id/spinnerStateSecc"
@@ -3502,7 +3629,7 @@ android:background="@color/color_light_grey">
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/llFName">
 
-                            <!-- Label -->
+                            &lt;!&ndash; Label &ndash;&gt;
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -3511,7 +3638,7 @@ android:background="@color/color_light_grey">
                                 android:textSize="16sp"
                                 android:layout_marginBottom="8dp" />
 
-                            <!-- EditText with custom background -->
+                            &lt;!&ndash; EditText with custom background &ndash;&gt;
                             <EditText
                                 android:id="@+id/etATINNo"
                                 style="@style/EditText"
@@ -3536,6 +3663,7 @@ android:background="@color/color_light_grey">
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+-->
 
 
 

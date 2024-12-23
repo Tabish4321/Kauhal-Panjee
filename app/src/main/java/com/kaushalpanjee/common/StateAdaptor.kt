@@ -39,7 +39,7 @@ class StateAdaptor(private val itemClickListener:ItemClickListener) : RecyclerVi
 
         fun bindData(wrappedList: WrappedList){
 
-            stateItem.tvStateName.text = wrappedList.state_name
+            stateItem.tvStateName.text = wrappedList.stateName
 
             if (wrappedList.isSelected){
               stateItem.ivSelected.visible()

@@ -2,9 +2,16 @@ package com.kaushalpanjee.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.StateDataResponse
 import com.kaushalpanjee.common.model.UidaiKycRequest
+import com.kaushalpanjee.common.model.response.BlockResponse
+import com.kaushalpanjee.common.model.response.DistrictList
+import com.kaushalpanjee.common.model.response.DistrictResponse
+import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.VillageResponse
+import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -25,9 +32,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val sendMobileOTP = _sendMobileOTP.asSharedFlow()
 
 
-    fun sendMobileOTP(mobileNumber:String){
+    fun sendMobileOTP(mobileNumber:String , appVersion:String){
         viewModelScope.launch {
-            commonRepository.sendMobileOTP(mobileNumber).collectLatest {
+            commonRepository.sendMobileOTP(mobileNumber,appVersion).collectLatest {
                 _sendMobileOTP.emit(it)
             }
         }
@@ -38,9 +45,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var _sendEmailOTP = MutableSharedFlow<Resource<out SendMobileOTPResponse>>()
     val sendEmailOTP = _sendEmailOTP.asSharedFlow()
 
-    fun sendEmailOTP(email:String){
+    fun sendEmailOTP(email:String,appVersion: String){
         viewModelScope.launch {
-            commonRepository.sendEmailOTP(email).collectLatest {
+            commonRepository.sendEmailOTP(email,appVersion).collectLatest {
                 _sendEmailOTP.emit(it)
             }
         }}
@@ -51,11 +58,73 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     fun getStateListApi(){
         viewModelScope.launch {
-            commonRepository.getStateListApi().collectLatest {
+            commonRepository.getStateListApi(BuildConfig.VERSION_NAME).collectLatest {
                 _stateList.emit(it)
             }
         }
     }
+
+
+    private var _districtList =  MutableStateFlow<Resource<out DistrictResponse>>(Resource.Loading())
+    val getDistrictList = _districtList.asStateFlow()
+
+
+    fun getDistrictListApi(state :String){
+        viewModelScope.launch {
+            commonRepository.getDistrictListApi(state,BuildConfig.VERSION_NAME).collectLatest {
+                _districtList.emit(it)
+            }
+        }
+    }
+
+
+
+    private var _blockList =  MutableStateFlow<Resource<out BlockResponse>>(Resource.Loading())
+    val getBlockList = _blockList.asStateFlow()
+
+
+    fun getBlockListApi(district :String){
+        viewModelScope.launch {
+            commonRepository.getBlockListApi(district,BuildConfig.VERSION_NAME).collectLatest {
+                _blockList.emit(it)
+            }
+        }}
+
+
+      private  var _gpList =  MutableStateFlow<Resource<out grampanchayatResponse>>(Resource.Loading())
+        val getGpList = _gpList.asStateFlow()
+
+
+        fun getGpListApi(block :String) {
+            viewModelScope.launch {
+                commonRepository.getGPListApi(block, BuildConfig.VERSION_NAME).collectLatest {
+                    _gpList.emit(it)
+                }
+            }
+
+
+        }
+
+
+
+    private  var _villageList =  MutableStateFlow<Resource<out VillageResponse>>(Resource.Loading())
+    val getVillageList = _villageList.asStateFlow()
+
+
+    fun getVillageListApi(gp :String) {
+        viewModelScope.launch {
+            commonRepository.getVillageListApi(gp, BuildConfig.VERSION_NAME).collectLatest {
+                _villageList.emit(it)
+            }
+        }
+
+
+    }
+
+
+
+
+
 
     private var _postOnAUAFaceAuthNREGA = MutableSharedFlow<Resource<out Response<UidaiResp>>>()
     val postOnAUAFaceAuthNREGA = _postOnAUAFaceAuthNREGA.asSharedFlow()
