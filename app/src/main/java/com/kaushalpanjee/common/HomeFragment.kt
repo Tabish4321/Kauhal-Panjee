@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -27,7 +28,7 @@ import com.kaushalpanjee.core.util.toastLong
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    val commonViewModel: CommonViewModel by activityViewModels()
+    private val commonViewModel: CommonViewModel by activityViewModels()
 
 
     //Boolean Values
@@ -41,10 +42,57 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var isClickedPermanentYes = false
     private var isClickedPermanentNo = false
 
-      //Other Values
+    private var isClickedSeccYes = false
+    private var isClickedSeccNo = false
+
+
+    //Other Values
       var addressLine1 =""
       var addressLine2 =""
       var pinCode =""
+
+    //Secc Address
+
+
+    // State var
+    private var stateSeccList: MutableList<WrappedList> = mutableListOf()
+    private lateinit var stateSeccAdapter: ArrayAdapter<String>
+    private var selectedSeccStateCodeItem=""
+    private var  selectedSeccStateLgdCodeItem=""
+    private var selectedSeccStateItem=""
+
+    // district var
+    private var districtSeccList: MutableList<DistrictList> = mutableListOf()
+    private lateinit var districtSeccAdapter: ArrayAdapter<String>
+    private var selectedSeccDistrictCodeItem=""
+    private var  selectedSeccDistrictLgdCodeItem=""
+    private var selectedSeccDistrictItem=""
+
+
+    //block var
+    private var blockSeccList: MutableList<BlockList> = mutableListOf()
+    private lateinit var blockSeccAdapter: ArrayAdapter<String>
+    private var selectedSeccBlockCodeItem=""
+    private var  selectedSeccBlockLgdCodeItem=""
+    private var selectedSeccBlockItem=""
+
+
+
+    //GP var
+    private var gpSeccList: MutableList<GrampanchayatList> = mutableListOf()
+    private lateinit var gpSeccAdapter: ArrayAdapter<String>
+    private var selectedSeccGpCodeItem=""
+    private var  selectedSeccGpLgdCodeItem=""
+    private var selectedSeccGpItem=""
+
+
+    //Village var
+    private var villageSeccList: MutableList<VillageList> = mutableListOf()
+    private lateinit var villageSeccAdapter: ArrayAdapter<String>
+    private var selectedSeccVillageCodeItem=""
+    private var  selectedbSeccVillageLgdCodeItem=""
+    private var selectedSeccVillageItem=""
+
 
     //  Present
     var addressPresentLine1 =""
@@ -110,32 +158,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     // State var
-    private var statePresentList: MutableList<WrappedList> = mutableListOf()
     private lateinit var statePresentAdapter: ArrayAdapter<String>
     private var statePresent = ArrayList<String>()
-    private var statePresentCode = ArrayList<String>()
-    private var statePresentLgdCode = ArrayList<String>()
     private var selectedStatePresentCodeItem=""
     private var  selectedStatePresentLgdCodeItem=""
     private var selectedStatePresentItem=""
 
     // district var
-    private var districtPresentList: MutableList<DistrictList> = mutableListOf()
     private lateinit var districtPresentAdapter: ArrayAdapter<String>
     private var districtPresent = ArrayList<String>()
-    private var districtPresentCode = ArrayList<String>()
-    private var districtPresentLgdCode = ArrayList<String>()
     private var selectedDistrictPresentCodeItem=""
     private var  selectedDistrictPresentLgdCodeItem=""
     private var selectedDistrictPresentItem=""
 
 
     //block var
-    private var blockListPresent: MutableList<BlockList> = mutableListOf()
     private lateinit var blockPresentAdapter: ArrayAdapter<String>
     private var blockPresent = ArrayList<String>()
-    private var blockPresentCode = ArrayList<String>()
-    private var blockPresentLgdCode = ArrayList<String>()
     private var selectedBlockPresentCodeItem=""
     private var  selectedbBlockPresentLgdCodeItem=""
     private var selectedBlockPresentItem=""
@@ -143,29 +182,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     //GP var
-    private var gpPresentList: MutableList<GrampanchayatList> = mutableListOf()
     private lateinit var gpPresentAdapter: ArrayAdapter<String>
     private var gpPresent = ArrayList<String>()
-    private var gpPresentCode = ArrayList<String>()
-    private var gpPresentLgdCode = ArrayList<String>()
     private var selectedGpPresentCodeItem=""
     private var  selectedbGpPresentLgdCodeItem=""
     private var selectedGpPresentItem=""
 
 
     //Village var
-    private var villagePresentList: MutableList<VillageList> = mutableListOf()
     private lateinit var villagePresentAdapter: ArrayAdapter<String>
     private var villagePresent = ArrayList<String>()
-    private var villagePresentCode = ArrayList<String>()
-    private var villagePresentLgdCode = ArrayList<String>()
     private var selectedVillagePresentCodeItem=""
     private var  selectedbVillagePresentLgdCodeItem=""
     private var selectedVillagePresentItem=""
 
-
-
-    //yaha tak
 
     // Calendar instance to get current date
     val calendar = Calendar.getInstance()
@@ -202,6 +232,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     @SuppressLint("SetTextI18n")
     private fun listener() {
+
+
+        binding.llPresentAddressState.gone()
+        binding.llPresentAddressDistrict.gone()
+        binding.llPresentAddressBlock.gone()
+        binding.llPresentAddressGp.gone()
+        binding.llPresentAddressVillage.gone()
+        binding.llPresentAddressAdressLine.gone()
 
 
         //Adapter state setting
@@ -256,6 +294,120 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.spinnerVillage.setAdapter(villageAdapter)
 
+
+        //Present Address Adapter
+
+        //Adapter state setting
+        statePresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            state
+        )
+
+        binding.SpinnerPresentAddressStateName.setAdapter(statePresentAdapter)
+
+
+        //Adapter District setting
+
+        districtPresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            district
+        )
+
+        binding.spinnerPresentAddressDistrict.setAdapter(districtPresentAdapter)
+
+
+        //Adapter Block setting
+
+        blockPresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            block
+        )
+
+        binding.spinnerPresentAddressBlock.setAdapter(blockPresentAdapter)
+
+        //Adapter GP setting
+
+        gpPresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            gp
+        )
+
+        binding.spinnerPresentAddressGp.setAdapter(gpPresentAdapter)
+
+
+        //Adapter Village setting
+
+        villagePresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            village
+        )
+
+        binding.spinnerPresentAddressVillage.setAdapter(villagePresentAdapter)
+
+
+        //Secc Address Adapter
+
+        stateSeccAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            state
+        )
+
+        binding.spinnerStateSecc.setAdapter(stateSeccAdapter)
+
+
+
+        //Adapter District setting
+
+        districtSeccAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            district
+        )
+
+        binding.spinnerDistrictSecc.setAdapter(districtSeccAdapter)
+
+
+
+        //Adapter Block setting
+
+        blockSeccAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            block
+        )
+
+        binding.spinnerBlockSecc.setAdapter(blockSeccAdapter)
+
+
+        //Adapter GP setting
+
+        gpSeccAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            gp
+        )
+
+        binding.spinnerGpSecc.setAdapter(gpSeccAdapter)
+
+
+
+        //Adapter Village setting
+
+        villageSeccAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            village
+        )
+
+        binding.spinnerVillageSecc.setAdapter(villageSeccAdapter)
+
+
         binding.llTopPersonal.setOnClickListener {
 
             if (isPersonalVisible){
@@ -269,13 +421,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-/*
         binding.llTopSecc.setOnClickListener {
             if (isSeccInfoVisible){
 
                 isSeccInfoVisible = false
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
+
+                setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
+                setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
+                setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
+                setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
+                setDropdownValue(binding.spinnerVillageSecc, selectedVillageItem, village)
+
             }else {
                 isSeccInfoVisible = true
                 binding.expandSecc.gone()
@@ -283,7 +441,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
         }
-*/
 
         binding.llTopAddress.setOnClickListener {
 
@@ -398,6 +555,156 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+        // Secc State selection
+
+        binding.spinnerStateSecc.setOnItemClickListener { parent, view, position, id ->
+            selectedSeccStateItem = parent.getItemAtPosition(position).toString()
+            if (position in state.indices) {
+                selectedSeccStateCodeItem = stateCode[position]
+                selectedSeccStateLgdCodeItem = stateLgdCode[position]
+                commonViewModel.getDistrictListApi(selectedSeccStateCodeItem)
+
+                //Clearing Data
+                selectedSeccDistrictCodeItem=""
+                selectedSeccDistrictLgdCodeItem=""
+                selectedSeccDistrictItem=""
+                binding.spinnerDistrictSecc.clearFocus()
+                binding.spinnerDistrictSecc.setText("", false)
+
+                selectedSeccBlockCodeItem=""
+                selectedSeccBlockLgdCodeItem=""
+                selectedBlockItem=""
+                binding.spinnerBlockSecc.clearFocus()
+                binding.spinnerBlockSecc.setText("", false)
+
+                district.clear()
+                block.clear()
+                gp.clear()
+                village.clear()
+
+
+
+                selectedSeccGpCodeItem=""
+                selectedSeccGpLgdCodeItem=""
+                selectedSeccGpItem=""
+                binding.spinnerGpSecc.clearFocus()
+                binding.spinnerGpSecc.setText("", false)
+
+
+                selectedSeccVillageCodeItem=""
+                selectedbSeccVillageLgdCodeItem=""
+                selectedSeccVillageItem=""
+                binding.spinnerVillageSecc.clearFocus()
+                binding.spinnerVillageSecc.setText("", false)
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        // Secc District selection
+
+        binding.spinnerDistrictSecc.setOnItemClickListener { parent, view, position, id ->
+            selectedSeccDistrictItem = parent.getItemAtPosition(position).toString()
+            if (position in district.indices) {
+                selectedSeccDistrictCodeItem = districtCode[position]
+                selectedSeccDistrictLgdCodeItem = districtLgdCode[position]
+                commonViewModel.getBlockListApi(selectedSeccDistrictCodeItem)
+
+                selectedSeccBlockCodeItem=""
+                selectedSeccBlockLgdCodeItem=""
+                selectedBlockItem=""
+                binding.spinnerBlockSecc.clearFocus()
+                binding.spinnerBlockSecc.setText("", false)
+
+
+
+                selectedSeccGpCodeItem=""
+                selectedSeccGpLgdCodeItem=""
+                selectedSeccGpItem=""
+                binding.spinnerGpSecc.clearFocus()
+                binding.spinnerGpSecc.setText("", false)
+
+
+                selectedSeccVillageCodeItem=""
+                selectedbSeccVillageLgdCodeItem=""
+                selectedSeccVillageItem=""
+                binding.spinnerVillageSecc.clearFocus()
+                binding.spinnerVillageSecc.setText("", false)
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Secc Block selection
+
+        binding.spinnerBlockSecc.setOnItemClickListener { parent, view, position, id ->
+            selectedSeccBlockItem = parent.getItemAtPosition(position).toString()
+            if (position in block.indices) {
+                selectedSeccBlockCodeItem = blockCode[position]
+                selectedSeccBlockLgdCodeItem = blockLgdCode[position]
+                commonViewModel.getGpListApi(selectedSeccBlockCodeItem)
+
+
+                selectedSeccGpCodeItem=""
+                selectedSeccGpLgdCodeItem=""
+                selectedSeccGpItem=""
+                binding.spinnerGpSecc.clearFocus()
+                binding.spinnerGpSecc.setText("", false)
+
+
+                selectedSeccVillageCodeItem=""
+                selectedbSeccVillageLgdCodeItem=""
+                selectedSeccVillageItem=""
+                binding.spinnerVillageSecc.clearFocus()
+                binding.spinnerVillageSecc.setText("", false)
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Secc GP selection
+
+        binding.spinnerGpSecc.setOnItemClickListener { parent, view, position, id ->
+            selectedSeccGpItem = parent.getItemAtPosition(position).toString()
+            if (position in gp.indices) {
+                selectedSeccGpCodeItem = gpCode[position]
+                selectedSeccGpLgdCodeItem = gpLgdCode[position]
+                commonViewModel.getVillageListApi(selectedSeccGpCodeItem)
+
+
+                selectedSeccVillageCodeItem=""
+                selectedbSeccVillageLgdCodeItem=""
+                selectedSeccVillageItem=""
+                binding.spinnerVillageSecc.clearFocus()
+                binding.spinnerVillageSecc.setText("", false)
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Secc Village selection
+
+        binding.spinnerVillageSecc.setOnItemClickListener { parent, view, position, id ->
+            selectedSeccVillageItem = parent.getItemAtPosition(position).toString()
+            if (position in village.indices) {
+                selectedSeccVillageCodeItem = villageCode[position]
+                selectedbSeccVillageLgdCodeItem = villageLgdCode[position]
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
 
         //State selection
         binding.SpinnerStateName.setOnItemClickListener { parent, view, position, id ->
@@ -406,6 +713,67 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                  selectedStateCodeItem = stateCode[position]
                selectedStateLgdCodeItem = stateLgdCode[position]
                 commonViewModel.getDistrictListApi(selectedStateCodeItem)
+
+                //Clearing Data
+                selectedDistrictCodeItem=""
+                selectedDistrictLgdCodeItem=""
+                selectedDistrictItem=""
+                binding.spinnerDistrict.clearFocus()
+                binding.spinnerDistrict.setText("", false)
+
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+
+
+                selectedBlockCodeItem=""
+                selectedbBlockLgdCodeItem=""
+                selectedBlockItem=""
+                binding.spinnerBlock.clearFocus()
+                binding.spinnerBlock.setText("", false)
+
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+
+
+
+                selectedGpCodeItem=""
+                selectedbGpLgdCodeItem=""
+                selectedGpItem=""
+                binding.spinnerGp.clearFocus()
+                binding.spinnerGp.setText("", false)
+
+
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+                selectedVillageCodeItem=""
+                selectedbVillageLgdCodeItem=""
+                selectedVillageItem=""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+
+
+
+
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -420,6 +788,65 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictCodeItem = districtCode[position]
                 selectedDistrictLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedDistrictCodeItem)
+
+
+
+
+                selectedBlockCodeItem=""
+                selectedbBlockLgdCodeItem=""
+                selectedBlockItem=""
+                binding.spinnerBlock.clearFocus()
+                binding.spinnerBlock.setText("", false)
+
+
+
+
+
+                selectedGpCodeItem=""
+                selectedbGpLgdCodeItem=""
+                selectedGpItem=""
+                binding.spinnerGp.clearFocus()
+                binding.spinnerGp.setText("", false)
+
+
+
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+                selectedVillageCodeItem=""
+                selectedbVillageLgdCodeItem=""
+                selectedVillageItem=""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -432,6 +859,52 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedBlockCodeItem = blockCode[position]
                 selectedbBlockLgdCodeItem = blockLgdCode[position]
                 commonViewModel.getGpListApi(selectedBlockCodeItem)
+
+
+                selectedGpCodeItem=""
+                selectedbGpLgdCodeItem=""
+                selectedGpItem=""
+                binding.spinnerGp.clearFocus()
+                binding.spinnerGp.setText("", false)
+
+
+
+
+
+                selectedVillageCodeItem=""
+                selectedbVillageLgdCodeItem=""
+                selectedVillageItem=""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -446,6 +919,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedbGpLgdCodeItem = gpLgdCode[position]
                 commonViewModel.getVillageListApi(selectedGpCodeItem)
 
+
+                selectedVillageCodeItem=""
+                selectedbVillageLgdCodeItem=""
+                selectedVillageItem=""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -459,22 +968,200 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedVillageCodeItem = villageCode[position]
                 selectedbVillageLgdCodeItem = villageLgdCode[position]
 
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
         }
 
 
+
+ //Present Address Spinner Setting
+
+
+
+        //State selection
+        binding.SpinnerPresentAddressStateName.setOnItemClickListener { parent, view, position, id ->
+            selectedStatePresentItem = parent.getItemAtPosition(position).toString()
+            if (position in state.indices) {
+                selectedStatePresentCodeItem = stateCode[position]
+                selectedStatePresentLgdCodeItem= stateLgdCode[position]
+                commonViewModel.getDistrictListApi(selectedStatePresentCodeItem)
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+                selectedDistrictPresentCodeItem=""
+                selectedDistrictPresentLgdCodeItem=""
+                selectedDistrictPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //District selection
+        binding.spinnerPresentAddressDistrict.setOnItemClickListener { parent, view, position, id ->
+            selectedDistrictPresentItem = parent.getItemAtPosition(position).toString()
+            if (position in district.indices) {
+                selectedDistrictPresentCodeItem= districtCode[position]
+                selectedDistrictPresentLgdCodeItem = districtLgdCode[position]
+                commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem)
+
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+                selectedBlockPresentCodeItem=""
+                selectedbBlockPresentLgdCodeItem=""
+                selectedBlockPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //Block Spinner
+        binding.spinnerPresentAddressBlock.setOnItemClickListener { parent, view, position, id ->
+            selectedBlockPresentItem= parent.getItemAtPosition(position).toString()
+            if (position in block.indices) {
+                selectedBlockPresentCodeItem= blockCode[position]
+                selectedbBlockPresentLgdCodeItem = blockLgdCode[position]
+                commonViewModel.getGpListApi(selectedBlockPresentCodeItem)
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+                selectedGpPresentCodeItem=""
+                selectedbGpPresentLgdCodeItem=""
+                selectedGpPresentItem=""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        //GP Spinner
+        binding.spinnerPresentAddressGp.setOnItemClickListener { parent, view, position, id ->
+            selectedGpPresentItem= parent.getItemAtPosition(position).toString()
+            if (position in gp.indices) {
+                selectedGpPresentCodeItem = gpCode[position]
+                selectedbGpPresentLgdCodeItem = gpLgdCode[position]
+                commonViewModel.getVillageListApi(selectedGpCodeItem)
+
+                selectedVillagePresentCodeItem=""
+                selectedbVillagePresentLgdCodeItem=""
+                selectedVillagePresentItem=""
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        //Village Spinner
+        binding.spinnerPresentAddressVillage.setOnItemClickListener { parent, view, position, id ->
+            selectedVillagePresentItem= parent.getItemAtPosition(position).toString()
+            if (position in village.indices) {
+                selectedVillagePresentCodeItem = villageCode[position]
+                selectedbVillagePresentLgdCodeItem = villageLgdCode[position]
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
         // If Present Address is same as permanent
 
         binding.optionllSamePermanentYesSelect.setOnClickListener {
+            addressLine1=binding.etAdressLine.text.toString()
+            addressLine2= binding.etAdressLine2.text.toString()
+            pinCode= binding.etPinCode.text.toString()
+
 
 
             if (selectedStateCodeItem.isNotEmpty() &&
                 selectedDistrictCodeItem.isNotEmpty() &&
                 selectedBlockCodeItem.isNotEmpty() &&
                 selectedGpCodeItem.isNotEmpty() &&
-                selectedVillageCodeItem.isNotEmpty()) {
+                selectedVillageCodeItem.isNotEmpty()&& addressLine1.isNotEmpty()
+                && addressLine2.isNotEmpty()&& pinCode.isNotEmpty()) {
 
                 binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
                 binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
@@ -488,6 +1175,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.llPresentAddressGp.gone()
                 binding.llPresentAddressVillage.gone()
                 binding.llPresentAddressAdressLine.gone()
+                binding.btnAddressSubmit.visible()
+
+                addressPresentLine1 =  addressLine1
+                addressPresentLine2 = addressLine2
+                pinCodePresent = pinCode
+
 
                 //Set State Value
                 selectedStatePresentCodeItem=  selectedStateCodeItem
@@ -520,9 +1213,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 //others
 
-                addressPresentLine1 =  addressLine1
-                addressPresentLine2 = addressLine2
-                pinCodePresent = pinCode
+
 
 
             }
@@ -537,56 +1228,153 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
-            isClickedPermanentNo= true
-            isClickedPermanentYes=false
 
-            binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+            addressLine1=binding.etAdressLine.text.toString()
+            addressLine2= binding.etAdressLine2.text.toString()
+            pinCode= binding.etPinCode.text.toString()
+
+            if (selectedStateCodeItem.isNotEmpty() &&
+                selectedDistrictCodeItem.isNotEmpty() &&
+                selectedBlockCodeItem.isNotEmpty() &&
+                selectedGpCodeItem.isNotEmpty() &&
+                selectedVillageCodeItem.isNotEmpty()&& addressLine1.isNotEmpty()
+                && addressLine2.isNotEmpty()&& pinCode.isNotEmpty()) {
+
+
+                isClickedPermanentNo = true
+                isClickedPermanentYes = false
+                binding.btnAddressSubmit.visible()
+
+                district.clear()
+                block.clear()
+                gp.clear()
+                village.clear()
+
+                binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
                 binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
-            toastLong("isClickedPermanentYe: $isClickedPermanentNo+ isClickedPermanentYes: $isClickedPermanentYes")
 
 
-            binding.llPresentAddressState.visible()
-            binding.llPresentAddressDistrict.visible()
-            binding.llPresentAddressBlock.visible()
-            binding.llPresentAddressGp.visible()
-            binding.llPresentAddressVillage.visible()
-            binding.llPresentAddressAdressLine.visible()
+                binding.llPresentAddressState.visible()
+                binding.llPresentAddressDistrict.visible()
+                binding.llPresentAddressBlock.visible()
+                binding.llPresentAddressGp.visible()
+                binding.llPresentAddressVillage.visible()
+                binding.llPresentAddressAdressLine.visible()
 
-            //Set State Value
-            selectedStatePresentCodeItem=  ""
-            selectedStatePresentLgdCodeItem=  ""
-            selectedStatePresentItem=  ""
-
-
-            //Set District Value
-
-            selectedDistrictPresentCodeItem= ""
-            selectedDistrictPresentLgdCodeItem=""
-            selectedDistrictPresentItem=""
-
-            //Set Block Value
-
-            selectedBlockPresentCodeItem=  ""
-            selectedbBlockPresentLgdCodeItem= ""
-            selectedBlockPresentItem=  ""
-
-            //Set GP Value
-            selectedGpPresentCodeItem=  ""
-            selectedbGpPresentLgdCodeItem=  ""
-            selectedGpPresentItem=  ""
+                //Set State Value
+                selectedStatePresentCodeItem = ""
+                selectedStatePresentLgdCodeItem = ""
+                selectedStatePresentItem = ""
 
 
-            //Set Village Value
-            selectedVillagePresentCodeItem=  ""
-            selectedbVillagePresentLgdCodeItem= ""
-            selectedVillagePresentItem= ""
+                //Set District Value
+
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+
+                //Set Block Value
+
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+
+                //Set GP Value
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
 
 
-            //others
+                //Set Village Value
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
 
-            addressPresentLine1 =  ""
-            addressPresentLine2 = ""
-            pinCodePresent = ""
+
+                //others
+
+                addressPresentLine1 = ""
+                addressPresentLine2 = ""
+                pinCodePresent = ""
+            }
+            else
+            toastLong("Please Complete Your Permanent Address First")
+
+
+        }
+
+        // If Secc Yess
+
+        binding.optionOrigSecccYesSelect.setOnClickListener {
+
+            binding.optionOrigSecccYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+            binding.optionOrigSecccNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+
+            binding.etATINName.gone()
+            binding.etATINNo.visible()
+
+
+        }
+
+        binding.optionOrigSecccNoSelect.setOnClickListener {
+
+            binding.optionOrigSecccNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+            binding.optionOrigSecccYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+
+            binding.etATINNo.gone()
+            binding.etATINName.visible()
+
+        }
+        //All Submit Button Here
+
+        binding.btnAddressSubmit.setOnClickListener {
+
+            addressLine1=binding.etAdressLine.text.toString()
+            addressLine2= binding.etAdressLine2.text.toString()
+            pinCode= binding.etPinCode.text.toString()
+
+            if (isClickedPermanentNo){
+                addressPresentLine1=binding.etPresentAddressAdressLine.text.toString()
+                addressPresentLine2= binding.etPresentLine2.text.toString()
+                pinCodePresent= binding.etPresentPinCode.text.toString()
+
+
+            }
+
+
+            if (selectedStateCodeItem.isNotEmpty() &&
+                selectedDistrictCodeItem.isNotEmpty() &&
+                selectedBlockCodeItem.isNotEmpty() &&
+                selectedGpCodeItem.isNotEmpty() &&
+                selectedVillageCodeItem.isNotEmpty() &&
+                selectedStatePresentCodeItem.isNotEmpty() &&
+                selectedDistrictPresentCodeItem.isNotEmpty() &&
+                selectedBlockPresentCodeItem.isNotEmpty() &&
+                selectedGpPresentCodeItem.isNotEmpty() &&
+                selectedVillagePresentCodeItem.isNotEmpty()&&addressLine1.isNotEmpty()&& addressLine2.isNotEmpty()&&
+                pinCode.isNotEmpty()&& addressPresentLine1.isNotEmpty()&&addressPresentLine2.isNotEmpty()&&
+                pinCodePresent.isNotEmpty()){
+
+                // Hit The Insert API
+
+                 toastLong("Success")
+
+
+
+            }
+            else toastLong("Please complete your address first")
+        }
+
+        binding.btnSeccSubmit.setOnClickListener {
+            if (selectedSeccStateCodeItem.isNotEmpty() && selectedDistrictCodeItem.isNotEmpty()
+                && selectedSeccBlockCodeItem.isNotEmpty()&& selectedSeccGpCodeItem.isNotEmpty()
+                && selectedSeccVillageCodeItem.isNotEmpty()){
+
+                toastLong("Success")
+
+            }
+            else
+                toastLong("Please Complete SECC info First")
 
         }
 
@@ -783,6 +1571,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
+    private fun setDropdownValue(autoCompleteTextView: AutoCompleteTextView, value: String, dataList: List<String>) {
+        if (dataList.contains(value)) { // Check if the value exists in the list
+            autoCompleteTextView.setText(value, false) // Set text without filtering or triggering dropdown
+        }
+    }
 
 
 
