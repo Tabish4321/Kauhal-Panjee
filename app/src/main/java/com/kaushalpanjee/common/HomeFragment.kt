@@ -46,6 +46,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
       var addressLine2 =""
       var pinCode =""
 
+    //  Present
+    var addressPresentLine1 =""
+    var addressPresentLine2 =""
+    var pinCodePresent =""
+
 
     // State var
     private var stateList: MutableList<WrappedList> = mutableListOf()
@@ -465,17 +470,71 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.optionllSamePermanentYesSelect.setOnClickListener {
 
 
+            if (selectedStateCodeItem.isNotEmpty() &&
+                selectedDistrictCodeItem.isNotEmpty() &&
+                selectedBlockCodeItem.isNotEmpty() &&
+                selectedGpCodeItem.isNotEmpty() &&
+                selectedVillageCodeItem.isNotEmpty()) {
 
                 binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
                 binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
 
                 isClickedPermanentYes=true
                 isClickedPermanentNo= false
-                toastLong("isClickedPermanentNo: $isClickedPermanentNo+ isClickedPermanentYes: $isClickedPermanentYes")
 
+                binding.llPresentAddressState.gone()
+                binding.llPresentAddressDistrict.gone()
+                binding.llPresentAddressBlock.gone()
+                binding.llPresentAddressGp.gone()
+                binding.llPresentAddressVillage.gone()
+                binding.llPresentAddressAdressLine.gone()
+
+                //Set State Value
+                selectedStatePresentCodeItem=  selectedStateCodeItem
+                selectedStatePresentLgdCodeItem=  selectedStateLgdCodeItem
+                selectedStatePresentItem=  selectedStateItem
+
+
+                //Set District Value
+
+                selectedDistrictPresentCodeItem= selectedDistrictCodeItem
+                selectedDistrictPresentLgdCodeItem=selectedDistrictLgdCodeItem
+                selectedDistrictPresentItem=selectedDistrictItem
+
+                //Set Block Value
+
+                selectedBlockPresentCodeItem=  selectedBlockCodeItem
+                selectedbBlockPresentLgdCodeItem= selectedbBlockLgdCodeItem
+                selectedBlockPresentItem=  selectedBlockItem
+
+                //Set GP Value
+                selectedGpPresentCodeItem=  selectedGpCodeItem
+                selectedbGpPresentLgdCodeItem=  selectedbGpLgdCodeItem
+                selectedGpPresentItem=  selectedGpItem
+
+
+                //Set Village Value
+                selectedVillagePresentCodeItem=  selectedVillageCodeItem
+                selectedbVillagePresentLgdCodeItem= selectedbVillageLgdCodeItem
+                selectedVillagePresentItem= selectedVillageItem
+
+                //others
+
+                addressPresentLine1 =  addressLine1
+                addressPresentLine2 = addressLine2
+                pinCodePresent = pinCode
+
+
+            }
+            else
+
+                toastLong("Please Complete Your Permanent Address First")
 
 
         }
+
+        // If Present Address is not same as permanent
+
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
             isClickedPermanentNo= true
@@ -484,6 +543,50 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
                 binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
             toastLong("isClickedPermanentYe: $isClickedPermanentNo+ isClickedPermanentYes: $isClickedPermanentYes")
+
+
+            binding.llPresentAddressState.visible()
+            binding.llPresentAddressDistrict.visible()
+            binding.llPresentAddressBlock.visible()
+            binding.llPresentAddressGp.visible()
+            binding.llPresentAddressVillage.visible()
+            binding.llPresentAddressAdressLine.visible()
+
+            //Set State Value
+            selectedStatePresentCodeItem=  ""
+            selectedStatePresentLgdCodeItem=  ""
+            selectedStatePresentItem=  ""
+
+
+            //Set District Value
+
+            selectedDistrictPresentCodeItem= ""
+            selectedDistrictPresentLgdCodeItem=""
+            selectedDistrictPresentItem=""
+
+            //Set Block Value
+
+            selectedBlockPresentCodeItem=  ""
+            selectedbBlockPresentLgdCodeItem= ""
+            selectedBlockPresentItem=  ""
+
+            //Set GP Value
+            selectedGpPresentCodeItem=  ""
+            selectedbGpPresentLgdCodeItem=  ""
+            selectedGpPresentItem=  ""
+
+
+            //Set Village Value
+            selectedVillagePresentCodeItem=  ""
+            selectedbVillagePresentLgdCodeItem= ""
+            selectedVillagePresentItem= ""
+
+
+            //others
+
+            addressPresentLine1 =  ""
+            addressPresentLine2 = ""
+            pinCodePresent = ""
 
         }
 
