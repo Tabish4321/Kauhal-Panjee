@@ -37,20 +37,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun init(){
         listeners()
-        showBottomSheet()
+      //  showBottomSheet()
     }
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
-            //findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
+          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
             /*if (userPreferences.getIsRegistered()){
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
                // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEKYCNew())
             }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())*/
         }
         binding.tvLogin.setOnClickListener {
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
         }
 
         binding.tvForgotPassword.setOnClickListener {

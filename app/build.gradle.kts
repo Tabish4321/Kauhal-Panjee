@@ -108,6 +108,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation (libs.androidx.room.runtime)
     kapt (libs.androidx.room.compiler)
+    implementation (libs.androidx.viewpager2)
+
 
     implementation (libs.bundles.retrofitBundle)
     implementation (libs.chucker)

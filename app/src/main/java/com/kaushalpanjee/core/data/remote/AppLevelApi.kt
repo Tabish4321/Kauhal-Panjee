@@ -1,7 +1,10 @@
 package com.kaushalpanjee.core.data.remote
 
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
+import com.kaushalpanjee.common.model.SendOTPRequest
+import com.kaushalpanjee.common.model.SendOtpEmailReq
 import com.kaushalpanjee.common.model.StateDataResponse
+import com.kaushalpanjee.common.model.StateListReq
 import com.kaushalpanjee.core.util.ApiConstant
 import retrofit2.Response
 import retrofit2.http.Body
@@ -10,19 +13,55 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
-import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.BlockReq
+import com.kaushalpanjee.common.model.request.DistrictReq
+import com.kaushalpanjee.common.model.request.GramPanchayatReq
+import com.kaushalpanjee.common.model.request.VillageReq
+import com.kaushalpanjee.common.model.response.BlockResponse
+import com.kaushalpanjee.common.model.response.DistrictResponse
+import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.VillageResponse
+import com.kaushalpanjee.common.model.response.grampanchayatResponse
+import rural.ekyc.ui.ekyc.models.UidaiResp
 
 interface AppLevelApi {
 
-    @GET(ApiConstant.API_SMS_OTP)
-    suspend fun sendMobileOTP(@Query ("mobileNo") mobileNumber : String):SendMobileOTPResponse
+    @POST(ApiConstant.API_SMS_OTP)
+    suspend fun sendMobileOTP(@Body sendOTPRequest: SendOTPRequest):SendMobileOTPResponse
 
 
-    @GET(ApiConstant.API_EMAIL_OTP)
-    suspend fun sendEmailTP(@Query ("email") mailOtp : String):SendMobileOTPResponse
+    @POST(ApiConstant.API_EMAIL_OTP)
+    suspend fun sendEmailTP(@Body sendOtpEmailReq: SendOtpEmailReq):SendMobileOTPResponse
 
-    @GET(ApiConstant.API_STATE)
-    suspend fun getStateListAPI():StateDataResponse
+    @POST(ApiConstant.API_STATE)
+    suspend fun getStateListAPI(@Body stateListReq: StateListReq):StateDataResponse
+
+    @POST(ApiConstant.API_DISTRICT)
+    suspend fun getDistrictListAPI(@Body districtReq: DistrictReq):DistrictResponse
+
+
+
+    @POST(ApiConstant.API_BLOCK)
+    suspend fun getBlockListAPI(@Body blockReq: BlockReq):BlockResponse
+
+
+
+
+    @POST(ApiConstant.API_GP)
+    suspend fun getGpListAPI(@Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
+
+
+
+    @POST(ApiConstant.API_VILLAGE)
+    suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
+
+
+
+
+
+
+
+
 
 
     @POST

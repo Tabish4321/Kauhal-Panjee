@@ -1,3 +1,4 @@
+
 package com.kaushalpanjee.common
 
 import android.Manifest
@@ -12,6 +13,7 @@ import android.text.TextUtils
 import android.util.Base64
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -26,7 +28,6 @@ import com.google.gson.Gson
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.UidaiKycRequest
-import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppConstant
@@ -59,15 +60,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.util.Collections.replaceAll
+import rural.ekyc.ui.ekyc.models.UidaiResp
 import kotlin.random.Random
 
 const val CAMERA_REQUEST = 101
-
 @AndroidEntryPoint
 class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflate) {
-
     private val commonViewModel: CommonViewModel by viewModels()
+
     private var stateList: MutableList<WrappedList> = mutableListOf()
 
     private var selectedState = ""
@@ -77,12 +77,12 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         StateAdaptor(object : StateAdaptor.ItemClickListener {
             override fun onItemClick(position: Int) {
 
-                selectedState = stateList[position].state_name
+                selectedState = stateList[position].stateName
                 binding.tvWelcome.text = getString(R.string.slected_state)
                 binding.tvWelcomeMsg.text = selectedState
                 binding.tvWelcomeMsg.visible()
                 binding.tvWelcomeMsg.setUnderline(selectedState)
-                toastShort("${stateList[position].state_name} ,  ${stateList[position].state_code}")
+                toastShort("${stateList[position].stateName} ,  ${stateList[position].stateCode}")
                 binding.progressButton.root.visible()
 
                 lifecycleScope.launch {
@@ -100,10 +100,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
-        WindowInsetsControllerCompat(
-            requireActivity().window,
-            requireActivity().window.decorView
-        ).isAppearanceLightStatusBars = false
+        WindowInsetsControllerCompat(requireActivity().window, requireActivity().window.decorView).isAppearanceLightStatusBars = false
 
     }
 
@@ -134,6 +131,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
         )
     }
+
+
 
     private fun listener() {
         if (binding.etAadhaar.text.length == 12) {
@@ -229,11 +228,16 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         hideProgressBar()
                         it.data?.let { getStateResponse ->
                             if (getStateResponse.responseCode == 200) {
-                                stateList = getStateResponse.wrappedList
+                                stateList = getStateResponse.stateList
 
 
                                 stateAdaptor.setData(stateList)
-                            } else showSnackBar("Something went wrong")
+                            }
+                            else if(getStateResponse.responseCode==301){
+
+                                showSnackBar("Please Update from PlayStore")}
+
+                            else showSnackBar("Something went wrong")
 
                         } ?: showSnackBar("Internal Sever Error")
                     }
@@ -310,6 +314,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
+
     private val startUidaiAuthResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
 
@@ -317,10 +322,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 val intent = result.data
 
                 intent?.let {
-                    log(
-                        "handleCaptureResponse",
-                        it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)!!
-                    )
+                    log("handleCaptureResponse", it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)!!)
                     it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)
                         ?.let { it1 ->
                             handleCaptureResponse(it1)
@@ -328,7 +330,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             it1.copyToClipboard(requireContext())
                         }
                 }
-            } else toastLong("failed to capture")
+            }else toastLong("failed to capture")
         }
 
     private fun getTransactionID() = Random(System.currentTimeMillis()).nextInt(9999).toString()
@@ -338,17 +340,14 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
         intent1.putExtra(
-            AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-            createPidOptions(getTransactionID(), "auth")
+            AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
         )
         startUidaiAuthResult.launch(intent1)
 
         // val packageName = "com.example.otherapp" // Replace with the target app's package name
-        val intent =
-            requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
+        val intent = requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
         intent?.putExtra(
-            AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-            createPidOptions(getTransactionID(), "auth")
+            AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
         )
         if (intent != null) {
             startActivity(intent)
@@ -359,11 +358,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     private fun createPidOptions(txnId: String, purpose: String): String {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${
-            getEnvironment(
-                PRODUCTION
-            )
-        }\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "<Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${getEnvironment(PRE_PRODUCTION_CODE)}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "<Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
 
     private fun getEnvironment(environmentType: String): String {
@@ -385,7 +380,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             if (response.isSuccess) {
                 toastShort("Success ")
                 aadhaarAuth(response)
-            } else toastLong("Failed")
+            }else toastLong("Failed")
             hideProgressBar()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
@@ -396,12 +391,10 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         try {
             checkCameraPermission()
             // Pre-Production URL
-            //val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain"
-
-            val authURL = "http://10.247.252.93:8080/NicASAServer/ASAMain"
+            val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain"
 
             val authInputs: String = XstreamCommonMethos.processPidBlock(
-                response.toXML(), binding.etAadhaar.text.toString(), false,
+                response.toXML(), "939625617876", false,
                 requireContext()
             )
 
@@ -418,10 +411,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
-    /*  override fun onResume() {
-          super.onResume()
-          checkCameraPermission()
-      }*/
 
     private fun checkCameraPermission(): Boolean {
         val permissionsNotGranted = java.util.ArrayList<String>()
@@ -438,10 +427,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             var shouldShowAlert = false
             for (permission in permissionsNotGranted) {
                 shouldShowAlert =
-                    ActivityCompat.shouldShowRequestPermissionRationale(
-                        requireActivity(),
-                        permission
-                    )
+                    ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), permission)
             }
             if (shouldShowAlert) {
                 showPermissionAlert(permissionsNotGranted.toTypedArray())
@@ -512,86 +498,73 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
       }*/
 
 
-    private fun collectFaceAuthResponse() {
+
+    private fun collectFaceAuthResponse(){
         lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA) {
-                when (it) {
-                    is Resource.Loading -> {}
-                    is Resource.Error -> {
+            collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA){
+                when(it){
+                    is Resource.Loading->{}
+                    is Resource.Error->{
                         hideProgressBar()
                         it.error?.let { errorResponse ->
 
                             toastShort(errorResponse.message)
                         }
                     }
-
-                    is Resource.Success -> {
+                    is Resource.Success->{
                         hideProgressBar()
-                        it.data?.let { response: Response<UidaiResp> ->
-                            response.body()?.copy()?.PostOnAUA_Face_authResult?.copyToClipboard(requireContext())
+                        it.data?.let {response: Response<UidaiResp> ->
 
-                            if (response.isSuccessful) {
+                            if (response.isSuccessful){
                                 if (TextUtils.equals(response.message(), "transaction inserted")) {
                                     //Only transaction recorded ekyc response was 0
                                     intentResponse?.kycStatus = false
                                     intentResponse?.kycTimeStamp = ""
                                     toastShort("Show Fail Status")
-                                } else {
+                                }
+                                else {
                                     isKycDone = true
                                     val dateTime = response.body()?.PostOnAUA_Face_authResult
-                                    toastShort("Show Fail Status")
 
-                                    /*var xml = response.body()?.PostOnAUA_Face_authResult
-                                        ?.replace("&", "&amp;")
-                                        ?.replace("<", "&lt;")
-                                        ?.replace(">", "&gt;")
-                                        ?.replace("\"", "&quot;")
-                                        ?.replace("'", "&apos;")
-
-                                    val purifiedXml = xml?.trim();
-                                    if (xml?.startsWith("\uFEFF") == true) { // BOM check
-                                        xml = xml.substring(1);
-                                    }*/
-
-
-
-
-
-                                    val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(cleanXmlString(response.body()?.PostOnAUA_Face_authResult))
+                                    val kycResp =
+                                        XstreamCommonMethods.respDecodedXmlToPojoEkyc(response.body()?.PostOnAUA_Face_authResult)
                                     //  val poiType: Poa = XstreamCommonMethos.rarDecodedXmlToPojo(response.body()?.PostOnAUA_Face_authResult)
 
-                                    //   Toast.makeText(this, poiType.getName(), Toast.LENGTH_SHORT).show()
+                                    response.body()?.PostOnAUA_Face_authResult?.let { it1 ->
+                                        toastLong(
+                                            it1
+                                        )
+                                    }
                                     //     kycResp.uidData.name
 
-                                    if (kycResp.isSuccess) {
+
+                                    if (kycResp.isSuccess){
 
                                         val bytes: ByteArray =
                                             Base64.decode(kycResp.uidData.pht, Base64.DEFAULT)
-                                        val bitmap =
-                                            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
                                         //  binding.ivPersonImg.setImageBitmap(bitmap)
 
-                                        val photo = kycResp.uidData.pht
-                                      /*  val name = kycResp.uidData.name
-                                        val gender = kycResp.uidData.gender
-                                        val dob = kycResp.uidData.dob*/
+                                        val  photo = kycResp.uidData.pht
+                                        val  name = kycResp.uidData.name
+                                        val  gender = kycResp.uidData.gender
+                                        val  dob = kycResp.uidData.dob
 
 
-                                       // showSnackBar(name.toString() + "gender" + gender.toString())
+                                        showSnackBar(name.toString()+"gender"+name.toString())
 
 
 
                                         intentResponse?.partialKycStatus = true
-                                        intentResponse?.partialKycTimeStamp =
-                                            AppUtil.getCurrentDateTime()
+                                        intentResponse?.partialKycTimeStamp = AppUtil.getCurrentDateTime()
                                         intentResponse?.uidaiStatusCode = ""
                                         intentResponse?.txnId = kycResp.txn
 
 
                                     }
 
-                                    toastShort("Last Auth Done: ${
+                                    toastShort( "Last Auth Done: ${
                                         if (TextUtils.isEmpty(dateTime)) "NA" else dateTime?.let { it1 ->
                                             AppUtil.convertUTCtoIST(
                                                 inDateFormat,
@@ -601,7 +574,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         }
                                     }")
 
-                                    val scheme = "Scheme: ${userPreferences.getSchemeCode()}"
+                                    val scheme ="Scheme: ${userPreferences.getSchemeCode()}"
                                     toastShort(scheme)
                                     // show Success status here
 
@@ -609,7 +582,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                     intentResponse?.kycTimeStamp = dateTime
 
                                 }
-                            } else {
+                            }
+
+                            else {
                                 intentResponse?.kycStatus = false
                                 intentResponse?.kycTimeStamp = ""
                                 toastShort("Status failed")
@@ -621,22 +596,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             }
 
         }
-    }
-
-
-    fun cleanXmlString(input: String?): String? {
-        if (input == null) {
-            return null
-        }
-
-        val cleaned = StringBuilder(input.length)
-        for (element in input) {
-            // Skip control characters but keep normal whitespace
-            if (element.code > 0x1F || element.code == 0x09 || element.code == 0x0A || element.code == 0x0D) {
-                cleaned.append(element)
-            }
-        }
-        return cleaned.toString().trim { it <= ' ' }
     }
 
 

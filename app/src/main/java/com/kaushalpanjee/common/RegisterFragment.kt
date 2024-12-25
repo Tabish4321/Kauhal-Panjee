@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit
 class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterBinding::inflate) {
 
     private var isEmailVerified = false
+    private var isMobileVerified = false
     private var countDownTimer: CountDownTimer? = null
     private val commonViewModel: CommonViewModel by viewModels()
     private var mobileOTP: String? = null
@@ -88,13 +89,15 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         binding.tvEnterCodeMsg.text = it
                     }
 
-                    commonViewModel.sendMobileOTP(binding.etPhone.text.toString())
+                    commonViewModel.sendMobileOTP(binding.etPhone.text.toString(),
+                        BuildConfig.VERSION_NAME
+                    )
 
                 } else {"${getString(R.string.enter_code_email_msg)} ${binding.etEmail.text}".also {
                     binding.tvEnterCodeMsg.text = it
                 }
 
-                    commonViewModel.sendEmailOTP(binding.etEmail.text.toString())
+                    commonViewModel.sendEmailOTP(binding.etEmail.text.toString(),BuildConfig.VERSION_NAME)
                 }
 
 
@@ -196,9 +199,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 )
             )
             if (isEmailVerified){
-                commonViewModel.sendMobileOTP(binding.etPhone.text.toString())
+                commonViewModel.sendMobileOTP(binding.etPhone.text.toString(),BuildConfig.VERSION_NAME)
             }
-            else commonViewModel.sendEmailOTP(binding.etEmail.text.toString())
+            else commonViewModel.sendEmailOTP(binding.etEmail.text.toString(),BuildConfig.VERSION_NAME)
 
             resendOTPTimer()
         }

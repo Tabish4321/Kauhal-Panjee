@@ -63,7 +63,8 @@
     <string name="select_Village">Select Village</string>
     <string name="Block">Block</string>
     <string name="select_Block">Select Block</string>
-    <string name="AdressLine">Address Line</string>
+    <string name="AdressLine">Street 1</string>
+    <string name="AdressLine2">Street 2</string>
     <string name="PresenrAddress">Present Address</string>
     <string name="PresenrAddressSame">Is your present address the same as your permanent address?</string>
     <string name="Educational_information">Educational Information</string>
@@ -76,7 +77,7 @@
     <string name="anyTechnicalEducation">Technical Education?</string>
     <string name="TechnicalEducation1">Technical Education</string>
     <string name="DomainOfTech">Domain of Technical Education</string>
-    <string name="curentlyEmployed">Are you currently emplyed?</string>
+    <string name="curentlyEmployed">Are you currently employed?</string>
     <string name="natureOfEmpl">What is the nature of employment?</string>
     <string name="IntrestedIn">Interested in</string>
     <string name="EmploymentPreference">Employment Preference</string>
@@ -103,5 +104,14 @@
     <string name="ifsc_code">IFSC Code</string>
     <string name="pan_no">PAN No</string>
     <string name="enter_pan_no">Enter PAN No</string>
+    <string name="image">Image</string>
+    <string name="search">Search</string>
+    <string name="services_for_you">Services for you</string>
+    <string name="unableto_find_yourself_in_secc_drop_down">Unable to find yourself in SECC drop_down?</string>
+    <string name="ahl_tin">AHL-TIN</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="name">Name</string>
 
 </resources>

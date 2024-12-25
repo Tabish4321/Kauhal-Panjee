@@ -4,11 +4,12 @@ package com.kaushalpanjee.common.model
 data class StateDataResponse(
     val responseCode: Int,
     val responseDesc: String,
-    val wrappedList: MutableList<WrappedList>
+    val stateList: MutableList<WrappedList>
 )
 
 data class WrappedList(
-    val state_name: String,
-    val state_code: String,
+    val stateName: String,
+    val stateCode: String,
+    val lgdStateCode:String,
     var isSelected: Boolean = false
 )
