@@ -13,7 +13,8 @@ import android.text.TextUtils
 import android.util.Base64
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
+import android.widget.ProgressBar
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -23,11 +24,13 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.UidaiKycRequest
+import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppConstant
@@ -55,12 +58,12 @@ import com.kaushalpanjee.uidai.capture.FaceUtils
 import com.kaushalpanjee.uidai.capture.XstreamCommonMethos
 import com.kaushalpanjee.uidai.ekyc.IntentModel
 import com.kaushalpanjee.uidai.ekyc.IntentResponse
-import com.utilize.core.util.AESCryptography
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.DownloadHelper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import rural.ekyc.ui.ekyc.models.UidaiResp
 import kotlin.random.Random
 
 const val CAMERA_REQUEST = 101
@@ -80,10 +83,11 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 selectedState = stateList[position].stateName
                 binding.tvWelcome.text = getString(R.string.slected_state)
                 binding.tvWelcomeMsg.text = selectedState
-                binding.tvWelcomeMsg.visible()
+
                 binding.tvWelcomeMsg.setUnderline(selectedState)
                 toastShort("${stateList[position].stateName} ,  ${stateList[position].stateCode}")
                 binding.progressButton.root.visible()
+                binding.tvWelcomeMsg.visible()
 
                 lifecycleScope.launch {
                     delay(1000)
@@ -95,12 +99,20 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         })
     }
 
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+
+    private lateinit var progressBar: ProgressBar
+    private lateinit var downloadHelper: DownloadHelper
+
+    private var isStateSelected = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
 
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         WindowInsetsControllerCompat(requireActivity().window, requireActivity().window.decorView).isAppearanceLightStatusBars = false
+
 
     }
 
@@ -118,6 +130,31 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         addTextWatchers()
         commonViewModel.getStateListApi()
         initEKYC()
+      //  startAppDownload()
+
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+
+            override fun handleOnBackPressed() {
+
+                if (isStateSelected){
+                    binding.progressButton.root.gone()
+                    binding.tvWelcomeMsg.visible()
+                    binding.recyclerView.visible()
+                    binding.etAadhaar.gone()
+                    binding.aadhaarVerifyButton.root.gone()
+                    isStateSelected = false
+                }else if (findNavController().currentBackStackEntry != null) {
+
+                    findNavController().navigateUp()
+
+                }else {
+                    requireActivity().onBackPressed()
+                }
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+
 
     }
 
@@ -133,8 +170,34 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
+   /* private fun startAppDownload(){
+        progressBar = binding.progressBar
+
+        downloadHelper = DownloadHelper(requireContext())
+
+        val url = "https://play.google.com/store/apps/details?id=in.gov.uidai.facerd"
+        downloadHelper.startDownload(url, progressBar, object  : DownloadHelper.DownloadListener{
+            override fun onDownloadComplete() {
+                binding.progressBar.gone()
+                toastShort(getString(R.string.download_complete))
+            }
+
+            override fun onProgress(progress: Int) {
+                binding.progressBar.visible()
+                binding.progressBar.progress = progress
+            }
+
+            override fun onDownloadFailed() {
+                binding.progressBar.gone()
+                toastShort(getString(R.string.download_failed))
+            }
+        })
+    }*/
+
+
 
     private fun listener() {
+
         if (binding.etAadhaar.text.length == 12) {
             binding.aadhaarVerifyButton.root.visible()
         }
@@ -162,6 +225,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             if (binding.etAadhaar.text.isNotEmpty()) {
                 binding.etAadhaar.setText("")
             }
+
+            isStateSelected = true
 
         }
 
@@ -191,7 +256,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 showPassword = true
 
                 binding.etAadhaar.setRightDrawablePassword(
-                    true,
+                    false,
                     ContextCompat.getDrawable(requireContext(), R.drawable.icon_aadhaar), null,
                     ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
                 )
@@ -338,21 +403,24 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun invokeCaptureIntent() {
 
-        val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-        intent1.putExtra(
-            AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
-        )
-        startUidaiAuthResult.launch(intent1)
+        try {
+            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
+            intent1.putExtra(
+                AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
+            )
+            startUidaiAuthResult.launch(intent1)
 
-        // val packageName = "com.example.otherapp" // Replace with the target app's package name
-        val intent = requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-        intent?.putExtra(
-            AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
-        )
-        if (intent != null) {
-            startActivity(intent)
+            // val packageName = "com.example.otherapp" // Replace with the target app's package name
+            val intent = requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
+            intent?.putExtra(
+                AppConstant.Constants.CAPTURE_INTENT_REQUEST, createPidOptions(getTransactionID(), "auth")
+            )
+            if (intent != null) {
+                startActivity(intent)
+            }
+        }catch (exp : Exception){
+
         }
-
 
     }
 
@@ -596,6 +664,12 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             }
 
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Make sure to remove the callback to avoid memory leaks
+        onBackPressedCallback.remove()
     }
 
 

@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/color_light_grey">
-
 <androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:background="@color/color_light_grey"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
 
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dp_100">
+        android:paddingBottom="@dimen/dp_100">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,6 +24,7 @@ android:background="@color/color_light_grey">
             style="@style/editTextHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginTop="@dimen/dp_50"
             android:elevation="@dimen/dp_2"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,208 +38,211 @@ android:background="@color/color_light_grey">
                 app:shapeAppearanceOverlay="@style/CustomCircleShape"
                 app:strokeColor="@color/color_dark_green"
                 app:strokeWidth="1dp"
+                android:layout_marginStart="@dimen/dp_12"
                 android:src="@drawable/person"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.kaushalpanjee.core.util.CircularProgressView
-                android:layout_width="@dimen/dp_50"
-                android:layout_height="@dimen/dp_50"
-                android:id="@+id/cpvHome"
-                app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
 
-
-            <!-- Label -->
-
-            <!-- Label -->
             <TextView
-                android:id="@+id/tvAdharEkycComp"
+                android:id="@+id/tvAadhaarName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_20"
-                android:text="Your Aadhaar eKYC is completed"
+                android:text="@string/candidate_name"
+                android:layout_marginTop="@dimen/dp_12"
+                android:fontFamily="@font/avenir_next_semi_bold"
                 android:textColor="@color/color_dark_green"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llmobile"/>
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintStart_toStartOf="@+id/circleImageView"
+                app:layout_constraintTop_toBottomOf="@+id/circleImageView"
+
+                />
+
 
             <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_12"
+                android:id="@+id/ivPhoneIcon"
+                android:src="@drawable/phonee"
+                app:layout_constraintTop_toBottomOf="@+id/tvAadhaarName"
+                app:layout_constraintStart_toStartOf="@+id/circleImageView"
+                />
+
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="7763027544"
+                android:id="@+id/tvAaadharMobile"
+                android:fontFamily="@font/avenir_next_semi_bold"
+                android:textColor="@color/color_dark_green"
+                android:layout_marginStart="@dimen/dp_10"
+                android:textSize="@dimen/sp_14"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toTopOf="@+id/ivPhoneIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/ivPhoneIcon"
+                app:layout_constraintStart_toEndOf="@+id/ivPhoneIcon"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
                 android:src="@drawable/ic_verified"
-                android:padding="@dimen/dp_12"
+                android:id="@+id/ivPhoneVerified"
+                android:contentDescription="@string/image"
                 android:layout_marginStart="@dimen/dp_6"
-                app:layout_constraintStart_toEndOf="@+id/tvAdharEkycComp"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toEndOf="@+id/tvAaadharMobile"
+                app:layout_constraintTop_toTopOf="@+id/tvAaadharMobile"
+                app:layout_constraintBottom_toBottomOf="@+id/tvAaadharMobile"
+                />
 
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:id="@+id/ivGenderIcon"
+                android:layout_marginTop="@dimen/dp_12"
+                android:contentDescription="@string/image"
+                android:src="@drawable/gender"
+                app:layout_constraintTop_toBottomOf="@+id/ivPhoneIcon"
+                app:layout_constraintStart_toStartOf="@+id/circleImageView"
+                />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/llmobile"
-                android:layout_marginTop="@dimen/dp_6"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/circleImageView">
+                android:text="@string/gender"
+                android:layout_marginStart="@dimen/dp_10"
+                android:textSize="@dimen/sp_16"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toTopOf="@+id/ivGenderIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/ivGenderIcon"
+                app:layout_constraintStart_toEndOf="@+id/ivGenderIcon"
+                />
 
-                <TextView
-                    android:id="@+id/tvAadhaarName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/candidate_name"
-                    android:fontFamily="@font/avenir_next_semi_bold"
-                    android:textColor="@color/color_dark_green"
-                    android:textSize="16sp" />
-
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dp_8">
-
-
-                    <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@drawable/phonee" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="7763027544"
-                        android:id="@+id/tvAaadharMobile"
-                        android:fontFamily="@font/avenir_next_semi_bold"
-                        android:textColor="@color/color_dark_green"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:textSize="12sp"
-                        android:layout_gravity="center"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_verified"
-                        android:layout_marginStart="@dimen/dp_6"/>
-
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dp_8">
-                    <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@drawable/gender" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/gender"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:textSize="11sp"
-                        android:layout_gravity="center"/>
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Male"
-                    android:id="@+id/tvAaadharGender"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:textColor="@color/color_dark_green"
-                    android:textSize="11sp"
-                    android:fontFamily="@font/avenir_next_semi_bold"
-                    android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:id="@+id/tvAaadharGender"
+                android:layout_marginStart="@dimen/dp_30"
+                android:textColor="@color/color_dark_green"
+                android:textSize="@dimen/sp_14"
+                android:fontFamily="@font/avenir_next_semi_bold"
+                android:layout_gravity="start"
+                app:layout_constraintTop_toBottomOf="@+id/ivGenderIcon"
+                app:layout_constraintStart_toStartOf="@id/circleImageView"
+                />
 
 
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:id="@+id/lldob"
-                    android:layout_marginTop="@dimen/dp_8">
-                    <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@drawable/dobb" />
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:id="@+id/ivDobIcon"
+                android:layout_marginTop="@dimen/dp_12"
+                android:contentDescription="@string/image"
+                android:src="@drawable/dobb"
+                app:layout_constraintTop_toBottomOf="@+id/tvAaadharGender"
+                app:layout_constraintStart_toStartOf="@id/circleImageView"
+                />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/date_of_birth"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:textSize="11sp"
-                        android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_of_birth"
+                android:layout_marginStart="@dimen/dp_10"
+                android:textSize="@dimen/sp_16"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toTopOf="@+id/ivDobIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/ivDobIcon"
+                app:layout_constraintStart_toEndOf="@+id/ivDobIcon"
+                />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12-06-1997"
+                android:layout_marginStart="@dimen/dp_30"
+                android:textColor="@color/color_dark_green"
+                android:id="@+id/tvAaadharDob"
+                android:textSize="@dimen/sp_14"
+                android:fontFamily="@font/avenir_next_semi_bold"
+                android:layout_gravity="start"
+                app:layout_constraintTop_toBottomOf="@+id/ivDobIcon"
+                app:layout_constraintStart_toStartOf="@id/circleImageView"
+                />
 
-                </LinearLayout>
+            <ImageView
+                android:layout_width="@dimen/dp_135"
+                android:layout_height="@dimen/dp_135"
+                android:layout_marginTop="@dimen/dp_12"
+                android:id="@+id/ivProgress"
+                app:layout_constraintTop_toBottomOf="@+id/tvAadhaarName"
+                app:layout_constraintStart_toEndOf="@+id/ivPhoneVerified"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="12-06-1997"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:textColor="@color/color_dark_green"
-                    android:id="@+id/tvAaadharDob"
-                    android:textSize="11sp"
-                    android:fontFamily="@font/avenir_next_semi_bold"
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_12"
+                android:id="@+id/ivAddressIcon"
+                android:src="@drawable/location"
+                app:layout_constraintTop_toBottomOf="@+id/tvAaadharDob"
+                app:layout_constraintStart_toStartOf="@id/circleImageView"
+                />
 
-                    android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/PermanentAddress"
+                android:layout_marginStart="@dimen/dp_10"
+                android:textSize="@dimen/sp_16"
+                android:layout_gravity="center"
+                app:layout_constraintStart_toEndOf="@+id/ivAddressIcon"
+                app:layout_constraintTop_toTopOf="@+id/ivAddressIcon"
+                app:layout_constraintBottom_toBottomOf="@+id/ivAddressIcon"
 
+                />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_o_name_siwan_841226_bihar_india"
+                android:layout_marginStart="@dimen/dp_30"
+                android:textColor="@color/color_dark_green"
+                android:id="@+id/tvAaadharAddress"
+                android:textSize="@dimen/sp_14"
+                android:fontFamily="@font/avenir_next_semi_bold"
+                android:layout_gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/ivAddressIcon"
+                app:layout_constraintStart_toStartOf="@id/circleImageView"
+                />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:id="@+id/llpermanentAdd"
-                    android:layout_marginTop="@dimen/dp_8">
-                    <ImageView
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@drawable/location" />
+            <TextView
+                android:id="@+id/tvAadhaarEkycComp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:text="@string/your_aadhaar_ekyc_is_completed"
+                android:textColor="@color/color_dark_green"
+                android:textSize="14sp"
+                android:fontFamily="@font/avenir_next_semi_bold"
+                app:layout_constraintStart_toStartOf="@id/circleImageView"
+                app:layout_constraintTop_toBottomOf="@+id/tvAaadharAddress"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/PermanentAddress"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:textSize="11sp"
-                        android:layout_gravity="center"/>
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/s_o_name_siwan_841226_bihar_india"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:textColor="@color/color_dark_green"
-                    android:id="@+id/tvAaadharAddress"
-                    android:textSize="11sp"
-                    android:fontFamily="@font/avenir_next_semi_bold"
-
-                    android:layout_gravity="center"/>
-            </LinearLayout>
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@drawable/ic_verified"
+                android:layout_marginStart="@dimen/dp_6"
+                app:layout_constraintStart_toEndOf="@+id/tvAadhaarEkycComp"
+                app:layout_constraintTop_toTopOf="@+id/tvAadhaarEkycComp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvAadhaarEkycComp"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvConsPer"
@@ -270,10 +268,11 @@ android:background="@color/color_light_grey">
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="match_parent"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:id="@+id/tvPersonal"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/personal_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -284,14 +283,12 @@ android:background="@color/color_light_grey">
                 <ImageView
                     android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/image"
                     android:layout_marginHorizontal="@dimen/dp_12"
                     android:layout_weight="0.2"
                     android:padding="@dimen/dp_4"
                     android:src="@drawable/ic_arrow_down"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvSecc"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvSecc"
-                    app:layout_constraintTop_toTopOf="@+id/tvSecc" />
+                    />
 
             </LinearLayout>
 
@@ -315,25 +312,11 @@ android:background="@color/color_light_grey">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/personalExpand"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopPersonal">
-
-
-
-                <!--   <androidx.constraintlayout.widget.ConstraintLayout
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:orientation="vertical"
-                       >
-
-                                           app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CircularImageView"
-
-
-
-                   </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 
@@ -425,6 +408,7 @@ android:background="@color/color_light_grey">
                         android:hint="@string/guardian_alternative_number"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
+                        android:inputType="phone"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
@@ -489,6 +473,46 @@ android:background="@color/color_light_grey">
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/voterIdUpload"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:text="@string/upload_voter_id">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/voterimageText"
+                            android:drawablePadding="@dimen/dp_12"
+                            android:drawableRight="@drawable/ic_mage_search"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_voter_id"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <!--<ImageView
+                            android:id="@+id/voterIdImage"
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CustomCircleShape"
+                            app:strokeColor="@color/color_dark_green"
+                            app:strokeWidth="1dp"
+                            android:src="@drawable/ic_mage_search"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -520,6 +544,44 @@ android:background="@color/color_light_grey">
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/drivingLicenceUpload"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        android:text="@string/upload_voter_id"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_mage_search"
+                            android:id="@+id/drivingLicenceimageText"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_driving_licence"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                  <!--      <ImageView
+                            android:id="@+id/drivingLicenceImage"
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CustomCircleShape"
+                            app:strokeColor="@color/color_dark_green"
+                            app:strokeWidth="1dp"
+                            android:src="@drawable/ic_mage_search"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>-->
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
 
 
@@ -608,6 +670,7 @@ android:background="@color/color_light_grey">
                             android:layout_margin="8dp" />
 
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -1148,7 +1211,6 @@ android:background="@color/color_light_grey">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvAddressCons"
             style="@style/editTextHome"
@@ -1178,7 +1240,7 @@ android:background="@color/color_light_grey">
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/address_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -1904,6 +1966,7 @@ android:background="@color/color_light_grey">
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvSecCons"
             style="@style/editTextHome"
@@ -1931,7 +1994,7 @@ android:background="@color/color_light_grey">
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/secc_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -1971,7 +2034,7 @@ android:background="@color/color_light_grey">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewSeccc">
@@ -2285,7 +2348,6 @@ android:background="@color/color_light_grey">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvEducationalCons"
             style="@style/editTextHome"
@@ -2314,7 +2376,7 @@ android:background="@color/color_light_grey">
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/Educational_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -2659,7 +2721,7 @@ android:background="@color/color_light_grey">
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/Employment_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -3136,7 +3198,7 @@ android:background="@color/color_light_grey">
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/Training_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -3533,10 +3595,11 @@ android:background="@color/color_light_grey">
             style="@style/editTextHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginVertical="@dimen/dp_15"
             android:elevation="@dimen/dp_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTrainingCons">
 
 
@@ -3556,7 +3619,7 @@ android:background="@color/color_light_grey">
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/Banking_information"
                     android:textColor="@color/color_dark_green"
                     android:textSize="@dimen/sp_16"
@@ -3732,23 +3795,10 @@ android:background="@color/color_light_grey">
                 </LinearLayout>
 
 
-
-
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>

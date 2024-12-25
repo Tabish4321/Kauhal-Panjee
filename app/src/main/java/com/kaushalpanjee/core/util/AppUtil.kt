@@ -5,7 +5,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
+import android.util.Base64
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.R
@@ -28,6 +30,14 @@ object AppUtil {
 
     fun createFileName(userId: Int?): String {
         return "${userId}_${System.currentTimeMillis()}.jpg"
+    }
+
+    // Add this function to your class
+    fun convertUriToBase64(uri: Uri,context: Context): String {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val bytes = inputStream?.readBytes()
+        inputStream?.close()
+        return Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 
     fun getTimeZone(): String {

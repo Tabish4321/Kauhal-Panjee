@@ -43,7 +43,7 @@
     <string name="consent_text_short">I agree to voluntary share my identity information with e-kyc App. Read More</string>
     <string name="consent_text">I agree to voluntary share my identity information with e-kyc App.</string>
     <string name="candidate_name">Candidate name</string>
-    <string name="father_name">Father name</string>
+    <string name="father_name">Guardian name</string>
     <string name="category">Category</string>
     <string name="marital">Marital status</string>
     <string name="minority">Minority</string>
@@ -113,5 +113,17 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="name">Name</string>
+    <string name="upload_voter_id">Upload Voter Id</string>
+    <string name="upload_driving_licence">Upload Driving licence</string>
+    <string name="download_failed">Downloading of aadhaar verification app is failed, Please try again.</string>
+    <string name="download_complete">Aadhaar verification app is downloaded.</string>
+    <string name="complete_details"><![CDATA[Complete your profile & Start training now]]></string>
+    <string name="complete_now">Complete Now</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="address_details">Address Details</string>
+    <string name="secc_details">SECC Details</string>
+    <string name="education_details">Education Details</string>
+    <string name="banking_details">Banking Details</string>
+    <string name="your_aadhaar_ekyc_is_completed">Your Aadhaar eKYC is completed</string>
 
 </resources>

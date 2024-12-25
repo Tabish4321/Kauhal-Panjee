@@ -1,7 +1,6 @@
-package com.utilize.core.util
+package com.kaushalpanjee.core.util
 
 import android.util.Base64
-import com.kaushalpanjee.core.util.log
 import java.io.UnsupportedEncodingException
 import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException

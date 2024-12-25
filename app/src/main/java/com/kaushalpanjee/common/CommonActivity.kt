@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
@@ -20,18 +21,15 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
 
     private var navController: NavController? = null
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Hide the status bar based on API level
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // API 30 and above
-         window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            // For older versions
-            @Suppress("DEPRECATION")
-          window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        }
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+        window.attributes.layoutInDisplayCutoutMode =
+            WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navGraphHost) as NavHostFragment
         navController = navHostFragment.navController

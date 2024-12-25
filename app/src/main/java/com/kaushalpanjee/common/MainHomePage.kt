@@ -1,19 +1,19 @@
 package com.kaushalpanjee.common
 
-import AdvertiseCardAdapter
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBinding::inflate) {
 
 
@@ -21,7 +21,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private val handler = Handler()
     private var scrollPosition = 0
 
-    val imageList = listOf(
+    private val imageList = listOf(
         R.drawable.banner,
         R.drawable.banner,
         R.drawable.banner,
@@ -40,6 +40,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          listeners()
          autoScroll()
 
+         binding.ivMeter.setImageBitmap(createHalfCircleProgressBitmap(300,300,40f,
+             ContextCompat.getColor(requireContext(),R.color.color_FFFFFFB3),
+             ContextCompat.getColor(requireContext(),R.color.white),35f,20f,
+             ContextCompat.getColor(requireContext(),R.color.black),
+             ContextCompat.getColor(requireContext(),R.color.color_dark_green)))
 
      }
 
@@ -53,6 +58,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
      }
+
+     binding.tvCompleteNow.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
+     }
+
      val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
      binding.recyclerView.layoutManager = layoutManager
 

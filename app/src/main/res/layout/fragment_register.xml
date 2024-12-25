@@ -9,42 +9,44 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-       <!-- <ImageView
-            android:id="@+id/ivDDT"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_0"
-            android:src="@drawable/ic_top_round"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-        <ImageView
-            android:id="@+id/ivTopLogo"
-            android:layout_width="@dimen/dp_200"
-            android:layout_height="@dimen/dp_200"
-            android:layout_marginTop="@dimen/dp_0"
-            android:src="@drawable/ic_top_logo"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="@+id/ivDDT"
-            app:layout_constraintTop_toTopOf="@+id/ivDDT"
-            app:layout_constraintEnd_toEndOf="@+id/ivDDT"
-            app:layout_constraintBottom_toBottomOf="@+id/ivDDT"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/dp_80"
+        >
+        <!-- <ImageView
+             android:id="@+id/ivDDT"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginTop="@dimen/dp_0"
+             android:src="@drawable/ic_top_round"
+             android:visibility="visible"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"/>
+         <ImageView
+             android:id="@+id/ivTopLogo"
+             android:layout_width="@dimen/dp_200"
+             android:layout_height="@dimen/dp_200"
+             android:layout_marginTop="@dimen/dp_0"
+             android:src="@drawable/ic_top_logo"
+             android:visibility="visible"
+             app:layout_constraintStart_toStartOf="@+id/ivDDT"
+             app:layout_constraintTop_toTopOf="@+id/ivDDT"
+             app:layout_constraintEnd_toEndOf="@+id/ivDDT"
+             app:layout_constraintBottom_toBottomOf="@+id/ivDDT"/>
 
 
-        <ImageView
-            android:id="@+id/progressBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dp_15"
-            android:src="@drawable/ic_arrow_back_ios_new"
-            android:elevation="@dimen/dp_10"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="@dimen/dp_30"
-            />-->
+         <ImageView
+             android:id="@+id/progressBackButton"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginHorizontal="@dimen/dp_15"
+             android:src="@drawable/ic_arrow_back_ios_new"
+             android:elevation="@dimen/dp_10"
+             android:visibility="visible"
+             app:layout_constraintTop_toTopOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             android:layout_marginTop="@dimen/dp_30"
+             />-->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
@@ -57,14 +59,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="">
 
-           <!-- <ImageView
-                android:id="@+id/progressBackButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/dp_15"
-                android:elevation="@dimen/dp_10"
-                android:src="@drawable/ic_arrow_back_ios_new"
-                android:visibility="visible" />-->
+            <!-- <ImageView
+                 android:id="@+id/progressBackButton"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginHorizontal="@dimen/dp_15"
+                 android:elevation="@dimen/dp_10"
+                 android:src="@drawable/ic_arrow_back_ios_new"
+                 android:visibility="visible" />-->
 
             <ImageView
                 android:id="@+id/ivTopLogo"
@@ -73,7 +75,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dp_0"
                 android:src="@drawable/ic_top_logo"
-                android:visibility="visible"/>
+                android:visibility="visible" />
         </androidx.appcompat.widget.Toolbar>
 
         <ImageView
@@ -81,13 +83,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_15"
-            android:src="@drawable/ic_arrow_back_ios_new"
-            android:elevation="@dimen/dp_10"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/dp_30"
-            />
+            android:elevation="@dimen/dp_10"
+            android:src="@drawable/ic_arrow_back_ios_new"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvWelcome"
             android:layout_width="match_parent"
@@ -166,19 +168,18 @@
             />
 
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clOTP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_30"
             android:layout_marginTop="@dimen/dp_30"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:background="@drawable/shape_rectangle_light_green"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progressButton">
+            app:layout_constraintTop_toBottomOf="@+id/progressButton"
+            tools:visibility="visible">
 
             <TextView
                 android:id="@+id/tvEnterCode"
@@ -205,8 +206,7 @@
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tvEnterCode"
-                app:layout_constraintTop_toBottomOf="@+id/tvEnterCode"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/tvEnterCode" />
 
 
             <EditText
@@ -338,10 +338,10 @@
             android:drawablePadding="@dimen/dp_20"
             android:text="@string/verify"
             android:visibility="gone"
-            tools:visibility="visible"
-app:layout_constraintTop_toBottomOf="@+id/clOTP"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clOTP"
+            tools:visibility="visible"
 
             />
 

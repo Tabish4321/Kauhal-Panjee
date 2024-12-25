@@ -9,23 +9,22 @@
         <item name="colorPrimaryVariant">@color/color_green</item>
         <item name="colorOnPrimary">@color/color_green</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_dark_green</item>
+       <!-- <item name="colorSecondary">@color/color_dark_green</item>
         <item name="colorSecondaryVariant">@color/color_dark_green</item>
-        <item name="colorOnSecondary">@color/color_dark_green</item>
+        <item name="colorOnSecondary">@color/color_dark_green</item>-->
         <!-- Status bar color.      -->
 
         <item name="android:statusBarColor" >@color/color_dark_green</item>
 
-        <!-- Customize your theme here. -->
-        <!--    <item name="bottomSheetDialogTheme">@style/theme_bottom_sheet</item>-->
-        <!--<item name="android:windowSplashScreenBackground">@color/color_dark_green</item>
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_white</item>
-        <item name="android:windowSplashScreenIconBackgroundColor">@color/color_dark_green</item>-->
+
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+     <!--   <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_white</item>-->
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/white</item>
 
         </style>
 
     <style name="Theme.Splash" parent="Base.Theme.KaushalPanjee">
-        <item name="windowSplashScreenBackground">@color/color_dark_green</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/gradiant_splash</item>
         <item name="windowSplashScreenAnimationDuration">1000</item> <!-- Animation duration in ms -->
         <item name="postSplashScreenTheme">@style/Base.Theme.KaushalPanjee</item> <!-- Main theme -->
@@ -82,6 +81,7 @@
         <item name="android:paddingStart">@dimen/dp_20</item>
         <item name="android:paddingEnd">@dimen/dp_12</item>
     </style>
+
     <style name="constrain" parent="Base.Theme.KaushalPanjee">
 
         <item name="android:layout_width">match_parent</item>

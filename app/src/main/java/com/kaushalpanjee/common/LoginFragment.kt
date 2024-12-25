@@ -69,7 +69,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             else {
                 showPassword = true
 
-                binding.etPassword.setRightDrawablePassword(true,null,null,
+                binding.etPassword.setRightDrawablePassword(false,null,null,
                     ContextCompat.getDrawable(requireContext(), R.drawable.close_eye),null)
 
             }

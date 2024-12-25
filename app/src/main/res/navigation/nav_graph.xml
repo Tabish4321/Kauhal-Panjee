@@ -10,30 +10,28 @@
         android:name="com.kaushalpanjee.common.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
+
+
+        <action
+            android:id="@+id/action_loginFragment_to_ekycFragment"
+            app:destination="@id/ekycFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_mainHomePage"
+            app:destination="@id/mainHomePage" />
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_ekycFragment"
-            app:destination="@id/ekycFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_mainHomePage"
-            app:destination="@id/mainHomePage" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.kaushalpanjee.common.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password">
-        <action
-            android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -52,31 +50,27 @@
         android:name="com.kaushalpanjee.common.EKYCFragment"
         android:label="EkycFragment"
         tools:layout="@layout/fragment_eky">
+
         <action
-            android:id="@+id/action_ekycFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_ekycFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            android:id="@+id/action_ekycFragment_to_mainHomePage"
+            app:destination="@id/mainHomePage" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.kaushalpanjee.common.HomeFragment"
-        android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_homeFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+
     </fragment>
     <fragment
         android:id="@+id/mainHomePage"
         android:name="com.kaushalpanjee.common.MainHomePage"
-        android:label="MainHomePage" >
+        android:label="MainHomePage"
+        tools:layout="@layout/fragment_main_home">
         <action
             android:id="@+id/action_mainHomePage_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_mainHomePage_to_loginFragment"
-            app:destination="@id/loginFragment" />
+
         <action
             android:id="@+id/action_mainHomePage_to_homeFragment2"
             app:destination="@id/homeFragment" />
@@ -87,9 +81,8 @@
     <fragment
         android:id="@+id/languageChangeFragment"
         android:name="com.kaushalpanjee.common.LanguageChangeFragment"
-        android:label="LanguageChangeFragment" >
-        <action
-            android:id="@+id/action_languageChangeFragment_to_mainHomePage"
-            app:destination="@id/mainHomePage" />
+        android:label="LanguageChangeFragment"
+        tools:layout="@layout/fragment_forgot_password">
+
     </fragment>
 </navigation>

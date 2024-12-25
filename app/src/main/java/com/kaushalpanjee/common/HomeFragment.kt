@@ -1,13 +1,14 @@
 package com.kaushalpanjee.common
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
-import android.graphics.Color
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.model.WrappedList
@@ -24,12 +25,28 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
+import android.Manifest // For permission constants
+import android.content.pm.PackageManager // For checking permissions
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.util.Base64
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat // For permission checks
+import androidx.core.app.ActivityCompat // For requesting permissions
+import com.kaushalpanjee.core.util.AppConstant
+import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
+import com.kaushalpanjee.core.util.setDrawable
+import com.utilize.core.util.FileUtils.Companion.getFileName
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by activityViewModels()
 
+    private val pickImageRequestCode = 100
+    private val requestPermissionsCode = 101
 
     //Boolean Values
     private var isPersonalVisible = true
@@ -209,9 +226,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
-
         init()
     }
 
@@ -226,6 +240,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectVillageResponse()
         commonViewModel.getStateListApi()
 
+        binding.ivProgress.setImageBitmap(
+            createHalfCircleProgressBitmap(300,300,40f,
+                ContextCompat.getColor(requireContext(),R.color.color_dark_green),
+                ContextCompat.getColor(requireContext(),R.color.color_green),35f,20f,
+                ContextCompat.getColor(requireContext(),R.color.black),
+                ContextCompat.getColor(requireContext(),R.color.color_background))
+        )
 
         }
 
@@ -414,7 +435,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 isPersonalVisible = false
                 binding.personalExpand.visible()
                 binding.viewSecc.visible()
+                binding.tvPersonal.setDrawable(null,null,
+                    AppCompatResources.getDrawable(requireContext(),R.drawable.ic_verified),null)
             }else {
+                binding.tvPersonal.setDrawable(null,null,null,null)
                 isPersonalVisible = true
                 binding.personalExpand.gone()
                 binding.viewSecc.gone()
@@ -1379,6 +1403,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+        binding.voterIdUpload.setOnClickListener {
+            checkAndRequestPermissions()
+        }
+
     }
     private fun collectStateResponse() {
         lifecycleScope.launch {
@@ -1578,6 +1606,104 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
+    private fun checkAndRequestPermissions() {
+        when {
+            // Android 13+ (API level 33 and above)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES)
+                    != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermissions(
+                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                        requestPermissionsCode
+                    )
+                } else {
+                    openGallery()
+                }
+            }
 
+            // Android 6.0 to 12 (API levels 23 to 32)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermissions(
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        requestPermissionsCode
+                    )
+                } else {
+                    openGallery()
+                }
+            }
+
+            // Below Android 6.0 (No runtime permissions)
+            else -> {
+                openGallery()
+            }
+        }
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, pickImageRequestCode)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == requestPermissionsCode) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery()
+            } else {
+                Toast.makeText(requireContext(), "Permission denied. Cannot access gallery.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == pickImageRequestCode && resultCode == Activity.RESULT_OK) {
+            val selectedImageUri = data?.data
+            selectedImageUri?.let { uri ->
+
+                try {
+                    // Retrieve the file name
+                    val fileName = getFileName(requireContext(),uri) // This should work if uri is a valid Uri
+
+                    // Use ContentResolver to get an InputStream from the Uri
+                    val inputStream = requireContext().contentResolver.openInputStream(uri)
+                    val bitmap = BitmapFactory.decodeStream(inputStream) // Decode the InputStream to a Bitmap
+                    inputStream?.close() // Close the InputStream after decoding
+
+                    // Use the Bitmap, e.g., set it to an ImageView
+                    binding.circleImageView.setImageBitmap(bitmap)
+
+                    // Display the file name (optional)
+
+                    binding.voterimageText.text = "Image Uploaded: $fileName"
+                    toastLong("Image Uploaded: $fileName")
+
+                    // Convert Uri to Base64
+                    val voterIdImage = AppUtil.convertUriToBase64(uri, requireContext())
+                    // Handle the base64 string (voterIdImage)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
+   /* override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }*/
 
 }

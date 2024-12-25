@@ -16,10 +16,13 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -31,49 +34,18 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
 
       // installSplashScreen()
 
-        // Hide the status bar based on API level
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            // API 30 and above
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            // For older versions
-            @Suppress("DEPRECATION")
-      window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+        window.attributes.layoutInDisplayCutoutMode =
+            WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+       /* window.statusBarColor = resources.getColor(android.R.color.transparent)*/
+
+
+        lifecycleScope.launch {
+            delay(3000)
+            navigate()
         }
-
-       /* splashScreen.setOnExitAnimationListener {splashScreenView->
-
-
-            splashScreenView.rootView.post {
-                val slideUp = ObjectAnimator.ofFloat(
-                    splashScreenView,
-                    View.TRANSLATION_Y,
-                    0f,
-                    -splashScreenView.height.toFloat()
-                ).apply {
-                    interpolator = AnticipateInterpolator()
-                    duration = 100L
-                    doOnEnd {
-                        splashScreenView.remove()
-                        startActivity(Intent(this@WelcomeActivity, CommonActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        })
-                    }
-                }
-                slideUp.start()
-            }
-
-        }*/
-
-
-        animateImageFromBottomToCenter(
-            imageView = binding.ivImage,
-            duration = 5000L, // Animation duration in milliseconds
-            interpolator = android.view.animation.AccelerateDecelerateInterpolator(), // Optional interpolator
-            onAnimationComplete = {
-              navigate()
-            }
-        )
 
     }
 
@@ -83,48 +55,6 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         })
     }
 
-
-    private fun animateImageFromBottomToCenter(
-        imageView: ImageView,
-        duration: Long = 1700L,
-        interpolator: Interpolator? = null,
-        onAnimationComplete: (() -> Unit)? = null
-    ) {
-        // Get screen height
-        val screenHeight = imageView.context.resources.displayMetrics.heightPixels
-
-        // Calculate start and end positions
-        val startY = screenHeight.toFloat() // Image starts at the bottom of the screen
-        val centerY = (screenHeight/32  - imageView.height/16).toFloat() // End position at the center
-
-        // Move the ImageView to the starting position (offscreen bottom)
-        imageView.translationY = startY
-
-        // Create the ObjectAnimator
-        val animator = ObjectAnimator.ofFloat(imageView, "translationY", startY, centerY)
-        animator.duration = duration
-
-        // Set interpolator if provided
-        interpolator?.let {
-            animator.interpolator = it
-        }
-
-        // Add a listener for animation completion
-        animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {}
-
-            override fun onAnimationEnd(animation: Animator) {
-                onAnimationComplete?.invoke()
-            }
-
-            override fun onAnimationCancel(animation: Animator) {}
-
-            override fun onAnimationRepeat(animation: Animator) {}
-        })
-
-        // Start the animation
-        animator.start()
-    }
 
 
 }

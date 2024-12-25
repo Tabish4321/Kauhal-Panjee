@@ -1,15 +1,10 @@
 package com.kaushalpanjee.common
 
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -43,8 +38,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private var emailOTP: String? = null
 
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -62,17 +55,17 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun listeners() {
+
+        binding.etEmail.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO)
+
         binding.progressBackButton.setOnClickListener {
-
             findNavController().navigateUp()
-
         }
-
 
         binding.progressButton.centerButton.setOnClickListener {
             log("setOnClickListener", "setOnClickListener")
 
-            if (AppUtil.isNetworkAvailable(requireContext())){
+            if (AppUtil.isNetworkAvailable(requireContext())) {
                 binding.progressButton.root.gone()
                 binding.tvSendOtpAgain.isEnabled = false
                 binding.tvSendOtpAgain.setTextColor(
@@ -89,25 +82,23 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         binding.tvEnterCodeMsg.text = it
                     }
 
-                    commonViewModel.sendMobileOTP(binding.etPhone.text.toString(),
+                    commonViewModel.sendMobileOTP(
+                        binding.etPhone.text.toString(),
                         BuildConfig.VERSION_NAME
                     )
 
-                } else {"${getString(R.string.enter_code_email_msg)} ${binding.etEmail.text}".also {
-                    binding.tvEnterCodeMsg.text = it
+                } else {
+                    "${getString(R.string.enter_code_email_msg)} ${binding.etEmail.text}".also {
+                        binding.tvEnterCodeMsg.text = it
+                    }
+
+                    commonViewModel.sendEmailOTP(
+                        binding.etEmail.text.toString(),
+                        BuildConfig.VERSION_NAME
+                    )
                 }
-
-                    commonViewModel.sendEmailOTP(binding.etEmail.text.toString(),BuildConfig.VERSION_NAME)
-                }
-
-
-            }
-
-            else showSnackBar("No internet connection")
-
-
-            }
-
+            } else showSnackBar("No internet connection")
+        }
 
         binding.tvVerify.setOnClickListener {
 
@@ -119,6 +110,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 ) {
                     binding.clOTP.gone()
                     toastLong("Phone number is verified")
+                    binding.etEmail.text.clear()
+                    binding.etPhone.text.clear()
+                    isEmailVerified = false
                     binding.etPhone.isEnabled = false
                     binding.etPhone.setLeftDrawable(requireContext(), R.drawable.ic_verified)
                     lifecycleScope.launch {
@@ -147,8 +141,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     )
                 }
 
-            }
-            else {
+            } else {
 
 
                 if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
@@ -198,10 +191,15 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     R.color.color_grey
                 )
             )
-            if (isEmailVerified){
-                commonViewModel.sendMobileOTP(binding.etPhone.text.toString(),BuildConfig.VERSION_NAME)
-            }
-            else commonViewModel.sendEmailOTP(binding.etEmail.text.toString(),BuildConfig.VERSION_NAME)
+            if (isEmailVerified) {
+                commonViewModel.sendMobileOTP(
+                    binding.etPhone.text.toString(),
+                    BuildConfig.VERSION_NAME
+                )
+            } else commonViewModel.sendEmailOTP(
+                binding.etEmail.text.toString(),
+                BuildConfig.VERSION_NAME
+            )
 
             resendOTPTimer()
         }
@@ -259,9 +257,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                 binding.clOTP.visible()
                                 if (BuildConfig.DEBUG)
                                     showSnackBar(sendMobileOTPResponse.otp)
-                            }    else if (sendMobileOTPResponse.responseCode==201)
+                            } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
-
                             else showSnackBar("Internal Sever Error")
 
 
@@ -271,7 +268,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             }
         }
     }
-
 
 
     private fun collectSendEmailOTPResponse() {
@@ -294,10 +290,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                 emailOTP = sendMobileOTPResponse.otp
                                 if (BuildConfig.DEBUG)
                                     showSnackBar(sendMobileOTPResponse.otp)
-                            }
-                            else if (sendMobileOTPResponse.responseCode==201)
-                             showSnackBar("Incorrect mobile number")
-
+                            } else if (sendMobileOTPResponse.responseCode == 201)
+                                showSnackBar("Incorrect mobile number")
                             else showSnackBar("Internal Sever Error")
 
 
@@ -307,6 +301,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             }
         }
     }
+
     private fun resendOTPTimer() {
 
 

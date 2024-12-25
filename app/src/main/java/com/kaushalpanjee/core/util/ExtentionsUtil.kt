@@ -11,6 +11,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.LocationManager
@@ -30,6 +34,7 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -403,10 +408,25 @@ fun EditText.setRightDrawablePassword(isOpen: Boolean, leftDrawable : Drawable ?
         inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         transformationMethod = PasswordTransformationMethod.getInstance()
     }
+
+
     val typeface = ResourcesCompat.getFont(this.context, R.font.avenir_next_medium)
     this.setSelection(this.text.length)
     setTypeface(typeface)
 }
+
+
+fun TextView.setDrawable(leftDrawable : Drawable ?= null,
+                                      topDrawable : Drawable ? = null, rightDrawable: Drawable? = null,
+                                      bottomDrawable: Drawable?=null) {
+    setCompoundDrawablesWithIntrinsicBounds(
+        leftDrawable,
+        topDrawable,
+        rightDrawable,
+        bottomDrawable
+    )
+}
+
 
 fun TextView.setUnderline(text: String) {
     this.text = SpannableString(text).apply {
@@ -485,6 +505,134 @@ fun EditText.setLeftDrawable(context: Context,icon : Int){
     this.setCompoundDrawablesWithIntrinsicBounds(null,null,drawableEnd, null)
 
 }
+
+/**
+ * Creates a half-circle progress bitmap that visually represents a progress bar with customizable attributes.
+ * The progress bar includes:
+ * - A background (inactive) arc.
+ * - A progress (active) arc based on the current progress value.
+ * - A circle at the end of the progress arc that indicates the completion point.
+ * - A text displaying the current progress percentage in bold at the center.
+ *
+ * @param width The width of the bitmap.
+ * @param height The height of the bitmap.
+ * @param progress The current progress value (0-100).
+ * @param backgroundColor The color of the background (inactive) arc.
+ * @param progressColor The color of the progress (active) arc.
+ * @param backgroundStrokeWidth The stroke width of the background arc.
+ * @param progressStrokeWidth The stroke width of the progress arc.
+ * @param textColor The color of the progress text.
+ * @param progressEndCircleColor The color of the circle at the end of the progress arc.
+ *
+ * @return A Bitmap object representing the half-circle progress bar.
+ *
+ * @example
+ * val progressBitmap = createHalfCircleProgressBitmap(
+ *     width = 300,
+ *     height = 300,
+ *     progress = 70.0f,
+ *     backgroundColor = Color.GRAY,
+ *     progressColor = Color.GREEN,
+ *     backgroundStrokeWidth = 20.0f,
+ *     progressStrokeWidth = 25.0f,
+ *     textColor = Color.BLACK,
+ *     progressEndCircleColor = Color.RED
+ * )
+ * imageView.setImageBitmap(progressBitmap)
+ */
+fun createHalfCircleProgressBitmap(
+    width: Int,                // Width of the bitmap
+    height: Int,               // Height of the bitmap
+    progress: Float,           // Progress (0-100)
+    backgroundColor: Int,      // Color for the background arc
+    progressColor: Int,        // Color for the progress arc
+    backgroundStrokeWidth: Float, // Stroke width for the background arc
+    progressStrokeWidth: Float,   // Stroke width for the progress arc
+    textColor: Int,            // Color for the progress text
+    progressEndCircleColor: Int // Color for the circle at the end of the progress stroke
+): Bitmap {
+    // Create an empty bitmap
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+
+    // Calculate the center and radius for the arcs
+    val centerX = width / 2f
+    val centerY = height / 2f
+    val outerRadius = (minOf(width, height) / 2f) - maxOf(backgroundStrokeWidth, progressStrokeWidth) // Adjust for max stroke width
+
+    // Paint for the background arc
+    val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = backgroundColor
+        style = Paint.Style.STROKE
+        strokeWidth = backgroundStrokeWidth
+        strokeCap = Paint.Cap.ROUND
+    }
+
+    // Paint for the progress arc
+    val progressPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = progressColor
+        style = Paint.Style.STROKE
+        strokeWidth = progressStrokeWidth
+        strokeCap = Paint.Cap.ROUND
+    }
+
+    // Paint for the progress text
+    val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = textColor
+        textSize = outerRadius / 3f // Text size proportional to the radius
+        textAlign = Paint.Align.CENTER
+        typeface = Typeface.DEFAULT_BOLD
+    }
+
+    // Paint for the circle at the end of the progress arc
+    val endCirclePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = progressEndCircleColor
+        style = Paint.Style.FILL
+    }
+
+    // Draw the background arc (full half-circle)
+    val backgroundRect = RectF(
+        centerX - outerRadius,
+        centerY - outerRadius,
+        centerX + outerRadius,
+        centerY + outerRadius
+    )
+    canvas.drawArc(backgroundRect, 180f, 180f, false, backgroundPaint)
+
+    // Draw the progress arc
+    val sweepAngle = (progress / 100) * 180
+    canvas.drawArc(backgroundRect, 180f, sweepAngle, false, progressPaint)
+
+    // Draw the circle at the end of the progress arc
+    if (progress > 0) {
+        val endAngle = Math.toRadians(180.0 + sweepAngle) // Convert angle to radians
+        val endX = (centerX + outerRadius * Math.cos(endAngle)).toFloat()
+        val endY = (centerY + outerRadius * Math.sin(endAngle)).toFloat()
+
+        // Calculate the radius of the end circle
+        val endCircleRadius = progressStrokeWidth / 2f // Set the end circle radius equal to half of the progress stroke width
+
+        // Draw the end circle
+        canvas.drawCircle(endX, endY, endCircleRadius+5, endCirclePaint)
+    }
+
+    // Draw the progress text at the center of the bitmap
+    val progressText = "${progress.toInt()}%"
+    val fontMetrics = textPaint.fontMetrics
+    val textY = centerY - (fontMetrics.ascent + fontMetrics.descent) / 2 // Center text vertically
+    canvas.drawText(progressText, centerX, textY, textPaint)
+
+    return bitmap
+}
+
+
+
+
+
+
+
+
+
 
 
 

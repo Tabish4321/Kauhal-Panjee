@@ -13,6 +13,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
+import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
@@ -22,7 +23,6 @@ import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
-import rural.ekyc.ui.ekyc.models.UidaiResp
 
 interface AppLevelApi {
 

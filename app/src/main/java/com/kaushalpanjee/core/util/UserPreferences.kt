@@ -11,10 +11,13 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.kaushalpanjee.common.model.LoginResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -35,13 +38,14 @@ private const val USER_IMAGE = "USER_IMAGE"
 private const val USER_ROLE_ID = "USER_ROLE_ID"
 private const val IS_REGISTERED = "IS_REGISTERED"
 private const val SELECTED_SCHEME_CODE = "SELECTED_SCHEME_CODE"
+private const val PROFILE_DATA = "PROFILE_DATA"
 
 
 class UserPreferences @Inject constructor(@ApplicationContext context: Context) {
 
     val appContext = context.applicationContext
     val gson = Gson()
-    val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     suspend fun saveStringDataToDataStore(key: String, data: String) {
         log("DATA-->", "saveStringDataToDataStore")
@@ -395,6 +399,38 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
         }
         return value
     }
+
+
+    fun saveUserData(userData : LoginResponse) {
+        val gson = Gson()
+        val userJson = gson.toJson(userData)
+
+        runBlocking {
+            val key = stringPreferencesKey(PROFILE_DATA)
+            appContext.dataStore.edit { preferences ->
+                preferences[key] = userJson
+            }
+        }
+    }
+
+    fun getUserData(): LoginResponse? {
+        val gson = Gson()
+        val key = stringPreferencesKey(PROFILE_DATA)
+        return runBlocking {
+            val preferences = appContext.dataStore.data.firstOrNull()
+            val jsonString = preferences?.get(key)
+            jsonString?.let {
+                try {
+                    val listType = object : TypeToken<LoginResponse>() {}.type
+                    gson.fromJson(it, listType)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+            }
+        }
+    }
+
 
     suspend fun logout(context: Context){
 
