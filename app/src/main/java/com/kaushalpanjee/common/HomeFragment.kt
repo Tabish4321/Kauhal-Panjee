@@ -14,8 +14,10 @@ import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private var isPersonalVisible = true
@@ -27,10 +29,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val district = ArrayList<String>()
 
     // Calendar instance to get current date
-    val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private val calendar: Calendar = Calendar.getInstance()
+    private val year = calendar.get(Calendar.YEAR)
+    private val month = calendar.get(Calendar.MONTH)
+    private val day = calendar.get(Calendar.DAY_OF_MONTH)
 
 
 
@@ -49,6 +51,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     @SuppressLint("SetTextI18n")
     private fun listener() {
+
+        binding.cpvHome.setProgress(50f)
+        binding.cpvHome.setProgressWithAnimation(50f)
 
         binding.llTopPersonal.setOnClickListener {
 

@@ -47,6 +47,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.kaushalpanjee.core.util.CircularProgressView
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:id="@+id/cpvHome"
+                app:layout_constraintStart_toEndOf="@+id/circleImageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
 
             <!-- Label -->
 
@@ -66,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_verified"
+                android:padding="@dimen/dp_12"
                 android:layout_marginStart="@dimen/dp_6"
                 app:layout_constraintStart_toEndOf="@+id/tvAdharEkycComp"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -81,10 +90,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/circleImageView">
 
                 <TextView
-                    android:id="@+id/tvAaadharName"
+                    android:id="@+id/tvAadhaarName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/candidate_name"
+                    android:fontFamily="@font/avenir_next_semi_bold"
                     android:textColor="@color/color_dark_green"
                     android:textSize="16sp" />
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import rural.ekyc.ui.ekyc.models.UidaiResp
+import com.kaushalpanjee.common.model.UidaiResp
 import javax.inject.Inject
 
 @HiltViewModel

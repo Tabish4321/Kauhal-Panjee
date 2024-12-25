@@ -10,7 +10,7 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
-import rural.ekyc.ui.ekyc.models.UidaiResp
+import com.kaushalpanjee.common.model.UidaiResp
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(

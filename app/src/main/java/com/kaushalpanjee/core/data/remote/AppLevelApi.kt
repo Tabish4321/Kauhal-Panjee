@@ -10,7 +10,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
-import rural.ekyc.ui.ekyc.models.UidaiResp
+import com.kaushalpanjee.common.model.UidaiResp
 
 interface AppLevelApi {
 

@@ -3,8 +3,18 @@ package com.kaushalpanjee.uidai;
 import android.content.Context;
 import android.util.Base64;
 
+import com.kaushalpanjee.uidai.kotlinpojo.CanonicalizationMethod;
+import com.kaushalpanjee.uidai.kotlinpojo.DigestMethod;
+import com.kaushalpanjee.uidai.kotlinpojo.Reference;
+import com.kaushalpanjee.uidai.kotlinpojo.Signature;
+import com.kaushalpanjee.uidai.kotlinpojo.SignatureMethod;
+import com.kaushalpanjee.uidai.kotlinpojo.SignedInfo;
+import com.kaushalpanjee.uidai.kotlinpojo.Transform;
+import com.kaushalpanjee.uidai.kotlinpojo.Transforms;
 import com.kaushalpanjee.uidai.kyc_resp_pojo.KycRes;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
@@ -53,8 +63,10 @@ public class XstreamCommonMethods {
     public static KycRes respDecodedXmlToPojoEkyc(String xml) {
         String receivedXml = xml;
         XStream xstream = new XStream();
+        xstream.addPermission(AnyTypePermission.ANY);
         xstream.processAnnotations(KycRes.class);
         xstream.autodetectAnnotations(true);
+
 
         if (receivedXml.equals("")) {
             return null;
@@ -64,6 +76,33 @@ public class XstreamCommonMethods {
         return data;
 
     }
+
+    public static com.kaushalpanjee.uidai.kotlinpojo.AuthRes parseXmlWithXStream(String xml) {
+        XStream xstream = new XStream(new DomDriver());
+
+        // Security setup
+        xstream.addPermission(AnyTypePermission.ANY); // Allow all types (use carefully in trusted environments)
+
+        // Allow only specific types
+        xstream.allowTypes(new Class[] {
+                com.kaushalpanjee.uidai.kotlinpojo.AuthRes.class,
+                Signature.class,
+                SignedInfo.class,
+                CanonicalizationMethod.class,
+                SignatureMethod.class,
+                Reference.class,
+                Transforms.class,
+                Transform.class,
+                DigestMethod.class
+        });
+
+        // Process annotations
+        xstream.processAnnotations(AuthRes.class);
+
+        // Parse XML to object
+        return (com.kaushalpanjee.uidai.kotlinpojo.AuthRes) xstream.fromXML(xml);
+    }
+
 
     public static AuthRes respDecodedXmlToPojoAuth(String xml) {
         String receivedXml = xml;
