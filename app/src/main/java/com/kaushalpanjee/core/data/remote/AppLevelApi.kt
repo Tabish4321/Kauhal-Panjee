@@ -17,10 +17,12 @@ import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
+import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 
@@ -56,18 +58,18 @@ interface AppLevelApi {
     suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
 
 
-
-
-
-
-
-
-
-
     @POST
     suspend fun postOnAUAFaceAuthNREGA(
         @Url url: String,
         @Body request: UidaiKycRequest
     ): Response<UidaiResp>
+
+
+    @POST
+    suspend fun shgValidateAPI(
+        @Url url: String,
+        @Body request: ShgValidateReq
+    ): Response<ShgValidateRes>
+
 
 }

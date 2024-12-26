@@ -23,6 +23,8 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.response.ShgValidateRes
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -86,6 +88,13 @@ class CommonRepository @Inject constructor(
     suspend fun postOnAUAFaceAuthNREGA(url:String, uidaiKycRequest: UidaiKycRequest): Flow<Resource<out Response<UidaiResp>>> {
         return networkBoundResourceWithoutDb {
             appLevelApi.postOnAUAFaceAuthNREGA(url,uidaiKycRequest)
+        }
+    }
+
+
+    suspend fun shgValidateAPI(url:String, shgValidateReq: ShgValidateReq): Flow<Resource<out Response<ShgValidateRes>>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.shgValidateAPI(url,shgValidateReq)
         }
     }
 

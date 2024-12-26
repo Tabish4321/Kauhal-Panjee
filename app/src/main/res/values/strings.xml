@@ -125,5 +125,11 @@
     <string name="education_details">Education Details</string>
     <string name="banking_details">Banking Details</string>
     <string name="your_aadhaar_ekyc_is_completed">Your Aadhaar eKYC is completed</string>
+    <string name="select_category">Select Category</string>
+    <string name="name1">Mandatory field 1<font color='#FF0000'>*</font></string>
+    <string name="validate">Validate</string>
+    <string name="upload_category_certificate">Upload Category Certificate</string>
+    <string name="upload_antyodaya_card">Upload Antyodaya Card</string>
+
 
 </resources>

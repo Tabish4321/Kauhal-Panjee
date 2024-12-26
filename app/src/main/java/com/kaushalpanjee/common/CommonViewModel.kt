@@ -22,6 +22,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.response.ShgValidateRes
 import javax.inject.Inject
 
 @HiltViewModel
@@ -134,6 +136,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.postOnAUAFaceAuthNREGA(url, uidaiKycRequest).collectLatest {
                 _postOnAUAFaceAuthNREGA.emit(it)
+            }
+        }
+    }
+
+
+    private var _shgValidate = MutableSharedFlow<Resource<out Response<ShgValidateRes>>>()
+    val shgValidate = _shgValidate.asSharedFlow()
+
+
+    fun shgValidateAPI(shgValidateReq: ShgValidateReq){
+        viewModelScope.launch {
+            commonRepository.shgValidateAPI("https://nrlm.gov.in/nrlmwebservice/services/ddugky/dataVerify", shgValidateReq).collectLatest {
+                _shgValidate.emit(it)
             }
         }
     }

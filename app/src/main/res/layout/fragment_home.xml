@@ -24,7 +24,6 @@
             style="@style/editTextHome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="@dimen/dp_50"
             android:elevation="@dimen/dp_2"
             app:layout_constraintStart_toStartOf="parent"
@@ -339,7 +338,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- EditText with custom background -->
                     <EditText
                         android:id="@+id/etFName"
                         style="@style/EditText"
@@ -371,7 +369,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- EditText with custom background -->
                     <EditText
                         android:id="@+id/etSelectState"
                         style="@style/EditText"
@@ -401,7 +398,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- EditText with custom background -->
                     <EditText
                         android:id="@+id/etGNumber"
                         style="@style/EditText"
@@ -433,7 +429,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- EditText with custom background -->
                     <EditText
                         android:id="@+id/etFIncome"
                         style="@style/EditText"
@@ -464,7 +459,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- EditText with custom background -->
                     <EditText
                         android:id="@+id/etllVoterId"
                         style="@style/EditText"
@@ -498,18 +492,6 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"/>
 
-                        <!--<ImageView
-                            android:id="@+id/voterIdImage"
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:scaleType="centerCrop"
-                            app:shapeAppearanceOverlay="@style/CustomCircleShape"
-                            app:strokeColor="@color/color_dark_green"
-                            app:strokeWidth="1dp"
-                            android:src="@drawable/ic_mage_search"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>-->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -534,7 +516,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- EditText with custom background -->
                     <EditText
                         android:id="@+id/etdriving_id"
                         style="@style/EditText"
@@ -567,211 +548,147 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"/>
-                  <!--      <ImageView
-                            android:id="@+id/drivingLicenceImage"
-                            android:layout_width="@dimen/dp_20"
-                            android:layout_height="@dimen/dp_20"
-                            android:scaleType="centerCrop"
-                            app:shapeAppearanceOverlay="@style/CustomCircleShape"
-                            app:strokeColor="@color/color_dark_green"
-                            app:strokeWidth="1dp"
-                            android:src="@drawable/ic_mage_search"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>-->
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-
-
-
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="@string/category"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lldriving_id"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:hint="@string/select_category"
+                    android:padding="1dp"
                     android:id="@+id/llCategory"
+                    android:layout_marginStart="@dimen/dp_3"
+                    android:textColorHint="@color/color_dark_green"
+                    app:boxStrokeColor="@color/color_dark_green"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lldriving_id">
+                    app:layout_constraintTop_toBottomOf="@+id/category">
 
-                    <!-- Label -->
+                    <AutoCompleteTextView
+                        android:id="@+id/SpinnerCategory"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    style="@style/EditText"
+                    android:id="@+id/categoryCertificateUpload"
+                    app:cardCornerRadius="@dimen/dp_25"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llCategory"
+                    >
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/category"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
+                        android:drawableRight="@drawable/ic_mage_search"
+                        android:id="@+id/categoryCertimageText"
+                        android:drawablePadding="@dimen/dp_10"
+                        android:textColor="@color/color_dark_green"
+                        android:fontFamily="@font/avenir_next_semi_bold"
+                        android:text="@string/upload_category_certificate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-                    <!-- Card Container -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="4">
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <!-- SC Card -->
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:id="@+id/optionSCSelect"
-                            android:elevation="4dp"
-                            android:text="SC"
-                            android:textColor="@color/black"
-                            android:gravity="center"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                        <!-- ST Card -->
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="ST"
-                            android:gravity="center"
-                            android:id="@+id/optionSTSelect"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="OBC"
-                            android:id="@+id/optionOBCSelect"
-                            android:gravity="center"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                        <!-- Other Card -->
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Other"
-                            android:gravity="center"
-                            android:id="@+id/optionOtherSelect"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tvMaterial"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llMarital"
+                    android:text="@string/marital"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llCategory">
+                    app:layout_constraintTop_toBottomOf="@+id/categoryCertificateUpload"/>
 
-                    <!-- Label -->
-                    <TextView
-                        android:id="@+id/tvMaterial"
+
+
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/marital"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:hint="Select Marital Status"
+                        android:id="@+id/llMarital"
+                        android:layout_marginStart="@dimen/dp_3"
+                        android:textColorHint="@color/color_dark_green"
+                        app:boxStrokeColor="@color/color_dark_green"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMaterial">
 
+                        <AutoCompleteTextView
+                            android:id="@+id/SpinnerMarital"
+                            style="@style/EditText"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor"
+                            />
 
-                    <!-- Card Container -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-
-                        <!-- ST Card -->
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Married"
-                            android:gravity="center"
-                            android:id="@+id/optionMarriedSelect"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Unmarried"
-                            android:id="@+id/optionUnmarriedSelect"
-                            android:gravity="center"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                        <!-- Other Card -->
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Divorce"
-                            android:gravity="center"
-                            android:id="@+id/optionDivorceSelect"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llMinority"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llMarital">
 
-                    <TextView
+                <TextView
                         android:id="@+id/tvMinority"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/minority"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginTop="@dimen/dp_10"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llMarital"/>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="2"
+                        android:id="@+id/llMinority"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMinority">
 
 
                         <TextView
@@ -800,17 +717,37 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llPwd"
-                    app:layout_constraintStart_toStartOf="parent"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    style="@style/EditText"
+                    android:id="@+id/minorityImageUpload"
+                    app:cardCornerRadius="@dimen/dp_25"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:visibility="gone"
+                    android:text="@string/upload_voter_id"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llMinority">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_mage_search"
+                        android:id="@+id/minorityimageText"
+                        android:drawablePadding="@dimen/dp_10"
+                        android:textColor="@color/color_dark_green"
+                        android:fontFamily="@font/avenir_next_semi_bold"
+                        android:text="Upload Minority Certificate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                     <TextView
                         android:id="@+id/tvPwd"
@@ -819,15 +756,20 @@
                         android:text="@string/pwd"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/minorityImageUpload"/>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:id="@+id/llpwd"
                         android:orientation="horizontal"
-                        android:weightSum="2">
-
+                        android:weightSum="2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPwd">
 
                         <TextView
                             android:layout_width="0dp"
@@ -855,7 +797,36 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
-                </LinearLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    style="@style/EditText"
+                    android:id="@+id/pwdImageUpload"
+                    app:cardCornerRadius="@dimen/dp_25"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:visibility="gone"
+                    android:text="@string/upload_voter_id"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llpwd">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/ic_mage_search"
+                        android:id="@+id/pwdImageText"
+                        android:drawablePadding="@dimen/dp_10"
+                        android:textColor="@color/color_dark_green"
+                        android:fontFamily="@font/avenir_next_semi_bold"
+                        android:text="Upload Minority Certificate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -865,7 +836,7 @@
                     android:id="@+id/llNregaJob"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llPwd">
+                    app:layout_constraintTop_toBottomOf="@+id/pwdImageUpload">
 
                     <TextView
                         android:id="@+id/tvNregaJob"
@@ -964,6 +935,35 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
+
+
+                    <EditText
+                        android:id="@+id/etShgValidate"
+                        style="@style/EditText"
+                        android:hint="Enter SHG code"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:visibility="gone"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/tvShgValidate"
+                        style="@style/EditText"
+                        android:drawablePadding="@dimen/dp_20"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:visibility="gone"
+                        android:text="@string/validate" />
+                    <TextView
+                        android:id="@+id/btnShgValidate"
+                        style="@style/Button"
+                        android:drawableEnd="@drawable/ic_right_arrow"
+                        android:drawablePadding="@dimen/dp_20"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:text="@string/validate" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -1019,6 +1019,35 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/antyodayaCardUpload"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llCategory"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_mage_search"
+                            android:id="@+id/antyodayamageText"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_antyodaya_card"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -2433,7 +2462,6 @@
 
 
                     <TextView
-                        android:id="@+id/tvHighestEducation"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dp_16"
@@ -2475,7 +2503,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llHighestEducation">
 
                     <TextView
-                        android:id="@+id/tvYearOfPassing"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dp_16"
@@ -2508,7 +2535,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/llGender">
 
                         <TextView
-                            android:id="@+id/tvTechnicalEducation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/anyTechnicalEducation"
@@ -2563,7 +2589,6 @@
 
 
                         <TextView
-                            android:id="@+id/tvTechEducation"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/dp_16"
@@ -2607,7 +2632,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/llTechEducation">
 
                         <TextView
-                            android:id="@+id/tvYearOfPassingTech"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/dp_16"
@@ -2643,7 +2667,6 @@
 
 
                         <TextView
-                            android:id="@+id/tvDomainOfTech"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginTop="@dimen/dp_16"
@@ -2778,7 +2801,6 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/tvcurentlyEmployed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/curentlyEmployed"
@@ -2832,7 +2854,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llcurentlyEmployed">
 
                     <TextView
-                        android:id="@+id/tvnatureOfEmpl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/natureOfEmpl"
@@ -2886,7 +2907,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llnatureOfEmpl">
 
                     <TextView
-                        android:id="@+id/tvIntrestedIn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/IntrestedIn"
@@ -2952,7 +2972,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llIntrestedIn">
 
                     <TextView
-                        android:id="@+id/tvEmploymentPreference"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/EmploymentPreference"
@@ -3017,7 +3036,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llEmploymentPreference">
 
                     <TextView
-                        android:id="@+id/tvJobLocationPreference"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/JobLocationPreference"
@@ -3106,7 +3124,6 @@
 
                     <!-- Label -->
                     <TextView
-                        android:id="@+id/tvCurrentEarning"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/CurrentEarning"
@@ -3137,7 +3154,6 @@
 
                     <!-- Label -->
                     <TextView
-                        android:id="@+id/tvExpectationSalary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/ExpectationSalary"
@@ -3235,10 +3251,10 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/expandTraining"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
+                android:id="@+id/expandTraining"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -3309,7 +3325,6 @@
 
 
                     <TextView
-                        android:id="@+id/tvPreviousComTraining"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dp_16"
@@ -3352,7 +3367,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">
 
                     <TextView
-                        android:id="@+id/tvPreviouscompTrainingMOnth"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/dp_16"
@@ -3384,7 +3398,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">
 
                         <TextView
-                            android:id="@+id/tvHeardAboutddugky"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/HeardAboutddugky"
@@ -3427,7 +3440,6 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:id="@+id/tvwhichSectorRUIntrested"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/which_sector_are_you_interested_in"
@@ -3495,7 +3507,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/llEmploymentPreference">
 
                         <TextView
-                            android:id="@+id/tvTradeRUIntrestedSelect"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/which_trade_are_you_interested_in"
@@ -3677,7 +3688,6 @@
 
                     <!-- Label -->
                     <TextView
-                        android:id="@+id/tvBankName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/bank_name"
@@ -3710,7 +3720,6 @@
 
                     <!-- Label -->
                     <TextView
-                        android:id="@+id/tvBankAcNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/bank_account_number"
@@ -3743,7 +3752,6 @@
 
                     <!-- Label -->
                     <TextView
-                        android:id="@+id/tvIfscCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/ifsc_code"
@@ -3775,7 +3783,6 @@
 
                     <!-- Label -->
                     <TextView
-                        android:id="@+id/tvPanNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/pan_no"

@@ -30,24 +30,31 @@ import android.content.pm.PackageManager // For checking permissions
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.core.app.ActivityCompat // For requesting permissions
+import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.setDrawable
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by activityViewModels()
 
-    private val pickImageRequestCode = 100
-    private val requestPermissionsCode = 101
-
+    private var currentRequestPurpose: String? = null
+    private val REQUEST_PICK_VOTER_ID = 101
+    private val REQUEST_PICK_DRIVING_LICENSE = 102
+    private val REQUEST_PICK_MINORITY = 103
+    private val REQUEST_PICK_CATEGORY = 104
+    private val REQUEST_PICK_PWD = 105
+    private val PERMISSION_READ_MEDIA_IMAGES = 201
     //Boolean Values
     private var isPersonalVisible = true
     private var isAddressVisible = true
@@ -59,27 +66,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var isClickedPermanentYes = false
     private var isClickedPermanentNo = false
 
-    private var isClickedSeccYes = false
-    private var isClickedSeccNo = false
-
-
     //Other Values
-      var addressLine1 =""
-      var addressLine2 =""
-      var pinCode =""
+    private var addressLine1 =""
+      private var addressLine2 =""
+      private var pinCode =""
+     private var voterIdImage=""
+     private var voterIdNo=""
+     private var guardianName=""
+     private var motherName=""
+     private var guardianMobileNumber=""
+     private var yearlyIncomeFamily=""
+     private var drivingLicenceNumber=""
+     private var categoryCertiImage=""
+     private var drivingLicenceImage=""
+    private var minorityStatus=""
+    private var minorityImage=""
+    private var pwdStatus=""
+    private var pwdImage=""
+    private var selectedCategoryItem=""
+    private var selectedMaritalItem=""
+    private var shgValidateStatus=""
+    private var shgName=""
+    private var shgStatus=""
+
 
     //Secc Address
 
 
     // State var
-    private var stateSeccList: MutableList<WrappedList> = mutableListOf()
     private lateinit var stateSeccAdapter: ArrayAdapter<String>
     private var selectedSeccStateCodeItem=""
     private var  selectedSeccStateLgdCodeItem=""
     private var selectedSeccStateItem=""
 
+
     // district var
-    private var districtSeccList: MutableList<DistrictList> = mutableListOf()
     private lateinit var districtSeccAdapter: ArrayAdapter<String>
     private var selectedSeccDistrictCodeItem=""
     private var  selectedSeccDistrictLgdCodeItem=""
@@ -87,7 +108,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     //block var
-    private var blockSeccList: MutableList<BlockList> = mutableListOf()
     private lateinit var blockSeccAdapter: ArrayAdapter<String>
     private var selectedSeccBlockCodeItem=""
     private var  selectedSeccBlockLgdCodeItem=""
@@ -96,7 +116,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     //GP var
-    private var gpSeccList: MutableList<GrampanchayatList> = mutableListOf()
     private lateinit var gpSeccAdapter: ArrayAdapter<String>
     private var selectedSeccGpCodeItem=""
     private var  selectedSeccGpLgdCodeItem=""
@@ -104,7 +123,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     //Village var
-    private var villageSeccList: MutableList<VillageList> = mutableListOf()
     private lateinit var villageSeccAdapter: ArrayAdapter<String>
     private var selectedSeccVillageCodeItem=""
     private var  selectedbSeccVillageLgdCodeItem=""
@@ -115,6 +133,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     var addressPresentLine1 =""
     var addressPresentLine2 =""
     var pinCodePresent =""
+
+
+    private lateinit var categoryAdapter: ArrayAdapter<String>
+    private lateinit var maritalAdapter: ArrayAdapter<String>
 
 
     // State var
@@ -220,11 +242,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
 
+    //Value for dropdown
+    val categoryList = listOf("SC", "ST", "OBC", "OTHER")
+    val maritalList = listOf("Married", "Unmarried", "Divorce")
+
+
 
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         init()
     }
@@ -238,6 +266,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectBlockResponse()
         collectGpResponse()
         collectVillageResponse()
+        collectShgValidateResponse()
         commonViewModel.getStateListApi()
 
         binding.ivProgress.setImageBitmap(
@@ -262,6 +291,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.llPresentAddressVillage.gone()
         binding.llPresentAddressAdressLine.gone()
 
+
+        //Adapter Category
+
+         categoryAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            categoryList
+        )
+        binding.SpinnerCategory.setAdapter(categoryAdapter)
+
+
+        //Adapter Marital
+
+        maritalAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            maritalList
+        )
+
+        binding.SpinnerMarital.setAdapter(maritalAdapter)
 
         //Adapter state setting
         stateAdapter = ArrayAdapter(
@@ -577,6 +626,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             datePickerDialog.show()
             datePickerDialog.show()
         }
+
+        //Category Selection
+
+
+            binding.SpinnerCategory.setOnItemClickListener { parent, view, position, id ->
+                selectedCategoryItem = parent.getItemAtPosition(position).toString()
+        }
+
+
+        // Marital selection
+
+        binding.SpinnerMarital.setOnItemClickListener { parent, view, position, id ->
+            selectedMaritalItem = parent.getItemAtPosition(position).toString()
+        }
+
 
 
         // Secc State selection
@@ -1327,6 +1391,85 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
+        //Marital Selection If yes
+        binding.optionMinorityYesSelect.setOnClickListener {
+            binding.optionMinorityYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionMinorityNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            minorityStatus= "Yes"
+            binding.minorityImageUpload.visible()
+
+            toastLong(minorityStatus)
+
+        }
+        //Marital Selection If No
+        binding.optionMinorityNoSelect.setOnClickListener {
+            binding.optionMinorityYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionMinorityNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            minorityStatus= "No"
+
+            binding.minorityImageUpload.gone()
+
+            toastLong(minorityStatus)
+
+
+        }
+
+
+        //PWD Selection If yes
+        binding.optionPwdYesSelect.setOnClickListener {
+            binding.optionPwdYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionPwdNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            pwdStatus= "Yes"
+            binding.pwdImageUpload.visible()
+
+            toastLong(pwdStatus)
+
+        }
+        //PWD Selection If No
+        binding.optionPwdNoSelect.setOnClickListener {
+            binding.optionPwdYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionPwdNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            pwdStatus= "No"
+
+            binding.pwdImageUpload.gone()
+
+            toastLong(pwdStatus)
+
+
+        }
+
+
+        //Shg Selection If yes
+        binding.optionShgYesSelect.setOnClickListener {
+            binding.optionShgYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionShgNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            shgStatus= "Yes"
+            binding.etShgValidate.visible()
+            binding.btnShgValidate.visible()
+
+
+        }
+        //SHG Selection If No
+        binding.optionShgNoSelect.setOnClickListener {
+            binding.optionShgYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionShgNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            shgStatus= "No"
+            binding.etShgValidate.gone()
+            binding.btnShgValidate.gone()
+            binding.tvShgValidate.gone()
+
+
+        }
+
+
+
+
         // If Secc Yess
 
         binding.optionOrigSecccYesSelect.setOnClickListener {
@@ -1349,7 +1492,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.etATINName.visible()
 
         }
+
         //All Submit Button Here
+
+        binding.btnShgValidate.setOnClickListener {
+
+            commonViewModel.shgValidateAPI(ShgValidateReq(binding.etShgValidate.text.toString(),"9"))  //41358
+
+            lifecycleScope.launch {
+                delay(1000)
+                if (shgValidateStatus == "Y"){
+
+                    binding.tvShgValidate.visible()
+                    binding.btnShgValidate.gone()
+                    binding.tvShgValidate.text = "Validate Successfully: $shgName"
+                }
+                else toastLong("Validation Failed please check your SHG Code")
+            }
+            }
 
         binding.btnAddressSubmit.setOnClickListener {
 
@@ -1403,10 +1563,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+        // External Validation
+
+
+
+        //image Upload
+
         binding.voterIdUpload.setOnClickListener {
-            checkAndRequestPermissions()
+            checkAndRequestPermissionsForPurpose("VOTER_ID")
         }
 
+        binding.drivingLicenceUpload.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("DRIVING_LICENSE")
+        }
+
+        binding.minorityImageUpload.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("MINORITY_CERTIFICATE")
+        }
+        binding.categoryCertificateUpload.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("CATEGORY_CERTIFICATE")
+        }
+
+        binding.pwdImageUpload.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("PWD_CERTIFICATE")
+        }
     }
     private fun collectStateResponse() {
         lifecycleScope.launch {
@@ -1598,6 +1778,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private fun collectShgValidateResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.shgValidate) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getValidateStatus ->
+                            if (getValidateStatus.isSuccessful) {
+                                shgValidateStatus = getValidateStatus.body()?.Valid.toString()
+                                 shgName = getValidateStatus.body()?.shg_name.toString()
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
 
     private fun setDropdownValue(autoCompleteTextView: AutoCompleteTextView, value: String, dataList: List<String>) {
         if (dataList.contains(value)) { // Check if the value exists in the list
@@ -1606,7 +1813,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-    private fun checkAndRequestPermissions() {
+
+    private fun checkAndRequestPermissionsForPurpose(purpose: String) {
+        currentRequestPurpose = purpose
+
         when {
             // Android 13+ (API level 33 and above)
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
@@ -1615,10 +1825,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) {
                     requestPermissions(
                         arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                        requestPermissionsCode
+                        PERMISSION_READ_MEDIA_IMAGES
                     )
                 } else {
-                    openGallery()
+                    handlePermissionGranted(purpose)
                 }
             }
 
@@ -1629,24 +1839,58 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) {
                     requestPermissions(
                         arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                        requestPermissionsCode
+                        PERMISSION_READ_MEDIA_IMAGES
                     )
                 } else {
-                    openGallery()
+                    handlePermissionGranted(purpose)
                 }
             }
 
             // Below Android 6.0 (No runtime permissions)
             else -> {
-                openGallery()
+                handlePermissionGranted(purpose)
             }
         }
     }
 
-    private fun openGallery() {
+    private fun handlePermissionGranted(purpose: String) {
+        when (purpose) {
+            "VOTER_ID" -> openGalleryForVoterId()
+            "DRIVING_LICENSE" -> openGalleryForDrivingLicense()
+            "MINORITY_CERTIFICATE" -> openGalleryForMinority()
+            "CATEGORY_CERTIFICATE" -> openGalleryForCategory()
+            "PWD_CERTIFICATE" -> openGalleryForPwd()
+        }
+    }
+
+    private fun openGalleryForVoterId() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, pickImageRequestCode)
+        startActivityForResult(intent, REQUEST_PICK_VOTER_ID)
+    }
+
+    private fun openGalleryForDrivingLicense() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_DRIVING_LICENSE)
+    }
+
+    private fun openGalleryForMinority() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_MINORITY)
+    }
+
+    private fun openGalleryForCategory() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_CATEGORY)
+    }
+
+    private fun openGalleryForPwd() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_PWD)
     }
 
     override fun onRequestPermissionsResult(
@@ -1655,55 +1899,76 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == requestPermissionsCode) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGallery()
-            } else {
-                Toast.makeText(requireContext(), "Permission denied. Cannot access gallery.", Toast.LENGTH_SHORT).show()
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            when (requestCode) {
+                PERMISSION_READ_MEDIA_IMAGES -> handlePermissionGranted(currentRequestPurpose ?: "")
             }
+        } else {
+            Toast.makeText(requireContext(), "Permission denied for $currentRequestPurpose", Toast.LENGTH_SHORT).show()
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == pickImageRequestCode && resultCode == Activity.RESULT_OK) {
-            val selectedImageUri = data?.data
-            selectedImageUri?.let { uri ->
+        if (resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            val selectedImageUri = data.data
+            when (requestCode) {
+                REQUEST_PICK_VOTER_ID -> {
+                    // Handle voter ID image
 
-                try {
-                    // Retrieve the file name
-                    val fileName = getFileName(requireContext(),uri) // This should work if uri is a valid Uri
+                    voterIdImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.voterimageText.text = fileName
 
-                    // Use ContentResolver to get an InputStream from the Uri
-                    val inputStream = requireContext().contentResolver.openInputStream(uri)
-                    val bitmap = BitmapFactory.decodeStream(inputStream) // Decode the InputStream to a Bitmap
-                    inputStream?.close() // Close the InputStream after decoding
 
-                    // Use the Bitmap, e.g., set it to an ImageView
-                    binding.circleImageView.setImageBitmap(bitmap)
+                }
 
-                    // Display the file name (optional)
+                REQUEST_PICK_DRIVING_LICENSE -> {
+                    // Handle driving license image
+                    drivingLicenceImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.drivingLicenceimageText.text = fileName
 
-                    binding.voterimageText.text = "Image Uploaded: $fileName"
-                    toastLong("Image Uploaded: $fileName")
 
-                    // Convert Uri to Base64
-                    val voterIdImage = AppUtil.convertUriToBase64(uri, requireContext())
-                    // Handle the base64 string (voterIdImage)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show()
+
+                }
+
+                REQUEST_PICK_CATEGORY -> {
+                    // Handle voter ID image
+
+                    categoryCertiImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.categoryCertimageText.text = fileName
+
+
+                }
+
+                REQUEST_PICK_MINORITY -> {
+                    // Handle driving license image
+                    minorityImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+
+                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.minorityimageText.text = fileName
+
+                }
+
+
+                        REQUEST_PICK_PWD -> {
+                    // Handle driving license image
+                    pwdImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+
+                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.pwdImageText.text = fileName
+
                 }
             }
         }
+
+
     }
-
-
-   /* override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }*/
-
 }
