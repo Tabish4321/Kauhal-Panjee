@@ -598,8 +598,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 //log("EKYCDATA", kycResponse.txn)
 
 
-                                kycResp.uidData.setName()
-
                                 kycResp.uidData.poi.name?.let { it1 -> toastShort(it1) }
                                 kycResp.uidData.poi.gender?.let { it1 -> toastShort(it1) }
                                 kycResp.uidData.poi.dob?.let { it1 -> toastShort(it1) }
