@@ -27,6 +27,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
+import android.util.Base64
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -623,6 +624,19 @@ fun createHalfCircleProgressBitmap(
     canvas.drawText(progressText, centerX, textY, textPaint)
 
     return bitmap
+}
+
+fun decodeBase64(base64String: String): String? {
+    return try {
+        // Decode the Base64 string to a byte array
+        val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
+
+        // Convert the byte array to a string
+        String(decodedBytes, Charsets.UTF_8)
+    } catch (e: IllegalArgumentException) {
+        e.printStackTrace()
+        null // Return null if decoding fails
+    }
 }
 
 

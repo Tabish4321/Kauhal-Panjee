@@ -37,13 +37,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun init(){
         listeners()
-      //  showBottomSheet()
     }
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
-          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
+         // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
             /*if (userPreferences.getIsRegistered()){
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
                // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEKYCNew())
@@ -77,21 +76,4 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }
     }
 
-    private fun showBottomSheet() {
-        // Initialize the BottomSheetDialog
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-
-        // Inflate the layout
-        val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
-
-        // Handle button click inside Bottom Sheet
-binding.tvWelcome.setOnClickListener {
-    bottomSheetDialog.dismiss() // Close Bottom Sheet
-
-}
-
-        // Set the view and show the Bottom Sheet
-        bottomSheetDialog.setContentView(view)
-        bottomSheetDialog.show()
-    }
 }

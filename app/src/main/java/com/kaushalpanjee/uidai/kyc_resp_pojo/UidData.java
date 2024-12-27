@@ -11,13 +11,32 @@ public class UidData {
     private String Pht;
 
     @JacksonXmlProperty(localName = "Poi")
-    public Poi Poi;
+    private Poi Poi;
 
     @JacksonXmlProperty(localName = "Poa")
-    public Poa Poa;
+    private Poa Poa;
 
     @JacksonXmlProperty(localName = "LData")
     private String LData;
+
+    public Poi getPoi() {
+        return Poi;
+    }
+
+    // Setter for Poi
+    public void setPoi(Poi poi) {
+        this.Poi = poi;
+    }
+
+    // Getter for Poa
+    public Poa getPoa() {
+        return Poa;
+    }
+
+    // Setter for Poa
+    public void setPoa(Poa poa) {
+        this.Poa = poa;
+    }
 
 
     public String getPht() {
@@ -32,6 +51,12 @@ public class UidData {
         if (Poi==null)
             return "";
         return Poi.getName();
+    }
+
+    public void setName(){
+        if (Poi==null)
+            getPoi().name = "";
+        else getPoi().setName(getPoi().name);
     }
 
     @Nullable
@@ -88,12 +113,12 @@ public class UidData {
         return Poa.getsubDist();
     }
 
-    @Nullable
+   /* @Nullable
     public String getStreet(){
         if (Poa==null)
             return "";
         return Poa.getStreet();
-    }
+    }*/
     @Nullable
     public String getVtc(){
         if (Poa==null)

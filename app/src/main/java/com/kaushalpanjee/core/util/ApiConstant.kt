@@ -30,6 +30,8 @@ object ApiConstant {
      const val  API_BLOCK= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}blockList"
      const val  API_GP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}gramPanchayatList"
      const val  API_VILLAGE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}villageList"
+     const val  API_TECH_EDUCATION= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}technicalQualification"
+     const val  API_TECH_EDUCATION_DOMAIN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}TechDomain"
 
 
 

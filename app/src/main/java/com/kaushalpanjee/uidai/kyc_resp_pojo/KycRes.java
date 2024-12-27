@@ -33,6 +33,7 @@ import com.thoughtworks.xstream.annotations.XStreamInclude;
 public class KycRes {
 
     protected String Rar;
+    @XStreamAsAttribute
     protected UidData UidData;
     @XStreamAsAttribute
     protected String ret = "";

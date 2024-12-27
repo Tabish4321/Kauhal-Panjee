@@ -75,6 +75,12 @@ android {
 
         }
     }
+
+    configurations.all {
+
+        exclude(group = "xpp3", module = "xpp3")
+
+    }
 }
 
 fun readProperties(propertiesFile: File) = Properties().apply {
@@ -140,10 +146,13 @@ dependencies {
     implementation("org.apache.santuario:xmlsec:2.0.3") {
         exclude(group = "org.codehaus.woodstox")
     }
-    implementation(libs.stax.api)
+   // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    implementation (libs.simple.xml)
+
 
 
 

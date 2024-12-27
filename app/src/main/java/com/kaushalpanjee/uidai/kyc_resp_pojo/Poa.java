@@ -4,37 +4,38 @@ import androidx.annotation.Nullable;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 @XStreamAlias("Poa")
 public class Poa {
-    @JacksonXmlProperty(isAttribute = true)
-    private String careof;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
+    private String co;
+    @XStreamAsAttribute
     private String country;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String dist;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String house;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String landmark;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String loc;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String pc;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String po;
-    @JacksonXmlProperty(isAttribute = true)
+    @XStreamAsAttribute
     private String state;
-    @JacksonXmlProperty(isAttribute = true)
-    private String street;
-    @JacksonXmlProperty(isAttribute = true)
+
+    @XStreamAsAttribute
     private String subdist;
-    @JacksonXmlProperty(isAttribute = true)
+
+    @XStreamAsAttribute
     private String vtc;
 
 
     public String getCareof() {
-        return careof;
+        return co;
     }
 
 
@@ -59,9 +60,6 @@ public class Poa {
         return subdist;
     }
 
-    public String getStreet() {
-        return street;
-    }
 
     public String getVtc() {
         return vtc;

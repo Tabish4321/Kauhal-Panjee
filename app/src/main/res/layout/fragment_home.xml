@@ -311,7 +311,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/personalExpand"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -339,9 +339,9 @@
                         android:layout_marginBottom="8dp" />
 
                     <EditText
-                        android:id="@+id/etFName"
+                        android:id="@+id/etGName"
                         style="@style/EditText"
-                        android:hint="@string/father_name"
+                        android:hint="@string/g_name"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
@@ -370,9 +370,9 @@
                         android:layout_marginBottom="8dp" />
 
                     <EditText
-                        android:id="@+id/etSelectState"
+                        android:id="@+id/etMotherName"
                         style="@style/EditText"
-                        android:hint="@string/mother_name"
+                        android:hint="@string/mother_namer"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
@@ -401,7 +401,7 @@
                     <EditText
                         android:id="@+id/etGNumber"
                         style="@style/EditText"
-                        android:hint="@string/guardian_alternative_number"
+                        android:hint="@string/guardian_alternative_numbern"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:inputType="phone"
@@ -527,8 +527,8 @@
                         />
                     <androidx.constraintlayout.widget.ConstraintLayout
                         style="@style/EditText"
-                        android:id="@+id/drivingLicenceUpload"
                         app:cardCornerRadius="@dimen/dp_25"
+                        android:id="@+id/drivingLicenceUpload"
                         android:layout_width="wrap_content"
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/dp_15"
@@ -977,7 +977,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llShg">
 
                     <TextView
-                        android:id="@+id/tvAntyodaya"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/do_you_Antyodaya"
@@ -1026,10 +1025,9 @@
                         app:cardCornerRadius="@dimen/dp_25"
                         android:layout_width="wrap_content"
                         android:layout_gravity="right"
+                        android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llCategory"
                         >
 
                         <TextView
@@ -1103,62 +1101,36 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llSecc"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llRsby">
-
-                    <TextView
-                        android:id="@+id/tvSecc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/areIsecc"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/rsbyUpload"
+                        android:visibility="gone"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        >
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Yes"
-                            android:gravity="center"
-                            android:id="@+id/optionllSeccYesSelect"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rsbyimageText"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_rsby_pm_jay_card"
+                            app:drawableRightCompat="@drawable/ic_mage_search"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="No"
-                            android:gravity="center"
-                            android:id="@+id/optionSeccNoSelect"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 </LinearLayout>
+
 
 
                 <LinearLayout
@@ -1169,7 +1141,7 @@
                     android:id="@+id/llPip"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llSecc">
+                    app:layout_constraintTop_toBottomOf="@+id/llRsby">
 
                     <TextView
                         android:id="@+id/tvPip"
@@ -1622,6 +1594,34 @@
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/uploadResidenceImage"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_mage_search"
+                            android:id="@+id/residentalimageText"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_residence_certificate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 </LinearLayout>
 
 
@@ -2446,7 +2446,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEducational">
@@ -2471,6 +2471,7 @@
                         android:textColor="@color/color_dark_green" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_demi_bold"
@@ -2529,10 +2530,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:layout_marginTop="@dimen/dp_10"
-                        android:id="@+id/llTechnicalEducation"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llGender">
+                        android:id="@+id/llTechnicalEducation">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -2583,9 +2581,7 @@
                         android:id="@+id/llTechEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:orientation="vertical">
 
 
                         <TextView
@@ -2623,47 +2619,12 @@
                     </LinearLayout>
 
 
-                    <LinearLayout
-                        android:id="@+id/llYearOfPassingTech"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llTechEducation">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/dp_16"
-                            android:fontFamily="@font/avenir_next_demi_bold"
-                            android:padding="@dimen/dp_4"
-                            android:text="@string/select_YearOfPassingTech"
-                            android:textColor="@color/color_dark_green" />
-
-
-                        <TextView
-                            android:id="@+id/tvClickYearOfPassingTech"
-                            style="@style/EditText"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:hint="@string/select_YearOfPassingTech"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-
-
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llDomainOfTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:orientation="vertical">
 
 
                         <TextView
@@ -2699,6 +2660,38 @@
 
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llYearOfPassingTech"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/select_YearOfPassingTech"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            android:id="@+id/tvClickYearOfPassingTech"
+                            style="@style/EditText"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:hint="@string/select_YearOfPassingTech"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor" />
+
+
+
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/btnEIddressSubmit"

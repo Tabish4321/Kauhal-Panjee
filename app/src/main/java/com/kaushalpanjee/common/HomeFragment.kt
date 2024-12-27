@@ -1,7 +1,5 @@
 package com.kaushalpanjee.common
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -26,16 +24,13 @@ import java.util.Calendar
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
+import android.app.AlertDialog
 import android.content.pm.PackageManager // For checking permissions
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.util.Base64
+import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
-import androidx.core.app.ActivityCompat // For requesting permissions
 import com.kaushalpanjee.common.model.request.ShgValidateReq
-import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.setDrawable
@@ -54,6 +49,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val REQUEST_PICK_MINORITY = 103
     private val REQUEST_PICK_CATEGORY = 104
     private val REQUEST_PICK_PWD = 105
+    private val REQUEST_PICK_ANTOYADA = 106
+    private val REQUEST_PICK_RSBY = 107
+    private val REQUEST_PICK_RESIDENCE = 107
     private val PERMISSION_READ_MEDIA_IMAGES = 201
     //Boolean Values
     private var isPersonalVisible = true
@@ -83,11 +81,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var minorityImage=""
     private var pwdStatus=""
     private var pwdImage=""
+    private var technicalEducationStatus=""
+    private var antoyadaStatus=""
+    private var antoyadaImage=""
     private var selectedCategoryItem=""
     private var selectedMaritalItem=""
+    private var selectedHighestEducationItem=""
     private var shgValidateStatus=""
     private var shgName=""
+    private var shgCode=""
     private var shgStatus=""
+    private var rsbyStatus=""
+    private var rsbyImage=""
+    private var pipStatus=""
+    private var residenceImage=""
+    private var highestEducationDate=""
+
+
+
 
 
     //Secc Address
@@ -137,6 +148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private lateinit var categoryAdapter: ArrayAdapter<String>
     private lateinit var maritalAdapter: ArrayAdapter<String>
+    private lateinit var highestEducationAdapter: ArrayAdapter<String>
 
 
     // State var
@@ -187,6 +199,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var villageList: MutableList<VillageList> = mutableListOf()
     private lateinit var villageAdapter: ArrayAdapter<String>
     private var village = ArrayList<String>()
+    private var courseesName = ArrayList<String>()
+    private var courseesCode = ArrayList<String>()
     private var villageCode = ArrayList<String>()
     private var villageLgdCode = ArrayList<String>()
     private var selectedVillageCodeItem=""
@@ -235,16 +249,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var  selectedbVillagePresentLgdCodeItem=""
     private var selectedVillagePresentItem=""
 
+    private lateinit var TechEduAdapter: ArrayAdapter<String>
+    private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
 
-    // Calendar instance to get current date
-    val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
 
     //Value for dropdown
-    val categoryList = listOf("SC", "ST", "OBC", "OTHER")
-    val maritalList = listOf("Married", "Unmarried", "Divorce")
+    private val categoryList = listOf("SC", "ST", "OBC", "OTHER")
+    private val maritalList = listOf("Married", "Unmarried", "Divorce")
+   private val highestEducationList = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
 
 
 
@@ -311,6 +323,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         binding.SpinnerMarital.setAdapter(maritalAdapter)
+
+        //Adapter Highest Education
+
+        highestEducationAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            highestEducationList
+        )
+
+        binding.spinnerHighestEducation.setAdapter(highestEducationAdapter)
 
         //Adapter state setting
         stateAdapter = ArrayAdapter(
@@ -507,6 +529,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
                 setDropdownValue(binding.spinnerVillageSecc, selectedVillageItem, village)
 
+                selectedSeccStateCodeItem=selectedStateCodeItem
+                selectedSeccDistrictCodeItem=selectedDistrictCodeItem
+                selectedSeccBlockCodeItem=selectedBlockCodeItem
+                selectedSeccGpCodeItem=selectedGpCodeItem
+                selectedSeccVillageCodeItem=selectedVillageCodeItem
+
             }else {
                 isSeccInfoVisible = true
                 binding.expandSecc.gone()
@@ -580,51 +608,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.tvClickYearOfPassing.setOnClickListener {
+            showMonthYearPicker { selectedYear, selectedMonth ->
+                // Handle the selected month and year
 
-            val datePickerDialog = DatePickerDialog(
-                requireContext(),
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    // Save and display the selected date
-                    val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                    binding.tvClickYearOfPassing.text = formattedDate.toString()
-                },
-                year, month, day
-            )
-            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-            datePickerDialog.show()
-            datePickerDialog.show()
+                highestEducationDate= "$selectedMonth/$selectedYear"
+                binding.tvClickYearOfPassing.text = "$selectedMonth/$selectedYear"
+
+            }
         }
 
         binding.tvClickYearOfPassingTech.setOnClickListener {
 
-            val datePickerDialog = DatePickerDialog(
-                requireContext(),
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    // Save and display the selected date
-                    val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                    binding.tvClickYearOfPassingTech.text = formattedDate.toString()
-                },
-                year, month, day
-            )
-            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-            datePickerDialog.show()
-            datePickerDialog.show()
+            showMonthYearPicker { selectedYear, selectedMonth ->
+                // Handle the selected month and year
+                binding.tvClickYearOfPassingTech.text = "$selectedMonth/$selectedYear"
+
+            }
         }
 
         binding.tvClickPreviouslycompletedduring.setOnClickListener {
 
-            val datePickerDialog = DatePickerDialog(
-                requireContext(),
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    // Save and display the selected date
-                    val formattedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                    binding.tvClickPreviouslycompletedduring.text = formattedDate.toString()
-                },
-                year, month, day
-            )
-            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-            datePickerDialog.show()
-            datePickerDialog.show()
+            showMonthYearPicker { selectedYear, selectedMonth ->
+                // Handle the selected month and year
+                binding.tvClickPreviouslycompletedduring.text = "$selectedMonth/$selectedYear"
+
+            }
         }
 
         //Category Selection
@@ -639,6 +647,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.SpinnerMarital.setOnItemClickListener { parent, view, position, id ->
             selectedMaritalItem = parent.getItemAtPosition(position).toString()
+        }
+
+
+        // Highest Education selection
+
+        binding.spinnerHighestEducation.setOnItemClickListener { parent, view, position, id ->
+            selectedHighestEducationItem = parent.getItemAtPosition(position).toString()
         }
 
 
@@ -1399,7 +1414,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             minorityStatus= "Yes"
             binding.minorityImageUpload.visible()
 
-            toastLong(minorityStatus)
 
         }
         //Marital Selection If No
@@ -1411,7 +1425,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             binding.minorityImageUpload.gone()
 
-            toastLong(minorityStatus)
 
 
         }
@@ -1425,7 +1438,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             pwdStatus= "Yes"
             binding.pwdImageUpload.visible()
 
-            toastLong(pwdStatus)
 
         }
         //PWD Selection If No
@@ -1437,7 +1449,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             binding.pwdImageUpload.gone()
 
-            toastLong(pwdStatus)
+
+        }
+
+        //Technical Education Selection If yes
+        binding.optionTechnicalEducationYesSelect.setOnClickListener {
+            binding.optionTechnicalEducationYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionTechnicalEducationNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            technicalEducationStatus= "Yes"
+            binding.llTechEducation.visible()
+            binding.llYearOfPassingTech.visible()
+            binding.llDomainOfTech.visible()
+
+
+        }
+        //Technical Education Selection If No
+        binding.optionTechnicalEducationNoSelect.setOnClickListener {
+            binding.optionTechnicalEducationYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionTechnicalEducationNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            technicalEducationStatus= "No"
+
+            binding.llTechEducation.gone()
+            binding.llYearOfPassingTech.gone()
+            binding.llDomainOfTech.gone()
 
 
         }
@@ -1468,6 +1504,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+
+        //Antoyada Selection If yes
+        binding.optionAntyodayaYesSelect.setOnClickListener {
+            binding.optionAntyodayaYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionAntyodayaNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            antoyadaStatus= "Yes"
+            binding.antyodayaCardUpload.visible()
+
+
+        }
+        //Antoyada Selection If No
+        binding.optionAntyodayaNoSelect.setOnClickListener {
+            binding.optionAntyodayaYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionAntyodayaNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            antoyadaStatus= "No"
+
+            binding.antyodayaCardUpload.gone()
+
+
+        }
+
+        //Rsby Selection If yes
+        binding.optionllRsbyYesSelect.setOnClickListener {
+            binding.optionllRsbyYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionllRsbyNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            rsbyStatus= "Yes"
+            binding.rsbyUpload.visible()
+
+
+        }
+        //Rsby Selection If No
+        binding.optionllRsbyNoSelect.setOnClickListener {
+            binding.optionllRsbyYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionllRsbyNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            rsbyStatus= "No"
+
+            binding.rsbyUpload.gone()
+
+
+        }
+
+
+        //PIP Selection If yes
+        binding.optionPipYesSelect.setOnClickListener {
+            binding.optionPipYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionPipNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            pipStatus= "Yes"
+
+
+        }
+        //PIP Selection If No
+        binding.optionPipNoSelect.setOnClickListener {
+            binding.optionPipYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionPipNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            pipStatus= "No"
+
+        }
 
 
         // If Secc Yess
@@ -1505,6 +1604,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     binding.tvShgValidate.visible()
                     binding.btnShgValidate.gone()
+                    shgCode= binding.etShgValidate.text.toString()
                     binding.tvShgValidate.text = "Validate Successfully: $shgName"
                 }
                 else toastLong("Validation Failed please check your SHG Code")
@@ -1540,6 +1640,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 pinCodePresent.isNotEmpty()){
 
                 // Hit The Insert API
+                selectedStateCodeItem
+                selectedDistrictCodeItem
+                selectedBlockCodeItem
+                selectedGpCodeItem
+                selectedVillageCodeItem
+                selectedStatePresentCodeItem
+                selectedDistrictPresentCodeItem
+                selectedBlockPresentCodeItem
+                selectedGpPresentCodeItem
+                selectedVillagePresentCodeItem
+                addressLine1
+                addressLine2
+                pinCode
+                addressPresentLine1
+                addressPresentLine2
+                pinCodePresent
+                residenceImage
 
                  toastLong("Success")
 
@@ -1559,6 +1676,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
             else
                 toastLong("Please Complete SECC info First")
+
+        }
+
+        binding.btnPersonalSubmit.setOnClickListener {
+
+            guardianName= binding.etGName.text.toString()
+            motherName= binding.etMotherName.text.toString()
+            guardianMobileNumber= binding.etGNumber.text.toString()
+            yearlyIncomeFamily= binding.etFIncome.text.toString()
+            voterIdNo= binding.etllVoterId.text.toString()
+            voterIdImage
+            drivingLicenceNumber= binding.etdrivingId.text.toString()
+            drivingLicenceImage
+            selectedCategoryItem
+            categoryCertiImage
+            selectedMaritalItem
+            minorityStatus
+            minorityImage
+            pwdStatus
+            pwdImage
+            shgStatus
+            shgName
+            shgCode
+            shgValidateStatus
+            antoyadaStatus
+            antoyadaImage
+            rsbyStatus
+            rsbyImage
+            pipStatus
+
 
         }
 
@@ -1586,6 +1733,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.pwdImageUpload.setOnClickListener {
             checkAndRequestPermissionsForPurpose("PWD_CERTIFICATE")
+        }
+
+        binding.antyodayaCardUpload.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("ANTOYADA_CERTIFICATE")
+        }
+                binding.rsbyUpload.setOnClickListener {
+                    checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
+                }
+
+        binding.uploadResidenceImage.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
         }
     }
     private fun collectStateResponse() {
@@ -1778,6 +1936,76 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private fun collectTechEducationResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.techEducation) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getTechEduRes ->
+                            if (getTechEduRes.responseCode == 200) {
+                              var  courseList = getTechEduRes.courseList
+
+                                for (x in courseList) {
+                                    courseesName.add(x.qualName)
+                                    courseesCode.add(x.qualCode)
+                                }
+                                TechEduAdapter.notifyDataSetChanged()
+                            } else if (getTechEduRes.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+/*
+    private fun collectTechEducationDomainResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.techEducationDomain) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getTechEduRes ->
+                            if (getTechEduRes.responseCode == 200) {
+                                var  courseList = getTechEduRes.courseList
+
+                                for (x in courseList) {
+                                    courseesName.add(x.qualName)
+                                    courseesCode.add(x.qualCode)
+                                }
+                                TechEduAdapter.notifyDataSetChanged()
+                            } else if (getTechEduRes.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+*/
+
+
     private fun collectShgValidateResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.shgValidate) {
@@ -1860,6 +2088,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             "MINORITY_CERTIFICATE" -> openGalleryForMinority()
             "CATEGORY_CERTIFICATE" -> openGalleryForCategory()
             "PWD_CERTIFICATE" -> openGalleryForPwd()
+            "ANTOYADA_CERTIFICATE" -> openGalleryForAntoyada()
+            "RSBY_CERTIFICATE" -> openGalleryForRsby()
+            "RESIDENCE_CERTIFICATE" -> openGalleryForResidence()
         }
     }
 
@@ -1892,6 +2123,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_PICK_PWD)
     }
+
+    private fun openGalleryForAntoyada() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_ANTOYADA)
+    }
+
+    private fun openGalleryForRsby() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_RSBY)
+    }
+
+    private fun openGalleryForResidence() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_RESIDENCE)
+    }
+
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -1966,9 +2217,81 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.pwdImageText.text = fileName
 
                 }
+
+
+                REQUEST_PICK_ANTOYADA -> {
+                    // Handle driving license image
+                    antoyadaImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+
+                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.antyodayamageText.text = fileName
+
+                }
+
+                REQUEST_PICK_RSBY -> {
+                    // Handle driving license image
+                    rsbyImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+
+                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.rsbyimageText.text = fileName
+
+                }
+
+
+                REQUEST_PICK_RESIDENCE -> {
+                    // Handle driving license image
+                    residenceImage=
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+
+                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.residentalimageText.text = fileName
+
+                }
+
             }
         }
 
 
+    }
+
+
+    @SuppressLint("MissingInflatedId")
+    private fun showMonthYearPicker(onDateSelected: (year: Int, month: Int) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val currentMonth = calendar.get(Calendar.MONTH) + 1 // Months are 0-indexed
+        val currentYear = calendar.get(Calendar.YEAR)
+
+        val dialogView = layoutInflater.inflate(R.layout.month_year_picker, null)
+        val monthPicker = dialogView.findViewById<NumberPicker>(R.id.monthPicker)
+        val yearPicker = dialogView.findViewById<NumberPicker>(R.id.yearPicker)
+
+        // Configure the MonthPicker
+        monthPicker.minValue = 1
+        monthPicker.maxValue = 12
+        monthPicker.value = currentMonth
+        monthPicker.displayedValues = arrayOf(
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        )
+
+        // Configure the YearPicker
+        val startYear = 1900
+        yearPicker.minValue = startYear
+        yearPicker.maxValue = currentYear
+        yearPicker.value = currentYear
+        yearPicker.wrapSelectorWheel = false
+
+        // Show the AlertDialog
+        AlertDialog.Builder(requireContext())
+            .setTitle("Select Month and Year")
+            .setView(dialogView)
+            .setPositiveButton("OK") { _, _ ->
+                val selectedMonth = monthPicker.value
+                val selectedYear = yearPicker.value
+                onDateSelected(selectedMonth, selectedYear)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

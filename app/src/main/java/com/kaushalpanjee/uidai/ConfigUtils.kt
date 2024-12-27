@@ -15,10 +15,10 @@ class ConfigUtils {
     companion object {
         private lateinit var configSharedPreferences: SharedPreferences
 
-        const val STAGING_CONFIG_DATA = "stagingConfigData"
-        const val PREPROD_CONFIG_DATA = "preProdConfigData"
-        const val PROD_CONFIG_DATA = "prodConfigData"
-        const val DEFAULT_CONFIG_DATA = "defaultConfigData"
+        private const val STAGING_CONFIG_DATA = "stagingConfigData"
+        private const val PREPROD_CONFIG_DATA = "preProdConfigData"
+        private const val PROD_CONFIG_DATA = "prodConfigData"
+        private const val DEFAULT_CONFIG_DATA = "defaultConfigData"
         const val certFileSuffix = "-cert.p12"
 
         fun initialise(context: Context) {

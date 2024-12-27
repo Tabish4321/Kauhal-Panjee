@@ -9,7 +9,7 @@ datastorePreferencesCore = "1.1.1"
 fragmentKtx = "1.8.5"
 glide = "4.13.2"
 hiltAndroid = "2.51.1"
-jacksonDataformatXml = "2.15.1"
+jacksonDataformatXml = "2.17.0"
 jsr105Api = "1.0.1"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
@@ -27,6 +27,7 @@ navigationRuntimeKtx = "2.8.4"
 okhttp = "4.11.0"
 roomKtx = "2.5.2"
 core-splashscreen = "1.0.1"
+simpleXml = "2.7.1"
 staxApi = "1.0-2"
 viewbinding = "8.7.3"
 logging-interceptor = "4.11.0"
@@ -63,7 +64,6 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 material-v150 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
@@ -79,7 +79,8 @@ chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "ch
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
-stax-api = { module = "javax.xml.stream:stax-api", version.ref = "staxApi" }
+simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }
+
 
 
 

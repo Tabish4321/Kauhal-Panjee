@@ -24,7 +24,11 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.TechDomainReq
+import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.response.ShgValidateRes
+import com.kaushalpanjee.common.model.response.TechQualificationRes
+import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -42,6 +46,20 @@ class CommonRepository @Inject constructor(
         return networkBoundResourceWithoutDb {
             appLevelApi.sendEmailTP(SendOtpEmailReq(email,appVersion))
         }
+    }
+
+    suspend fun getTechEducationAPI(appVersion: String): Flow<Resource<out TechQualificationRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getTechEducationAPI(TechQualification(appVersion))
+        }
+
+    }
+
+    suspend fun getTechEducationDomainAPI(appVersion: String,qual : String): Flow<Resource<out TechnicalEduDomain>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getTechEducationDomainAPI(TechDomainReq(appVersion,qual))
+        }
+
     }
 
     suspend fun getStateListApi(appVersion: String): Flow<Resource<out StateDataResponse>>{

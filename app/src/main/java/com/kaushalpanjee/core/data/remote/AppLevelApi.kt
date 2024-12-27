@@ -18,11 +18,15 @@ import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.TechDomainReq
+import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.ShgValidateRes
+import com.kaushalpanjee.common.model.response.TechQualificationRes
+import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 
@@ -34,6 +38,15 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_EMAIL_OTP)
     suspend fun sendEmailTP(@Body sendOtpEmailReq: SendOtpEmailReq):SendMobileOTPResponse
+
+
+    @POST(ApiConstant.API_TECH_EDUCATION)
+    suspend fun getTechEducationAPI(@Body techQualification: TechQualification):TechQualificationRes
+
+
+    @POST(ApiConstant.API_TECH_EDUCATION_DOMAIN)
+    suspend fun getTechEducationDomainAPI(@Body techDomainReq: TechDomainReq):TechnicalEduDomain
+
 
     @POST(ApiConstant.API_STATE)
     suspend fun getStateListAPI(@Body stateListReq: StateListReq):StateDataResponse

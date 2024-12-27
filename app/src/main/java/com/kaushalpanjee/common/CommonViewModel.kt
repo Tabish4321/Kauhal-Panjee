@@ -24,6 +24,9 @@ import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.response.ShgValidateRes
+import com.kaushalpanjee.common.model.response.TechQualificationRes
+import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.core.util.AppConstant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,6 +56,31 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                 _sendEmailOTP.emit(it)
             }
         }}
+
+         private var _techEducation = MutableSharedFlow<Resource<out TechQualificationRes>>()
+         val techEducation = _techEducation.asSharedFlow()
+
+         fun getTechEducation(appVersion: String){
+            viewModelScope.launch {
+            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME).collectLatest {
+                _techEducation.emit(it)
+            }
+        }
+
+    }
+
+
+    private var _techEducationDomain = MutableSharedFlow<Resource<out TechnicalEduDomain>>()
+    val techEducationDomain = _techEducationDomain.asSharedFlow()
+
+    fun getTechEducationDomainAPI(appVersion: String,qual :String){
+        viewModelScope.launch {
+            commonRepository.getTechEducationDomainAPI(BuildConfig.VERSION_NAME,qual).collectLatest {
+                _techEducationDomain.emit(it)
+            }
+        }
+
+    }
 
     private var _stateList =  MutableStateFlow<Resource<out StateDataResponse>>(Resource.Loading())
     val getStateList = _stateList.asStateFlow()
