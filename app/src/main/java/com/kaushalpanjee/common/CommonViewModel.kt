@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
@@ -103,6 +105,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getDistrictListApi(state,BuildConfig.VERSION_NAME).collectLatest {
                 _districtList.emit(it)
+            }
+        }
+    }
+
+
+    private var _userCreation =  MutableStateFlow<Resource<out CreateUserRes>>(Resource.Loading())
+    val getuserCreation = _userCreation.asStateFlow()
+
+
+    fun getCreateUserAPI(userCreationReq: UserCreationReq){
+        viewModelScope.launch {
+            commonRepository.getCreateUserAPI(userCreationReq).collectLatest {
+                _userCreation.emit(it)
             }
         }
     }

@@ -30,10 +30,13 @@ import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.setDrawable
+import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -96,6 +99,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var pipStatus=""
     private var residenceImage=""
     private var highestEducationDate=""
+    private var selectedTechEducationItem=""
+    private var selectedTechEducationItemCode=""
+    private var selectedTechEducationDomainItem=""
+    private var selectedTechEducationDomainCode=""
+    private var selectedTechEducationDate=""
+
+
+
 
 
 
@@ -201,6 +212,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var village = ArrayList<String>()
     private var courseesName = ArrayList<String>()
     private var courseesCode = ArrayList<String>()
+    private var courseesDomainName = ArrayList<String>()
+    private var courseesDomainCode = ArrayList<String>()
     private var villageCode = ArrayList<String>()
     private var villageLgdCode = ArrayList<String>()
     private var selectedVillageCodeItem=""
@@ -279,6 +292,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectGpResponse()
         collectVillageResponse()
         collectShgValidateResponse()
+        collectTechEducationDomainResponse()
+        collectTechEducationResponse()
         commonViewModel.getStateListApi()
 
         binding.ivProgress.setImageBitmap(
@@ -499,6 +514,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.spinnerVillageSecc.setAdapter(villageSeccAdapter)
 
+        //Adapter TechEducation setting
+
+        TechEduAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            courseesName
+        )
+
+        binding.spinnerTechnicalEducation.setAdapter(TechEduAdapter)
+
+        //Adapter TechDomainEducation setting
+
+        TechEduDomaiAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            courseesDomainName
+        )
+
+        binding.spinnerDomainOfTech.setAdapter(TechEduDomaiAdapter)
+
+
+
 
         binding.llTopPersonal.setOnClickListener {
 
@@ -557,6 +594,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.llTopEducational.setOnClickListener {
+
+            commonViewModel.getTechEducation(BuildConfig.VERSION_NAME)
 
             if (isEducationalInfoVisible){
                 isEducationalInfoVisible = false
@@ -622,6 +661,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             showMonthYearPicker { selectedYear, selectedMonth ->
                 // Handle the selected month and year
                 binding.tvClickYearOfPassingTech.text = "$selectedMonth/$selectedYear"
+                selectedTechEducationDate="$selectedMonth/$selectedYear"
 
             }
         }
@@ -643,6 +683,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+         //Intrested In?
+
+        // Sample data
+        val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
+
+        // Set up RecyclerView
+        val adapter = IntrestedCheckboxAdapter(items)
+        binding.recyclerViewIntrested.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewIntrested.adapter = adapter
+
+        // Handle button click to get selected items
+        binding.optionCurentlyEmployedYesSelect.setOnClickListener {
+            val selectedItems = adapter.getSelectedItems()
+            Toast.makeText(requireContext(), "Selected Items: $selectedItems", Toast.LENGTH_SHORT).show()
+        }
+
         // Marital selection
 
         binding.SpinnerMarital.setOnItemClickListener { parent, view, position, id ->
@@ -657,6 +713,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+        // Tech Education selection
+
+        binding.spinnerTechnicalEducation.setOnItemClickListener { parent, view, position, id ->
+            selectedTechEducationItem = parent.getItemAtPosition(position).toString()
+            if (position in courseesName.indices) {
+                selectedTechEducationItemCode = courseesCode[position]
+                commonViewModel.getTechEducationDomainAPI(BuildConfig.VERSION_NAME,selectedTechEducationItemCode)
+            }
+            else toastShort("Wrong Selection")
+        }
+
+        // Tech Education Domain selection
+
+        binding.spinnerDomainOfTech.setOnItemClickListener { parent, view, position, id ->
+            selectedTechEducationDomainItem = parent.getItemAtPosition(position).toString()
+            if (position in courseesDomainName.indices) {
+                selectedTechEducationDomainCode = courseesDomainCode[position]
+            }
+            else toastShort("Wrong Selection")
+        }
 
         // Secc State selection
 
@@ -1461,6 +1537,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.llTechEducation.visible()
             binding.llYearOfPassingTech.visible()
             binding.llDomainOfTech.visible()
+            binding.btnEIddressSubmit.visible()
 
 
         }
@@ -1474,6 +1551,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.llTechEducation.gone()
             binding.llYearOfPassingTech.gone()
             binding.llDomainOfTech.gone()
+            binding.btnEIddressSubmit.visible()
+
 
 
         }
@@ -1593,6 +1672,53 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         //All Submit Button Here
+
+
+        binding.btnEIddressSubmit.setOnClickListener {
+
+
+
+            selectedTechEducationDate
+            if (selectedHighestEducationItem.isNotEmpty()&& highestEducationDate.isNotEmpty()&&
+                technicalEducationStatus.contains("No")){
+
+
+                selectedTechEducationItemCode =""
+                selectedTechEducationDomainCode=""
+
+                // Hit the Insert Api
+
+
+                selectedHighestEducationItem
+                highestEducationDate
+                technicalEducationStatus
+
+                toastLong("Submit")
+
+
+
+
+
+            }
+            else if (selectedHighestEducationItem.isNotEmpty()&& highestEducationDate.isNotEmpty()&&
+                technicalEducationStatus.contains("Yes")&& selectedTechEducationItemCode.isNotEmpty()&&
+                selectedTechEducationDomainCode.isNotEmpty()){
+
+                // Hit the Insert Api
+                selectedTechEducationItemCode
+                selectedTechEducationDomainCode
+                selectedHighestEducationItem
+                highestEducationDate
+                technicalEducationStatus
+
+                toastLong("Submit")
+
+
+            }
+            else toastLong("Please complete Education Info First")
+
+        }
+
 
         binding.btnShgValidate.setOnClickListener {
 
@@ -1951,7 +2077,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         hideProgressBar()
                         it.data?.let { getTechEduRes ->
                             if (getTechEduRes.responseCode == 200) {
-                              var  courseList = getTechEduRes.courseList
+                              val courseList = getTechEduRes.courseList
 
                                 for (x in courseList) {
                                     courseesName.add(x.qualName)
@@ -1969,7 +2095,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-/*
     private fun collectTechEducationDomainResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.techEducationDomain) {
@@ -1985,13 +2110,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         hideProgressBar()
                         it.data?.let { getTechEduRes ->
                             if (getTechEduRes.responseCode == 200) {
-                                var  courseList = getTechEduRes.courseList
+                                val courseList = getTechEduRes.domainList
 
                                 for (x in courseList) {
-                                    courseesName.add(x.qualName)
-                                    courseesCode.add(x.qualCode)
+                                    courseesDomainName.add(x.domainName)
+                                    courseesDomainCode.add(x.domainCode)
                                 }
-                                TechEduAdapter.notifyDataSetChanged()
+                                TechEduDomaiAdapter.notifyDataSetChanged()
                             } else if (getTechEduRes.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
@@ -2003,7 +2128,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-*/
 
 
     private fun collectShgValidateResponse() {

@@ -24,6 +24,7 @@ object ApiConstant {
     private const val API_FOLDER_BACKEND = "kaushalpanjee/"
     private const val API_FOLDER_CITIZEN = "panjeeapi/"
      const val  API_SMS_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateMobileOtp"
+     const val  API_CREATE_USER= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}createUser"
      const val  API_EMAIL_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateMailOtp"
      const val  API_STATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}stateList"
      const val  API_DISTRICT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}districtList"
@@ -31,7 +32,7 @@ object ApiConstant {
      const val  API_GP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}gramPanchayatList"
      const val  API_VILLAGE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}villageList"
      const val  API_TECH_EDUCATION= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}technicalQualification"
-     const val  API_TECH_EDUCATION_DOMAIN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}TechDomain"
+     const val  API_TECH_EDUCATION_DOMAIN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}techDomain"
 
 
 

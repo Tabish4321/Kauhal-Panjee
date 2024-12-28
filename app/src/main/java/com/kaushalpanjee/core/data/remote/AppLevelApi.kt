@@ -20,8 +20,10 @@ import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.BlockResponse
+import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -53,6 +55,10 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_DISTRICT)
     suspend fun getDistrictListAPI(@Body districtReq: DistrictReq):DistrictResponse
+
+
+    @POST(ApiConstant.API_CREATE_USER)
+    suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
 
 
 

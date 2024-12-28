@@ -34,6 +34,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.IntentModel
 import com.kaushalpanjee.common.model.response.IntentResponse
 import com.kaushalpanjee.core.basecomponent.BaseFragment
@@ -72,6 +73,20 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private var selectedState = ""
     private var showPassword = true
+
+    private var name=""
+    private var dob=""
+    private var gender=""
+    private var careOf=""
+    private var state=""
+    private var dist=""
+    private var block=""
+    private var po=""
+    private var pinCode=""
+    private var street=""
+    private var village=""
+    private var photo=""
+
 
     private val stateAdaptor by lazy {
         StateAdaptor(object : StateAdaptor.ItemClickListener {
@@ -127,6 +142,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         listener()
         setUI()
         collectStateResponse()
+        collectUserCreationResponse()
         addTextWatchers()
         commonViewModel.getStateListApi()
         initEKYC()
@@ -382,24 +398,68 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private val startUidaiAuthResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            try {
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val intent = result.data
 
-            if (result.resultCode == Activity.RESULT_OK) {
-                val intent = result.data
+                    if (intent != null) {
+                        val captureResponse = intent.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)
 
-                intent?.let {
-                    log(
-                        "handleCaptureResponse",
-                        it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)!!
-                    )
-                    it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)
-                        ?.let { it1 ->
-
-                            handleCaptureResponse(it1)
-
+                        if (!captureResponse.isNullOrEmpty()) {
+                            log("handleCaptureResponse", captureResponse)
+                            handleCaptureResponse(captureResponse)
+                        } else {
+                            log("handleCaptureResponse", "Capture response data is null or empty.")
+                            toastShort("Capture response is empty.")
                         }
+                    } else {
+                        log("handleCaptureResponse", "Intent data is null.")
+                        toastShort("Failed to get capture response data.")
+                    }
+                } else {
+                    toastLong("Failed to capture data.")
+                    log("handleCaptureResponse", "Activity result code: ${result.resultCode}")
                 }
-            } else toastLong("failed to capture")
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+                toastShort("Error: Missing data in result.")
+                log("startUidaiAuthResult", "NullPointerException: ${e.message}")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                toastShort("An error occurred while processing the result.")
+                log("startUidaiAuthResult", "Exception: ${e.message}")
+            }
         }
+
+
+    /*
+        private val startUidaiAuthResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+
+                try {
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        val intent = result.data
+
+                        intent?.let {
+                            log(
+                                "handleCaptureResponse",
+                                it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)!!
+                            )
+                            it.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)
+                                ?.let { it1 ->
+
+                                    handleCaptureResponse(it1)
+
+                                }
+                        }
+                    } else toastLong("failed to capture")
+                }
+                catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                    toastShort("Error startUidaiAuthResult ")
+                }
+
+            }*/
 
     private fun getTransactionID() = Random(System.currentTimeMillis()).nextInt(9999).toString()
 
@@ -433,9 +493,73 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRE_PRODUCTION_CODE}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
 
+
     private fun handleCaptureResponse(captureResponse: String) {
-        showProgressBar()
-        /* try {
+        try {
+            // Show progress bar while processing
+            showProgressBar()
+
+            // Check if camera permission is granted
+            checkCameraPermission()
+
+            // Parse the capture response XML to an object
+            val response = CaptureResponse.fromXML(captureResponse)
+
+            if (response.isSuccess) {
+                toastShort("Success")
+                // Handle Aadhaar authentication or additional processing here if required
+            } else {
+                toastLong("Failed")
+            }
+
+            // Process the response to generate the PoiType or other required fields
+            val poiType = XstreamCommonMethods.processPidBlockEkyc(
+                response.toXML(),
+                binding.etAadhaar.text.toString(),
+                false,
+                requireContext()
+            )
+
+            log("EKYCDATA", poiType)
+
+            // Define Pre-Production URL (use a constant or environment configuration in production)
+            val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain"
+
+            // Record the start time for elapsed time computation
+            startTime = SystemClock.elapsedRealtime()
+
+            // Post the processed data for Face Authentication
+            commonViewModel.postOnAUAFaceAuthNREGA(
+                AppConstant.StaticURL.FACE_AUTH_UIADI,
+                UidaiKycRequest(poiType, authURL)
+            )
+        } catch (e: SecurityException) {
+            // Handle camera permission-related issues
+            e.printStackTrace()
+            toastShort("Camera permission is required for this feature.")
+            log("EKYCDATA", "SecurityException: ${e.message}")
+        } catch (e: IllegalArgumentException) {
+            // Handle cases where the response parsing might fail
+            e.printStackTrace()
+            toastShort("Invalid Capture Response format.")
+            log("EKYCDATA", "IllegalArgumentException: ${e.message}")
+        } catch (e: Exception) {
+            // Catch all other exceptions
+            e.printStackTrace()
+            toastShort("An error occurred while processing the response.")
+            log("EKYCDATA", "Exception: ${e.message}")
+            e.message?.copyToClipboard(requireContext())
+        } finally {
+            // Ensure progress bar is hidden after processing
+            hideProgressBar()
+        }
+    }
+
+    /*
+        private fun handleCaptureResponse(captureResponse: String) {
+            showProgressBar()
+            */
+/* try {
              val response = CaptureResponse.fromXML(captureResponse)
 
             computationTime = FaceUtils.formatCaptureResponse(response.txnID, response)
@@ -455,44 +579,53 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
              e.printStackTrace()
              toastShort("Error handleCaptureResponse ")
              e.message.toString().copyToClipboard(requireContext())
-         }*/
-        checkCameraPermission()
-
-        val response = CaptureResponse.fromXML(captureResponse)
-
-        if (response.isSuccess) {
-            toastShort("Success ")
-
-        } else toastLong("Failed")
+         }*//*
 
 
-        val poiType = XstreamCommonMethods.processPidBlockEkyc(
-            response.toXML(), "939625617876",
-            false, requireContext()
-        )
+        try {
+            checkCameraPermission()
 
-        log("EKYCDATA", poiType)
+            val response = CaptureResponse.fromXML(captureResponse)
 
-        toastShort("Response Parsed")
+            if (response.isSuccess) {
+                toastShort("Success ")
 
-        // Pre-Production URL
-        val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain"
+            } else toastLong("Failed")
 
-        /* val authInputs: String = XstreamCommonMethods.processPidBlock(
-             response.toXML(), "939625617876", false,
-             requireContext()
-         )*/
 
-        startTime = SystemClock.elapsedRealtime()
+            val poiType = XstreamCommonMethods.processPidBlockEkyc(
+                response.toXML(), binding.etAadhaar.text.toString(),
+                false, requireContext()
+            )
 
-        toastShort("Hitting API")
+            log("EKYCDATA", poiType)
 
-        commonViewModel.postOnAUAFaceAuthNREGA(
-            AppConstant.StaticURL.FACE_AUTH_UIADI,
-            UidaiKycRequest(poiType, authURL)
-        )
+
+            // Pre-Production URL
+            val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain"
+
+            */
+/* val authInputs: String = XstreamCommonMethods.processPidBlock(
+                 response.toXML(), "939625617876", false,
+                 requireContext()
+             )*//*
+
+
+            startTime = SystemClock.elapsedRealtime()
+
+
+            commonViewModel.postOnAUAFaceAuthNREGA(
+                AppConstant.StaticURL.FACE_AUTH_UIADI,
+                UidaiKycRequest(poiType, authURL)
+            )
+        }
+        catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            toastShort("Error handleCaptureResponse ")
+        }
 
     }
+*/
 
 
     private fun checkCameraPermission(): Boolean {
@@ -546,6 +679,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
+/*
     private fun collectFaceAuthResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA) {
@@ -568,9 +702,11 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                         it.data?.body()?.let { uidaiData: UidaiResp ->
 
-                            /*val serializer = Persister()
+                            */
+/*val serializer = Persister()
                             val kycResponse: KycResponse = serializer.read(KycResponse::class.java,
-                                uidaiData.PostOnAUA_Face_authResult)*/
+                                uidaiData.PostOnAUA_Face_authResult)*//*
+
 
                             val kycResp =
                                 XstreamCommonMethods.respDecodedXmlToPojoEkyc(uidaiData.PostOnAUA_Face_authResult)
@@ -594,20 +730,23 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 log("EKYCDATA", userPhotoUIADI.toString())
                                 log("EKYCDATA", ekycImage)
 
-                                //log("EKYCDATA", kycResponse.err)
-                                //log("EKYCDATA", kycResponse.txn)
+                                 name = kycResp.uidData.poi.name
+                                photo=kycResp.uidData.pht
+                                gender = kycResp.uidData.poi.gender
+                                dob = kycResp.uidData.poi.dob
+                                careOf = kycResp.uidData.poa.co
+                                state = kycResp.uidData.poa.state
+                                dist = kycResp.uidData.poa.dist
+                                block = kycResp.uidData.poa.subdist
+                                village = kycResp.uidData.poa.vtc
+                                street = kycResp.uidData.poa.loc
+                                po = kycResp.uidData.poa.po
+                                pinCode = kycResp.uidData.poa.pc
 
 
-                                kycResp.uidData.poi.name?.let { it1 -> toastShort(it1) }
-                                kycResp.uidData.poi.gender?.let { it1 -> toastShort(it1) }
-                                kycResp.uidData.poi.dob?.let { it1 -> toastShort(it1) }
+                                showBottomSheet(bitmap,name,gender,dob,careOf)
 
-                                kycResp.uidData.poa.careof ?.let { it1 -> toastShort(it1) }
-
-
-                                showBottomSheet(bitmap)
-
-                                toastShort("EKYCDATA: Success")
+                                toastShort("EKYCDATA: SuccessEkyc")
 
 
                             } else {
@@ -637,6 +776,118 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         }
     }
+*/
+
+
+
+    private fun collectFaceAuthResponse() {
+        lifecycleScope.launch {
+            try {
+                collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA) { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            // Handle loading state, e.g., show a progress bar
+                        }
+
+                        is Resource.Error -> {
+                            hideProgressBar()
+                            resource.error?.let { errorResponse ->
+                                toastShort(errorResponse.message ?: "Unknown error occurred")
+                                log("EKYCDATA", errorResponse.message ?: "Unknown error message")
+                            } ?: run {
+                                toastShort("Nothing to show pls try again")
+                            }
+                        }
+
+                        is Resource.Success -> {
+                            hideProgressBar()
+
+                            resource.data?.body()?.let { uidaiData: UidaiResp ->
+                                try {
+                                    val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(
+                                        uidaiData.PostOnAUA_Face_authResult
+                                    )
+
+                                  //  uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+
+                                    log("EKYCDATA", kycResp.toString())
+
+                                    if (kycResp.isSuccess) {
+                                        val bytes: ByteArray =
+                                            Base64.decode(kycResp.uidData.pht, Base64.DEFAULT)
+                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                                        userPhotoUIADI = bitmap
+                                        ekycImage = kycResp.uidData.pht ?: ""
+
+                                        log("EKYCDATA", userPhotoUIADI.toString())
+                                        log("EKYCDATA", ekycImage)
+                                        toastShort("setting all data")
+
+
+                                        name = kycResp.uidData.poi.name ?: "N/A"
+                                        photo = kycResp.uidData.pht ?: "N/A"
+                                        gender = kycResp.uidData.poi.gender ?: "N/A"
+                                        dob = kycResp.uidData.poi.dob ?: "N/A"
+                                        careOf = kycResp.uidData.poa.co ?: "N/A"
+                                        state = kycResp.uidData.poa.state ?: "N/A"
+                                        dist = kycResp.uidData.poa.dist ?: "N/A"
+                                        block = kycResp.uidData.poa.subdist ?: "N/A"
+                                        village = kycResp.uidData.poa.vtc ?: "N/A"
+                                        street = kycResp.uidData.poa.loc ?: "N/A"
+                                        po = kycResp.uidData.poa.po ?: "N/A"
+                                        pinCode = kycResp.uidData.poa.pc ?: "N/A"
+
+
+                                        // Get the last 4 digits
+                                        var input = binding.etAadhaar.text.toString()
+                                        val lastFourDigits = input.takeLast(4)
+                                        toastShort("convert aadhar data in * ")
+
+                                        // Create the masked string
+                                        val maskedString = "*".repeat(input.length - 4) + lastFourDigits
+
+                                        // Output the result
+                                        toastShort("Masked String: $maskedString")
+
+
+                                        commonViewModel.getCreateUserAPI(UserCreationReq(maskedString,name,gender,dob,
+                                            "17",dist,block,po,village,pinCode,"7763027544",
+                                            "tjamal333@gmail.com",careOf,street,BuildConfig.VERSION_NAME,photo))
+
+
+
+                                        showBottomSheet(bitmap, name, gender, dob, careOf)
+
+                                        toastShort("EKYCDATA: SuccessEkyc")
+                                    } else {
+                                        val decodedRar = decodeBase64(kycResp.rar)
+                                        decodedRar?.let { decodedRarParsed ->
+                                            val authRes = respDecodedXmlToPojoAuth(decodedRarParsed)
+                                            val errorDesc =
+                                                XstreamCommonMethods.getAuthErrorDescription(authRes.info)
+                                            log("EKYCDATA", errorDesc)
+
+                                            toastShort("EKYCDATA: Failed")
+                                        } ?: toastShort("Getting Error")
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                    log("EKYCDATA", "Error processing KYC response: ${e.message}")
+                                    toastShort("Error processing KYC response")
+                                }
+                            } ?: toastShort(getString(R.string.something_went_wrong_at_uidai_site))
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                hideProgressBar()
+                log("EKYCDATA", "Unhandled error: ${e.message}")
+                toastShort("An unexpected error occurred. Please try again.")
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -644,38 +895,78 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         onBackPressedCallback.remove()
     }
 
-
     private fun showBottomSheet(
         image: Bitmap,
-        name: String = "Parsed",
-        gender: String = "Gender",
-        dateOdBirth: String = "01-01-01",
-       /* careOf: String*/
+        name: String,
+        gender: String,
+        dateOfBirth: String,
+        careOf: String
     ) {
         // Initialize the BottomSheetDialog
         val bottomSheetDialog = BottomSheetDialog(requireContext())
 
         // Inflate the layout
-        val view = layoutInflater.inflate(R.layout.bottom_sheet_layout,null)
-        // Handle button click inside Bottom Sheet
-        binding.tvWelcome.setOnClickListener {
-            bottomSheetDialog.dismiss() // Close Bottom Sheet
-        }
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
 
+        // Set the view to the BottomSheetDialog
+        bottomSheetDialog.setContentView(view)
+
+        // Prevent closing when touching outside the BottomSheetDialog
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+
+        // Find views in the inflated layout
         val imageView = view.findViewById<ImageView>(R.id.circleImageView)
         val nameView = view.findViewById<TextView>(R.id.eKYCCandidateName)
         val genderView = view.findViewById<TextView>(R.id.eKYCGender)
         val dobView = view.findViewById<TextView>(R.id.eKYCDob)
         val careOfView = view.findViewById<TextView>(R.id.eKYCCareOf)
+        val okButton = view.findViewById<TextView>(R.id.tvLogin) // Assuming your layout has a Button with this ID
 
+        // Set data to views
         imageView.setImageBitmap(image)
         nameView.text = name
         genderView.text = gender
-        dobView.text = dateOdBirth
-        //careOfView.text = careOf
+        dobView.text = dateOfBirth
+        careOfView.text = careOf
 
-        // Set the view and show the Bottom Sheet
-        bottomSheetDialog.setContentView(view)
+        // Handle OK button click
+        okButton.setOnClickListener {
+            findNavController().navigate(EKYCFragmentDirections.actionEkycFragmentToMainHomePage())
+            bottomSheetDialog.dismiss() // Close the BottomSheetDialog
+        }
+
+        // Show the BottomSheetDialog
         bottomSheetDialog.show()
     }
+    private fun collectUserCreationResponse() {
+        lifecycleScope.launch {
+            toastShort("Hitting Api")
+            collectLatestLifecycleFlow(commonViewModel.getuserCreation) {
+                when (it) {
+                    is Resource.Loading -> {}
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                            toastShort("error in create Api")
+
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getUserCreationRes ->
+                            if (getUserCreationRes.responseCode == 200) {
+                                toastShort("userId Created Successfully")
+
+                            }
+
+                        } ?: showSnackBar("Internal Sever Error")
+                    }
+                }
+            }
+        }
+    }
+
+
 }

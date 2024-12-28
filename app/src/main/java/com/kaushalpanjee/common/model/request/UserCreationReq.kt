@@ -1,0 +1,20 @@
+package com.kaushalpanjee.common.model.request
+
+data class UserCreationReq(
+val aadharNo: String,
+val name: String,
+val gender: String,
+val dateOfBirth: String,
+val stateCode: String,
+val districtName: String,
+val blockName: String,
+val postOffice: String,
+val village: String,
+val pinCode: String,
+val mobileNo: String,
+val email: String,
+val careOf: String,
+val street: String,
+val appVersion: String,
+val aadharImage: String
+)

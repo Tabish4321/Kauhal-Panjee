@@ -34,43 +34,93 @@ public class Poa {
     private String vtc;
 
 
-    public String getCareof() {
-        return co;
+    // Getters with null checks
+    public String getCo() {
+        return co != null ? co : "";
     }
 
-
-    public String getDistrict() {
-        return dist;
+    public String getCountry() {
+        return country != null ? country : "";
     }
 
-
-    public String getPc() {
-        return pc;
+    public String getDist() {
+        return dist != null ? dist : "";
     }
-
-    public String getPo() {
-        return po;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public String getsubDist() {
-        return subdist;
-    }
-
-
-    public String getVtc() {
-        return vtc;
-    }
-
 
     public String getHouse() {
-        return house;
+        return house != null ? house : "";
     }
 
     public String getLandmark() {
-        return landmark;
+        return landmark != null ? landmark : "";
+    }
+
+    public String getLoc() {
+        return loc != null ? loc : "";
+    }
+
+    public String getPc() {
+        return pc != null ? pc : "";
+    }
+
+    public String getPo() {
+        return po != null ? po : "";
+    }
+
+    public String getState() {
+        return state != null ? state : "";
+    }
+
+    public String getSubdist() {
+        return subdist != null ? subdist : "";
+    }
+
+    public String getVtc() {
+        return vtc != null ? vtc : "";
+    }
+
+    // Setters for all fields (if needed)
+    public void setCo(String co) {
+        this.co = co;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setDist(String dist) {
+        this.dist = dist;
+    }
+
+    public void setHouse(String house) {
+        this.house = house;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public void setLoc(String loc) {
+        this.loc = loc;
+    }
+
+    public void setPc(String pc) {
+        this.pc = pc;
+    }
+
+    public void setPo(String po) {
+        this.po = po;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setSubdist(String subdist) {
+        this.subdist = subdist;
+    }
+
+    public void setVtc(String vtc) {
+        this.vtc = vtc;
     }
 }

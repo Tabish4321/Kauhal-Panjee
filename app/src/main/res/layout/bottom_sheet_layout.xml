@@ -16,6 +16,7 @@
         app:shapeAppearanceOverlay="@style/CustomCircleShape"
         app:strokeColor="@color/color_dark_green"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_17"
         app:strokeWidth="1dp"
         android:src="@drawable/person"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,15 +33,6 @@
         android:textColor="@color/color_dark_green"
         android:textSize="@dimen/dp_25" />
 
-    <TextView
-        android:id="@+id/tveKycSuccss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="Successfull"
-        android:textColor="@color/color_dark_green"
-        android:textSize="@dimen/dp_25" />
 
 
         <LinearLayout
@@ -168,7 +160,7 @@
         style="@style/Button"
         android:drawableEnd="@drawable/ic_right_arrow"
         android:drawablePadding="@dimen/dp_20"
-        android:text="Ok"
+        android:text="@string/ok"
         android:layout_marginTop="@dimen/dp_50"
         android:gravity="center" />
 

@@ -2446,7 +2446,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEducational">
@@ -2581,6 +2581,7 @@
                         android:id="@+id/llTechEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
 
@@ -2624,6 +2625,7 @@
                         android:id="@+id/llDomainOfTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
 
@@ -2664,6 +2666,8 @@
                         android:id="@+id/llYearOfPassingTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
+
                         android:orientation="vertical">
 
                         <TextView
@@ -2696,6 +2700,7 @@
                     <TextView
                         android:id="@+id/btnEIddressSubmit"
                         style="@style/Button"
+                        android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_15"
                         android:drawablePadding="@dimen/dp_20"
                         android:text="@string/submit"
@@ -2778,7 +2783,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEmployment">
@@ -2866,7 +2871,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
-                            android:text="Yes"
+                            android:text="@string/self_employed"
                             android:gravity="center"
                             android:id="@+id/optionnatureOfEmplYesSelect"
                             android:textColor="@color/black"
@@ -2879,7 +2884,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
-                            android:text="No"
+                            android:text="@string/salary"
                             android:gravity="center"
                             android:id="@+id/optionnatureOfEmpldNoSelect"
                             android:elevation="4dp"
@@ -2907,52 +2912,14 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewIntrested"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:padding="8dp" />
 
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Direct Job"
-                            android:gravity="center"
-                            android:id="@+id/optionDirectJob"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp"/>
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Training"
-                            android:gravity="center"
-                            android:id="@+id/optionTraining"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Both"
-                            android:gravity="center"
-                            android:id="@+id/optionBoth"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

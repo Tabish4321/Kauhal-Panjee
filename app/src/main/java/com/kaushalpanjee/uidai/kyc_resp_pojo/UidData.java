@@ -77,13 +77,13 @@ public class UidData {
     public String getCareOf(){
         if (Poa==null)
             return "";
-        return Poa.getCareof();
+        return Poa.getCo();
     }
     @Nullable
     public String getDistrict(){
         if (Poa==null)
             return "";
-        return Poa.getDistrict();
+        return Poa.getDist();
     }
 
     @Nullable
@@ -110,7 +110,7 @@ public class UidData {
     public String getsubDist(){
         if (Poa==null)
             return "";
-        return Poa.getsubDist();
+        return Poa.getSubdist();
     }
 
    /* @Nullable
@@ -138,6 +138,13 @@ public class UidData {
         if (Poa==null)
             return "";
         return Poa.getLandmark();
+    }
+
+    @Nullable
+    public String getLoc(){
+        if (Poa==null)
+            return "";
+        return Poa.getLoc();
     }
 
 }

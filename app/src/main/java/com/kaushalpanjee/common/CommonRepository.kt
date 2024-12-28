@@ -26,6 +26,8 @@ import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
@@ -74,6 +76,13 @@ class CommonRepository @Inject constructor(
     suspend fun getDistrictListApi(stateCode: String,appVersion: String): Flow<Resource<out DistrictResponse>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getDistrictListAPI(DistrictReq(stateCode, appVersion))
+        }
+    }
+
+
+    suspend fun getCreateUserAPI(userCreationReq: UserCreationReq): Flow<Resource<out CreateUserRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getCreateUserAPI(userCreationReq)
         }
     }
 

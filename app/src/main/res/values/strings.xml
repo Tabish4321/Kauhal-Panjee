@@ -79,7 +79,7 @@
     <string name="DomainOfTech">Domain of Technical Education</string>
     <string name="curentlyEmployed">Are you currently employed?</string>
     <string name="natureOfEmpl">What is the nature of employment?</string>
-    <string name="IntrestedIn">Interested in</string>
+    <string name="IntrestedIn">Interested in?</string>
     <string name="EmploymentPreference">Employment Preference</string>
     <string name="JobLocationPreference">Job Location Preference</string>
     <string name="CurrentEarning">What is personal current monthly earning in Rupees?</string>
@@ -135,6 +135,9 @@
     <string name="guardian_alternative_numbern">Guardian/Alternative number</string>
     <string name="mother_namer">Mother Name</string>
     <string name="something_went_wrong_at_uidai_site">Something went wrong at UIDAI side.</string>
+    <string name="ok">Ok</string>
+    <string name="self_employed">Self Employed</string>
+    <string name="salary">Salary</string>
 
 
 </resources>
