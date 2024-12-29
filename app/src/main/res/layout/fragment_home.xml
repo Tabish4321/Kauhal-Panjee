@@ -2783,7 +2783,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEmployment">
@@ -2912,15 +2912,56 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewIntrested"
+
+
+                    <!-- Chip Group -->
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:padding="8dp" />
+                        android:layout_height="wrap_content"
+                        app:singleSelection="false"
+                        app:selectionRequired="false"
+                        app:chipSpacing="8dp"
+                        android:padding="16dp"
+                        android:orientation="horizontal">
 
+                        <!-- Chip 1: Job -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipOption1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/CustomChip"
+                            android:text="@string/job"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
 
-                </LinearLayout>
+                        <!-- Chip 2: Training -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipOption2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/training"
+                            style="@style/CustomChip"
+
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+
+                        <!-- Chip 3: Both -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipOption3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/both"
+                            style="@style/CustomChip"
+
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+                    </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -2931,6 +2972,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llIntrestedIn">
 
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -2939,52 +2981,52 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-
-                    <LinearLayout
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipemployementPrefGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
+                        app:singleSelection="false"
+                        app:selectionRequired="false"
+                        app:chipSpacing="8dp"
+                        android:padding="16dp"
+                        android:orientation="horizontal">
+
+                        <!-- Chip 1: Job -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEmPreOption1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/CustomChip"
+                            android:text="@string/self_employed"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+
+                        <!-- Chip 2: Training -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEmPreOption2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/salaried"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+
+                        <!-- Chip 3: Both -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEmPreOption3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/both"
+                            style="@style/CustomChip"
+
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+                    </com.google.android.material.chip.ChipGroup>
 
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Wage"
-                            android:gravity="center"
-                            android:id="@+id/optionWage"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp"/>
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Self"
-                            android:gravity="center"
-                            android:id="@+id/optionSelf"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Both"
-                            android:gravity="center"
-                            android:id="@+id/optionEmpBoth"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -3003,73 +3045,62 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-
-                    <LinearLayout
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipJobLocGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        app:singleSelection="false"
+                        app:selectionRequired="false"
+                        app:chipSpacing="8dp"
+                        android:padding="16dp"
+                        android:orientation="horizontal">
+
+                        <!-- Chip 1: Job -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipJobLocOption1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/CustomChip"
+                            android:text="@string/within_district"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+
+                        <!-- Chip 2: Training -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipJobLocOption2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/within_state"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+
+                        <!-- Chip 3: Both -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipJobLocOption3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/outside_side"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+                        <!-- Chip 4: Both -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipJobLocOption4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/outside_country"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+                    </com.google.android.material.chip.ChipGroup>
 
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Within District"
-                            android:gravity="center"
-                            android:id="@+id/optionWithinDistrict"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp"/>
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Within State"
-                            android:gravity="center"
-                            android:id="@+id/optionWithinState"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Outside State"
-                            android:gravity="center"
-                            android:id="@+id/optionOutsideState"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="OutsideCountry"
-                            android:gravity="center"
-                            android:id="@+id/optionOutsideCountry"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -3097,6 +3128,7 @@
                         style="@style/EditText"
                         android:layout_height="wrap_content"
                         android:hint="@string/CurrentEarningHint"
+                        android:inputType="phone"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
@@ -3129,8 +3161,20 @@
                         android:hint="@string/ExpectationSalary"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
+                        android:inputType="phone"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/btnEmployementSubmit"
+                        style="@style/Button"
+                        android:visibility="visible"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:drawablePadding="@dimen/dp_20"
+                        android:text="@string/submit"
+                        app:drawableEndCompat="@drawable/ic_right_arrow" />
+
+
                 </LinearLayout>
 
 
@@ -3215,7 +3259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
                 android:id="@+id/expandTraining"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewTraining">
@@ -3251,7 +3295,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
-                            android:text="Yes"
+                            android:text="@string/yes"
                             android:gravity="center"
                             android:id="@+id/optionrecievedAnyTrainingBeforeYesSelect"
                             android:textColor="@color/black"
@@ -3264,9 +3308,9 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
-                            android:text="No"
+                            android:text="@string/no"
                             android:gravity="center"
-                            android:id="@+id/optionrecievedAnyTrainingBeforeNoSelect"
+                            android:id="@+id/optioRecievedAnyTrainingBeforeNoSelect"
                             android:elevation="4dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_16"
@@ -3293,27 +3337,72 @@
                         android:text="@string/PreviousComTraining"
                         android:textColor="@color/black" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipPreviousComTraGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/selectScheme"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                        app:singleSelection="false"
+                        app:selectionRequired="false"
+                        app:chipSpacing="8dp"
+                        android:padding="16dp"
+                        android:orientation="horizontal">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerPreviousComTraining"
-                            style="@style/EditText"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
+                        <!-- Chip 1: Job -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipPrevOption1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/CustomChip"
+                            android:text="@string/ddugky"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <!-- Chip 2: Training -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipPrevOption2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rseti"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+
+                        <!-- Chip 3: Both -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipPrevOption3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pmkvy"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+                        <!-- Chip 4: Both -->
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipPrevOption4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/others"
+                            style="@style/CustomChip"
+                            android:checkable="true"
+                            android:layout_margin="8dp"
+                            android:elevation="7dp" />
+                    </com.google.android.material.chip.ChipGroup>
+
+
+                    <TextView
+                        android:id="@+id/tvPreviouslycompletedOthers"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:hint="@string/mention_others_training"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor" />
 
 
                 </LinearLayout>
@@ -3406,55 +3495,16 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp" />
-
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/tvSectorItems"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="3">
+                            android:layout_marginTop="20dp"
+                            style="@style/EditText"
+                            android:text="@string/select_sector"/>
 
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="IT"
-                                android:gravity="center"
-                                android:id="@+id/optionItSectorRUIntrestedSelect"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp"/>
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="@string/design"
-                                android:gravity="center"
-                                android:id="@+id/optionDesignSectorRUIntrestedSelect"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp"/>
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="@string/mechanical"
-                                android:gravity="center"
-                                android:id="@+id/optionMechanicalSectorRUIntrestedSelect"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-                        </LinearLayout>
-                    </LinearLayout>
+            </LinearLayout>
 
 
                     <LinearLayout
@@ -3473,74 +3523,25 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp" />
-
-
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/tvTradeItems"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:layout_marginTop="20dp"
+                            style="@style/EditText"
+                            android:text="@string/select_trade"/>
 
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Within District"
-                                android:gravity="center"
-                                android:id="@+id/optionTrade"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp"/>
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Within State"
-                                android:gravity="center"
-                                android:id="@+id/optionTrade2"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                        <TextView
+                            android:id="@+id/btnTrainingSubmit"
+                            style="@style/Button"
+                            android:visibility="visible"
+                            android:layout_marginTop="@dimen/dp_15"
+                            android:drawablePadding="@dimen/dp_20"
+                            android:text="@string/submit"
+                            app:drawableEndCompat="@drawable/ic_right_arrow" />
 
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Outside State"
-                                android:gravity="center"
-                                android:id="@+id/optionTrade3"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp"/>
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="OutsideCountry"
-                                android:gravity="center"
-                                android:id="@+id/optionTrade4"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-                        </LinearLayout>
 
                     </LinearLayout>
 

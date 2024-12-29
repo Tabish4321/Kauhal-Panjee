@@ -138,6 +138,22 @@
     <string name="ok">Ok</string>
     <string name="self_employed">Self Employed</string>
     <string name="salary">Salary</string>
+    <string name="ekyc_completed">eKYC Completed</string>
+    <string name="job">Job</string>
+    <string name="training">Training</string>
+    <string name="both">Both</string>
+    <string name="salaried">Salaried</string>
+    <string name="within_district">Within District</string>
+    <string name="within_state">Within State</string>
+    <string name="outside_side">Outside State</string>
+    <string name="outside_country">Outside Country</string>
+    <string name="ddugky">DDUGKY</string>
+    <string name="rseti">RSETI</string>
+    <string name="pmkvy">PMKVY</string>
+    <string name="others">Others</string>
+    <string name="mention_others_training">Mention Others Training</string>
+    <string name="select_sector">Select Sector</string>
+    <string name="select_trade">Select Trade</string>
 
 
 </resources>

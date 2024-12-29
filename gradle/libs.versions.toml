@@ -4,6 +4,7 @@ bcprovJdk16 = "1.45"
 circleimageview = "3.1.0"
 compiler = "4.13.0"
 converterGson = "2.9.0"
+core = "0.9.6.0"
 datastore-preferences = "1.0.0"
 datastorePreferencesCore = "1.1.1"
 fragmentKtx = "1.8.5"
@@ -54,6 +55,7 @@ bcprov-jdk16 = { module = "org.bouncycastle:bcprov-jdk16", version.ref = "bcprov
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+core = { module = "com.afollestad.material-dialogs:core", version.ref = "core" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }

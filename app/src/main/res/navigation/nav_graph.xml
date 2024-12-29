@@ -33,6 +33,7 @@
         tools:layout="@layout/fragment_forgot_password">
 
     </fragment>
+
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.kaushalpanjee.common.RegisterFragment"
@@ -40,7 +41,14 @@
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_ekycFragment"
-            app:destination="@id/ekycFragment" />
+            app:destination="@id/ekycFragment">
+            <argument
+                android:name="email"
+                app:argType="string" />
+            <argument
+                android:name="phone"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />

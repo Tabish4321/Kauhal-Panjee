@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/dp_17">
 
 
 
@@ -29,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="eKYC Completed"
+        android:text="@string/ekyc_completed"
+        android:drawableRight="@drawable/ic_verified"
         android:textColor="@color/color_dark_green"
         android:textSize="@dimen/dp_25" />
 
@@ -161,8 +163,9 @@
         android:drawableEnd="@drawable/ic_right_arrow"
         android:drawablePadding="@dimen/dp_20"
         android:text="@string/ok"
-        android:layout_marginTop="@dimen/dp_50"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_50"/>
 
 
 

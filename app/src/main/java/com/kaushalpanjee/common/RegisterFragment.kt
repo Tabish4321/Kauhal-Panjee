@@ -14,6 +14,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onDone
@@ -79,6 +80,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                 if (isEmailVerified) {
                     "${getString(R.string.enter_code_msg)} ${binding.etPhone.text}".also {
+
                         binding.tvEnterCodeMsg.text = it
                     }
 
@@ -90,6 +92,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 } else {
                     "${getString(R.string.enter_code_email_msg)} ${binding.etEmail.text}".also {
                         binding.tvEnterCodeMsg.text = it
+
                     }
 
                     commonViewModel.sendEmailOTP(
@@ -110,15 +113,21 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 ) {
                     binding.clOTP.gone()
                     toastLong("Phone number is verified")
-                    binding.etEmail.text.clear()
-                    binding.etPhone.text.clear()
+
+                   /* binding.etEmail.text.clear()
+                    binding.etPhone.text.clear()*/
                     isEmailVerified = false
                     binding.etPhone.isEnabled = false
                     binding.etPhone.setLeftDrawable(requireContext(), R.drawable.ic_verified)
                     lifecycleScope.launch {
+
+
                         delay(500)
+
                         userPreferences.setIsRegistered(true)
-                        findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToEkycFragment())
+                        val action = RegisterFragmentDirections.actionRegisterFragmentToEkycFragment(binding.etEmail.text.toString(),binding.etPhone.text.toString())
+                        findNavController().navigate(action)
+
 
                     }
                 } else {
@@ -154,6 +163,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     binding.etEmail.isEnabled = false
                     binding.etPhone.visible()
                     binding.clOTP.gone()
+
                     isEmailVerified = true
                 } else {
                     toastLong("Invalid OTP")

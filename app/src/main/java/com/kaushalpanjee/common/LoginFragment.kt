@@ -41,8 +41,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
-         // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
+          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
             /*if (userPreferences.getIsRegistered()){
                 findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
                // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEKYCNew())

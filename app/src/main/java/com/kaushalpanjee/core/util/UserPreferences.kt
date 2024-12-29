@@ -31,6 +31,8 @@ private const val REFRESH_TOKEN = "REFRESH_TOKEN"
 private const val IS_LOGGED_IN = "IS_LOGGED_IN"
 private const val USER_EMAIL = "USER_EMAIL"
 private const val USER_PHONE_NUMBER = "USER_PHONE_NUMBER"
+private const val USER_StateLgdCode = "USER_StateLgdCode"
+private const val USER_StateCode = "USER_StateCode"
 private const val USER_ID = "USER_ID"
 private const val USER_TYPE = "USER_TYPE"
 private const val USER_NAME = "USER_NAME"
@@ -41,7 +43,11 @@ private const val SELECTED_SCHEME_CODE = "SELECTED_SCHEME_CODE"
 private const val PROFILE_DATA = "PROFILE_DATA"
 
 
+
 class UserPreferences @Inject constructor(@ApplicationContext context: Context) {
+
+
+
 
     val appContext = context.applicationContext
     val gson = Gson()
@@ -194,7 +200,7 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
         return value
     }
 
-    fun setLoggedIn(isUserLoggedIn:Boolean) {
+    fun setLoggedIn(isUserLoggedIn: Boolean) {
         val key = booleanPreferencesKey(IS_LOGGED_IN)
         coroutineScope.launch {
             appContext.dataStore.edit {
@@ -215,14 +221,17 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
     }
 
 
-    fun saveUserEmail(userEmail: String) {
+    suspend fun updateUserEmail(email: String?) {
         val key = stringPreferencesKey(USER_EMAIL)
-        coroutineScope.launch {
-            appContext.dataStore.edit {
-                it[key] = userEmail
+        appContext.dataStore.edit { preferences ->
+            if (email == null) {
+                preferences.remove(key)
+            } else {
+                preferences[key] = email
             }
         }
     }
+
 
     fun getUserEmail(): String {
         val key = stringPreferencesKey(USER_EMAIL)
@@ -236,14 +245,63 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
     }
 
 
-    fun saveUserPhoneNumber(userNumber: String) {
-        val key = stringPreferencesKey(USER_PHONE_NUMBER)
-        coroutineScope.launch {
-            appContext.dataStore.edit {
-                it[key] = userNumber
+    suspend fun updateUserStateCode(email: String?) {
+        val key = stringPreferencesKey(USER_StateCode)
+        appContext.dataStore.edit { preferences ->
+            if (email == null) {
+                preferences.remove(key)
+            } else {
+                preferences[key] = email
             }
         }
     }
+
+
+    fun getUserStateCode(): String {
+        val key = stringPreferencesKey(USER_StateCode)
+        var value = ""
+        runBlocking {
+            value = appContext.dataStore.data.map {
+                it[key] ?: ""
+            }.first()
+        }
+        return value
+    }
+
+    suspend fun updateUserStateLgdCode(email: String?) {
+        val key = stringPreferencesKey(USER_StateLgdCode)
+        appContext.dataStore.edit { preferences ->
+            if (email == null) {
+                preferences.remove(key)
+            } else {
+                preferences[key] = email
+            }
+        }
+    }
+
+    fun getUserStateLgdCode(): String {
+        val key = stringPreferencesKey(USER_StateLgdCode)
+        var value = ""
+        runBlocking {
+            value = appContext.dataStore.data.map {
+                it[key] ?: ""
+            }.first()
+        }
+        return value
+    }
+
+
+    suspend fun updateUserPhoneNo(email: String?) {
+        val key = stringPreferencesKey(USER_PHONE_NUMBER)
+        appContext.dataStore.edit { preferences ->
+            if (email == null) {
+                preferences.remove(key)
+            } else {
+                preferences[key] = email
+            }
+        }
+    }
+
 
     fun getUserPhoneNumber(): String {
         val key = stringPreferencesKey(USER_PHONE_NUMBER)
@@ -256,11 +314,16 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
         return value
     }
 
-    fun saveUserID(userId: String) {
+
+
+
+    suspend fun updateUserId(email: String?) {
         val key = stringPreferencesKey(USER_ID)
-        coroutineScope.launch {
-            appContext.dataStore.edit {
-                it[key] = userId
+        appContext.dataStore.edit { preferences ->
+            if (email == null) {
+                preferences.remove(key)
+            } else {
+                preferences[key] = email
             }
         }
     }
@@ -275,6 +338,7 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
         }
         return value
     }
+
 
 
     fun saveUserType(userId: String) {

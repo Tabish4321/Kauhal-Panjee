@@ -30,7 +30,10 @@ import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.google.android.material.chip.Chip
+
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.core.util.AppUtil
@@ -104,6 +107,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedTechEducationDomainItem=""
     private var selectedTechEducationDomainCode=""
     private var selectedTechEducationDate=""
+    private var selectedInterestedIn=""
+    private var selectedIEmploymentPref=""
+    private var selectedJobLocation=""
+    private var currentlyEmpStatus=""
+    private var natureEmpEmpStatus=""
+    private var traingBeforeStatus=""
+    private var selectedSector=""
+    private var selectedTrade=""
 
 
 
@@ -249,7 +260,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     //GP var
     private lateinit var gpPresentAdapter: ArrayAdapter<String>
-    private var gpPresent = ArrayList<String>()
     private var selectedGpPresentCodeItem=""
     private var  selectedbGpPresentLgdCodeItem=""
     private var selectedGpPresentItem=""
@@ -257,7 +267,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     //Village var
     private lateinit var villagePresentAdapter: ArrayAdapter<String>
-    private var villagePresent = ArrayList<String>()
     private var selectedVillagePresentCodeItem=""
     private var  selectedbVillagePresentLgdCodeItem=""
     private var selectedVillagePresentItem=""
@@ -270,6 +279,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val categoryList = listOf("SC", "ST", "OBC", "OTHER")
     private val maritalList = listOf("Married", "Unmarried", "Divorce")
    private val highestEducationList = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+    private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
+    private var selectedIndices = listOf<Int>()
+
 
 
 
@@ -295,7 +307,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTechEducationDomainResponse()
         collectTechEducationResponse()
         commonViewModel.getStateListApi()
-
         binding.ivProgress.setImageBitmap(
             createHalfCircleProgressBitmap(300,300,40f,
                 ContextCompat.getColor(requireContext(),R.color.color_dark_green),
@@ -307,8 +318,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "CheckResult")
     private fun listener() {
+
+
+
 
 
         binding.llPresentAddressState.gone()
@@ -683,21 +697,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-         //Intrested In?
 
-        // Sample data
-        val items = listOf("Option 1", "Option 2", "Option 3", "Option 4")
 
-        // Set up RecyclerView
-        val adapter = IntrestedCheckboxAdapter(items)
-        binding.recyclerViewIntrested.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewIntrested.adapter = adapter
 
-        // Handle button click to get selected items
-        binding.optionCurentlyEmployedYesSelect.setOnClickListener {
-            val selectedItems = adapter.getSelectedItems()
-            Toast.makeText(requireContext(), "Selected Items: $selectedItems", Toast.LENGTH_SHORT).show()
-        }
 
         // Marital selection
 
@@ -1647,6 +1649,64 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
+        //Currently Emp Selection If yes
+        binding.optionCurentlyEmployedYesSelect.setOnClickListener {
+            binding.optionCurentlyEmployedYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionCurentlyEmployedNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            currentlyEmpStatus= "Yes"
+
+
+        }
+        //Currently Emp  Selection If No
+        binding.optionCurentlyEmployedNoSelect.setOnClickListener {
+            binding.optionCurentlyEmployedYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionCurentlyEmployedNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            currentlyEmpStatus= "No"
+
+        }
+
+
+
+        //Nature Of Emp Selection If yes
+        binding.optionnatureOfEmplYesSelect.setOnClickListener {
+            binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            natureEmpEmpStatus= "Yes"
+
+
+        }
+        //Nature Of  Selection If No
+        binding.optionnatureOfEmpldNoSelect.setOnClickListener {
+            binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            natureEmpEmpStatus= "No"
+
+        }
+
+
+
+        //Have u received training beforeSelection If yes
+        binding.optionrecievedAnyTrainingBeforeYesSelect.setOnClickListener {
+            binding.optionrecievedAnyTrainingBeforeYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optioRecievedAnyTrainingBeforeNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            traingBeforeStatus= "Yes"
+
+
+        }
+        //Have u received training beforeSelection If No
+        binding.optioRecievedAnyTrainingBeforeNoSelect.setOnClickListener {
+            binding.optionrecievedAnyTrainingBeforeYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optioRecievedAnyTrainingBeforeNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            traingBeforeStatus= "No"
+
+        }
+
 
         // If Secc Yess
 
@@ -1671,7 +1731,131 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
+
+        binding.tvSectorItems.setOnClickListener {
+
+            MaterialDialog(requireContext()).show {
+                title(text = "Select Items")
+                val itemList = items.toList()
+
+                listItemsMultiChoice(
+                    items = itemList,
+                    initialSelection = selectedIndices.toIntArray() // Convert List<Int> to IntArray
+                ) { _, indices, _ ->
+                    // Update selected indices
+                    selectedIndices = indices.toList()
+                    binding.tvSectorItems.text = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                    selectedSector = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                }
+                positiveButton(text = "OK")
+                negativeButton(text = "Cancel")
+            }
+        }
+
+
+        binding.tvTradeItems.setOnClickListener {
+
+            MaterialDialog(requireContext()).show {
+                title(text = "Select Items")
+                val itemList = items.toList()
+
+                listItemsMultiChoice(
+                    items = itemList,
+                    initialSelection = selectedIndices.toIntArray() // Convert List<Int> to IntArray
+                ) { _, indices, _ ->
+                    // Update selected indices
+                    selectedIndices = indices.toList()
+                    binding.tvTradeItems.text = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                    selectedTrade = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                }
+                positiveButton(text = "OK")
+                negativeButton(text = "Cancel")
+            }
+        }
+
         //All Submit Button Here
+
+        binding.btnEmployementSubmit.setOnClickListener {
+
+
+            //Interested In
+
+            val selectedChipIds = binding.chipGroup.checkedChipIds
+
+            // Map selected chip IDs to chip text
+            val selectedOptions = selectedChipIds.mapNotNull { id ->
+                val chip = binding.chipGroup.findViewById<Chip>(id)
+                chip?.text?.toString()
+            }
+
+            // Join the selected options into a comma-separated string
+            selectedInterestedIn = selectedOptions.joinToString(", ")
+
+
+            // Employment Pref
+
+            val selectedSelfEmpChipIds = binding.chipemployementPrefGroup.checkedChipIds
+
+            // Map selected chip IDs to chip text
+            val selectedSEOptions = selectedSelfEmpChipIds.mapNotNull { id ->
+                val chip = binding.chipemployementPrefGroup.findViewById<Chip>(id)
+                chip?.text?.toString()
+            }
+
+            // Join the selected options into a comma-separated string
+            selectedIEmploymentPref = selectedSEOptions.joinToString(", ")
+
+
+
+
+            // Job Location
+
+            val selectedJobLocChipIds = binding.chipJobLocGroup.checkedChipIds
+
+            // Map selected chip IDs to chip text
+            val selectedJobLocOptions = selectedJobLocChipIds.mapNotNull { id ->
+                val chip = binding.chipJobLocGroup.findViewById<Chip>(id)
+                chip?.text?.toString()
+            }
+
+            // Join the selected options into a comma-separated string
+            selectedJobLocation = selectedJobLocOptions.joinToString(", ")
+
+
+
+
+
+            if (currentlyEmpStatus.isEmpty()){
+
+                toastShort("Please select Currently Employed")
+
+
+
+
+            }
+
+            else if (selectedInterestedIn.isEmpty()){
+
+                toastShort("Please select Interested in ")
+
+            }
+
+            else{
+
+                //HitInsertAPI
+
+                currentlyEmpStatus
+                natureEmpEmpStatus
+                selectedInterestedIn
+                selectedIEmploymentPref
+                selectedJobLocation
+                val currentSalary= binding.etCurrentEarning
+                val salaryExpectation= binding.etExpectationSalary
+
+            }
+
+        }
+
 
 
         binding.btnEIddressSubmit.setOnClickListener {
@@ -2418,4 +2602,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             .setNegativeButton("Cancel", null)
             .show()
     }
+
+
 }
