@@ -22,12 +22,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
 import javax.inject.Inject
 
@@ -96,6 +99,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
+    private var _WhereHaveYouHeard =  MutableStateFlow<Resource<out WhereHaveYouHeardRes>>(Resource.Loading())
+    val getWhereHaveYouHeard = _WhereHaveYouHeard.asStateFlow()
+
+
+
+    fun getWhereHaveYouHeardAPI(){
+        viewModelScope.launch {
+            commonRepository.getWhereHaveYouHeardAPI(BuildConfig.VERSION_NAME).collectLatest {
+                _WhereHaveYouHeard.emit(it)
+            }
+        }
+    }
 
     private var _districtList =  MutableStateFlow<Resource<out DistrictResponse>>(Resource.Loading())
     val getDistrictList = _districtList.asStateFlow()
@@ -168,6 +183,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
+    private  var _aadhaarList =  MutableStateFlow<Resource<out AadhaarDetailRes>>(Resource.Loading())
+    val getAadhaarList = _aadhaarList.asStateFlow()
+
+
+    fun getAadhaarListAPI(adharDetailsReq: AdharDetailsReq) {
+        viewModelScope.launch {
+            commonRepository.getAadhaarListAPI(adharDetailsReq).collectLatest {
+                _aadhaarList.emit(it)
+            }
+        }
+
+
+    }
 
 
 

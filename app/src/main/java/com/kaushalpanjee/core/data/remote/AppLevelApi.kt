@@ -14,6 +14,7 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
@@ -22,6 +23,7 @@ import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.VillageReq
+import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
@@ -30,6 +32,7 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.VillageResponse
+import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 
 interface AppLevelApi {
@@ -49,6 +52,8 @@ interface AppLevelApi {
     @POST(ApiConstant.API_TECH_EDUCATION_DOMAIN)
     suspend fun getTechEducationDomainAPI(@Body techDomainReq: TechDomainReq):TechnicalEduDomain
 
+    @POST(ApiConstant.API_WHERE_HAVE_U_HEARD)
+    suspend fun getWhereHaveYouHeardAPI(@Body stateListReq: StateListReq ):WhereHaveYouHeardRes
 
     @POST(ApiConstant.API_STATE)
     suspend fun getStateListAPI(@Body stateListReq: StateListReq):StateDataResponse
@@ -75,6 +80,14 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_VILLAGE)
     suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
+
+
+
+    @POST(ApiConstant.API_AADHAAR_DETAILS)
+    suspend fun getAadhaarListAPI(@Body adharDetailsReq: AdharDetailsReq):AadhaarDetailRes
+
+
+
 
 
     @POST

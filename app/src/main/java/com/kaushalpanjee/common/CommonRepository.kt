@@ -23,14 +23,17 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -72,6 +75,11 @@ class CommonRepository @Inject constructor(
 
 
 
+    suspend fun getWhereHaveYouHeardAPI(appVersion: String): Flow<Resource<out WhereHaveYouHeardRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getWhereHaveYouHeardAPI(StateListReq(appVersion))
+        }
+    }
 
     suspend fun getDistrictListApi(stateCode: String,appVersion: String): Flow<Resource<out DistrictResponse>>{
         return networkBoundResourceWithoutDb {
@@ -111,6 +119,11 @@ class CommonRepository @Inject constructor(
 
 
 
+    suspend fun getAadhaarListAPI(adharDetailsReq: AdharDetailsReq): Flow<Resource<out AadhaarDetailRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getAadhaarListAPI(adharDetailsReq)
+        }
+    }
 
     suspend fun postOnAUAFaceAuthNREGA(url:String, uidaiKycRequest: UidaiKycRequest): Flow<Resource<out Response<UidaiResp>>> {
         return networkBoundResourceWithoutDb {

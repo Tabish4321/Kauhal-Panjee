@@ -32,8 +32,8 @@
     <string name="educational_information">Educational Information</string>
     <string name="employment_information">Employment Information</string>
     <string name="training_information">Training Information</string>
-    <string name="state">State</string>
-    <string name="district">District</string>
+    <string name="state">State<font color='#FF0000'>*</font></string>
+    <string name="district">District<font color='#FF0000'>*</font></string>
     <string name="select_district">Select district</string>
     <string name="select_gp">Select Gram panchayat</string>
     <string name="g_name">Guardian name</string>
@@ -58,12 +58,13 @@
     <string name="driving_id">Driving License</string>
     <string name="submit">Submit</string>
     <string name="areIsecc">SECC</string>
-    <string name="Gp">Gram panchayat</string>
-    <string name="Village">Village</string>
+    <string name="Gp">Gram panchayat<font color='#FF0000'>*</font></string>
+    <string name="Village">Village<font color='#FF0000'>*</font></string>
     <string name="select_Village">Select Village</string>
-    <string name="Block">Block</string>
+    <string name="Block">Block<font color='#FF0000'>*</font></string>
     <string name="select_Block">Select Block</string>
-    <string name="AdressLine">Street 1</string>
+    <string name="AdressLine">Street 1<font color='#FF0000'>*</font></string>
+    <string name="AdressLine1">Street 1</string>
     <string name="AdressLine2">Street 2</string>
     <string name="PresenrAddress">Present Address</string>
     <string name="PresenrAddressSame">Is your present address the same as your permanent address?</string>
@@ -71,11 +72,13 @@
     <string name="Employment_information">Employment Information</string>
     <string name="Training_information">Training Information</string>
     <string name="Banking_information">Banking Information</string>
-    <string name="select_HighestEducation">Highest Education</string>
+    <string name="select_HighestEducation">Highest Education<font color='#FF0000'>*</font></string>
+    <string name="select_HighestEducation1">Highest Education</string>
     <string name="select_YearOfPassing">Year of passing of highest qualification</string>
     <string name="select_YearOfPassingTech">Year of passing of technical qualification</string>
-    <string name="anyTechnicalEducation">Technical Education?</string>
-    <string name="TechnicalEducation1">Technical Education</string>
+    <string name="anyTechnicalEducation">Technical Education?<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation1">Technical Education<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation2">Technical Education</string>
     <string name="DomainOfTech">Domain of Technical Education</string>
     <string name="curentlyEmployed">Are you currently employed?</string>
     <string name="natureOfEmpl">What is the nature of employment?</string>
@@ -85,7 +88,7 @@
     <string name="CurrentEarning">What is personal current monthly earning in Rupees?</string>
     <string name="CurrentEarningHint">Current Salary</string>
     <string name="ExpectationSalary">Expected Minimum Monthly Salary (Rs.)</string>
-    <string name="recievedAnyTrainingBefore">Have you received any training before?</string>
+    <string name="recievedAnyTrainingBefore">Have you received any training before?<font color='#FF0000'>*</font></string>
     <string name="PreviousComTraining">Previously completed training in</string>
     <string name="selectScheme">Select Scheme</string>
     <string name="select_PreviouscompTrainingMOnth">Previously completed during</string>
@@ -94,10 +97,10 @@
     <string name="PermanentAddress">Permanent Address</string>
     <string name="s_o_name_siwan_841226_bihar_india">C/O:Guardian Name,purani quila Siwan,\n Siwan,Siwan,Bihar841226,India</string>
     <string name="gender">Gender</string>
-    <string name="which_sector_are_you_interested_in">Which Sector are you interested in?</string>
+    <string name="which_sector_are_you_interested_in">Which Sector are you interested in?<font color='#FF0000'>*</font></string>
     <string name="design">Design</string>
     <string name="mechanical">Mechanical</string>
-    <string name="which_trade_are_you_interested_in">Which Trade are you interested in?</string>
+    <string name="which_trade_are_you_interested_in">Which Trade are you interested in?<font color='#FF0000'>*</font></string>
     <string name="bank_name">Bank Name</string>
     <string name="bank_account_number">Bank Account Number</string>
     <string name="enter_ifsc_code">Enter IFSC Code</string>
@@ -109,7 +112,8 @@
     <string name="services_for_you">Services for you</string>
     <string name="unableto_find_yourself_in_secc_drop_down">Unable to find yourself in SECC drop_down?</string>
     <string name="ahl_tin">AHL-TIN</string>
-    <string name="pin_code">Pin Code</string>
+    <string name="pin_code">Pin Code<font color='#FF0000'>*</font></string>
+    <string name="pin_code1">Pin Code</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="name">Name</string>
@@ -151,9 +155,10 @@
     <string name="rseti">RSETI</string>
     <string name="pmkvy">PMKVY</string>
     <string name="others">Others</string>
-    <string name="mention_others_training">Mention Others Training</string>
+    <string name="mention_others_training">Mention if others training</string>
     <string name="select_sector">Select Sector</string>
     <string name="select_trade">Select Trade</string>
+    <string name="have_you_heard_about_ddugky_rseti">Have You Heard About DDUGKY/RSETI?</string>
 
 
 </resources>

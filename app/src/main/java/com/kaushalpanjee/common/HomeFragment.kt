@@ -26,6 +26,8 @@ import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
 import android.app.AlertDialog
 import android.content.pm.PackageManager // For checking permissions
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -35,7 +37,10 @@ import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.android.material.chip.Chip
 
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.setDrawable
@@ -107,7 +112,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedTechEducationDomainItem=""
     private var selectedTechEducationDomainCode=""
     private var selectedTechEducationDate=""
+    private var selectedHeardABoutItem=""
+    private var selectedHeardABoutCode=""
     private var selectedInterestedIn=""
+    private var selectedPrevCompleteTraining=""
     private var selectedIEmploymentPref=""
     private var selectedJobLocation=""
     private var currentlyEmpStatus=""
@@ -115,11 +123,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var traingBeforeStatus=""
     private var selectedSector=""
     private var selectedTrade=""
-
-
-
-
-
+    private var haveUHeardStatus=""
+    private  var previouslycompletedduring =""
 
 
 
@@ -196,6 +201,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     //block var
     private var blockList: MutableList<BlockList> = mutableListOf()
+    private var userAadhaarDetailsList: List<UserDetails> = mutableListOf()
     private lateinit var blockAdapter: ArrayAdapter<String>
     private var block = ArrayList<String>()
     private var blockCode = ArrayList<String>()
@@ -225,6 +231,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesCode = ArrayList<String>()
     private var courseesDomainName = ArrayList<String>()
     private var courseesDomainCode = ArrayList<String>()
+
+    private var heardName = ArrayList<String>()
+    private var heardCode = ArrayList<String>()
     private var villageCode = ArrayList<String>()
     private var villageLgdCode = ArrayList<String>()
     private var selectedVillageCodeItem=""
@@ -236,14 +245,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     // State var
     private lateinit var statePresentAdapter: ArrayAdapter<String>
-    private var statePresent = ArrayList<String>()
     private var selectedStatePresentCodeItem=""
     private var  selectedStatePresentLgdCodeItem=""
     private var selectedStatePresentItem=""
 
     // district var
     private lateinit var districtPresentAdapter: ArrayAdapter<String>
-    private var districtPresent = ArrayList<String>()
     private var selectedDistrictPresentCodeItem=""
     private var  selectedDistrictPresentLgdCodeItem=""
     private var selectedDistrictPresentItem=""
@@ -251,7 +258,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     //block var
     private lateinit var blockPresentAdapter: ArrayAdapter<String>
-    private var blockPresent = ArrayList<String>()
     private var selectedBlockPresentCodeItem=""
     private var  selectedbBlockPresentLgdCodeItem=""
     private var selectedBlockPresentItem=""
@@ -273,6 +279,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private lateinit var TechEduAdapter: ArrayAdapter<String>
     private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
+    private lateinit var HeardAdapter: ArrayAdapter<String>
 
 
     //Value for dropdown
@@ -305,8 +312,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectVillageResponse()
         collectShgValidateResponse()
         collectTechEducationDomainResponse()
+        collectWhereHaveUHeardResponse()
         collectTechEducationResponse()
         commonViewModel.getStateListApi()
+        commonViewModel.getAadhaarListAPI(AdharDetailsReq(BuildConfig.VERSION_NAME,"79073454847",userPreferences.getUseID()))
         binding.ivProgress.setImageBitmap(
             createHalfCircleProgressBitmap(300,300,40f,
                 ContextCompat.getColor(requireContext(),R.color.color_dark_green),
@@ -549,6 +558,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.spinnerDomainOfTech.setAdapter(TechEduDomaiAdapter)
 
 
+        //Adapter Where Have u heard setting
+
+        HeardAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            heardName
+        )
+
+        binding.spinnerHeardAboutddugky.setAdapter(HeardAdapter)
+
+
 
 
         binding.llTopPersonal.setOnClickListener {
@@ -684,13 +704,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             showMonthYearPicker { selectedYear, selectedMonth ->
                 // Handle the selected month and year
+                 previouslycompletedduring = "$selectedMonth/$selectedYear"
                 binding.tvClickPreviouslycompletedduring.text = "$selectedMonth/$selectedYear"
 
             }
         }
 
         //Category Selection
-
 
             binding.SpinnerCategory.setOnItemClickListener { parent, view, position, id ->
                 selectedCategoryItem = parent.getItemAtPosition(position).toString()
@@ -705,6 +725,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.SpinnerMarital.setOnItemClickListener { parent, view, position, id ->
             selectedMaritalItem = parent.getItemAtPosition(position).toString()
+
+
         }
 
 
@@ -721,6 +743,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedTechEducationItem = parent.getItemAtPosition(position).toString()
             if (position in courseesName.indices) {
                 selectedTechEducationItemCode = courseesCode[position]
+
                 commonViewModel.getTechEducationDomainAPI(BuildConfig.VERSION_NAME,selectedTechEducationItemCode)
             }
             else toastShort("Wrong Selection")
@@ -736,10 +759,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             else toastShort("Wrong Selection")
         }
 
+        // Tech Heard about selection
+
+        binding.spinnerHeardAboutddugky.setOnItemClickListener { parent, view, position, id ->
+            binding.spinnerHeardAboutddugky.clearFocus()
+            selectedHeardABoutItem = parent.getItemAtPosition(position).toString()
+
+            if (position in heardName.indices) {
+                selectedHeardABoutCode = heardCode[position]
+            }
+            else toastShort("Wrong Selection")
+        }
+
         // Secc State selection
 
         binding.spinnerStateSecc.setOnItemClickListener { parent, view, position, id ->
             selectedSeccStateItem = parent.getItemAtPosition(position).toString()
+            binding.stateesecc.setHint("")
             if (position in state.indices) {
                 selectedSeccStateCodeItem = stateCode[position]
                 selectedSeccStateLgdCodeItem = stateLgdCode[position]
@@ -1095,6 +1131,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //GP Spinner
         binding.spinnerGp.setOnItemClickListener { parent, view, position, id ->
             selectedGpItem= parent.getItemAtPosition(position).toString()
+
             if (position in gp.indices) {
                 selectedGpCodeItem = gpCode[position]
                 selectedbGpLgdCodeItem = gpLgdCode[position]
@@ -1197,7 +1234,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedStatePresentCodeItem = stateCode[position]
                 selectedStatePresentLgdCodeItem= stateLgdCode[position]
                 commonViewModel.getDistrictListApi(selectedStatePresentCodeItem)
-
                 selectedVillagePresentCodeItem=""
                 selectedbVillagePresentLgdCodeItem=""
                 selectedVillagePresentItem=""
@@ -1237,6 +1273,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedDistrictPresentItem = parent.getItemAtPosition(position).toString()
             if (position in district.indices) {
                 selectedDistrictPresentCodeItem= districtCode[position]
+
                 selectedDistrictPresentLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem)
 
@@ -1530,6 +1567,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
+
+
+        //Have You Heard About DDUGKY Selection If yes
+        binding.optionHaveYouHeardYes.setOnClickListener {
+            binding.optionHaveYouHeardYes.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionHaveYouHeardNo.setBackgroundResource(R.drawable.card_background)
+
+            haveUHeardStatus= "Yes"
+            commonViewModel.getWhereHaveYouHeardAPI()
+            binding.upHeardAboutddugky.visible()
+            binding.tvHeardAboutddugky.visible()
+
+
+        }
+        //Have You Heard About DDUGKY Selection If No
+        binding.optionHaveYouHeardNo.setOnClickListener {
+            binding.optionHaveYouHeardYes.setBackgroundResource(R.drawable.card_background)
+            binding.optionHaveYouHeardNo.setBackgroundResource(R.drawable.card_background_selected)
+
+            haveUHeardStatus= "No"
+
+            binding.upHeardAboutddugky.gone()
+            binding.tvHeardAboutddugky.gone()
+
+
+        }
+
+
         //Technical Education Selection If yes
         binding.optionTechnicalEducationYesSelect.setOnClickListener {
             binding.optionTechnicalEducationYesSelect.setBackgroundResource(R.drawable.card_background_selected)
@@ -1695,6 +1760,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optioRecievedAnyTrainingBeforeNoSelect.setBackgroundResource(R.drawable.card_background)
 
             traingBeforeStatus= "Yes"
+            binding.llPreviousComTraining.visible()
+            binding.tvPrevCom.visible()
+            binding.tvClickPreviouslycompletedduring.visible()
 
 
         }
@@ -1704,6 +1772,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optioRecievedAnyTrainingBeforeNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
             traingBeforeStatus= "No"
+            binding.llPreviousComTraining.gone()
+            binding.tvPrevCom.gone()
+            binding.tvClickPreviouslycompletedduring.gone()
 
         }
 
@@ -1745,7 +1816,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     // Update selected indices
                     selectedIndices = indices.toList()
                     binding.tvSectorItems.text = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
-                    selectedSector = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                    selectedSector = "${indices.joinToString(", ") { itemList[it] }}"
                 }
                 positiveButton(text = "OK")
                 negativeButton(text = "Cancel")
@@ -1766,7 +1837,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     // Update selected indices
                     selectedIndices = indices.toList()
                     binding.tvTradeItems.text = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
-                    selectedTrade = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                    selectedTrade = "${indices.joinToString(", ") { itemList[it] }}"
                 }
                 positiveButton(text = "OK")
                 negativeButton(text = "Cancel")
@@ -1774,6 +1845,50 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         //All Submit Button Here
+
+
+
+
+
+
+        binding.btnTrainingSubmit.setOnClickListener {
+
+            //Previous Training
+
+            val selectedChipIds = binding.chipPreviousComTraGroup.checkedChipIds
+
+            // Map selected chip IDs to chip text
+            val selectedOptions = selectedChipIds.mapNotNull { id ->
+                val chip = binding.chipPreviousComTraGroup.findViewById<Chip>(id)
+                chip?.text?.toString()
+            }
+
+            // Join the selected options into a comma-separated string
+            selectedPrevCompleteTraining = selectedOptions.joinToString(", ")
+            traingBeforeStatus
+            binding.tvPreviouslycompletedOthers.text.toString()
+            previouslycompletedduring
+            haveUHeardStatus
+            selectedHeardABoutItem
+            selectedSector
+            selectedTrade
+
+            if (traingBeforeStatus.isNotEmpty() &&  selectedSector.isNotEmpty()&& selectedTrade.isNotEmpty() ){
+
+                //Hit the Insert API
+                toastShort("Submit")
+
+            }
+            else {
+
+                toastShort("Please complete training info first")
+
+
+            }
+
+
+        }
+
 
         binding.btnEmployementSubmit.setOnClickListener {
 
@@ -1945,8 +2060,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictPresentCodeItem.isNotEmpty() &&
                 selectedBlockPresentCodeItem.isNotEmpty() &&
                 selectedGpPresentCodeItem.isNotEmpty() &&
-                selectedVillagePresentCodeItem.isNotEmpty()&&addressLine1.isNotEmpty()&& addressLine2.isNotEmpty()&&
-                pinCode.isNotEmpty()&& addressPresentLine1.isNotEmpty()&&addressPresentLine2.isNotEmpty()&&
+                selectedVillagePresentCodeItem.isNotEmpty()&&addressLine1.isNotEmpty()&&
+                pinCode.isNotEmpty()&& addressPresentLine1.isNotEmpty()&&
                 pinCodePresent.isNotEmpty()){
 
                 // Hit The Insert API
@@ -2132,6 +2247,51 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private fun collectAadharDetailsResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getAadhaarList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getAadharDetailsRes ->
+                            if (getAadharDetailsRes.responseCode == 200) {
+                                userAadhaarDetailsList = getAadharDetailsRes.wrappedList
+
+
+                                for (x in userAadhaarDetailsList) {
+
+                                    binding.tvAadhaarName.setText(x.userName)
+                                    binding.tvAaadharMobile.setText(x.mobileNo)
+                                    binding.tvAaadharGender.setText(x.gender)
+                                    binding.tvAaadharDob.setText(x.dateOfBirth)
+                                    binding.tvAaadharAddress.setText(x.comAddress)
+                                    val bytes: ByteArray =
+                                        Base64.decode(x.imagePath, Base64.DEFAULT)
+                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                    binding.circleImageView.setImageBitmap(bitmap)
+
+                                }
+                            } else if (getAadharDetailsRes.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
+
     private fun collectBlockResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBlockList) {
@@ -2262,8 +2422,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getTechEduRes ->
                             if (getTechEduRes.responseCode == 200) {
                               val courseList = getTechEduRes.courseList
-
+                                courseesName.clear()
+                                courseesCode.clear()
                                 for (x in courseList) {
+
                                     courseesName.add(x.qualName)
                                     courseesCode.add(x.qualCode)
                                 }
@@ -2295,6 +2457,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getTechEduRes ->
                             if (getTechEduRes.responseCode == 200) {
                                 val courseList = getTechEduRes.domainList
+                                courseesDomainName.clear()
+                                courseesDomainCode.clear()
 
                                 for (x in courseList) {
                                     courseesDomainName.add(x.domainName)
@@ -2312,6 +2476,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
+    private fun collectWhereHaveUHeardResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getWhereHaveYouHeard) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getWhereHeard ->
+                            if (getWhereHeard.responseCode == 200) {
+                                val heardList = getWhereHeard.surveyList
+
+                                heardName.clear()
+                                heardCode.clear()
+                                for (x in heardList) {
+
+                                    heardName.add(x.mediumName)
+                                    heardCode.add(x.surveyCode)
+                                }
+                                HeardAdapter.notifyDataSetChanged()
+                            } else if (getWhereHeard.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
 
 
     private fun collectShgValidateResponse() {

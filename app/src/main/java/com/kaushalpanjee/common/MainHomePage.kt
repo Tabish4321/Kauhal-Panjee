@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaushalpanjee.R
@@ -12,6 +13,8 @@ import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBinding::inflate) {
@@ -55,12 +58,40 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
      }
      binding.personalImageLogo.setOnClickListener {
+         lifecycleScope.launch {
 
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
+             showProgressBar()
+             findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
+             delay(2000)
+             hideProgressBar()
+
+
+         }
      }
 
+         binding.circleImageViewMH.setOnClickListener {
+             lifecycleScope.launch {
+
+                 showProgressBar()
+                 findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
+                 delay(2000)
+                 hideProgressBar()
+
+
+             }
+         }
+
      binding.tvCompleteNow.setOnClickListener {
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
+
+         lifecycleScope.launch {
+
+             showProgressBar()
+             findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
+             delay(2000)
+             hideProgressBar()
+
+
+         }
      }
 
      val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

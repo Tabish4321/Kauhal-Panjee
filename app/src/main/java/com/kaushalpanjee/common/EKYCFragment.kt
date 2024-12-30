@@ -646,7 +646,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             userPreferences.updateUserStateLgdCode(selectedStateLgdCode)
 
 
-                                            commonViewModel.getCreateUserAPI(UserCreationReq(maskedString,name,gender,dob,
+                                            commonViewModel.getCreateUserAPI(UserCreationReq(maskedString,name,gender,dob,state,
                                                selectedStateCode,dist,block,po,village,pinCode,phone,
 
                                                email,careOf,street,BuildConfig.VERSION_NAME,photo))
@@ -770,7 +770,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                         //   showSnackBar(baseErrorResponse.message)
                             toastShort("error in create Api")
 
                         }
