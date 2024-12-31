@@ -33,6 +33,7 @@ import android.graphics.BitmapFactory
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.LinearLayout
@@ -354,7 +355,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.languageSelectionRead.setOnClickListener {
 
-          //  showLanguageSelectionDialog()
+            showLanguageSelectionDialog()
         }
 
 
@@ -2911,10 +2912,14 @@ private fun handleSearchQuery(query: String) {
 
     private fun showLanguageSelectionDialog() {
         // Create a dialog
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.speak_read_language_selection)
+        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        dialog.setContentView(R.layout.dialoge_language)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog.show()
 
         // Get the RecyclerView
+
+
         val languageRecyclerView = dialog.findViewById<RecyclerView>(R.id.languageRecyclerView)
         val saveButton = dialog.findViewById<Button>(R.id.btnSave)
         val cancelButton = dialog.findViewById<Button>(R.id.btnCancel)

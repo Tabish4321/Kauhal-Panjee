@@ -20,4 +20,11 @@
     </style>
 
 
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+
 </resources>
