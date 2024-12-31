@@ -108,7 +108,7 @@
     <string name="pan_no">PAN No</string>
     <string name="enter_pan_no">Enter PAN No</string>
     <string name="image">Image</string>
-    <string name="search">Search</string>
+    <string name="search">Enter Name</string>
     <string name="services_for_you">Services for you</string>
     <string name="unableto_find_yourself_in_secc_drop_down">Unable to find yourself in SECC drop_down?</string>
     <string name="ahl_tin">AHL-TIN</string>
@@ -159,6 +159,15 @@
     <string name="select_sector">Select Sector</string>
     <string name="select_trade">Select Trade</string>
     <string name="have_you_heard_about_ddugky_rseti">Have You Heard About DDUGKY/RSETI?</string>
+    <string name="father_name_f">Father Name</string>
+    <string name="a_tin_no">A-TIN No</string>
+    <string name="search_">Search...</string>
+    <string name="languages">Languages</string>
+    <string name="hindi">हिंदी</string>
+    <string name="english">English</string>
+    <string name="mrathi">ಕನ್ನಡ</string>
+    <string name="read">Read\n</string>
+    <string name="write">Write</string>
 
 
 </resources>

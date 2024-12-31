@@ -24,12 +24,16 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.SeccReq
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.SeccDetailsRes
+import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
@@ -124,6 +128,22 @@ class CommonRepository @Inject constructor(
             appLevelApi.getAadhaarListAPI(adharDetailsReq)
         }
     }
+
+    suspend fun getSeccListAPI(seccReq: SeccReq): Flow<Resource<out SeccDetailsRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getSeccListAPI(seccReq)
+        }
+    }
+
+
+    suspend fun getSecctionAndPerAPI(sectionAndPerReq: SectionAndPerReq): Flow<Resource<out SectionAndPer>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getSecctionAndPerAPI(sectionAndPerReq)
+        }
+    }
+
 
     suspend fun postOnAUAFaceAuthNREGA(url:String, uidaiKycRequest: UidaiKycRequest): Flow<Resource<out Response<UidaiResp>>> {
         return networkBoundResourceWithoutDb {

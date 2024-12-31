@@ -18,6 +18,8 @@ import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
+import com.kaushalpanjee.common.model.request.SeccReq
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
@@ -28,6 +30,8 @@ import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.SeccDetailsRes
+import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
@@ -85,6 +89,15 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_AADHAAR_DETAILS)
     suspend fun getAadhaarListAPI(@Body adharDetailsReq: AdharDetailsReq):AadhaarDetailRes
+
+
+
+    @POST(ApiConstant.API_SECC_DETAILS)
+    suspend fun getSeccListAPI(@Body seccReq: SeccReq):SeccDetailsRes
+
+
+    @POST(ApiConstant.API_SECTION_PERCENTAGE)
+    suspend fun getSecctionAndPerAPI(@Body sectionAndPerReq: SectionAndPerReq):SectionAndPer
 
 
 

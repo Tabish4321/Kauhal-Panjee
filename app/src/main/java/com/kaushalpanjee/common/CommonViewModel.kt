@@ -23,10 +23,14 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.SeccReq
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.SeccDetailsRes
+import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
@@ -196,6 +200,38 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+
+    private  var _seccListAPI =  MutableStateFlow<Resource<out SeccDetailsRes>>(Resource.Loading())
+    val getSeccListAPI = _seccListAPI.asStateFlow()
+
+
+    fun getSeccListAPI(seccReq: SeccReq) {
+        viewModelScope.launch {
+            commonRepository.getSeccListAPI(seccReq).collectLatest {
+                _seccListAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private  var _getSecctionAndPerAPI =  MutableStateFlow<Resource<out SectionAndPer>>(Resource.Loading())
+    val getSecctionAndPerAPI = _getSecctionAndPerAPI.asStateFlow()
+
+
+    fun getSecctionAndPerAPI(sectionAndPerReq: SectionAndPerReq) {
+        viewModelScope.launch {
+            commonRepository.getSecctionAndPerAPI(sectionAndPerReq).collectLatest {
+                _getSecctionAndPerAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
 
 
 

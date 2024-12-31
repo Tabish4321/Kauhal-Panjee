@@ -1,4 +1,5 @@
 package com.kaushalpanjee.common
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
@@ -11,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.common.model.response.BlockList
+import androidx.appcompat.widget.SearchView
 import com.kaushalpanjee.common.model.response.DistrictList
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.VillageList
@@ -25,21 +27,32 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.pm.PackageManager // For checking permissions
 import android.graphics.BitmapFactory
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
+import android.widget.Button
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.android.material.chip.Chip
 
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.model.Language
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
-import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
@@ -181,6 +194,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     // State var
     private var stateList: MutableList<WrappedList> = mutableListOf()
     private lateinit var stateAdapter: ArrayAdapter<String>
+    private lateinit var adapter: SeccAdapter
     private var state = ArrayList<String>()
     private var stateCode = ArrayList<String>()
     private var stateLgdCode = ArrayList<String>()
@@ -233,6 +247,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesDomainCode = ArrayList<String>()
 
     private var heardName = ArrayList<String>()
+    private var fatherName = ArrayList<String>()
+    private var ahlTinNo = ArrayList<String>()
+    private var seccName = ArrayList<String>()
     private var heardCode = ArrayList<String>()
     private var villageCode = ArrayList<String>()
     private var villageLgdCode = ArrayList<String>()
@@ -288,6 +305,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
    private val highestEducationList = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
     private var selectedIndices = listOf<Int>()
+    private val searchQuery = MutableLiveData<String>()
+
 
 
 
@@ -314,8 +333,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTechEducationDomainResponse()
         collectWhereHaveUHeardResponse()
         collectTechEducationResponse()
+        collectAadharDetailsResponse()
+        collectSeccListResponse()
         commonViewModel.getStateListApi()
-        commonViewModel.getAadhaarListAPI(AdharDetailsReq(BuildConfig.VERSION_NAME,"79073454847",userPreferences.getUseID()))
+        commonViewModel.getAadhaarListAPI(AdharDetailsReq(BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext()),"2417000005"))
         binding.ivProgress.setImageBitmap(
             createHalfCircleProgressBitmap(300,300,40f,
                 ContextCompat.getColor(requireContext(),R.color.color_dark_green),
@@ -331,7 +352,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun listener() {
 
 
+        binding.languageSelectionRead.setOnClickListener {
 
+          //  showLanguageSelectionDialog()
+        }
+
+
+        // Secc Search Text
+        searchQuery.observe(viewLifecycleOwner) { query ->
+            if (query.length >= 4) {
+                handleSearchQuery(query) // Trigger API call
+            }
+        }
+
+        // Add TextWatcher to EditText
+        binding.searchView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchQuery.value = s.toString()
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
 
 
         binding.llPresentAddressState.gone()
@@ -381,6 +424,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.SpinnerStateName.setAdapter(stateAdapter)
 
+        //Secc Adapter Setting
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = SeccAdapter()
+       binding.recyclerView.adapter = adapter
 
         //Adapter District setting
 
@@ -594,7 +642,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
 
-                setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
+                setDropdownValue(binding.spinnerStateSecc,
+                    selectedStateItem, state)
                 setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
                 setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
                 setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
@@ -1786,8 +1835,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionOrigSecccYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
             binding.optionOrigSecccNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
 
-            binding.etATINName.gone()
-            binding.etATINNo.visible()
+            binding.etATINName.visible()
+            binding.searchView.gone()
+            binding.recyclerView.gone()
 
 
         }
@@ -1797,8 +1847,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionOrigSecccNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
             binding.optionOrigSecccYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
 
-            binding.etATINNo.gone()
-            binding.etATINName.visible()
+            binding.etATINName.gone()
+            binding.searchView.visible()
+            binding.recyclerView.visible()
 
         }
 
@@ -2406,6 +2457,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun collectTechEducationResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.techEducation) {
@@ -2477,6 +2529,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
     private fun collectWhereHaveUHeardResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getWhereHaveYouHeard) {
@@ -2503,6 +2556,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 HeardAdapter.notifyDataSetChanged()
                             } else if (getWhereHeard.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectSeccListResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getSeccListAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getSeccList->
+                            if (getSeccList.responseCode == 200) {
+                                val heardList = getSeccList.wrappedList
+
+                                seccName.clear()
+                                fatherName.clear()
+                                ahlTinNo.clear()
+                                for (x in heardList) {
+
+                                    seccName.add(x.seccName)
+                                    fatherName.add(x.fatherName)
+                                    ahlTinNo.add(x.ahltin)
+                                }
+
+                                adapter.submitList(it.data.wrappedList)
+
+
+                            } else if (getSeccList.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
                                 showSnackBar("Something went wrong")
@@ -2804,6 +2899,59 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             .setNegativeButton("Cancel", null)
             .show()
     }
+private fun handleSearchQuery(query: String) {
+
+    commonViewModel.getSeccListAPI(SeccReq(BuildConfig.VERSION_NAME,selectedSeccStateLgdCodeItem,query,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
 
 
 }
+
+
+
+
+    private fun showLanguageSelectionDialog() {
+        // Create a dialog
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.speak_read_language_selection)
+
+        // Get the RecyclerView
+        val languageRecyclerView = dialog.findViewById<RecyclerView>(R.id.languageRecyclerView)
+        val saveButton = dialog.findViewById<Button>(R.id.btnSave)
+        val cancelButton = dialog.findViewById<Button>(R.id.btnCancel)
+
+        // List of languages
+        val languages = mutableListOf(
+            Language("हिंदी"),
+            Language("English"),
+            Language("ಕನ್ನಡ"),
+            Language("ଓଡିଆ"),
+            Language("मराठी"),
+            Language("മലയാളം"),
+            Language("தமிழ்"),
+            Language("తెలుగు")
+        )
+
+        // Set up RecyclerView with the adapter
+        val adapter = LanguageAdapter(requireContext(), languages)
+        languageRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        languageRecyclerView.adapter = adapter
+
+        // Save button logic
+        saveButton.setOnClickListener {
+            // Handle saving logic (e.g., save the selected languages to a database)
+            Toast.makeText(requireContext(), "Languages saved successfully!", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        // Cancel button logic
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Show the dialog
+        dialog.show()
+    }
+
+}
+
+

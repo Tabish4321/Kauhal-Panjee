@@ -1,5 +1,6 @@
 package com.kaushalpanjee.core.util
 
+
 object AppConstant {
 
     object BundleConstant{
@@ -31,6 +32,8 @@ object AppConstant {
         const val STAGING_CODE: String = "S"
         const val PRE_PRODUCTION_CODE: String = "PP"
         const val CURRENT_ENVIRONMENT_CODE = PRE_PRODUCTION_CODE;
+
+
 
         const val PRODUCTION_CODE: String = "P"
 

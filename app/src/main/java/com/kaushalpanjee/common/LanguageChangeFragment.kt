@@ -5,3 +5,4 @@ import com.kaushalpanjee.databinding.FragmentLanguageChangeBinding
 
 class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (FragmentLanguageChangeBinding :: inflate)  {
 }
+

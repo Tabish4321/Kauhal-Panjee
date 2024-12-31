@@ -2,7 +2,7 @@ package com.kaushalpanjee.common.model.request
 
 data class UserCreationReq(
 val aadharNo: String,
-val name: String,
+val candidateName: String,
 val gender: String,
 val dateOfBirth: String,
 val stateName: String,
@@ -17,5 +17,7 @@ val email: String?,
 val careOf: String,
 val street: String,
 val appVersion: String,
-val aadharImage: String
+val aadharImage: String,
+val imeiNo: String
 )
+

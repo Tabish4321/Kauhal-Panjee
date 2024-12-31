@@ -1,5 +1,6 @@
 package com.kaushalpanjee.core.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -25,8 +26,16 @@ import java.util.Date
 import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
+import android.provider.Settings
+
 
 object AppUtil {
+
+    @SuppressLint("HardwareIds")
+    fun getAndroidId(context: Context) : String{
+
+        return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+    }
 
     fun createFileName(userId: Int?): String {
         return "${userId}_${System.currentTimeMillis()}.jpg"
