@@ -30,6 +30,7 @@ import android.Manifest // For permission constants
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.pm.PackageManager // For checking permissions
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.Editable
 import android.text.TextWatcher
@@ -62,6 +63,7 @@ import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -3254,22 +3256,85 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 REQUEST_PICK_VOTER_ID -> {
                     // Handle voter ID image
 
-                    voterIdImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.voterimageText.text = fileName
+
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                  //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                   // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        voterIdImage = base64String
+                    }
 
 
                 }
 
                 REQUEST_PICK_DRIVING_LICENSE -> {
-                    // Handle driving license image
-                    drivingLicenceImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.drivingLicenceimageText.text = fileName
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        drivingLicenceImage = base64String
+                    }
+
 
 
                 }
@@ -3277,70 +3342,259 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 REQUEST_PICK_CATEGORY -> {
                     // Handle voter ID image
 
-                    categoryCertiImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
+
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.categoryCertimageText.text = fileName
 
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        categoryCertiImage = base64String
+                    }
 
                 }
 
                 REQUEST_PICK_MINORITY -> {
                     // Handle driving license image
-                    minorityImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
 
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.minorityimageText.text = fileName
+
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        minorityImage = base64String
+                    }
 
                 }
 
 
                 REQUEST_PICK_PWD -> {
                     // Handle driving license image
-                    pwdImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
+
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.pwdImageText.text = fileName
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        pwdImage = base64String
+                    }
 
                 }
 
 
                 REQUEST_PICK_ANTOYADA -> {
                     // Handle driving license image
-                    antoyadaImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.antyodayamageText.text = fileName
 
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        antoyadaImage = base64String
+                    }
+
                 }
 
                 REQUEST_PICK_RSBY -> {
-                    // Handle driving license image
-                    rsbyImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
+
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.rsbyimageText.text = fileName
 
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        rsbyImage = base64String
+                    }
                 }
 
 
                 REQUEST_PICK_RESIDENCE -> {
-                    // Handle driving license image
-                    residenceImage =
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
-                            .toString()
+
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.residentalimageText.text = fileName
+
+
+                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
+                        try {
+                            val inputStream = requireContext().contentResolver.openInputStream(uri)
+                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
+                            inputStream?.close()
+                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            null
+                        }
+                    }
+
+                    // Convert Bitmap to Base64 and assign it to x.imagePath
+                    //  val bitmap: Bitmap = bitmap
+
+                    val base64String: String? = try {
+                        // Convert Bitmap to ByteArray
+                        val outputStream = ByteArrayOutputStream()
+                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
+                        val byteArray = outputStream.toByteArray()
+
+                        // Encode ByteArray to Base64 String
+                        Base64.encodeToString(byteArray, Base64.DEFAULT)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        null
+                    }
+
+                    // Set the Base64 string to x.imagePath
+                    if (base64String != null) {
+                        residenceImage = base64String
+                    }
 
                 }
 
