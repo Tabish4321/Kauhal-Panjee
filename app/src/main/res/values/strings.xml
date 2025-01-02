@@ -168,6 +168,8 @@
     <string name="mrathi">ಕನ್ನಡ</string>
     <string name="read">Read\n</string>
     <string name="write">Write</string>
+    <string name="select_languages">Select Languages</string>
+    <string name="branch_name">Branch Name</string>
 
 
 </resources>

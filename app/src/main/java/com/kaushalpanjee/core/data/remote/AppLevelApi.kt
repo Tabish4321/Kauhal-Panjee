@@ -14,22 +14,32 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankingInsertReq
+import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.DistrictReq
+import com.kaushalpanjee.common.model.request.EducationalInsertReq
+import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
+import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -101,6 +111,43 @@ interface AppLevelApi {
 
 
 
+    @POST(ApiConstant.BANK_DETAILS)
+    suspend fun getBankDetailsAPI(@Body bankingReq: BankingReq ):BankingRes
+
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertPersonalDataAPI(@Body personalInsertReq: PersonalInsertReq ):InsertRes
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertAddressAPI(@Body addressInsertReq: AddressInsertReq ):InsertRes
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertSeccAPI(@Body seccInsertReq: SeccInsertReq ):InsertRes
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertEducatio0nAPI(@Body educationalInsertReq: EducationalInsertReq ):InsertRes
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertEmploymentAPI(@Body employmentInsertReq: EmploymentInsertReq):InsertRes
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertTrainingAPI(@Body trainingInsertReq: TrainingInsertReq ):InsertRes
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertBankingAPI(@Body bankingInsertReq: BankingInsertReq):InsertRes
 
 
     @POST

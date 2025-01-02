@@ -2042,6 +2042,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.8"
+                    android:id="@+id/tvSecccon"
                     android:fontFamily="@font/avenir_next_semi_bold"
                     android:text="@string/secc_information"
                     android:textColor="@color/color_dark_green"
@@ -2548,6 +2549,27 @@
                         android:focusableInTouchMode="false"
                         android:inputType="none"
                         android:hint="@string/select_YearOfPassing"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/languages"
+                        android:textColor="@color/color_dark_green" />
+
+
+                    <TextView
+                        android:id="@+id/tvLanguages"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:hint="@string/select_languages"
                         android:textColor="@color/color_dark_green"
                         android:textSize="15sp"
                         tools:ignore="LabelFor" />
@@ -3662,7 +3684,7 @@
             android:elevation="@dimen/dp_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/languageSelectionRead"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTrainingCons">
 
 
@@ -3723,10 +3745,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopBanking">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:id="@+id/llIfscCode"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/viewBanking"
+                    tools:ignore="NotSibling">
+
+                    <!-- Label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ifsc_code"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- EditText with custom background -->
+                    <EditText
+                        android:id="@+id/etIfscCode"
+                        style="@style/EditText"
+                        android:hint="@string/enter_ifsc_code"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        />
+                    <include
+                        android:id="@+id/progressButton"
+                        layout="@layout/circular_button_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:elevation="@dimen/dp_10"
+                        android:layout_gravity="end"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -3735,7 +3797,7 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/llBankName"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewBanking"
+                    app:layout_constraintTop_toBottomOf="@+id/llIfscCode"
                     tools:ignore="NotSibling">
 
                     <!-- Label -->
@@ -3748,12 +3810,11 @@
                         android:layout_marginBottom="8dp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etBankName"
                         style="@style/EditText"
                         android:hint="@string/bank_name"
                         android:background="@drawable/edittext_background"
-                        android:inputType="text"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
@@ -3765,9 +3826,41 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llBankAcNo"
+                    android:id="@+id/llBranchName"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llBankName"
+                    tools:ignore="NotSibling">
+
+                    <!-- Label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/branch_name"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- EditText with custom background -->
+                    <TextView
+                        android:id="@+id/etBranchName"
+                        style="@style/EditText"
+                        android:hint="@string/branch_name"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:id="@+id/llBankAcNo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llBranchName"
                     tools:ignore="NotSibling">
 
                     <!-- Label -->
@@ -3792,36 +3885,6 @@
                         />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llIfscCode"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llBankAcNo"
-                    tools:ignore="NotSibling">
-
-                    <!-- Label -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ifsc_code"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <EditText
-                        android:id="@+id/etIfscCode"
-                        style="@style/EditText"
-                        android:hint="@string/enter_ifsc_code"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -3830,7 +3893,7 @@
                     android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/llPanNumber"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llIfscCode"
+                    app:layout_constraintTop_toBottomOf="@+id/llBankAcNo"
                     tools:ignore="NotSibling">
 
                     <!-- Label -->
@@ -3851,19 +3914,24 @@
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/btnBnakingSubmit"
+                        style="@style/Button"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:drawablePadding="@dimen/dp_20"
+                        android:text="@string/submit"
+                        app:drawableEndCompat="@drawable/ic_right_arrow" />
+
                 </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/languageSelectionRead"
-            style="@style/EditText"
-            android:text="@string/languages"
-            app:layout_constraintTop_toBottomOf="@+id/tvBankingCons"/>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

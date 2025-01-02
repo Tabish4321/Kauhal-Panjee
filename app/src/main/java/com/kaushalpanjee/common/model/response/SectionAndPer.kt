@@ -16,5 +16,5 @@ data class StatusItem(
     val addressStatus: Int,
     val employmentStatus: Int,
     val bankingStatus: Int,
-    val totalPercentage: String
+    val totalPercentage: Float
 )

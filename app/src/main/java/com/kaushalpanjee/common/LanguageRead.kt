@@ -1,55 +1,54 @@
-package com.kaushalpanjee.common
-
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.chip.Chip
 import com.kaushalpanjee.R
-import com.kaushalpanjee.common.model.Language
 
+class LanguageRead(
+    private val languages: List<Language>,
+    private val selectedLanguageStates: MutableMap<String, MutableMap<String, Boolean>>
+) : RecyclerView.Adapter<LanguageRead.LanguageViewHolder>() {
 
-    class LanguageAdapter(
-        private val context: Context,
-        private val languages: MutableList<Language>
-    ) : RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {
+    inner class LanguageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val languageName: TextView = view.findViewById(R.id.languageName)
+        val readCheckbox: CheckBox = view.findViewById(R.id.readCheckbox)
+        val writeCheckbox: CheckBox = view.findViewById(R.id.writeCheckbox)
+        val speakCheckbox: CheckBox = view.findViewById(R.id.speakCheckbox)
+    }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
-            val view = LayoutInflater.from(context).inflate(R.layout.speak_read_language_selection, parent, false)
-            return LanguageViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.speak_read_language_selection, parent, false)
+        return LanguageViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
+        val language = languages[position]
+        holder.languageName.text = language.name
+
+        // Initialize the state map for the current language if it doesn't exist yet
+        val languageState = selectedLanguageStates.getOrPut(language.name) { mutableMapOf() }
+
+        // Set checkbox states from selectedLanguageStates map
+        holder.readCheckbox.isChecked = languageState["canRead"] ?: false
+        holder.writeCheckbox.isChecked = languageState["canWrite"] ?: false
+        holder.speakCheckbox.isChecked = languageState["canSpeak"] ?: false
+
+        // Update the selectedLanguageStates map when checkboxes are changed
+        holder.readCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            languageState["canRead"] = isChecked
         }
 
-        override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
-            val language = languages[position]
-            holder.languageName.text = language.name
-
-            // Set the state of the chips
-            holder.readChip.isChecked = language.isRead
-            holder.writeChip.isChecked = language.isWrite
-            holder.speakChip.isChecked = language.isSpeak
-
-            // Handle chip state changes
-            holder.readChip.setOnCheckedChangeListener { _, isChecked ->
-                language.isRead = isChecked
-            }
-            holder.writeChip.setOnCheckedChangeListener { _, isChecked ->
-                language.isWrite = isChecked
-            }
-            holder.speakChip.setOnCheckedChangeListener { _, isChecked ->
-                language.isSpeak = isChecked
-            }
+        holder.writeCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            languageState["canWrite"] = isChecked
         }
 
-        override fun getItemCount(): Int = languages.size
-
-        class LanguageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val languageName: TextView = view.findViewById(R.id.languageName)
-            val readChip: Chip = view.findViewById(R.id.readChip)
-            val writeChip: Chip = view.findViewById(R.id.writeChip)
-            val speakChip: Chip = view.findViewById(R.id.speakChip)
+        holder.speakCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            languageState["canSpeak"] = isChecked
         }
     }
 
+    override fun getItemCount() = languages.size
+}

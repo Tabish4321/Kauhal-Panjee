@@ -1,5 +1,7 @@
 package com.kaushalpanjee.common
 
+import Language
+import LanguageRead
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
@@ -12,7 +14,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.common.model.response.BlockList
-import androidx.appcompat.widget.SearchView
 import com.kaushalpanjee.common.model.response.DistrictList
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.VillageList
@@ -33,12 +34,8 @@ import android.graphics.BitmapFactory
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.LinearLayout
 import android.widget.NumberPicker
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
@@ -50,11 +47,14 @@ import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.android.material.chip.Chip
 
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.common.model.Language
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.response.UserDetails
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.setDrawable
@@ -78,6 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val REQUEST_PICK_RSBY = 107
     private val REQUEST_PICK_RESIDENCE = 107
     private val PERMISSION_READ_MEDIA_IMAGES = 201
+
     //Boolean Values
     private var isPersonalVisible = true
     private var isAddressVisible = true
@@ -90,55 +91,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var isClickedPermanentNo = false
 
     //Other Values
-    private var addressLine1 =""
-      private var addressLine2 =""
-      private var pinCode =""
-     private var voterIdImage=""
-     private var voterIdNo=""
-     private var guardianName=""
-     private var motherName=""
-     private var guardianMobileNumber=""
-     private var yearlyIncomeFamily=""
-     private var drivingLicenceNumber=""
-     private var categoryCertiImage=""
-     private var drivingLicenceImage=""
-    private var minorityStatus=""
-    private var minorityImage=""
-    private var pwdStatus=""
-    private var pwdImage=""
-    private var technicalEducationStatus=""
-    private var antoyadaStatus=""
-    private var antoyadaImage=""
-    private var selectedCategoryItem=""
-    private var selectedMaritalItem=""
-    private var selectedHighestEducationItem=""
-    private var shgValidateStatus=""
-    private var shgName=""
-    private var shgCode=""
-    private var shgStatus=""
-    private var rsbyStatus=""
-    private var rsbyImage=""
-    private var pipStatus=""
-    private var residenceImage=""
-    private var highestEducationDate=""
-    private var selectedTechEducationItem=""
-    private var selectedTechEducationItemCode=""
-    private var selectedTechEducationDomainItem=""
-    private var selectedTechEducationDomainCode=""
-    private var selectedTechEducationDate=""
-    private var selectedHeardABoutItem=""
-    private var selectedHeardABoutCode=""
-    private var selectedInterestedIn=""
-    private var selectedPrevCompleteTraining=""
-    private var selectedIEmploymentPref=""
-    private var selectedJobLocation=""
-    private var currentlyEmpStatus=""
-    private var natureEmpEmpStatus=""
-    private var traingBeforeStatus=""
-    private var selectedSector=""
-    private var selectedTrade=""
-    private var haveUHeardStatus=""
-    private  var previouslycompletedduring =""
+    private var addressLine1 = ""
+    private var addressLine2 = ""
+    private var pinCode = ""
+    private var voterIdImage = ""
+    private var voterIdNo = ""
+    private var guardianName = ""
+    private var motherName = ""
+    private var guardianMobileNumber = ""
+    private var yearlyIncomeFamily = 0
+    private var drivingLicenceNumber = ""
+    private var categoryCertiImage = ""
+    private var drivingLicenceImage = ""
+    private var minorityStatus = ""
+    private var minorityImage = ""
+    private var pwdStatus = ""
+    private var pwdImage = ""
+    private var technicalEducationStatus = ""
+    private var antoyadaStatus = ""
+    private var antoyadaImage = ""
+    private var selectedCategoryItem = ""
+    private var selectedMaritalItem = ""
+    private var selectedHighestEducationItem = ""
+    private var shgValidateStatus = ""
+    private var shgName = ""
+    private var shgCode = ""
+    private var shgStatus = ""
+    private var rsbyStatus = ""
+    private var rsbyImage = ""
+    private var pipStatus = ""
+    private var residenceImage = ""
+    private var highestEducationDate = ""
+    private var selectedTechEducationItem = ""
+    private var selectedTechEducationItemCode = ""
+    private var selectedTechEducationDomainItem = ""
+    private var selectedTechEducationDomainCode = ""
+    private var selectedTechEducationDate = ""
+    private var selectedHeardABoutItem = ""
+    private var selectedHeardABoutCode = ""
+    private var selectedInterestedIn = ""
+    private var selectedPrevCompleteTraining = ""
+    private var selectedIEmploymentPref = ""
+    private var selectedJobLocation = ""
+    private var currentlyEmpStatus = ""
+    private var natureEmpEmpStatus = ""
+    private var traingBeforeStatus = ""
+    private var selectedSector = ""
+    private var selectedTrade = ""
+    private var haveUHeardStatus = ""
+    private var totalPercentange = 0.0f
+    private var previouslycompletedduring = ""
+    private var personalStatus = ""
+    private var imagePath = ""
+    private var educationalStatus = ""
+    private var trainingStatus = ""
+    private var seccStatus = ""
+    private var addressStatus = ""
+    private var employmentStatus = ""
+    private var bankingStatus = ""
+    private var bankCode = ""
+    private var bankName = ""
+    private var branchCode = ""
+    private var branchName = ""
+
 
 
 
@@ -147,44 +162,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     // State var
     private lateinit var stateSeccAdapter: ArrayAdapter<String>
-    private var selectedSeccStateCodeItem=""
-    private var  selectedSeccStateLgdCodeItem=""
-    private var selectedSeccStateItem=""
+    private var selectedSeccStateCodeItem = ""
+    private var selectedSeccStateLgdCodeItem = ""
+    private var selectedSeccStateItem = ""
 
 
     // district var
     private lateinit var districtSeccAdapter: ArrayAdapter<String>
-    private var selectedSeccDistrictCodeItem=""
-    private var  selectedSeccDistrictLgdCodeItem=""
-    private var selectedSeccDistrictItem=""
+    private var selectedSeccDistrictCodeItem = ""
+    private var selectedSeccDistrictLgdCodeItem = ""
+    private var selectedSeccDistrictItem = ""
 
 
     //block var
     private lateinit var blockSeccAdapter: ArrayAdapter<String>
-    private var selectedSeccBlockCodeItem=""
-    private var  selectedSeccBlockLgdCodeItem=""
-    private var selectedSeccBlockItem=""
-
+    private var selectedSeccBlockCodeItem = ""
+    private var selectedSeccBlockLgdCodeItem = ""
+    private var selectedSeccBlockItem = ""
 
 
     //GP var
     private lateinit var gpSeccAdapter: ArrayAdapter<String>
-    private var selectedSeccGpCodeItem=""
-    private var  selectedSeccGpLgdCodeItem=""
-    private var selectedSeccGpItem=""
+    private var selectedSeccGpCodeItem = ""
+    private var selectedSeccGpLgdCodeItem = ""
+    private var selectedSeccGpItem = ""
 
 
     //Village var
     private lateinit var villageSeccAdapter: ArrayAdapter<String>
-    private var selectedSeccVillageCodeItem=""
-    private var  selectedbSeccVillageLgdCodeItem=""
-    private var selectedSeccVillageItem=""
+    private var selectedSeccVillageCodeItem = ""
+    private var selectedbSeccVillageLgdCodeItem = ""
+    private var selectedSeccVillageItem = ""
 
 
     //  Present
-    var addressPresentLine1 =""
-    var addressPresentLine2 =""
-    var pinCodePresent =""
+    var addressPresentLine1 = ""
+    var addressPresentLine2 = ""
+    var pinCodePresent = ""
 
 
     private lateinit var categoryAdapter: ArrayAdapter<String>
@@ -199,19 +213,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var state = ArrayList<String>()
     private var stateCode = ArrayList<String>()
     private var stateLgdCode = ArrayList<String>()
-    private var selectedStateCodeItem=""
-    private var  selectedStateLgdCodeItem=""
-    private var selectedStateItem=""
+    private var selectedStateCodeItem = ""
+    private var selectedStateLgdCodeItem = ""
+    private var selectedStateItem = ""
 
-           // district var
+    // district var
     private var districtList: MutableList<DistrictList> = mutableListOf()
     private lateinit var districtAdapter: ArrayAdapter<String>
     private var district = ArrayList<String>()
     private var districtCode = ArrayList<String>()
     private var districtLgdCode = ArrayList<String>()
-    private var selectedDistrictCodeItem=""
-    private var  selectedDistrictLgdCodeItem=""
-    private var selectedDistrictItem=""
+    private var selectedDistrictCodeItem = ""
+    private var selectedDistrictLgdCodeItem = ""
+    private var selectedDistrictItem = ""
 
 
     //block var
@@ -221,10 +235,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var block = ArrayList<String>()
     private var blockCode = ArrayList<String>()
     private var blockLgdCode = ArrayList<String>()
-    private var selectedBlockCodeItem=""
-    private var  selectedbBlockLgdCodeItem=""
-    private var selectedBlockItem=""
-
+    private var selectedBlockCodeItem = ""
+    private var selectedbBlockLgdCodeItem = ""
+    private var selectedBlockItem = ""
 
 
     //GP var
@@ -233,9 +246,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var gp = ArrayList<String>()
     private var gpCode = ArrayList<String>()
     private var gpLgdCode = ArrayList<String>()
-    private var selectedGpCodeItem=""
-    private var  selectedbGpLgdCodeItem=""
-    private var selectedGpItem=""
+    private var selectedGpCodeItem = ""
+    private var selectedbGpLgdCodeItem = ""
+    private var selectedGpItem = ""
 
 
     //Village var
@@ -254,46 +267,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var heardCode = ArrayList<String>()
     private var villageCode = ArrayList<String>()
     private var villageLgdCode = ArrayList<String>()
-    private var selectedVillageCodeItem=""
-    private var  selectedbVillageLgdCodeItem=""
-    private var selectedVillageItem=""
+    private var selectedVillageCodeItem = ""
+    private var selectedbVillageLgdCodeItem = ""
+    private var selectedVillageItem = ""
 
     //  Present Address Variables
 
 
     // State var
     private lateinit var statePresentAdapter: ArrayAdapter<String>
-    private var selectedStatePresentCodeItem=""
-    private var  selectedStatePresentLgdCodeItem=""
-    private var selectedStatePresentItem=""
+    private var selectedStatePresentCodeItem = ""
+    private var selectedStatePresentLgdCodeItem = ""
+    private var selectedStatePresentItem = ""
 
     // district var
     private lateinit var districtPresentAdapter: ArrayAdapter<String>
-    private var selectedDistrictPresentCodeItem=""
-    private var  selectedDistrictPresentLgdCodeItem=""
-    private var selectedDistrictPresentItem=""
+    private var selectedDistrictPresentCodeItem = ""
+    private var selectedDistrictPresentLgdCodeItem = ""
+    private var selectedDistrictPresentItem = ""
 
 
     //block var
     private lateinit var blockPresentAdapter: ArrayAdapter<String>
-    private var selectedBlockPresentCodeItem=""
-    private var  selectedbBlockPresentLgdCodeItem=""
-    private var selectedBlockPresentItem=""
-
+    private var selectedBlockPresentCodeItem = ""
+    private var selectedbBlockPresentLgdCodeItem = ""
+    private var selectedBlockPresentItem = ""
 
 
     //GP var
     private lateinit var gpPresentAdapter: ArrayAdapter<String>
-    private var selectedGpPresentCodeItem=""
-    private var  selectedbGpPresentLgdCodeItem=""
-    private var selectedGpPresentItem=""
+    private var selectedGpPresentCodeItem = ""
+    private var selectedbGpPresentLgdCodeItem = ""
+    private var selectedGpPresentItem = ""
 
 
     //Village var
     private lateinit var villagePresentAdapter: ArrayAdapter<String>
-    private var selectedVillagePresentCodeItem=""
-    private var  selectedbVillagePresentLgdCodeItem=""
-    private var selectedVillagePresentItem=""
+    private var selectedVillagePresentCodeItem = ""
+    private var selectedbVillagePresentLgdCodeItem = ""
+    private var selectedVillagePresentItem = ""
 
     private lateinit var TechEduAdapter: ArrayAdapter<String>
     private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
@@ -303,15 +315,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     //Value for dropdown
     private val categoryList = listOf("SC", "ST", "OBC", "OTHER")
     private val maritalList = listOf("Married", "Unmarried", "Divorce")
-   private val highestEducationList = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+    private val highestEducationList =
+        listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
     private var selectedIndices = listOf<Int>()
     private val searchQuery = MutableLiveData<String>()
-
-
-
-
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -320,7 +328,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         init()
     }
-
 
 
     private fun init() {
@@ -336,26 +343,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTechEducationResponse()
         collectAadharDetailsResponse()
         collectSeccListResponse()
+        collectSetionAndPerResponse()
+        collectBankResponse()
+        collectInsertPersonalResponse()
+        collectAddressResponse()
+        collectInsertSeccResponse()
+        collectInsertEducationalResponse()
+        collectInsertEmployementResponse()
+        collectInsertTrainingResponse()
+        collectInsertBankingResponse()
+        commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
-        commonViewModel.getAadhaarListAPI(AdharDetailsReq(BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext()),"2417000005"))
-        binding.ivProgress.setImageBitmap(
-            createHalfCircleProgressBitmap(300,300,40f,
-                ContextCompat.getColor(requireContext(),R.color.color_dark_green),
-                ContextCompat.getColor(requireContext(),R.color.color_green),35f,20f,
-                ContextCompat.getColor(requireContext(),R.color.black),
-                ContextCompat.getColor(requireContext(),R.color.color_background))
+        commonViewModel.getAadhaarListAPI(
+            AdharDetailsReq(
+                BuildConfig.VERSION_NAME,
+                AppUtil.getAndroidId(requireContext()),
+               userPreferences.getUseID()
+            )
         )
 
-        }
+
+
+    }
 
 
     @SuppressLint("SetTextI18n", "CheckResult")
     private fun listener() {
 
 
-        binding.languageSelectionRead.setOnClickListener {
+        binding.tvLanguages.setOnClickListener {
 
-            showLanguageSelectionDialog()
+            showStyledLanguageSelectionDialog()
         }
 
 
@@ -388,7 +406,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Adapter Category
 
-         categoryAdapter = ArrayAdapter(
+        categoryAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
             categoryList
@@ -429,7 +447,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = SeccAdapter()
-       binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
         //Adapter District setting
 
@@ -454,7 +472,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Adapter GP setting
 
-       gpAdapter = ArrayAdapter(
+        gpAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
             gp
@@ -540,7 +558,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.spinnerStateSecc.setAdapter(stateSeccAdapter)
 
 
-
         //Adapter District setting
 
         districtSeccAdapter = ArrayAdapter(
@@ -550,7 +567,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         binding.spinnerDistrictSecc.setAdapter(districtSeccAdapter)
-
 
 
         //Adapter Block setting
@@ -573,7 +589,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         binding.spinnerGpSecc.setAdapter(gpSeccAdapter)
-
 
 
         //Adapter Village setting
@@ -622,14 +637,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopPersonal.setOnClickListener {
 
-            if (isPersonalVisible){
+            if (isPersonalVisible && personalStatus.contains("0")) {
                 isPersonalVisible = false
                 binding.personalExpand.visible()
                 binding.viewSecc.visible()
-                binding.tvPersonal.setDrawable(null,null,
-                    AppCompatResources.getDrawable(requireContext(),R.drawable.ic_verified),null)
-            }else {
-                binding.tvPersonal.setDrawable(null,null,null,null)
+
+            } else {
                 isPersonalVisible = true
                 binding.personalExpand.gone()
                 binding.viewSecc.gone()
@@ -637,26 +650,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.llTopSecc.setOnClickListener {
-            if (isSeccInfoVisible){
+            if (isSeccInfoVisible && seccStatus.contains("0")) {
 
                 isSeccInfoVisible = false
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
 
-                setDropdownValue(binding.spinnerStateSecc,
-                    selectedStateItem, state)
+                setDropdownValue(
+                    binding.spinnerStateSecc,
+                    selectedStateItem, state
+                )
                 setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
                 setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
                 setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
                 setDropdownValue(binding.spinnerVillageSecc, selectedVillageItem, village)
 
-                selectedSeccStateCodeItem=selectedStateCodeItem
-                selectedSeccDistrictCodeItem=selectedDistrictCodeItem
-                selectedSeccBlockCodeItem=selectedBlockCodeItem
-                selectedSeccGpCodeItem=selectedGpCodeItem
-                selectedSeccVillageCodeItem=selectedVillageCodeItem
+                selectedSeccStateCodeItem = selectedStateCodeItem
+                selectedSeccDistrictCodeItem = selectedDistrictCodeItem
+                selectedSeccBlockCodeItem = selectedBlockCodeItem
+                selectedSeccGpCodeItem = selectedGpCodeItem
+                selectedSeccVillageCodeItem = selectedVillageCodeItem
 
-            }else {
+            } else {
                 isSeccInfoVisible = true
                 binding.expandSecc.gone()
                 binding.viewSeccc.gone()
@@ -666,11 +681,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopAddress.setOnClickListener {
 
-            if (isAddressVisible){
+            if (isAddressVisible && addressStatus.contains("0")) {
                 isAddressVisible = false
                 binding.expandAddress.visible()
                 binding.viewAddress.visible()
-            }else {
+            } else {
                 isAddressVisible = true
                 binding.expandAddress.gone()
                 binding.viewAddress.gone()
@@ -681,11 +696,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             commonViewModel.getTechEducation(BuildConfig.VERSION_NAME)
 
-            if (isEducationalInfoVisible){
+            if (isEducationalInfoVisible && educationalStatus.contains("0")) {
                 isEducationalInfoVisible = false
                 binding.expandEducational.visible()
                 binding.viewEducational.visible()
-            }else {
+            } else {
                 isEducationalInfoVisible = true
                 binding.expandEducational.gone()
                 binding.viewEducational.gone()
@@ -694,11 +709,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopEmployment.setOnClickListener {
 
-            if (isEmploymentInfoVisible){
+            if (isEmploymentInfoVisible && employmentStatus.contains("0")) {
                 isEmploymentInfoVisible = false
                 binding.expandEmployment.visible()
                 binding.viewEmployment.visible()
-            }else {
+            } else {
                 isEmploymentInfoVisible = true
                 binding.expandEmployment.gone()
                 binding.viewEmployment.gone()
@@ -707,11 +722,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopBanking.setOnClickListener {
 
-            if (isBankingInfoVisible){
+            if (isBankingInfoVisible && bankingStatus.contains("0")) {
                 isBankingInfoVisible = false
                 binding.expandBanking.visible()
                 binding.viewBanking.visible()
-            }else {
+            } else {
                 isBankingInfoVisible = true
                 binding.expandBanking.gone()
                 binding.viewBanking.gone()
@@ -719,11 +734,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
         binding.llTopTraining.setOnClickListener {
 
-            if (isTrainingInfoVisible){
+            if (isTrainingInfoVisible && trainingStatus.contains("0")) {
                 isTrainingInfoVisible = false
                 binding.expandTraining.visible()
                 binding.viewTraining.visible()
-            }else {
+            } else {
                 isTrainingInfoVisible = true
                 binding.expandTraining.gone()
                 binding.viewTraining.gone()
@@ -734,7 +749,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             showMonthYearPicker { selectedYear, selectedMonth ->
                 // Handle the selected month and year
 
-                highestEducationDate= "$selectedMonth/$selectedYear"
+                highestEducationDate = "$selectedMonth/$selectedYear"
                 binding.tvClickYearOfPassing.text = "$selectedMonth/$selectedYear"
 
             }
@@ -745,7 +760,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             showMonthYearPicker { selectedYear, selectedMonth ->
                 // Handle the selected month and year
                 binding.tvClickYearOfPassingTech.text = "$selectedMonth/$selectedYear"
-                selectedTechEducationDate="$selectedMonth/$selectedYear"
+                selectedTechEducationDate = "$selectedMonth/$selectedYear"
 
             }
         }
@@ -754,21 +769,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             showMonthYearPicker { selectedYear, selectedMonth ->
                 // Handle the selected month and year
-                 previouslycompletedduring = "$selectedMonth/$selectedYear"
+                previouslycompletedduring = "$selectedMonth/$selectedYear"
                 binding.tvClickPreviouslycompletedduring.text = "$selectedMonth/$selectedYear"
 
             }
         }
 
-        //Category Selection
+        //Ifsc Search
 
-            binding.SpinnerCategory.setOnItemClickListener { parent, view, position, id ->
-                selectedCategoryItem = parent.getItemAtPosition(position).toString()
+        binding.progressButton.centerButton.setOnClickListener {
+
+            commonViewModel.getBankDetailsAPI(BankingReq(BuildConfig.VERSION_NAME,
+                binding.etIfscCode.text.toString()
+            ))
+
         }
 
+        //Category Selection
 
-
-
+        binding.SpinnerCategory.setOnItemClickListener { parent, view, position, id ->
+            selectedCategoryItem = parent.getItemAtPosition(position).toString()
+        }
 
 
         // Marital selection
@@ -794,9 +815,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in courseesName.indices) {
                 selectedTechEducationItemCode = courseesCode[position]
 
-                commonViewModel.getTechEducationDomainAPI(BuildConfig.VERSION_NAME,selectedTechEducationItemCode)
-            }
-            else toastShort("Wrong Selection")
+                commonViewModel.getTechEducationDomainAPI(
+                    BuildConfig.VERSION_NAME,
+                    selectedTechEducationItemCode
+                )
+            } else toastShort("Wrong Selection")
         }
 
         // Tech Education Domain selection
@@ -805,8 +828,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedTechEducationDomainItem = parent.getItemAtPosition(position).toString()
             if (position in courseesDomainName.indices) {
                 selectedTechEducationDomainCode = courseesDomainCode[position]
-            }
-            else toastShort("Wrong Selection")
+            } else toastShort("Wrong Selection")
         }
 
         // Tech Heard about selection
@@ -817,8 +839,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             if (position in heardName.indices) {
                 selectedHeardABoutCode = heardCode[position]
-            }
-            else toastShort("Wrong Selection")
+            } else toastShort("Wrong Selection")
         }
 
         // Secc State selection
@@ -832,15 +853,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getDistrictListApi(selectedSeccStateCodeItem)
 
                 //Clearing Data
-                selectedSeccDistrictCodeItem=""
-                selectedSeccDistrictLgdCodeItem=""
-                selectedSeccDistrictItem=""
+                selectedSeccDistrictCodeItem = ""
+                selectedSeccDistrictLgdCodeItem = ""
+                selectedSeccDistrictItem = ""
                 binding.spinnerDistrictSecc.clearFocus()
                 binding.spinnerDistrictSecc.setText("", false)
 
-                selectedSeccBlockCodeItem=""
-                selectedSeccBlockLgdCodeItem=""
-                selectedBlockItem=""
+                selectedSeccBlockCodeItem = ""
+                selectedSeccBlockLgdCodeItem = ""
+                selectedBlockItem = ""
                 binding.spinnerBlockSecc.clearFocus()
                 binding.spinnerBlockSecc.setText("", false)
 
@@ -851,16 +872,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                selectedSeccGpCodeItem=""
-                selectedSeccGpLgdCodeItem=""
-                selectedSeccGpItem=""
+                selectedSeccGpCodeItem = ""
+                selectedSeccGpLgdCodeItem = ""
+                selectedSeccGpItem = ""
                 binding.spinnerGpSecc.clearFocus()
                 binding.spinnerGpSecc.setText("", false)
 
 
-                selectedSeccVillageCodeItem=""
-                selectedbSeccVillageLgdCodeItem=""
-                selectedSeccVillageItem=""
+                selectedSeccVillageCodeItem = ""
+                selectedbSeccVillageLgdCodeItem = ""
+                selectedSeccVillageItem = ""
                 binding.spinnerVillageSecc.clearFocus()
                 binding.spinnerVillageSecc.setText("", false)
 
@@ -880,24 +901,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccDistrictLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedSeccDistrictCodeItem)
 
-                selectedSeccBlockCodeItem=""
-                selectedSeccBlockLgdCodeItem=""
-                selectedBlockItem=""
+                selectedSeccBlockCodeItem = ""
+                selectedSeccBlockLgdCodeItem = ""
+                selectedBlockItem = ""
                 binding.spinnerBlockSecc.clearFocus()
                 binding.spinnerBlockSecc.setText("", false)
 
 
 
-                selectedSeccGpCodeItem=""
-                selectedSeccGpLgdCodeItem=""
-                selectedSeccGpItem=""
+                selectedSeccGpCodeItem = ""
+                selectedSeccGpLgdCodeItem = ""
+                selectedSeccGpItem = ""
                 binding.spinnerGpSecc.clearFocus()
                 binding.spinnerGpSecc.setText("", false)
 
 
-                selectedSeccVillageCodeItem=""
-                selectedbSeccVillageLgdCodeItem=""
-                selectedSeccVillageItem=""
+                selectedSeccVillageCodeItem = ""
+                selectedbSeccVillageLgdCodeItem = ""
+                selectedSeccVillageItem = ""
                 binding.spinnerVillageSecc.clearFocus()
                 binding.spinnerVillageSecc.setText("", false)
 
@@ -917,16 +938,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getGpListApi(selectedSeccBlockCodeItem)
 
 
-                selectedSeccGpCodeItem=""
-                selectedSeccGpLgdCodeItem=""
-                selectedSeccGpItem=""
+                selectedSeccGpCodeItem = ""
+                selectedSeccGpLgdCodeItem = ""
+                selectedSeccGpItem = ""
                 binding.spinnerGpSecc.clearFocus()
                 binding.spinnerGpSecc.setText("", false)
 
 
-                selectedSeccVillageCodeItem=""
-                selectedbSeccVillageLgdCodeItem=""
-                selectedSeccVillageItem=""
+                selectedSeccVillageCodeItem = ""
+                selectedbSeccVillageLgdCodeItem = ""
+                selectedSeccVillageItem = ""
                 binding.spinnerVillageSecc.clearFocus()
                 binding.spinnerVillageSecc.setText("", false)
 
@@ -946,9 +967,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getVillageListApi(selectedSeccGpCodeItem)
 
 
-                selectedSeccVillageCodeItem=""
-                selectedbSeccVillageLgdCodeItem=""
-                selectedSeccVillageItem=""
+                selectedSeccVillageCodeItem = ""
+                selectedbSeccVillageLgdCodeItem = ""
+                selectedSeccVillageItem = ""
                 binding.spinnerVillageSecc.clearFocus()
                 binding.spinnerVillageSecc.setText("", false)
 
@@ -975,77 +996,74 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //State selection
         binding.SpinnerStateName.setOnItemClickListener { parent, view, position, id ->
-             selectedStateItem = parent.getItemAtPosition(position).toString()
+            selectedStateItem = parent.getItemAtPosition(position).toString()
             if (position in state.indices) {
-                 selectedStateCodeItem = stateCode[position]
-               selectedStateLgdCodeItem = stateLgdCode[position]
+                selectedStateCodeItem = stateCode[position]
+                selectedStateLgdCodeItem = stateLgdCode[position]
                 commonViewModel.getDistrictListApi(selectedStateCodeItem)
 
                 //Clearing Data
-                selectedDistrictCodeItem=""
-                selectedDistrictLgdCodeItem=""
-                selectedDistrictItem=""
+                selectedDistrictCodeItem = ""
+                selectedDistrictLgdCodeItem = ""
+                selectedDistrictItem = ""
                 binding.spinnerDistrict.clearFocus()
                 binding.spinnerDistrict.setText("", false)
 
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
                 binding.spinnerPresentAddressDistrict.clearFocus()
                 binding.spinnerPresentAddressDistrict.setText("", false)
                 binding.SpinnerPresentAddressStateName.clearFocus()
                 binding.SpinnerPresentAddressStateName.setText("", false)
 
 
-                selectedBlockCodeItem=""
-                selectedbBlockLgdCodeItem=""
-                selectedBlockItem=""
+                selectedBlockCodeItem = ""
+                selectedbBlockLgdCodeItem = ""
+                selectedBlockItem = ""
                 binding.spinnerBlock.clearFocus()
                 binding.spinnerBlock.setText("", false)
 
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
                 binding.spinnerPresentAddressBlock.clearFocus()
                 binding.spinnerPresentAddressBlock.setText("", false)
 
 
 
-                selectedGpCodeItem=""
-                selectedbGpLgdCodeItem=""
-                selectedGpItem=""
+                selectedGpCodeItem = ""
+                selectedbGpLgdCodeItem = ""
+                selectedGpItem = ""
                 binding.spinnerGp.clearFocus()
                 binding.spinnerGp.setText("", false)
 
 
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
                 binding.spinnerPresentAddressGp.clearFocus()
                 binding.spinnerPresentAddressGp.setText("", false)
 
 
-                selectedVillageCodeItem=""
-                selectedbVillageLgdCodeItem=""
-                selectedVillageItem=""
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
                 binding.spinnerVillage.clearFocus()
                 binding.spinnerVillage.setText("", false)
 
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
                 binding.spinnerPresentAddressVillage.clearFocus()
                 binding.spinnerPresentAddressVillage.setText("", false)
-
-
 
 
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
         }
-
 
 
         //District selection
@@ -1059,9 +1077,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                selectedBlockCodeItem=""
-                selectedbBlockLgdCodeItem=""
-                selectedBlockItem=""
+                selectedBlockCodeItem = ""
+                selectedbBlockLgdCodeItem = ""
+                selectedBlockItem = ""
                 binding.spinnerBlock.clearFocus()
                 binding.spinnerBlock.setText("", false)
 
@@ -1069,9 +1087,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                selectedGpCodeItem=""
-                selectedbGpLgdCodeItem=""
-                selectedGpItem=""
+                selectedGpCodeItem = ""
+                selectedbGpLgdCodeItem = ""
+                selectedGpItem = ""
                 binding.spinnerGp.clearFocus()
                 binding.spinnerGp.setText("", false)
 
@@ -1081,28 +1099,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerPresentAddressGp.setText("", false)
 
 
-                selectedVillageCodeItem=""
-                selectedbVillageLgdCodeItem=""
-                selectedVillageItem=""
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
                 binding.spinnerVillage.clearFocus()
                 binding.spinnerVillage.setText("", false)
 
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1121,16 +1139,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Block Spinner
         binding.spinnerBlock.setOnItemClickListener { parent, view, position, id ->
-            selectedBlockItem= parent.getItemAtPosition(position).toString()
+            selectedBlockItem = parent.getItemAtPosition(position).toString()
             if (position in block.indices) {
                 selectedBlockCodeItem = blockCode[position]
                 selectedbBlockLgdCodeItem = blockLgdCode[position]
                 commonViewModel.getGpListApi(selectedBlockCodeItem)
 
 
-                selectedGpCodeItem=""
-                selectedbGpLgdCodeItem=""
-                selectedGpItem=""
+                selectedGpCodeItem = ""
+                selectedbGpLgdCodeItem = ""
+                selectedGpItem = ""
                 binding.spinnerGp.clearFocus()
                 binding.spinnerGp.setText("", false)
 
@@ -1138,28 +1156,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                selectedVillageCodeItem=""
-                selectedbVillageLgdCodeItem=""
-                selectedVillageItem=""
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
                 binding.spinnerVillage.clearFocus()
                 binding.spinnerVillage.setText("", false)
 
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1180,7 +1198,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //GP Spinner
         binding.spinnerGp.setOnItemClickListener { parent, view, position, id ->
-            selectedGpItem= parent.getItemAtPosition(position).toString()
+            selectedGpItem = parent.getItemAtPosition(position).toString()
 
             if (position in gp.indices) {
                 selectedGpCodeItem = gpCode[position]
@@ -1188,28 +1206,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getVillageListApi(selectedGpCodeItem)
 
 
-                selectedVillageCodeItem=""
-                selectedbVillageLgdCodeItem=""
-                selectedVillageItem=""
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
                 binding.spinnerVillage.clearFocus()
                 binding.spinnerVillage.setText("", false)
 
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1231,27 +1249,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Village Spinner
         binding.spinnerVillage.setOnItemClickListener { parent, view, position, id ->
-            selectedVillageItem= parent.getItemAtPosition(position).toString()
+            selectedVillageItem = parent.getItemAtPosition(position).toString()
             if (position in village.indices) {
                 selectedVillageCodeItem = villageCode[position]
                 selectedbVillageLgdCodeItem = villageLgdCode[position]
 
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
+
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1272,9 +1291,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-
- //Present Address Spinner Setting
-
+        //Present Address Spinner Setting
 
 
         //State selection
@@ -1282,23 +1299,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedStatePresentItem = parent.getItemAtPosition(position).toString()
             if (position in state.indices) {
                 selectedStatePresentCodeItem = stateCode[position]
-                selectedStatePresentLgdCodeItem= stateLgdCode[position]
+                selectedStatePresentLgdCodeItem = stateLgdCode[position]
                 commonViewModel.getDistrictListApi(selectedStatePresentCodeItem)
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
-                selectedDistrictPresentCodeItem=""
-                selectedDistrictPresentLgdCodeItem=""
-                selectedDistrictPresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1312,7 +1329,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerPresentAddressGp.setText("", false)
 
 
-
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -1322,21 +1338,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.spinnerPresentAddressDistrict.setOnItemClickListener { parent, view, position, id ->
             selectedDistrictPresentItem = parent.getItemAtPosition(position).toString()
             if (position in district.indices) {
-                selectedDistrictPresentCodeItem= districtCode[position]
+                selectedDistrictPresentCodeItem = districtCode[position]
 
                 selectedDistrictPresentLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem)
 
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
-                selectedBlockPresentCodeItem=""
-                selectedbBlockPresentLgdCodeItem=""
-                selectedBlockPresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1347,7 +1363,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerPresentAddressGp.setText("", false)
 
 
-
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -1355,18 +1370,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Block Spinner
         binding.spinnerPresentAddressBlock.setOnItemClickListener { parent, view, position, id ->
-            selectedBlockPresentItem= parent.getItemAtPosition(position).toString()
+            selectedBlockPresentItem = parent.getItemAtPosition(position).toString()
             if (position in block.indices) {
-                selectedBlockPresentCodeItem= blockCode[position]
+                selectedBlockPresentCodeItem = blockCode[position]
                 selectedbBlockPresentLgdCodeItem = blockLgdCode[position]
                 commonViewModel.getGpListApi(selectedBlockPresentCodeItem)
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
-                selectedGpPresentCodeItem=""
-                selectedbGpPresentLgdCodeItem=""
-                selectedGpPresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -1381,15 +1396,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //GP Spinner
         binding.spinnerPresentAddressGp.setOnItemClickListener { parent, view, position, id ->
-            selectedGpPresentItem= parent.getItemAtPosition(position).toString()
+            selectedGpPresentItem = parent.getItemAtPosition(position).toString()
             if (position in gp.indices) {
                 selectedGpPresentCodeItem = gpCode[position]
                 selectedbGpPresentLgdCodeItem = gpLgdCode[position]
                 commonViewModel.getVillageListApi(selectedGpCodeItem)
 
-                selectedVillagePresentCodeItem=""
-                selectedbVillagePresentLgdCodeItem=""
-                selectedVillagePresentItem=""
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
 
                 binding.spinnerPresentAddressVillage.clearFocus()
                 binding.spinnerPresentAddressVillage.setText("", false)
@@ -1402,7 +1417,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Village Spinner
         binding.spinnerPresentAddressVillage.setOnItemClickListener { parent, view, position, id ->
-            selectedVillagePresentItem= parent.getItemAtPosition(position).toString()
+            selectedVillagePresentItem = parent.getItemAtPosition(position).toString()
             if (position in village.indices) {
                 selectedVillagePresentCodeItem = villageCode[position]
                 selectedbVillagePresentLgdCodeItem = villageLgdCode[position]
@@ -1413,14 +1428,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-
-
         // If Present Address is same as permanent
 
         binding.optionllSamePermanentYesSelect.setOnClickListener {
-            addressLine1=binding.etAdressLine.text.toString()
-            addressLine2= binding.etAdressLine2.text.toString()
-            pinCode= binding.etPinCode.text.toString()
+            addressLine1 = binding.etAdressLine.text.toString()
+            addressLine2 = binding.etAdressLine2.text.toString()
+            pinCode = binding.etPinCode.text.toString()
 
 
 
@@ -1428,14 +1441,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictCodeItem.isNotEmpty() &&
                 selectedBlockCodeItem.isNotEmpty() &&
                 selectedGpCodeItem.isNotEmpty() &&
-                selectedVillageCodeItem.isNotEmpty()&& addressLine1.isNotEmpty()
-                && addressLine2.isNotEmpty()&& pinCode.isNotEmpty()) {
+                selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
+                && addressLine2.isNotEmpty() && pinCode.isNotEmpty()
+            ) {
 
                 binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
                 binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
 
-                isClickedPermanentYes=true
-                isClickedPermanentNo= false
+                isClickedPermanentYes = true
+                isClickedPermanentNo = false
 
                 binding.llPresentAddressState.gone()
                 binding.llPresentAddressDistrict.gone()
@@ -1445,47 +1459,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.llPresentAddressAdressLine.gone()
                 binding.btnAddressSubmit.visible()
 
-                addressPresentLine1 =  addressLine1
+                addressPresentLine1 = addressLine1
                 addressPresentLine2 = addressLine2
                 pinCodePresent = pinCode
 
 
                 //Set State Value
-                selectedStatePresentCodeItem=  selectedStateCodeItem
-                selectedStatePresentLgdCodeItem=  selectedStateLgdCodeItem
-                selectedStatePresentItem=  selectedStateItem
+                selectedStatePresentCodeItem = selectedStateCodeItem
+                selectedStatePresentLgdCodeItem = selectedStateLgdCodeItem
+                selectedStatePresentItem = selectedStateItem
 
 
                 //Set District Value
 
-                selectedDistrictPresentCodeItem= selectedDistrictCodeItem
-                selectedDistrictPresentLgdCodeItem=selectedDistrictLgdCodeItem
-                selectedDistrictPresentItem=selectedDistrictItem
+                selectedDistrictPresentCodeItem = selectedDistrictCodeItem
+                selectedDistrictPresentLgdCodeItem = selectedDistrictLgdCodeItem
+                selectedDistrictPresentItem = selectedDistrictItem
 
                 //Set Block Value
 
-                selectedBlockPresentCodeItem=  selectedBlockCodeItem
-                selectedbBlockPresentLgdCodeItem= selectedbBlockLgdCodeItem
-                selectedBlockPresentItem=  selectedBlockItem
+                selectedBlockPresentCodeItem = selectedBlockCodeItem
+                selectedbBlockPresentLgdCodeItem = selectedbBlockLgdCodeItem
+                selectedBlockPresentItem = selectedBlockItem
 
                 //Set GP Value
-                selectedGpPresentCodeItem=  selectedGpCodeItem
-                selectedbGpPresentLgdCodeItem=  selectedbGpLgdCodeItem
-                selectedGpPresentItem=  selectedGpItem
+                selectedGpPresentCodeItem = selectedGpCodeItem
+                selectedbGpPresentLgdCodeItem = selectedbGpLgdCodeItem
+                selectedGpPresentItem = selectedGpItem
 
 
                 //Set Village Value
-                selectedVillagePresentCodeItem=  selectedVillageCodeItem
-                selectedbVillagePresentLgdCodeItem= selectedbVillageLgdCodeItem
-                selectedVillagePresentItem= selectedVillageItem
+                selectedVillagePresentCodeItem = selectedVillageCodeItem
+                selectedbVillagePresentLgdCodeItem = selectedbVillageLgdCodeItem
+                selectedVillagePresentItem = selectedVillageItem
 
                 //others
 
 
-
-
-            }
-            else
+            } else
 
                 toastLong("Please Complete Your Permanent Address First")
 
@@ -1497,16 +1508,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
 
-            addressLine1=binding.etAdressLine.text.toString()
-            addressLine2= binding.etAdressLine2.text.toString()
-            pinCode= binding.etPinCode.text.toString()
+            addressLine1 = binding.etAdressLine.text.toString()
+            addressLine2 = binding.etAdressLine2.text.toString()
+            pinCode = binding.etPinCode.text.toString()
 
             if (selectedStateCodeItem.isNotEmpty() &&
                 selectedDistrictCodeItem.isNotEmpty() &&
                 selectedBlockCodeItem.isNotEmpty() &&
                 selectedGpCodeItem.isNotEmpty() &&
-                selectedVillageCodeItem.isNotEmpty()&& addressLine1.isNotEmpty()
-                && addressLine2.isNotEmpty()&& pinCode.isNotEmpty()) {
+                selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
+                && addressLine2.isNotEmpty() && pinCode.isNotEmpty()
+            ) {
 
 
                 isClickedPermanentNo = true
@@ -1564,9 +1576,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 addressPresentLine1 = ""
                 addressPresentLine2 = ""
                 pinCodePresent = ""
-            }
-            else
-            toastLong("Please Complete Your Permanent Address First")
+            } else
+                toastLong("Please Complete Your Permanent Address First")
 
 
         }
@@ -1576,7 +1587,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionMinorityYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionMinorityNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            minorityStatus= "Yes"
+            minorityStatus = "Yes"
             binding.minorityImageUpload.visible()
 
 
@@ -1586,10 +1597,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionMinorityYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionMinorityNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            minorityStatus= "No"
+            minorityStatus = "No"
 
             binding.minorityImageUpload.gone()
-
 
 
         }
@@ -1600,7 +1610,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionPwdYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionPwdNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            pwdStatus= "Yes"
+            pwdStatus = "Yes"
             binding.pwdImageUpload.visible()
 
 
@@ -1610,7 +1620,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionPwdYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionPwdNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            pwdStatus= "No"
+            pwdStatus = "No"
 
             binding.pwdImageUpload.gone()
 
@@ -1618,13 +1628,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-
         //Have You Heard About DDUGKY Selection If yes
         binding.optionHaveYouHeardYes.setOnClickListener {
             binding.optionHaveYouHeardYes.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionHaveYouHeardNo.setBackgroundResource(R.drawable.card_background)
 
-            haveUHeardStatus= "Yes"
+            haveUHeardStatus = "Yes"
             commonViewModel.getWhereHaveYouHeardAPI()
             binding.upHeardAboutddugky.visible()
             binding.tvHeardAboutddugky.visible()
@@ -1636,7 +1645,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionHaveYouHeardYes.setBackgroundResource(R.drawable.card_background)
             binding.optionHaveYouHeardNo.setBackgroundResource(R.drawable.card_background_selected)
 
-            haveUHeardStatus= "No"
+            haveUHeardStatus = "No"
 
             binding.upHeardAboutddugky.gone()
             binding.tvHeardAboutddugky.gone()
@@ -1650,7 +1659,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionTechnicalEducationYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionTechnicalEducationNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            technicalEducationStatus= "Yes"
+            technicalEducationStatus = "Yes"
             binding.llTechEducation.visible()
             binding.llYearOfPassingTech.visible()
             binding.llDomainOfTech.visible()
@@ -1663,13 +1672,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionTechnicalEducationYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionTechnicalEducationNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            technicalEducationStatus= "No"
+            technicalEducationStatus = "No"
 
             binding.llTechEducation.gone()
             binding.llYearOfPassingTech.gone()
             binding.llDomainOfTech.gone()
             binding.btnEIddressSubmit.visible()
-
 
 
         }
@@ -1680,7 +1688,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionShgYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionShgNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            shgStatus= "Yes"
+            shgStatus = "Yes"
             binding.etShgValidate.visible()
             binding.btnShgValidate.visible()
 
@@ -1691,7 +1699,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionShgYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionShgNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            shgStatus= "No"
+            shgStatus = "No"
             binding.etShgValidate.gone()
             binding.btnShgValidate.gone()
             binding.tvShgValidate.gone()
@@ -1700,13 +1708,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-
         //Antoyada Selection If yes
         binding.optionAntyodayaYesSelect.setOnClickListener {
             binding.optionAntyodayaYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionAntyodayaNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            antoyadaStatus= "Yes"
+            antoyadaStatus = "Yes"
             binding.antyodayaCardUpload.visible()
 
 
@@ -1716,7 +1723,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionAntyodayaYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionAntyodayaNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            antoyadaStatus= "No"
+            antoyadaStatus = "No"
 
             binding.antyodayaCardUpload.gone()
 
@@ -1728,7 +1735,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionllRsbyYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionllRsbyNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            rsbyStatus= "Yes"
+            rsbyStatus = "Yes"
             binding.rsbyUpload.visible()
 
 
@@ -1738,7 +1745,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionllRsbyYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionllRsbyNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            rsbyStatus= "No"
+            rsbyStatus = "No"
 
             binding.rsbyUpload.gone()
 
@@ -1751,7 +1758,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionPipYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionPipNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            pipStatus= "Yes"
+            pipStatus = "Yes"
 
 
         }
@@ -1760,7 +1767,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionPipYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionPipNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            pipStatus= "No"
+            pipStatus = "No"
 
         }
 
@@ -1769,7 +1776,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionCurentlyEmployedYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionCurentlyEmployedNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            currentlyEmpStatus= "Yes"
+            currentlyEmpStatus = "Yes"
 
 
         }
@@ -1778,10 +1785,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionCurentlyEmployedYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionCurentlyEmployedNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            currentlyEmpStatus= "No"
+            currentlyEmpStatus = "No"
 
         }
-
 
 
         //Nature Of Emp Selection If yes
@@ -1789,7 +1795,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            natureEmpEmpStatus= "Yes"
+            natureEmpEmpStatus = "Yes"
 
 
         }
@@ -1798,10 +1804,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            natureEmpEmpStatus= "No"
+            natureEmpEmpStatus = "No"
 
         }
-
 
 
         //Have u received training beforeSelection If yes
@@ -1809,7 +1814,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionrecievedAnyTrainingBeforeYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optioRecievedAnyTrainingBeforeNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            traingBeforeStatus= "Yes"
+            traingBeforeStatus = "Yes"
             binding.llPreviousComTraining.visible()
             binding.tvPrevCom.visible()
             binding.tvClickPreviouslycompletedduring.visible()
@@ -1821,7 +1826,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionrecievedAnyTrainingBeforeYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optioRecievedAnyTrainingBeforeNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            traingBeforeStatus= "No"
+            traingBeforeStatus = "No"
             binding.llPreviousComTraining.gone()
             binding.tvPrevCom.gone()
             binding.tvClickPreviouslycompletedduring.gone()
@@ -1867,7 +1872,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) { _, indices, _ ->
                     // Update selected indices
                     selectedIndices = indices.toList()
-                    binding.tvSectorItems.text = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                    binding.tvSectorItems.text =
+                        "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
                     selectedSector = "${indices.joinToString(", ") { itemList[it] }}"
                 }
                 positiveButton(text = "OK")
@@ -1888,7 +1894,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) { _, indices, _ ->
                     // Update selected indices
                     selectedIndices = indices.toList()
-                    binding.tvTradeItems.text = "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
+                    binding.tvTradeItems.text =
+                        "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
                     selectedTrade = "${indices.joinToString(", ") { itemList[it] }}"
                 }
                 positiveButton(text = "OK")
@@ -1899,8 +1906,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //All Submit Button Here
 
 
+        binding.btnBnakingSubmit.setOnClickListener {
+
+            if (binding.etIfscCode.text.toString().isNotEmpty() && binding.etBankName.text.toString().isNotEmpty() &&
+                binding.etBranchName.text.toString().isNotEmpty() && binding.etBankAcNo.text.toString().isNotEmpty()
+                && binding.etPanNumber.text.toString().isNotEmpty()){
 
 
+                // Hit Insert API
+
+
+
+            }
+
+            else
+                toastShort("Please Complete Bank Details First")
+        }
 
 
         binding.btnTrainingSubmit.setOnClickListener {
@@ -1925,13 +1946,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedSector
             selectedTrade
 
-            if (traingBeforeStatus.isNotEmpty() &&  selectedSector.isNotEmpty()&& selectedTrade.isNotEmpty() ){
+            if (traingBeforeStatus.isNotEmpty() && selectedSector.isNotEmpty() && selectedTrade.isNotEmpty()) {
 
                 //Hit the Insert API
                 toastShort("Submit")
 
-            }
-            else {
+            } else {
 
                 toastShort("Please complete training info first")
 
@@ -1973,8 +1993,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedIEmploymentPref = selectedSEOptions.joinToString(", ")
 
 
-
-
             // Job Location
 
             val selectedJobLocChipIds = binding.chipJobLocGroup.checkedChipIds
@@ -1992,22 +2010,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-            if (currentlyEmpStatus.isEmpty()){
+            if (currentlyEmpStatus.isEmpty()) {
 
                 toastShort("Please select Currently Employed")
 
 
-
-
-            }
-
-            else if (selectedInterestedIn.isEmpty()){
+            } else if (selectedInterestedIn.isEmpty()) {
 
                 toastShort("Please select Interested in ")
 
-            }
-
-            else{
+            } else {
 
                 //HitInsertAPI
 
@@ -2016,8 +2028,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedInterestedIn
                 selectedIEmploymentPref
                 selectedJobLocation
-                val currentSalary= binding.etCurrentEarning
-                val salaryExpectation= binding.etExpectationSalary
+                val currentSalary = binding.etCurrentEarning
+                val salaryExpectation = binding.etExpectationSalary
 
             }
 
@@ -2028,14 +2040,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.btnEIddressSubmit.setOnClickListener {
 
 
-
             selectedTechEducationDate
-            if (selectedHighestEducationItem.isNotEmpty()&& highestEducationDate.isNotEmpty()&&
-                technicalEducationStatus.contains("No")){
+            if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
+                technicalEducationStatus.contains("No")
+            ) {
 
 
-                selectedTechEducationItemCode =""
-                selectedTechEducationDomainCode=""
+                selectedTechEducationItemCode = ""
+                selectedTechEducationDomainCode = ""
 
                 // Hit the Insert Api
 
@@ -2047,13 +2059,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 toastLong("Submit")
 
 
-
-
-
-            }
-            else if (selectedHighestEducationItem.isNotEmpty()&& highestEducationDate.isNotEmpty()&&
-                technicalEducationStatus.contains("Yes")&& selectedTechEducationItemCode.isNotEmpty()&&
-                selectedTechEducationDomainCode.isNotEmpty()){
+            } else if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
+                technicalEducationStatus.contains("Yes") && selectedTechEducationItemCode.isNotEmpty() &&
+                selectedTechEducationDomainCode.isNotEmpty()
+            ) {
 
                 // Hit the Insert Api
                 selectedTechEducationItemCode
@@ -2065,39 +2074,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 toastLong("Submit")
 
 
-            }
-            else toastLong("Please complete Education Info First")
+            } else toastLong("Please complete Education Info First")
 
         }
 
 
         binding.btnShgValidate.setOnClickListener {
 
-            commonViewModel.shgValidateAPI(ShgValidateReq(binding.etShgValidate.text.toString(),"9"))  //41358
+            commonViewModel.shgValidateAPI(
+                ShgValidateReq(
+                    binding.etShgValidate.text.toString(),
+                    "9"
+                )
+            )  //41358
 
             lifecycleScope.launch {
                 delay(1000)
-                if (shgValidateStatus == "Y"){
+                if (shgValidateStatus == "Y") {
 
                     binding.tvShgValidate.visible()
                     binding.btnShgValidate.gone()
-                    shgCode= binding.etShgValidate.text.toString()
+                    shgCode = binding.etShgValidate.text.toString()
                     binding.tvShgValidate.text = "Validate Successfully: $shgName"
-                }
-                else toastLong("Validation Failed please check your SHG Code")
+                } else toastLong("Validation Failed please check your SHG Code")
             }
-            }
+        }
 
         binding.btnAddressSubmit.setOnClickListener {
 
-            addressLine1=binding.etAdressLine.text.toString()
-            addressLine2= binding.etAdressLine2.text.toString()
-            pinCode= binding.etPinCode.text.toString()
+            addressLine1 = binding.etAdressLine.text.toString()
+            addressLine2 = binding.etAdressLine2.text.toString()
+            pinCode = binding.etPinCode.text.toString()
 
-            if (isClickedPermanentNo){
-                addressPresentLine1=binding.etPresentAddressAdressLine.text.toString()
-                addressPresentLine2= binding.etPresentLine2.text.toString()
-                pinCodePresent= binding.etPresentPinCode.text.toString()
+            if (isClickedPermanentNo) {
+                addressPresentLine1 = binding.etPresentAddressAdressLine.text.toString()
+                addressPresentLine2 = binding.etPresentLine2.text.toString()
+                pinCodePresent = binding.etPresentPinCode.text.toString()
 
 
             }
@@ -2112,9 +2124,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictPresentCodeItem.isNotEmpty() &&
                 selectedBlockPresentCodeItem.isNotEmpty() &&
                 selectedGpPresentCodeItem.isNotEmpty() &&
-                selectedVillagePresentCodeItem.isNotEmpty()&&addressLine1.isNotEmpty()&&
-                pinCode.isNotEmpty()&& addressPresentLine1.isNotEmpty()&&
-                pinCodePresent.isNotEmpty()){
+                selectedVillagePresentCodeItem.isNotEmpty() && addressLine1.isNotEmpty() &&
+                pinCode.isNotEmpty() && addressPresentLine1.isNotEmpty() &&
+                pinCodePresent.isNotEmpty()
+            ) {
 
                 // Hit The Insert API
                 selectedStateCodeItem
@@ -2135,36 +2148,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 pinCodePresent
                 residenceImage
 
-                 toastLong("Success")
+                toastLong("Success")
 
 
-
-            }
-            else toastLong("Please complete your address first")
+            } else toastLong("Please complete your address first")
         }
 
         binding.btnSeccSubmit.setOnClickListener {
             if (selectedSeccStateCodeItem.isNotEmpty() && selectedDistrictCodeItem.isNotEmpty()
-                && selectedSeccBlockCodeItem.isNotEmpty()&& selectedSeccGpCodeItem.isNotEmpty()
-                && selectedSeccVillageCodeItem.isNotEmpty()){
+                && selectedSeccBlockCodeItem.isNotEmpty() && selectedSeccGpCodeItem.isNotEmpty()
+                && selectedSeccVillageCodeItem.isNotEmpty()
+            ) {
 
                 toastLong("Success")
 
-            }
-            else
+            } else
                 toastLong("Please Complete SECC info First")
 
         }
 
         binding.btnPersonalSubmit.setOnClickListener {
 
-            guardianName= binding.etGName.text.toString()
-            motherName= binding.etMotherName.text.toString()
-            guardianMobileNumber= binding.etGNumber.text.toString()
-            yearlyIncomeFamily= binding.etFIncome.text.toString()
-            voterIdNo= binding.etllVoterId.text.toString()
+            guardianName = binding.etGName.text.toString()
+            motherName = binding.etMotherName.text.toString()
+            guardianMobileNumber = binding.etGNumber.text.toString()
+            val yearlyIncomeFamily = binding.etFIncome.text.toString().toIntOrNull() ?: 0
+            voterIdNo = binding.etllVoterId.text.toString()
             voterIdImage
-            drivingLicenceNumber= binding.etdrivingId.text.toString()
+            drivingLicenceNumber = binding.etdrivingId.text.toString()
             drivingLicenceImage
             selectedCategoryItem
             categoryCertiImage
@@ -2183,12 +2194,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             rsbyImage
             pipStatus
 
+            if(guardianName.isNotEmpty()&& motherName.isNotEmpty()&& guardianMobileNumber.isNotEmpty()
+                &&selectedCategoryItem.isNotEmpty()&& selectedMaritalItem.isNotEmpty()&& minorityStatus.isNotEmpty()&&
+                pwdStatus.isNotEmpty()){
+
+                //Hit Insert API
+                commonViewModel.insertPersonalDataAPI(PersonalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"1" ,
+                    guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
+                    selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,"","","",shgStatus,shgCode,antoyadaStatus,antoyadaImage,
+                    rsbyStatus,rsbyImage,pipStatus))
+
+
+
+
+
+            }
+            else toastShort("Kindly complete Personal detail Mandatory Fields")
+
 
         }
 
 
         // External Validation
-
 
 
         //image Upload
@@ -2215,14 +2242,271 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.antyodayaCardUpload.setOnClickListener {
             checkAndRequestPermissionsForPurpose("ANTOYADA_CERTIFICATE")
         }
-                binding.rsbyUpload.setOnClickListener {
-                    checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
-                }
+        binding.rsbyUpload.setOnClickListener {
+            checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
+        }
 
         binding.uploadResidenceImage.setOnClickListener {
             checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
         }
     }
+
+
+    private fun collectInsertPersonalResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertPersonalDataAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectAddressResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertAddressAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectInsertSeccResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertSeccAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectInsertEducationalResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertEducationAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectInsertEmployementResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertEmploymentAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectInsertTrainingResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertTrainingAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectInsertBankingResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertBankingAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+
+                                }
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     private fun collectStateResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getStateList) {
@@ -2231,9 +2515,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                            toastShort(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getStateResponse ->
@@ -2248,6 +2533,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     stateCode.add(x.stateCode) // Replace with actual field
                                     stateLgdCode.add(x.lgdStateCode) // Replace with actual field
                                 }
+
                                 stateAdapter.notifyDataSetChanged()
                             } else if (getStateResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
@@ -2272,6 +2558,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getDistrictResponse ->
@@ -2310,6 +2597,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getAadharDetailsRes ->
@@ -2324,6 +2612,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     binding.tvAaadharGender.setText(x.gender)
                                     binding.tvAaadharDob.setText(x.dateOfBirth)
                                     binding.tvAaadharAddress.setText(x.comAddress)
+
                                     val bytes: ByteArray =
                                         Base64.decode(x.imagePath, Base64.DEFAULT)
                                     val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
@@ -2343,7 +2632,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-
     private fun collectBlockResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBlockList) {
@@ -2355,6 +2643,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getBlockResponse ->
@@ -2393,6 +2682,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getGpResponse ->
@@ -2431,6 +2721,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getVillageResponse ->
@@ -2444,6 +2735,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     village.add(x.villageName)
                                     villageCode.add(x.villageCode) // Replace with actual field
                                     villageLgdCode.add(x.lgdVillageCode) // Replace with actual field
+
                                 }
                                 villageAdapter.notifyDataSetChanged()
                             } else if (getVillageResponse.responseCode == 301) {
@@ -2470,11 +2762,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getTechEduRes ->
                             if (getTechEduRes.responseCode == 200) {
-                              val courseList = getTechEduRes.courseList
+                                val courseList = getTechEduRes.courseList
                                 courseesName.clear()
                                 courseesCode.clear()
                                 for (x in courseList) {
@@ -2494,6 +2787,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
     private fun collectTechEducationDomainResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.techEducationDomain) {
@@ -2505,6 +2799,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getTechEduRes ->
@@ -2542,6 +2837,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getWhereHeard ->
@@ -2579,9 +2875,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
-                        it.data?.let { getSeccList->
+                        it.data?.let { getSeccList ->
                             if (getSeccList.responseCode == 200) {
                                 val heardList = getSeccList.wrappedList
 
@@ -2599,6 +2896,127 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                             } else if (getSeccList.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            }
+                            else if (getSeccList.responseCode == 302) {
+                                showSnackBar(getSeccList.responseMsg)
+                            }
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectSetionAndPerResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getSecctionAndPerAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getSecctionAndPerAPI ->
+                            if (getSecctionAndPerAPI.responseCode == 200) {
+                                val percentageList = getSecctionAndPerAPI.wrappedList
+
+                                for (x in percentageList) {
+
+                                    personalStatus= x.personalStatus.toString()
+                                    educationalStatus= x.educationalStatus.toString()
+                                    trainingStatus= x.trainingStatus.toString()
+                                    seccStatus= x.seccStatus .toString()
+                                    addressStatus= x.addressStatus.toString()
+                                    employmentStatus= x.employmentStatus.toString()
+                                    bankingStatus= x.bankingStatus.toString()
+                                    totalPercentange= x.totalPercentage
+
+                                }
+                                // set dynamic meter
+
+                                binding.ivProgress.setImageBitmap(
+                                    createHalfCircleProgressBitmap(
+                                        300, 300, totalPercentange,
+                                        ContextCompat.getColor(requireContext(), R.color.color_dark_green),
+                                        ContextCompat.getColor(requireContext(), R.color.color_green), 35f, 20f,
+                                        ContextCompat.getColor(requireContext(), R.color.black),
+                                        ContextCompat.getColor(requireContext(), R.color.color_background)
+                                    )
+                                )
+
+                                // set section completed status
+
+                                if (personalStatus.contains("1")){
+
+                                    binding.tvPersonal.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+                                if (addressStatus.contains("1")){
+
+                                    binding.tv.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+                                if (seccStatus.contains("1")){
+
+                                    binding.tvSecccon.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+                                if (educationalStatus.contains("1")){
+
+                                    binding.tvEducational.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+
+                                if (employmentStatus.contains("1")){
+
+                                    binding.tvEmployment.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+
+                                if (trainingStatus.contains("1")){
+
+                                    binding.tvTraining.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+
+                                if (bankingStatus.contains("1")){
+
+                                    binding.tvBanking.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+
+
+                            } else if (getSecctionAndPerAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
                                 showSnackBar("Something went wrong")
@@ -2623,13 +3041,61 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             showSnackBar(baseErrorResponse.message)
                         }
                     }
+
                     is Resource.Success -> {
                         hideProgressBar()
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
                                 shgValidateStatus = getValidateStatus.body()?.Valid.toString()
-                                 shgName = getValidateStatus.body()?.shg_name.toString()
+                                shgName = getValidateStatus.body()?.shg_name.toString()
 
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectBankResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getBankDetailsAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getBankList ->
+                            if (getBankList.responseCode == 200) {
+                                val bankList = getBankList.bankDetailsList
+
+                                for (x in bankList) {
+                                    bankCode=   x.bankCode
+                                    bankName=    x.bankName
+                                    branchCode=  x.branchCode
+                                    branchName=   x.branchName
+                                }
+
+                                binding.btnBnakingSubmit.visible()
+
+                                binding.etBankName.setText(bankName)
+                                binding.etBranchName.setText(branchName)
+
+
+                            } else if (getBankList.responseCode == 301) {
+                                showSnackBar(getBankList.responseMsg)
+                            }
+                            else if (getBankList.responseCode == 302) {
+                                showSnackBar(getBankList.responseMsg)
+                            }
+                            else {
+                                showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -2640,12 +3106,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-    private fun setDropdownValue(autoCompleteTextView: AutoCompleteTextView, value: String, dataList: List<String>) {
+    private fun setDropdownValue(
+        autoCompleteTextView: AutoCompleteTextView,
+        value: String,
+        dataList: List<String>
+    ) {
         if (dataList.contains(value)) { // Check if the value exists in the list
-            autoCompleteTextView.setText(value, false) // Set text without filtering or triggering dropdown
+            autoCompleteTextView.setText(
+                value,
+                false
+            ) // Set text without filtering or triggering dropdown
         }
     }
-
 
 
     private fun checkAndRequestPermissionsForPurpose(purpose: String) {
@@ -2654,7 +3126,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         when {
             // Android 13+ (API level 33 and above)
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES)
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    )
                     != PackageManager.PERMISSION_GRANTED
                 ) {
                     requestPermissions(
@@ -2668,7 +3143,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             // Android 6.0 to 12 (API levels 23 to 32)
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
                     != PackageManager.PERMISSION_GRANTED
                 ) {
                     requestPermissions(
@@ -2749,7 +3227,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -2761,7 +3238,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 PERMISSION_READ_MEDIA_IMAGES -> handlePermissionGranted(currentRequestPurpose ?: "")
             }
         } else {
-            Toast.makeText(requireContext(), "Permission denied for $currentRequestPurpose", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Permission denied for $currentRequestPurpose",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -2773,8 +3254,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 REQUEST_PICK_VOTER_ID -> {
                     // Handle voter ID image
 
-                    voterIdImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    voterIdImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.voterimageText.text = fileName
 
@@ -2783,11 +3265,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 REQUEST_PICK_DRIVING_LICENSE -> {
                     // Handle driving license image
-                    drivingLicenceImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    drivingLicenceImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.drivingLicenceimageText.text = fileName
-
 
 
                 }
@@ -2795,8 +3277,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 REQUEST_PICK_CATEGORY -> {
                     // Handle voter ID image
 
-                    categoryCertiImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    categoryCertiImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.categoryCertimageText.text = fileName
 
@@ -2805,8 +3288,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 REQUEST_PICK_MINORITY -> {
                     // Handle driving license image
-                    minorityImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    minorityImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
 
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.minorityimageText.text = fileName
@@ -2814,10 +3298,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
 
 
-                        REQUEST_PICK_PWD -> {
+                REQUEST_PICK_PWD -> {
                     // Handle driving license image
-                    pwdImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    pwdImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.pwdImageText.text = fileName
@@ -2827,8 +3312,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 REQUEST_PICK_ANTOYADA -> {
                     // Handle driving license image
-                    antoyadaImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    antoyadaImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.antyodayamageText.text = fileName
@@ -2837,8 +3323,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 REQUEST_PICK_RSBY -> {
                     // Handle driving license image
-                    rsbyImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    rsbyImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.rsbyimageText.text = fileName
@@ -2848,8 +3335,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 REQUEST_PICK_RESIDENCE -> {
                     // Handle driving license image
-                    residenceImage=
-                        selectedImageUri?.let { AppUtil.convertUriToBase64(it,requireContext()) }.toString()
+                    residenceImage =
+                        selectedImageUri?.let { AppUtil.convertUriToBase64(it, requireContext()) }
+                            .toString()
 
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.residentalimageText.text = fileName
@@ -2900,63 +3388,97 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             .setNegativeButton("Cancel", null)
             .show()
     }
-private fun handleSearchQuery(query: String) {
 
-    commonViewModel.getSeccListAPI(SeccReq(BuildConfig.VERSION_NAME,selectedSeccStateLgdCodeItem,query,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+    private fun handleSearchQuery(query: String) {
+
+        commonViewModel.getSeccListAPI(
+            SeccReq(
+                BuildConfig.VERSION_NAME,
+                selectedbSeccVillageLgdCodeItem
+                ,
+                query,
+                userPreferences.getUseID(),
+                AppUtil.getAndroidId(requireContext())
+            )
+        )
 
 
-}
+    }
 
 
+    // This map will hold the checkbox states, ensuring persistent selection across dialog opens
+    private val selectedLanguageStates = mutableMapOf<String, MutableMap<String, Boolean>>()
 
-
-    private fun showLanguageSelectionDialog() {
+    private fun showStyledLanguageSelectionDialog() {
         // Create a dialog
-        val dialog = Dialog(requireContext(), R.style.FullScreenDialog)
+        val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialoge_language)
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.show()
 
-        // Get the RecyclerView
+        // Get references to UI components
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewLanguages)
+        val btnSave = dialog.findViewById<Button>(R.id.btnSave)
+        val btnCancel = dialog.findViewById<Button>(R.id.btnCancel)
 
+        // Prepare the RecyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val languageRecyclerView = dialog.findViewById<RecyclerView>(R.id.languageRecyclerView)
-        val saveButton = dialog.findViewById<Button>(R.id.btnSave)
-        val cancelButton = dialog.findViewById<Button>(R.id.btnCancel)
-
-        // List of languages
-        val languages = mutableListOf(
+        val languages = listOf(
             Language("हिंदी"),
             Language("English"),
             Language("ಕನ್ನಡ"),
             Language("ଓଡିଆ"),
             Language("मराठी"),
-            Language("മലയാളം"),
             Language("தமிழ்"),
             Language("తెలుగు")
         )
 
-        // Set up RecyclerView with the adapter
-        val adapter = LanguageAdapter(requireContext(), languages)
-        languageRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        languageRecyclerView.adapter = adapter
+        // Create adapter with the language list and the map to store checkbox states
+        val adapter = LanguageRead(languages, selectedLanguageStates)
+        recyclerView.adapter = adapter
 
-        // Save button logic
-        saveButton.setOnClickListener {
-            // Handle saving logic (e.g., save the selected languages to a database)
-            Toast.makeText(requireContext(), "Languages saved successfully!", Toast.LENGTH_SHORT).show()
+        // Handle Save button click
+        btnSave.setOnClickListener {
+            // Prepare the result as a string for display
+            val result = StringBuilder()
+
+            for (language in languages) {
+                // Get the checkbox states for each language
+                val languageState = selectedLanguageStates[language.name] ?: mutableMapOf()
+                if (languageState["canRead"] == true || languageState["canWrite"] == true || languageState["canSpeak"] == true) {
+                    // Only append the properties that are true
+                    val languageResult = StringBuilder("${language.name}: ")
+                    if (languageState["canRead"] == true) languageResult.append("Read ")
+                    if (languageState["canWrite"] == true) languageResult.append("Write ")
+                    if (languageState["canSpeak"] == true) languageResult.append("Speak ")
+
+                    // Trim trailing spaces and append to the result
+                    result.append(languageResult.trim().toString()).append("\n")
+                }
+            }
+
+            // Show the result in the TextView
+            binding.tvLanguages.text = result
+
+            // Display the selected values (example: Toast or Log)
+            if (result.isNotEmpty()) {
+                Toast.makeText(requireContext(), result.toString(), Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(), "No languages selected", Toast.LENGTH_SHORT).show()
+            }
+
             dialog.dismiss()
         }
 
-        // Cancel button logic
-        cancelButton.setOnClickListener {
+        // Handle Cancel button click
+        btnCancel.setOnClickListener {
             dialog.dismiss()
         }
 
         // Show the dialog
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
     }
 
-}
 
+}
 

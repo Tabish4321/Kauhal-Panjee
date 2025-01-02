@@ -23,15 +23,25 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankingInsertReq
+import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.EducationalInsertReq
+import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -143,6 +153,77 @@ class CommonRepository @Inject constructor(
             appLevelApi.getSecctionAndPerAPI(sectionAndPerReq)
         }
     }
+
+
+    suspend fun insertPersonalDataAPI(personalInsertReq: PersonalInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertPersonalDataAPI(personalInsertReq)
+        }
+    }
+
+
+
+    suspend fun insertAddressAPI(addressInsertReq: AddressInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertAddressAPI(addressInsertReq)
+        }
+    }
+
+    suspend fun insertSeccAPI(seccInsertReq: SeccInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertSeccAPI(seccInsertReq)
+        }
+    }
+
+
+    suspend fun insertEducationAPI(educationalInsertReq: EducationalInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertEducatio0nAPI(educationalInsertReq)
+        }
+    }
+
+    suspend fun insertEmploymentAPI(employmentInsertReq: EmploymentInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertEmploymentAPI(employmentInsertReq)
+        }
+    }
+
+
+    suspend fun insertTrainingAPI(trainingInsertReq: TrainingInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertTrainingAPI(trainingInsertReq)
+        }
+    }
+
+
+
+    suspend fun insertBankingAPI(bankingInsertReq: BankingInsertReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertBankingAPI(bankingInsertReq)
+        }
+    }
+
+
+
+
+
+
+
+
+    suspend fun getBankDetailsAPI(bankingReq: BankingReq): Flow<Resource<out BankingRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getBankDetailsAPI(bankingReq)
+        }
+    }
+
 
 
     suspend fun postOnAUAFaceAuthNREGA(url:String, uidaiKycRequest: UidaiKycRequest): Flow<Resource<out Response<UidaiResp>>> {

@@ -44,6 +44,7 @@ import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppConstant.Constants.LANGUAGE
 import com.kaushalpanjee.core.util.AppConstant.Constants.PRE_PRODUCTION_CODE
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.DownloadHelper
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.copyToClipboard
@@ -652,7 +653,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             commonViewModel.getCreateUserAPI(UserCreationReq(maskedString,name,gender,dob,state,
                                                selectedStateCode,dist,block,po,village,pinCode,phone,
 
-                                               email,careOf,street,BuildConfig.VERSION_NAME,photo,"6954767465415634"))
+                                               email,careOf,street,BuildConfig.VERSION_NAME,photo,AppUtil.getAndroidId(requireContext())))
 
 
 

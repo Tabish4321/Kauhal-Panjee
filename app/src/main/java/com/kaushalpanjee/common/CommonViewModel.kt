@@ -22,13 +22,23 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankingInsertReq
+import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.EducationalInsertReq
+import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -233,7 +243,126 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
+    private  var _insertPersonalDataAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertPersonalDataAPI = _insertPersonalDataAPI.asStateFlow()
 
+
+    fun insertPersonalDataAPI(personalInsertReq: PersonalInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertPersonalDataAPI(personalInsertReq).collectLatest {
+                _insertPersonalDataAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private  var _insertAddressAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertAddressAPI = _insertAddressAPI.asStateFlow()
+
+
+    fun insertAddressAPI(addressInsertReq: AddressInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertAddressAPI(addressInsertReq).collectLatest {
+                _insertAddressAPI.emit(it)
+            }
+        }
+
+
+    }
+
+    private  var _insertSeccAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertSeccAPI = _insertSeccAPI.asStateFlow()
+
+
+    fun insertSeccAPI(seccInsertReq: SeccInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertSeccAPI(seccInsertReq).collectLatest {
+                _insertSeccAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+
+    private  var _insertEducationAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertEducationAPI = _insertEducationAPI.asStateFlow()
+
+
+    fun insertEducationAPI(educationalInsertReq: EducationalInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertEducationAPI(educationalInsertReq).collectLatest {
+                _insertEducationAPI.emit(it)
+            }
+        }
+
+
+    }
+
+    private  var _insertEmploymentAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertEmploymentAPI = _insertEmploymentAPI.asStateFlow()
+
+
+    fun insertEmploymentAPI(employmentInsertReq: EmploymentInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertEmploymentAPI(employmentInsertReq).collectLatest {
+                _insertEmploymentAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private  var _insertTrainingAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertTrainingAPI = _insertTrainingAPI.asStateFlow()
+
+
+    fun insertTrainingAPI(trainingInsertReq: TrainingInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertTrainingAPI(trainingInsertReq).collectLatest {
+                _insertTrainingAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+
+
+    private  var _insertBankingAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertBankingAPI = _insertBankingAPI.asStateFlow()
+
+
+    fun insertBankingAPI(bankingInsertReq: BankingInsertReq) {
+        viewModelScope.launch {
+            commonRepository.insertBankingAPI(bankingInsertReq).collectLatest {
+                _insertBankingAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+
+    private  var _getBankDetailsAPI =  MutableStateFlow<Resource<out BankingRes>>(Resource.Loading())
+    val getBankDetailsAPI = _getBankDetailsAPI.asSharedFlow()
+
+
+    fun getBankDetailsAPI(bankingReq: BankingReq ){
+        viewModelScope.launch {
+            commonRepository.getBankDetailsAPI(bankingReq).collectLatest {
+                _getBankDetailsAPI.emit(it)
+            }
+        }
+
+
+    }
 
     private var _postOnAUAFaceAuthNREGA = MutableSharedFlow<Resource<out Response<UidaiResp>>>()
     val postOnAUAFaceAuthNREGA = _postOnAUAFaceAuthNREGA.asSharedFlow()

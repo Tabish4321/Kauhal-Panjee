@@ -37,6 +37,8 @@ object ApiConstant {
      const val  API_AADHAAR_DETAILS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}userDetails"
      const val  API_SECC_DETAILS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}seccDetails"
      const val  API_SECTION_PERCENTAGE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}sectionStatus"
+     const val  API_INSERT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertDetails"
+     const val  BANK_DETAILS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}bankDetails"
 
 
 

@@ -1,45 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:weightSum="4"
     android:padding="8dp">
 
     <TextView
         android:id="@+id/languageName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Language"
-        android:textSize="16sp"
-        android:gravity="start"/>
+        android:textSize="16sp" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
+    <CheckBox
+        android:id="@+id/readCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:layout_marginStart="@dimen/dp_10"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:text="Read" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/readChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Read"
-            app:checkable="true"/>
+    <CheckBox
+        android:id="@+id/writeCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/writeChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Write"
-            app:checkable="true"/>
+        android:text="Write" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/speakChip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Speak"
-            app:checkable="true"/>
-    </com.google.android.material.chip.ChipGroup>
+    <CheckBox
+        android:id="@+id/speakCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Speak" />
 </LinearLayout>
