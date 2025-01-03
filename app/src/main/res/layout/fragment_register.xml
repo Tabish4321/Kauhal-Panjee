@@ -59,23 +59,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title="">
 
-            <!-- <ImageView
-                 android:id="@+id/progressBackButton"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginHorizontal="@dimen/dp_15"
-                 android:elevation="@dimen/dp_10"
-                 android:src="@drawable/ic_arrow_back_ios_new"
-                 android:visibility="visible" />-->
-
-            <ImageView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:id="@+id/ivTopLogo"
-                android:layout_width="@dimen/dp_200"
-                android:layout_height="@dimen/dp_200"
+                android:gravity="center"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_0"
-                android:src="@drawable/ic_top_logo"
-                android:visibility="visible" />
+                android:layout_marginHorizontal="@dimen/dp_12"
+                >
+
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_70"
+                    android:id="@+id/ivDDGKY"
+                    android:src="@drawable/ic_ddgky"
+                    />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_70"
+                    android:id="@+id/ivRSETI"
+                    android:src="@drawable/ic_rseti"
+                    android:layout_marginStart="@dimen/dp_20"
+
+                    />
+
+            </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
 
         <ImageView

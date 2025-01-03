@@ -317,7 +317,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/personalExpand"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -410,7 +410,8 @@
                         android:hint="@string/guardian_alternative_numbern"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
-                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:inputType="number"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
@@ -441,6 +442,7 @@
                         android:hint="@string/father_incomer"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
+                        android:inputType="number"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
@@ -2835,7 +2837,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEmployment">
@@ -3745,7 +3747,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopBanking">

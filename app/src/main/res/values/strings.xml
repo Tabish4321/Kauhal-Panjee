@@ -78,13 +78,13 @@
     <string name="select_YearOfPassingTech">Year of passing of technical qualification</string>
     <string name="anyTechnicalEducation">Technical Education?<font color='#FF0000'>*</font></string>
     <string name="TechnicalEducation1">Technical Education<font color='#FF0000'>*</font></string>
-    <string name="TechnicalEducation2">Technical Education</string>
-    <string name="DomainOfTech">Domain of Technical Education</string>
-    <string name="curentlyEmployed">Are you currently employed?</string>
+    <string name="TechnicalEducation2">Technical Education<font color='#FF0000'>*</font></string>
+    <string name="DomainOfTech">Domain of Technical Education<font color='#FF0000'>*</font></string>
+    <string name="curentlyEmployed">Are you currently employed?<font color='#FF0000'>*</font></string>
     <string name="natureOfEmpl">What is the nature of employment?</string>
-    <string name="IntrestedIn">Interested in?</string>
-    <string name="EmploymentPreference">Employment Preference</string>
-    <string name="JobLocationPreference">Job Location Preference</string>
+    <string name="IntrestedIn">Interested in?<font color='#FF0000'>*</font></string>
+    <string name="EmploymentPreference">Employment Preference<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">Job Location Preference<font color='#FF0000'>*</font></string>
     <string name="CurrentEarning">What is personal current monthly earning in Rupees?</string>
     <string name="CurrentEarningHint">Current Salary</string>
     <string name="ExpectationSalary">Expected Minimum Monthly Salary (Rs.)</string>
@@ -162,7 +162,7 @@
     <string name="father_name_f">Father Name</string>
     <string name="a_tin_no">A-TIN No</string>
     <string name="search_">Search...</string>
-    <string name="languages">Languages</string>
+    <string name="languages">Languages<font color='#FF0000'>*</font></string>
     <string name="hindi">हिंदी</string>
     <string name="english">English</string>
     <string name="mrathi">ಕನ್ನಡ</string>

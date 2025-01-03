@@ -32,6 +32,8 @@ import android.app.Dialog
 import android.content.pm.PackageManager // For checking permissions
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
@@ -48,9 +50,13 @@ import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.google.android.material.chip.Chip
 
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.EducationalInsertReq
+import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
@@ -101,7 +107,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var guardianName = ""
     private var motherName = ""
     private var guardianMobileNumber = ""
-    private var yearlyIncomeFamily = 0
     private var drivingLicenceNumber = ""
     private var categoryCertiImage = ""
     private var drivingLicenceImage = ""
@@ -144,7 +149,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var totalPercentange = 0.0f
     private var previouslycompletedduring = ""
     private var personalStatus = ""
-    private var imagePath = ""
+    private var isPermanentStatus = ""
     private var educationalStatus = ""
     private var trainingStatus = ""
     private var seccStatus = ""
@@ -155,6 +160,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var bankName = ""
     private var branchCode = ""
     private var branchName = ""
+    private var selectedSeccName = ""
+    private var selectedAhlTin = ""
+   private val result = StringBuilder()
+
 
 
 
@@ -211,7 +220,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     // State var
     private var stateList: MutableList<WrappedList> = mutableListOf()
     private lateinit var stateAdapter: ArrayAdapter<String>
-    private lateinit var adapter: SeccAdapter
+    private lateinit var seccAdapter: SeccAdapter
+
     private var state = ArrayList<String>()
     private var stateCode = ArrayList<String>()
     private var stateLgdCode = ArrayList<String>()
@@ -447,9 +457,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Secc Adapter Setting
 
+
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = SeccAdapter()
-        binding.recyclerView.adapter = adapter
+        seccAdapter = SeccAdapter { selectedItem ->
+
+            selectedAhlTin   =  selectedItem.ahltin
+            selectedSeccName=  selectedItem.seccName
+            toastShort("Selected Item: ${selectedItem.seccName}")
+            binding.recyclerView.gone()
+        }
+        binding.recyclerView.adapter = seccAdapter
 
         //Adapter District setting
 
@@ -635,11 +652,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.spinnerHeardAboutddugky.setAdapter(HeardAdapter)
 
 
+        // open llTop by 1 change 0
 
 
         binding.llTopPersonal.setOnClickListener {
 
-            if (isPersonalVisible && personalStatus.contains("0")) {
+            if (isPersonalVisible && personalStatus.contains("1")) {
                 isPersonalVisible = false
                 binding.personalExpand.visible()
                 binding.viewSecc.visible()
@@ -652,7 +670,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.llTopSecc.setOnClickListener {
-            if (isSeccInfoVisible && seccStatus.contains("0")) {
+            if (isSeccInfoVisible && seccStatus.contains("1")) {
 
                 isSeccInfoVisible = false
                 binding.expandSecc.visible()
@@ -683,7 +701,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopAddress.setOnClickListener {
 
-            if (isAddressVisible && addressStatus.contains("0")) {
+            if (isAddressVisible && addressStatus.contains("1")) {
                 isAddressVisible = false
                 binding.expandAddress.visible()
                 binding.viewAddress.visible()
@@ -698,7 +716,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             commonViewModel.getTechEducation(BuildConfig.VERSION_NAME)
 
-            if (isEducationalInfoVisible && educationalStatus.contains("0")) {
+            if (isEducationalInfoVisible && educationalStatus.contains("1")) {
                 isEducationalInfoVisible = false
                 binding.expandEducational.visible()
                 binding.viewEducational.visible()
@@ -711,7 +729,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopEmployment.setOnClickListener {
 
-            if (isEmploymentInfoVisible && employmentStatus.contains("0")) {
+            if (isEmploymentInfoVisible && employmentStatus.contains("1")) {
                 isEmploymentInfoVisible = false
                 binding.expandEmployment.visible()
                 binding.viewEmployment.visible()
@@ -1447,11 +1465,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 && addressLine2.isNotEmpty() && pinCode.isNotEmpty()
             ) {
 
+
                 binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
                 binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
 
                 isClickedPermanentYes = true
                 isClickedPermanentNo = false
+                isPermanentStatus = "Yes"
 
                 binding.llPresentAddressState.gone()
                 binding.llPresentAddressDistrict.gone()
@@ -1525,6 +1545,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 isClickedPermanentNo = true
                 isClickedPermanentYes = false
+                isPermanentStatus = "No"
+
                 binding.btnAddressSubmit.visible()
 
                 district.clear()
@@ -2021,17 +2043,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 toastShort("Please select Interested in ")
 
-            } else {
+            }
+            else if (selectedJobLocation.isNotEmpty() && selectedIEmploymentPref.isNotEmpty()){
+
+
 
                 //HitInsertAPI
+                val currentSalary: Int = binding.etCurrentEarning.text.toString().toIntOrNull() ?: 0
+                val salaryExpectation: Int = binding.etExpectationSalary.text.toString().toIntOrNull() ?: 0
+                if (salaryExpectation.toString().contains("0")){
 
-                currentlyEmpStatus
-                natureEmpEmpStatus
-                selectedInterestedIn
-                selectedIEmploymentPref
-                selectedJobLocation
-                val currentSalary = binding.etCurrentEarning
-                val salaryExpectation = binding.etExpectationSalary
+                    toastShort("Please fill Salary expectation first")
+
+                }
+
+                else{
+
+                    commonViewModel.insertEmploymentAPI(EmploymentInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"5",
+                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary,salaryExpectation))
+
+
+                }
+
+
+            }
+            else {
+
+                toastShort("Please complete Employment info first")
+
 
             }
 
@@ -2042,9 +2081,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.btnEIddressSubmit.setOnClickListener {
 
 
-            selectedTechEducationDate
+
             if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
-                technicalEducationStatus.contains("No")
+               result.isNotEmpty()  && technicalEducationStatus.contains("No")
             ) {
 
 
@@ -2054,26 +2093,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 // Hit the Insert Api
 
 
-                selectedHighestEducationItem
-                highestEducationDate
-                technicalEducationStatus
 
-                toastLong("Submit")
+
+                commonViewModel.insertEducationAPI(EducationalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
+                    "4",selectedHighestEducationItem,highestEducationDate,
+                    result.toString(),technicalEducationStatus,selectedTechEducationItemCode,selectedTechEducationDate,
+                    selectedTechEducationDomainCode ))
 
 
             } else if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
                 technicalEducationStatus.contains("Yes") && selectedTechEducationItemCode.isNotEmpty() &&
-                selectedTechEducationDomainCode.isNotEmpty()
+                selectedTechEducationDomainCode.isNotEmpty() &&
+                result.isNotEmpty()
             ) {
 
                 // Hit the Insert Api
-                selectedTechEducationItemCode
-                selectedTechEducationDomainCode
-                selectedHighestEducationItem
-                highestEducationDate
-                technicalEducationStatus
 
-                toastLong("Submit")
+
+                commonViewModel.insertEducationAPI(EducationalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
+                    "4",selectedHighestEducationItem,highestEducationDate,
+                    result.toString(),technicalEducationStatus,selectedTechEducationItemCode,selectedTechEducationDate,
+                    selectedTechEducationDomainCode ))
 
 
             } else toastLong("Please complete Education Info First")
@@ -2086,7 +2126,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             commonViewModel.shgValidateAPI(
                 ShgValidateReq(
                     binding.etShgValidate.text.toString(),
-                    "9"
+                    userPreferences.getUserStateLgdCode()
                 )
             )  //41358
 
@@ -2132,37 +2172,67 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             ) {
 
                 // Hit The Insert API
-                selectedStateCodeItem
-                selectedDistrictCodeItem
-                selectedBlockCodeItem
-                selectedGpCodeItem
-                selectedVillageCodeItem
-                selectedStatePresentCodeItem
-                selectedDistrictPresentCodeItem
-                selectedBlockPresentCodeItem
-                selectedGpPresentCodeItem
-                selectedVillagePresentCodeItem
-                addressLine1
-                addressLine2
-                pinCode
-                addressPresentLine1
-                addressPresentLine2
-                pinCodePresent
-                residenceImage
 
-                toastLong("Success")
-
+                commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
+                    selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
+                    addressLine2,pinCode,residenceImage,isPermanentStatus,
+                    selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
+                    addressPresentLine1,addressPresentLine2,pinCodePresent))
 
             } else toastLong("Please complete your address first")
         }
 
         binding.btnSeccSubmit.setOnClickListener {
-            if (selectedSeccStateCodeItem.isNotEmpty() && selectedDistrictCodeItem.isNotEmpty()
+
+
+
+            if (selectedSeccStateCodeItem.isNotEmpty() && selectedSeccDistrictCodeItem.isNotEmpty()
                 && selectedSeccBlockCodeItem.isNotEmpty() && selectedSeccGpCodeItem.isNotEmpty()
                 && selectedSeccVillageCodeItem.isNotEmpty()
             ) {
 
-                toastLong("Success")
+                if (selectedAhlTin.isNotEmpty()&& selectedSeccName.isNotEmpty()){
+
+                    commonViewModel.insertSeccAPI(SeccInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
+                        "3",selectedSeccStateCodeItem,selectedDistrictCodeItem,selectedSeccBlockCodeItem,selectedSeccGpCodeItem,selectedSeccVillageCodeItem,
+                        selectedSeccName,selectedAhlTin))
+
+
+                }
+                else {
+                    selectedSeccName = binding.etATINName.text.toString()
+
+                    if ( selectedSeccName.isNotEmpty()){
+
+
+                        commonViewModel.insertSeccAPI(
+                            SeccInsertReq(
+                                BuildConfig.VERSION_NAME,
+                                userPreferences.getUseID(),
+                                AppUtil.getAndroidId(requireContext()),
+                                "3",
+                                selectedSeccStateCodeItem,
+                                selectedDistrictCodeItem,
+                                selectedSeccBlockCodeItem,
+                                selectedSeccGpCodeItem,
+                                selectedSeccVillageCodeItem,
+                                selectedSeccName,
+                                selectedAhlTin
+                            )
+                        )
+
+
+                    }
+                    else
+
+                        toastLong("Please fill Secc Name First")
+
+
+
+                }
+
+
+
 
             } else
                 toastLong("Please Complete SECC info First")
@@ -2175,26 +2245,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             motherName = binding.etMotherName.text.toString()
             guardianMobileNumber = binding.etGNumber.text.toString()
             val yearlyIncomeFamily = binding.etFIncome.text.toString().toIntOrNull() ?: 0
-            voterIdNo = binding.etllVoterId.text.toString()
-            voterIdImage
-            drivingLicenceNumber = binding.etdrivingId.text.toString()
-            drivingLicenceImage
-            selectedCategoryItem
-            categoryCertiImage
-            selectedMaritalItem
-            minorityStatus
-            minorityImage
-            pwdStatus
-            pwdImage
-            shgStatus
-            shgName
-            shgCode
-            shgValidateStatus
-            antoyadaStatus
-            antoyadaImage
-            rsbyStatus
-            rsbyImage
-            pipStatus
+
+            //            voterIdNo = binding.etllVoterId.text.toString()
+
 
             if(guardianName.isNotEmpty()&& motherName.isNotEmpty()&& guardianMobileNumber.isNotEmpty()
                 &&selectedCategoryItem.isNotEmpty()&& selectedMaritalItem.isNotEmpty()&& minorityStatus.isNotEmpty()&&
@@ -2205,9 +2258,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,"","","",shgStatus,shgCode,antoyadaStatus,antoyadaImage,
                     rsbyStatus,rsbyImage,pipStatus))
-
-
-
 
 
             }
@@ -2894,7 +2944,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     ahlTinNo.add(x.ahltin)
                                 }
 
-                                adapter.submitList(it.data.wrappedList)
+                                seccAdapter.submitList(it.data.wrappedList)
 
 
                             } else if (getSeccList.responseCode == 301) {
@@ -2955,7 +3005,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     )
                                 )
 
-                                // set section completed status
+                                // set section completed drawable
 
                                 if (personalStatus.contains("1")){
 
@@ -3259,40 +3309,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.voterimageText.text = fileName
 
+                            voterIdImage=  compressAndConvertImageToBase64(selectedImageUri)
 
-
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                  //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                   // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        voterIdImage = base64String
-                    }
 
 
                 }
@@ -3301,39 +3319,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.drivingLicenceimageText.text = fileName
 
-
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        drivingLicenceImage = base64String
-                    }
+                    drivingLicenceImage=  compressAndConvertImageToBase64(selectedImageUri)
 
 
 
@@ -3346,39 +3332,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.categoryCertimageText.text = fileName
 
+                    categoryCertiImage=  compressAndConvertImageToBase64(selectedImageUri)
 
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
 
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        categoryCertiImage = base64String
-                    }
 
                 }
 
@@ -3389,39 +3345,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.minorityimageText.text = fileName
 
 
-
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        minorityImage = base64String
-                    }
+                    minorityImage=  compressAndConvertImageToBase64(selectedImageUri)
 
                 }
 
@@ -3433,39 +3357,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
                     binding.pwdImageText.text = fileName
 
-
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        pwdImage = base64String
-                    }
+                    pwdImage=  compressAndConvertImageToBase64(selectedImageUri)
 
                 }
 
@@ -3477,39 +3369,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.antyodayamageText.text = fileName
 
 
-
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        antoyadaImage = base64String
-                    }
+                    antoyadaImage=  compressAndConvertImageToBase64(selectedImageUri)
 
                 }
 
@@ -3520,39 +3380,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.rsbyimageText.text = fileName
 
 
+                    rsbyImage=  compressAndConvertImageToBase64(selectedImageUri)
 
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        rsbyImage = base64String
-                    }
                 }
 
 
@@ -3563,38 +3392,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.residentalimageText.text = fileName
 
 
-                    val bitmap: Bitmap? = selectedImageUri?.let { uri ->
-                        try {
-                            val inputStream = requireContext().contentResolver.openInputStream(uri)
-                            val bytes = inputStream?.readBytes() // Read bytes from the InputStream
-                            inputStream?.close()
-                            bytes?.let { BitmapFactory.decodeByteArray(it, 0, it.size) } // Convert bytes to Bitmap
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            null
-                        }
-                    }
-
-                    // Convert Bitmap to Base64 and assign it to x.imagePath
-                    //  val bitmap: Bitmap = bitmap
-
-                    val base64String: String? = try {
-                        // Convert Bitmap to ByteArray
-                        val outputStream = ByteArrayOutputStream()
-                        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, outputStream) // Use PNG, JPEG, or WebP
-                        val byteArray = outputStream.toByteArray()
-
-                        // Encode ByteArray to Base64 String
-                        Base64.encodeToString(byteArray, Base64.DEFAULT)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        null
-                    }
-
-                    // Set the Base64 string to x.imagePath
-                    if (base64String != null) {
-                        residenceImage = base64String
-                    }
+                    residenceImage=  compressAndConvertImageToBase64(selectedImageUri)
 
                 }
 
@@ -3693,7 +3491,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Handle Save button click
         btnSave.setOnClickListener {
             // Prepare the result as a string for display
-            val result = StringBuilder()
 
             for (language in languages) {
                 // Get the checkbox states for each language
@@ -3732,6 +3529,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
     }
+
+    private fun compressAndConvertImageToBase64(uri: Uri?): String {
+        return try {
+            // Load the image as a Bitmap
+            val inputStream = uri?.let { requireContext().contentResolver.openInputStream(it) }
+            val originalBitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream?.close()
+
+            // Compress the image
+            val outputStream = ByteArrayOutputStream()
+            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // 50% quality
+            val compressedBytes = outputStream.toByteArray()
+
+            // Convert to Base64 without white spaces
+            Base64.encodeToString(compressedBytes, Base64.NO_WRAP)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
 
 
 }
