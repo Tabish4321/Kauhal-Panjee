@@ -29,6 +29,7 @@ import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.pm.PackageManager // For checking permissions
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -43,6 +44,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -52,6 +54,7 @@ import com.google.android.material.chip.Chip
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
@@ -60,6 +63,7 @@ import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
@@ -357,13 +361,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSeccListResponse()
         collectSetionAndPerResponse()
         collectBankResponse()
+
         collectInsertPersonalResponse()
-        collectAddressResponse()
+        collectInsertAddressResponse()
         collectInsertSeccResponse()
         collectInsertEducationalResponse()
         collectInsertEmployementResponse()
         collectInsertTrainingResponse()
         collectInsertBankingResponse()
+
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
         commonViewModel.getAadhaarListAPI(
@@ -655,14 +661,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // open llTop by 1 change 0
 
 
+
+
         binding.llTopPersonal.setOnClickListener {
 
-            if (isPersonalVisible && personalStatus.contains("1")) {
+            if (isPersonalVisible && personalStatus.contains("0")) {
                 isPersonalVisible = false
                 binding.personalExpand.visible()
                 binding.viewSecc.visible()
 
-            } else {
+            }
+            else {
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your personal info?",
+                    onYesClicked = {
+                        // Action for Yes button
+                        isPersonalVisible = false
+                        binding.personalExpand.visible()
+                        binding.viewSecc.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
+
+
                 isPersonalVisible = true
                 binding.personalExpand.gone()
                 binding.viewSecc.gone()
@@ -670,7 +696,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.llTopSecc.setOnClickListener {
-            if (isSeccInfoVisible && seccStatus.contains("1")) {
+            if (isSeccInfoVisible && seccStatus.contains("0")) {
 
                 isSeccInfoVisible = false
                 binding.expandSecc.visible()
@@ -692,6 +718,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccVillageCodeItem = selectedVillageCodeItem
 
             } else {
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your Secc info?",
+                    onYesClicked = {
+                        isSeccInfoVisible = false
+                        binding.expandSecc.visible()
+                        binding.viewSeccc.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
+
                 isSeccInfoVisible = true
                 binding.expandSecc.gone()
                 binding.viewSeccc.gone()
@@ -701,11 +742,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopAddress.setOnClickListener {
 
-            if (isAddressVisible && addressStatus.contains("1")) {
+            if (isAddressVisible && addressStatus.contains("0")) {
                 isAddressVisible = false
                 binding.expandAddress.visible()
                 binding.viewAddress.visible()
             } else {
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your Address info?",
+                    onYesClicked = {
+                        isAddressVisible = false
+                        binding.expandAddress.visible()
+                        binding.viewAddress.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
+
                 isAddressVisible = true
                 binding.expandAddress.gone()
                 binding.viewAddress.gone()
@@ -716,11 +772,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             commonViewModel.getTechEducation(BuildConfig.VERSION_NAME)
 
-            if (isEducationalInfoVisible && educationalStatus.contains("1")) {
+            if (isEducationalInfoVisible && educationalStatus.contains("0")) {
                 isEducationalInfoVisible = false
                 binding.expandEducational.visible()
                 binding.viewEducational.visible()
             } else {
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your Educational info?",
+                    onYesClicked = {
+                        isEducationalInfoVisible = false
+                        binding.expandEducational.visible()
+                        binding.viewEducational.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
+
                 isEducationalInfoVisible = true
                 binding.expandEducational.gone()
                 binding.viewEducational.gone()
@@ -729,11 +799,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopEmployment.setOnClickListener {
 
-            if (isEmploymentInfoVisible && employmentStatus.contains("1")) {
+            if (isEmploymentInfoVisible && employmentStatus.contains("0")) {
                 isEmploymentInfoVisible = false
                 binding.expandEmployment.visible()
                 binding.viewEmployment.visible()
             } else {
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your Employment info?",
+                    onYesClicked = {
+                        isEmploymentInfoVisible = false
+                        binding.expandEmployment.visible()
+                        binding.viewEmployment.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
+
                 isEmploymentInfoVisible = true
                 binding.expandEmployment.gone()
                 binding.viewEmployment.gone()
@@ -747,11 +832,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandBanking.visible()
                 binding.viewBanking.visible()
             } else {
+
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your Banking info?",
+                    onYesClicked = {
+                        isBankingInfoVisible = false
+                        binding.expandBanking.visible()
+                        binding.viewBanking.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
                 isBankingInfoVisible = true
                 binding.expandBanking.gone()
                 binding.viewBanking.gone()
             }
         }
+
         binding.llTopTraining.setOnClickListener {
 
             if (isTrainingInfoVisible && trainingStatus.contains("0")) {
@@ -759,6 +860,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandTraining.visible()
                 binding.viewTraining.visible()
             } else {
+
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your Training info?",
+                    onYesClicked = {
+                        isTrainingInfoVisible = false
+                        binding.expandTraining.visible()
+                        binding.viewTraining.visible()
+                    },
+                    onNoClicked = {
+
+                    }
+                )
                 isTrainingInfoVisible = true
                 binding.expandTraining.gone()
                 binding.viewTraining.gone()
@@ -799,8 +915,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.progressButton.centerButton.setOnClickListener {
 
+            val inputText = binding.etIfscCode.text.toString()
+            val upperCaseText = inputText.uppercase()
             commonViewModel.getBankDetailsAPI(BankingReq(BuildConfig.VERSION_NAME,
-                binding.etIfscCode.text.toString()
+                upperCaseText
             ))
 
         }
@@ -1930,6 +2048,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //All Submit Button Here
 
 
+        binding.viewDetails.setOnClickListener {
+
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToViewDetailsFragment())
+        }
+
         binding.btnBnakingSubmit.setOnClickListener {
 
             if (binding.etIfscCode.text.toString().isNotEmpty() && binding.etBankName.text.toString().isNotEmpty() &&
@@ -1938,6 +2061,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                 // Hit Insert API
+                commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
+                    "7",binding.etBankName.text.toString(),binding.etBankAcNo.text.toString(),binding.etIfscCode.text.toString(),
+                    binding.etPanNumber.text.toString()))
 
 
 
@@ -1963,7 +2089,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             // Join the selected options into a comma-separated string
             selectedPrevCompleteTraining = selectedOptions.joinToString(", ")
             traingBeforeStatus
-            binding.tvPreviouslycompletedOthers.text.toString()
+           val previousTrainingDuration= binding.tvPreviouslycompletedOthers.text.toString()
             previouslycompletedduring
             haveUHeardStatus
             selectedHeardABoutItem
@@ -1972,10 +2098,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             if (traingBeforeStatus.isNotEmpty() && selectedSector.isNotEmpty() && selectedTrade.isNotEmpty()) {
 
-                //Hit the Insert API
-                toastShort("Submit")
 
-            } else {
+                if (traingBeforeStatus.contains("Yes") &&  selectedPrevCompleteTraining.isNotEmpty())
+                {
+                    //Hit the Insert API
+
+                    commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
+                        AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+
+
+
+                }
+                else if (traingBeforeStatus.contains("No") && haveUHeardStatus.contains("No"))
+                {
+
+
+                  //Hit the Insert API
+
+                    commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
+                        AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+
+
+
+                }
+                else if (traingBeforeStatus.contains("No") && haveUHeardStatus.contains("Yes") && selectedHeardABoutItem.isNotEmpty()){
+
+                    commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
+                        AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+
+                }
+                else {
+
+                    toastShort("Please complete training info first")
+
+
+                }
+
+
+
+            }
+            else {
 
                 toastShort("Please complete training info first")
 
@@ -1984,7 +2149,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         }
-
 
         binding.btnEmployementSubmit.setOnClickListener {
 
@@ -2075,8 +2239,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
         }
-
-
 
         binding.btnEIddressSubmit.setOnClickListener {
 
@@ -2324,6 +2486,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                     showSnackBar(insertPersResponse.responseMsg)
 
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+
+                                    if (isPersonalVisible && personalStatus.contains("0")) {
+                                        isPersonalVisible = false
+                                        binding.personalExpand.visible()
+                                        binding.viewSecc.visible()
+
+                                    } else {
+                                        isPersonalVisible = true
+                                        binding.personalExpand.gone()
+                                        binding.viewSecc.gone()
+                                    }
 
                                 }
                                 301 -> {
@@ -2336,11 +2510,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         } ?: showSnackBar("Internal Server Error")
                     }
                 }
+
             }
         }
     }
 
-    private fun collectAddressResponse() {
+    private fun collectInsertAddressResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.insertAddressAPI) {
                 when (it) {
@@ -2359,6 +2534,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
+
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    if (isAddressVisible && addressStatus.contains("0")) {
+                                        isAddressVisible = false
+                                        binding.expandAddress.visible()
+                                        binding.viewAddress.visible()
+                                    } else {
+                                        isAddressVisible = true
+                                        binding.expandAddress.gone()
+                                        binding.viewAddress.gone()
+                                    }
 
 
                                 }
@@ -2395,7 +2581,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
 
+                                    if (isSeccInfoVisible && seccStatus.contains("0")) {
+
+                                        isSeccInfoVisible = false
+                                        binding.expandSecc.visible()
+                                        binding.viewSeccc.visible()
+
+
+                                    } else {
+                                        isSeccInfoVisible = true
+                                        binding.expandSecc.gone()
+                                        binding.viewSeccc.gone()
+                                    }
 
                                 }
                                 301 -> {
@@ -2408,6 +2607,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         } ?: showSnackBar("Internal Server Error")
                     }
                 }
+
             }
         }
     }
@@ -2431,7 +2631,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    if (isEducationalInfoVisible && educationalStatus.contains("0")) {
+                                        isEducationalInfoVisible = false
+                                        binding.expandEducational.visible()
+                                        binding.viewEducational.visible()
+                                    } else {
+                                        isEducationalInfoVisible = true
+                                        binding.expandEducational.gone()
+                                        binding.viewEducational.gone()
+                                    }
 
                                 }
                                 301 -> {
@@ -2467,7 +2676,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
 
+                                    if (isEmploymentInfoVisible && employmentStatus.contains("0")) {
+                                        isEmploymentInfoVisible = false
+                                        binding.expandEmployment.visible()
+                                        binding.viewEmployment.visible()
+                                    } else {
+                                        isEmploymentInfoVisible = true
+                                        binding.expandEmployment.gone()
+                                        binding.viewEmployment.gone()
+                                    }
 
                                 }
                                 301 -> {
@@ -2503,7 +2722,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    if (isTrainingInfoVisible && trainingStatus.contains("1")) {
+                                        isTrainingInfoVisible = false
+                                        binding.expandTraining.visible()
+                                        binding.viewTraining.visible()
+                                    } else {
+                                        isTrainingInfoVisible = true
+                                        binding.expandTraining.gone()
+                                        binding.viewTraining.gone()
+                                    }
 
                                 }
                                 301 -> {
@@ -2539,7 +2767,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    if (isBankingInfoVisible && bankingStatus.contains("0")) {
+                                        isBankingInfoVisible = false
+                                        binding.expandBanking.visible()
+                                        binding.viewBanking.visible()
+                                    } else {
+                                        isBankingInfoVisible = true
+                                        binding.expandBanking.gone()
+                                        binding.viewBanking.gone()
+                                    }
 
                                 }
                                 301 -> {
@@ -3549,6 +3786,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             ""
         }
     }
+
+
+
+    fun showYesNoDialog(context: Context, title: String, message: String, onYesClicked: () -> Unit, onNoClicked: () -> Unit) {
+        // Create the AlertDialog.Builder
+        val builder = AlertDialog.Builder(context)
+
+        // Set the title and message
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        // Set the positive button (Yes)
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            onYesClicked() // Execute the Yes action
+            dialog.dismiss()
+        }
+
+        // Set the negative button (No)
+        builder.setNegativeButton("No") { dialog, _ ->
+            onNoClicked() // Execute the No action
+            dialog.dismiss()
+        }
+
+        // Optionally set the dialog to be cancelable (can be canceled by clicking outside)
+        builder.setCancelable(true)
+
+        // Create and show the dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
 
 

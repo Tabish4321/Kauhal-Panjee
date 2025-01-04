@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -41,6 +42,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
        /* window.statusBarColor = resources.getColor(android.R.color.transparent)*/
 
+        AppUtil.changeAppLanguage(this,userPreferences.getLanguage())
 
         lifecycleScope.launch {
             delay(3000)

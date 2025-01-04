@@ -39,6 +39,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
 
     private var baseActivity: BaseActivity<VB>? = null
     fun getActivityContext(): BaseActivity<VB>? = baseActivity
+    private var loadingCount = 0
 
     @Inject
     lateinit var userPreferences: UserPreferences
@@ -58,13 +59,27 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         super.onAttach(context)
         this.baseActivity = activity as BaseActivity<VB>
     }
-
+/*
     fun showProgressBar() {
         progress?.show()
     }
 
     fun hideProgressBar() {
         progress?.dismiss()
+    }*/
+
+    fun showProgressBar() {
+        // Ensure context is not null and the fragment is attached
+        if (context != null && isAdded && progress?.isShowing == false) {
+            progress?.show()
+        }
+    }
+
+    fun hideProgressBar() {
+        // Hide the progress bar if it's currently showing
+        if (progress?.isShowing == true) {
+            progress?.dismiss()
+        }
     }
 
     fun showSnackBar(message: String) {

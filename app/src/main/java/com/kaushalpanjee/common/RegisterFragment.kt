@@ -32,7 +32,6 @@ import java.util.concurrent.TimeUnit
 class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterBinding::inflate) {
 
     private var isEmailVerified = false
-    private var isMobileVerified = false
     private var countDownTimer: CountDownTimer? = null
     private val commonViewModel: CommonViewModel by viewModels()
     private var mobileOTP: String? = null

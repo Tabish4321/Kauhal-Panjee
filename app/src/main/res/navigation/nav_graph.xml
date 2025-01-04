@@ -69,6 +69,9 @@
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
 
+        <action
+            android:id="@+id/action_homeFragment_to_viewDetailsFragment"
+            app:destination="@id/viewDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainHomePage"
@@ -93,4 +96,9 @@
         tools:layout="@layout/fragment_forgot_password">
 
     </fragment>
+    <fragment
+        android:id="@+id/viewDetailsFragment"
+        android:name="com.kaushalpanjee.common.ViewDetailsFragment"
+        android:label="ViewDetailsFragment"
+        tools:layout="@layout/fragment_view_details"/>
 </navigation>

@@ -8,15 +8,18 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setRightDrawablePassword
 import com.kaushalpanjee.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -37,7 +40,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun init(){
         listeners()
-    }
+        }
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
@@ -50,7 +53,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }
         binding.tvLogin.setOnClickListener {
            // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
+            lifecycleScope.launch{
+                if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")){
+
+                    AppUtil.saveLanguagePreference(requireContext(),"eng")
+
+
+                }
+                else
+                    AppUtil.changeAppLanguage(requireContext(),AppUtil.getSavedLanguagePreference(requireContext()))
+
+                userPreferences.updateUserId(null)
+                userPreferences.updateUserId("2505000001")
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
+            }
+
         }
 
         binding.tvForgotPassword.setOnClickListener {

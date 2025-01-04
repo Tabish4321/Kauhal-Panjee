@@ -26,7 +26,9 @@ import java.util.Date
 import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
+import android.content.res.Configuration
 import android.provider.Settings
+
 
 
 object AppUtil {
@@ -75,6 +77,17 @@ object AppUtil {
             .setBackground(ColorDrawable(Color.TRANSPARENT))
             .setCancelable(false)
             .create()
+    }
+
+
+    fun changeAppLanguage(context: Context, languageCode: String) {
+        val locale = Locale(languageCode) // For example, "en" for English, "es" for Spanish, etc.
+        Locale.setDefault(locale)
+
+        val configuration = Configuration(context.resources.configuration)
+        configuration.setLocale(locale) // Set the locale for the app
+
+        context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
     }
 
     fun isNetworkAvailable(context: Context?): Boolean {
@@ -232,5 +245,18 @@ object AppUtil {
 
     }
 
+
+
+    fun saveLanguagePreference(context: Context, languageCode: String) {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("language_code", languageCode)
+        editor.apply()
+    }
+
+    fun getSavedLanguagePreference(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("language_code", "en") ?: "en" // Default to English
+    }
 
 }

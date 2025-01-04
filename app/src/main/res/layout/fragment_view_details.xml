@@ -41,18 +41,6 @@
                 android:src="@drawable/person"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/viewDetails"
-                android:text="@string/view_profile"
-                android:textColor="@color/color_dark_green"
-                android:textSize="@dimen/sp_18"
-                android:fontFamily="@font/avenir_next_bold"
-                app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="@dimen/dp_50"/>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/editImageButton"
@@ -60,8 +48,8 @@
                 android:layout_height="@dimen/dp_24"
                 app:shapeAppearanceOverlay="@style/CustomCircleShape"
                 android:src="@drawable/edit"
-               app:layout_constraintEnd_toEndOf="@id/circleImageView"
-              app:layout_constraintBottom_toBottomOf="@id/circleImageView"
+                app:layout_constraintEnd_toEndOf="@id/circleImageView"
+                app:layout_constraintBottom_toBottomOf="@id/circleImageView"
                 app:layout_constraintStart_toStartOf="@+id/circleImageView"/>
 
 
@@ -316,7 +304,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopPersonal"/>
@@ -329,7 +317,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/personalExpand"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -356,7 +344,7 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etGName"
                         style="@style/EditText"
                         android:hint="@string/g_name"
@@ -387,7 +375,7 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etMotherName"
                         style="@style/EditText"
                         android:hint="@string/mother_namer"
@@ -416,7 +404,7 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etGNumber"
                         style="@style/EditText"
                         android:hint="@string/guardian_alternative_numbern"
@@ -448,7 +436,7 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etFIncome"
                         style="@style/EditText"
                         android:hint="@string/father_incomer"
@@ -479,7 +467,7 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etllVoterId"
                         style="@style/EditText"
                         android:background="@drawable/edittext_background"
@@ -489,31 +477,20 @@
                         android:textSize="16sp" />
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        style="@style/EditText"
+                    <ImageView
                         android:id="@+id/voterIdUpload"
-                        app:cardCornerRadius="@dimen/dp_25"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
+                        android:layout_height="@dimen/dp_50"
                         android:layout_gravity="right"
+                        android:src="@drawable/ic_mage_search"
                         android:text="@string/upload_voter_id">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/voterimageText"
-                            android:drawablePadding="@dimen/dp_12"
-                            android:drawableRight="@drawable/ic_mage_search"
-                            android:textColor="@color/color_dark_green"
-                            android:fontFamily="@font/avenir_next_semi_bold"
-                            android:text="@string/upload_voter_id"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </ImageView>
 
                 </LinearLayout>
 
@@ -536,7 +513,7 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etdriving_id"
                         style="@style/EditText"
                         android:hint="@string/driving_id"
@@ -545,32 +522,19 @@
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        style="@style/EditText"
-                        app:cardCornerRadius="@dimen/dp_25"
+                    <ImageView
                         android:id="@+id/drivingLicenceUpload"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
                         android:layout_gravity="right"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
-                        android:text="@string/upload_voter_id"
+                        android:src="@drawable/ic_mage_search"
                         >
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/ic_mage_search"
-                            android:id="@+id/drivingLicenceimageText"
-                            android:drawablePadding="@dimen/dp_10"
-                            android:textColor="@color/color_dark_green"
-                            android:fontFamily="@font/avenir_next_semi_bold"
-                            android:text="@string/upload_driving_licence"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </ImageView>
 
                 </LinearLayout>
                 <TextView
@@ -584,64 +548,33 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lldriving_id"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_demi_bold"
-                    android:hint="@string/select_category"
-                    android:padding="1dp"
+                <TextView
+                    style="@style/EditText"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
                     android:id="@+id/llCategory"
                     android:layout_marginStart="@dimen/dp_3"
-                    android:textColorHint="@color/color_dark_green"
-                    app:boxStrokeColor="@color/color_dark_green"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/category">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/SpinnerCategory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="15sp"
-                        tools:ignore="LabelFor"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/category"/>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/EditText"
+
+
+
+                <ImageView
                     android:id="@+id/categoryCertificateUpload"
-                    app:cardCornerRadius="@dimen/dp_25"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
                     android:layout_gravity="right"
                     android:layout_marginTop="@dimen/dp_15"
+                    android:src="@drawable/ic_mage_search"
                     android:layout_marginEnd="@dimen/dp_12"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llCategory"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_mage_search"
-                        android:id="@+id/categoryCertimageText"
-                        android:drawablePadding="@dimen/dp_10"
-                        android:textColor="@color/color_dark_green"
-                        android:fontFamily="@font/avenir_next_semi_bold"
-                        android:text="@string/upload_category_certificate"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                    />
                 <TextView
                     android:id="@+id/tvMaterial"
                     android:layout_width="match_parent"
@@ -658,196 +591,148 @@
 
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="Select Marital Status"
-                        android:id="@+id/llMarital"
-                        android:layout_marginStart="@dimen/dp_3"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvMaterial">
+                <TextView
+                    style="@style/EditText"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="@dimen/dp_3"
+                    android:hint="Select Marital Status"
+                    android:id="@+id/llMarital"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMaterial"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/SpinnerMarital"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor"
-                            />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
                 <TextView
-                        android:id="@+id/tvMinority"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/minority"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginTop="@dimen/dp_10"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llMarital"/>
+                    android:id="@+id/tvMinority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minority"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llMarital"/>
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        android:id="@+id/llMinority"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvMinority">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:id="@+id/llMinority"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMinority">
 
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Yes"
-                            android:gravity="center"
-                            android:id="@+id/optionMinorityYesSelect"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Yes"
+                        android:gravity="center"
+                        android:id="@+id/optionMinorityYesSelect"
+                        android:textColor="@color/black"
+                        android:elevation="4dp"
+                        android:textSize="@dimen/sp_16"
+                        android:background="@drawable/card_background"
+                        android:layout_margin="8dp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="No"
-                            android:gravity="center"
-                            android:id="@+id/optionMinorityNoSelect"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="No"
+                        android:gravity="center"
+                        android:id="@+id/optionMinorityNoSelect"
+                        android:elevation="4dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_16"
+                        android:background="@drawable/card_background"
+                        android:layout_margin="8dp" />
+                </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/EditText"
+                <ImageView
                     android:id="@+id/minorityImageUpload"
-                    app:cardCornerRadius="@dimen/dp_25"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
                     android:layout_gravity="right"
                     android:layout_marginTop="@dimen/dp_15"
                     android:layout_marginEnd="@dimen/dp_12"
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:src="@drawable/ic_mage_search"
                     android:text="@string/upload_voter_id"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llMinority">
+                    app:layout_constraintTop_toBottomOf="@+id/llMinority"/>
+
+
+                <TextView
+                    android:id="@+id/tvPwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pwd"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/minorityImageUpload"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/llpwd"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPwd">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_mage_search"
-                        android:id="@+id/minorityimageText"
-                        android:drawablePadding="@dimen/dp_10"
-                        android:textColor="@color/color_dark_green"
-                        android:fontFamily="@font/avenir_next_semi_bold"
-                        android:text="Upload Minority Certificate"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Yes"
+                        android:gravity="center"
+                        android:id="@+id/optionPwdYesSelect"
+                        android:textColor="@color/black"
+                        android:elevation="4dp"
+                        android:textSize="@dimen/sp_16"
+                        android:background="@drawable/card_background"
+                        android:layout_margin="8dp" />
 
                     <TextView
-                        android:id="@+id/tvPwd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pwd"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/minorityImageUpload"/>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/llpwd"
-                        android:orientation="horizontal"
-                        android:weightSum="2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvPwd">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="Yes"
-                            android:gravity="center"
-                            android:id="@+id/optionPwdYesSelect"
-                            android:textColor="@color/black"
-                            android:elevation="4dp"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="40dp"
-                            android:layout_weight="1"
-                            android:text="No"
-                            android:gravity="center"
-                            android:id="@+id/optionPwdNoSelect"
-                            android:elevation="4dp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_16"
-                            android:background="@drawable/card_background"
-                            android:layout_margin="8dp" />
-                    </LinearLayout>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/EditText"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="No"
+                        android:gravity="center"
+                        android:id="@+id/optionPwdNoSelect"
+                        android:elevation="4dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_16"
+                        android:background="@drawable/card_background"
+                        android:layout_margin="8dp" />
+                </LinearLayout>
+                <ImageView
                     android:id="@+id/pwdImageUpload"
-                    app:cardCornerRadius="@dimen/dp_25"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_50"
                     android:layout_gravity="right"
                     android:layout_marginTop="@dimen/dp_15"
                     android:layout_marginEnd="@dimen/dp_12"
-                    android:visibility="gone"
-                    android:text="@string/upload_voter_id"
+                    android:src="@drawable/ic_mage_search"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llpwd">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_mage_search"
-                        android:id="@+id/pwdImageText"
-                        android:drawablePadding="@dimen/dp_10"
-                        android:textColor="@color/color_dark_green"
-                        android:fontFamily="@font/avenir_next_semi_bold"
-                        android:text="Upload Minority Certificate"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
+                    app:layout_constraintTop_toBottomOf="@+id/llpwd"/>
 
 
                 <LinearLayout
@@ -959,32 +844,16 @@
                     </LinearLayout>
 
 
-                    <EditText
+                    <TextView
                         android:id="@+id/etShgValidate"
                         style="@style/EditText"
                         android:hint="Enter SHG code"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:layout_marginTop="@dimen/dp_8"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
-                    <TextView
-                        android:id="@+id/tvShgValidate"
-                        style="@style/EditText"
-                        android:drawablePadding="@dimen/dp_20"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:visibility="gone"
-                        android:text="@string/validate" />
-                    <TextView
-                        android:id="@+id/btnShgValidate"
-                        style="@style/Button"
-                        android:drawableEnd="@drawable/ic_right_arrow"
-                        android:drawablePadding="@dimen/dp_20"
-                        android:visibility="gone"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:text="@string/validate" />
-
 
                 </LinearLayout>
 
@@ -1041,32 +910,18 @@
                             android:layout_margin="8dp" />
                     </LinearLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        style="@style/EditText"
+                    <ImageView
                         android:id="@+id/antyodayaCardUpload"
-                        app:cardCornerRadius="@dimen/dp_25"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
                         android:layout_gravity="right"
-                        android:visibility="gone"
+                        android:src="@drawable/ic_mage_search"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/ic_mage_search"
-                            android:id="@+id/antyodayamageText"
-                            android:drawablePadding="@dimen/dp_10"
-                            android:textColor="@color/color_dark_green"
-                            android:fontFamily="@font/avenir_next_semi_bold"
-                            android:text="@string/upload_antyodaya_card"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                        />
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 </LinearLayout>
 
@@ -1123,32 +978,17 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        style="@style/EditText"
+                    <ImageView
                         android:id="@+id/rsbyUpload"
-                        android:visibility="gone"
-                        app:cardCornerRadius="@dimen/dp_25"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
                         android:layout_gravity="right"
+                        android:src="@drawable/ic_mage_search"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/rsbyimageText"
-                            android:drawablePadding="@dimen/dp_10"
-                            android:textColor="@color/color_dark_green"
-                            android:fontFamily="@font/avenir_next_semi_bold"
-                            android:text="@string/upload_rsby_pm_jay_card"
-                            app:drawableRightCompat="@drawable/ic_mage_search"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                       /> >
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 </LinearLayout>
@@ -1208,13 +1048,6 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
-                    <TextView
-                        android:id="@+id/btnPersonalSubmit"
-                        style="@style/Button"
-                        android:drawableEnd="@drawable/ic_right_arrow"
-                        android:drawablePadding="@dimen/dp_20"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:text="@string/submit" />
 
 
                 </LinearLayout>
@@ -1293,7 +1126,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopAddress" />
@@ -1304,7 +1137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewAddress">
@@ -1321,34 +1154,16 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <TextView
+                    style="@style/EditText"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
                     android:id="@+id/statespinn"
-                    android:fontFamily="@font/avenir_next_demi_bold"
-                    android:hint="@string/select_state"
-                    android:padding="1dp"
-                    android:layout_marginStart="@dimen/dp_3"
-                    android:textColorHint="@color/color_dark_green"
-                    app:boxStrokeColor="@color/color_dark_green"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvState" >
-
-                    <AutoCompleteTextView
-                        android:id="@+id/SpinnerStateName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="15sp"
-                        tools:ignore="LabelFor"
-                        />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/tvState" />
 
 
 
@@ -1370,28 +1185,16 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_district"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etDist"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerDistrict"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -1414,28 +1217,17 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_Block"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                    <TextView
+                        android:id="@+id/etBlock"
+                        android:background="@drawable/edittext_background"
+                        style="@style/EditText"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerBlock"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 </LinearLayout>
@@ -1459,28 +1251,16 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_gp"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                    <TextView
+                        android:id="@+id/etGp"
+                        android:background="@drawable/edittext_background"
+                        style="@style/EditText"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerGp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -1503,28 +1283,17 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_Village"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                    <TextView
+                        android:id="@+id/etVillage"
+                        android:background="@drawable/edittext_background"
+                        style="@style/EditText"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerVillage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 </LinearLayout>
@@ -1549,12 +1318,11 @@
                         android:textSize="16sp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etAdressLine"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_background"
-                        android:hint="@string/AdressLine"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
@@ -1580,12 +1348,11 @@
                         android:textSize="16sp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etAdressLine2"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_background"
-                        android:hint="@string/AdressLine2"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
@@ -1610,43 +1377,32 @@
                         android:textSize="16sp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etPinCode"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_background"
                         android:inputType="number"
-                        android:hint="@string/pin_code"
                         android:maxLength="6"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        style="@style/EditText"
+                    <ImageView
                         android:id="@+id/uploadResidenceImage"
                         app:cardCornerRadius="@dimen/dp_25"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
                         android:layout_gravity="right"
+                        android:src="@drawable/ic_mage_search"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/ic_mage_search"
-                            android:id="@+id/residentalimageText"
-                            android:drawablePadding="@dimen/dp_10"
-                            android:textColor="@color/color_dark_green"
-                            android:fontFamily="@font/avenir_next_semi_bold"
-                            android:text="@string/upload_residence_certificate"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
+                       /> >
 
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 
                 </LinearLayout>
@@ -1724,37 +1480,25 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llPresenrAddress">
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
                         android:text="@string/state"
                         android:textColor="@color/color_dark_green" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_state"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/SpinnerPresentAddressStateName"
-                            android:focusable="false"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etPrState"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
@@ -1767,6 +1511,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llPresentAddressState">
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -1777,29 +1522,14 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_district"
-
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerPresentAddressDistrict"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etPrDist"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
 
                 </LinearLayout>
@@ -1812,6 +1542,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llPresentAddressDistrict">
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -1822,29 +1553,14 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_Block"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerPresentAddressBlock"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etPrBlock"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
@@ -1857,6 +1573,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llPresentAddressBlock">
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -1867,29 +1584,14 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_gp"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerPresentAddressGp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etPrGp"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
@@ -1901,6 +1603,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llPresentAddressGp">
 
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -1911,28 +1614,14 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_Village"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerPresentAddressVillage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etPrVillage"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
 
                 </LinearLayout>
@@ -1957,7 +1646,7 @@
                         android:textSize="16sp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etPresentAddressAdressLine"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
@@ -1969,60 +1658,48 @@
 
 
 
-                        <!-- Label -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:text="@string/AdressLine2"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp" />
+                    <!-- Label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/AdressLine2"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
 
-                        <!-- EditText with custom background -->
-                        <EditText
-                            android:id="@+id/etPresentLine2"
-                            style="@style/EditText"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edittext_background"
-                            android:hint="@string/AdressLine2"
-                            android:padding="12dp"
-                            android:textColor="@android:color/black"/>
+                    <!-- EditText with custom background -->
+                    <TextView
+                        android:id="@+id/etPresentLine2"
+                        style="@style/EditText"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:hint="@string/AdressLine2"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"/>
 
-                        <!-- Label -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:text="@string/pin_code"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp" />
+                    <!-- Label -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/pin_code"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
 
-                        <!-- EditText with custom background -->
-                        <EditText
-                            android:id="@+id/etPresentPinCode"
-                            style="@style/EditText"
-                            android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:background="@drawable/edittext_background"
-                            android:hint="@string/pin_code1"
-                            android:maxLength="6"
-                            android:padding="12dp"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp" />
+                    <!-- EditText with custom background -->
+                    <TextView
+                        android:id="@+id/etPresentPinCode"
+                        style="@style/EditText"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:background="@drawable/edittext_background"
+                        android:hint="@string/pin_code1"
+                        android:maxLength="6"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/btnAddressSubmit"
-                    style="@style/Button"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:drawablePadding="@dimen/dp_20"
-                    android:text="@string/submit"
-                    android:visibility="gone"
-                    app:drawableEndCompat="@drawable/ic_right_arrow"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressAdressLine"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -2086,7 +1763,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopSecc" />
@@ -2097,7 +1774,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewSeccc">
@@ -2114,32 +1791,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
+                <TextView
+
+                    style="@style/EditText"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_demi_bold"
                     android:id="@+id/stateesecc"
-                    android:padding="1dp"
                     android:hint="@string/select_state"
-                    android:textColorHint="@color/color_dark_green"
-                    app:boxStrokeColor="@color/color_dark_green"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSeccshow">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spinnerStateSecc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="15sp"
-                        tools:ignore="LabelFor" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/tvSeccshow"/>
 
 
                 <LinearLayout
@@ -2160,28 +1824,17 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/etSeccDistrict"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_district"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                        style="@style/EditText"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerDistrictSecc"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
+
 
 
                 </LinearLayout>
@@ -2204,28 +1857,17 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
+                    <TextView
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
+                        style="@style/EditText"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
                         android:hint="@string/select_Block"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                        />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerBlockSecc"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -2249,28 +1891,16 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
+                    <TextView
                         android:hint="@string/select_gp"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                        android:layout_height="wrap_content"
+                        style="@style/EditText"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerGpSecc"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -2291,126 +1921,34 @@
                         android:textColor="@color/color_dark_green" />
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/dp_10"
+                    <TextView
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_Village"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                        style="@style/EditText"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:hint="@string/select_Village" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerVillageSecc"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
 
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <EditText
-                        android:id="@+id/etATINName"
+                        android:id="@+id/etATINNo"
                         style="@style/EditText"
                         android:hint="@string/search"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/dp_10"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
 
 
-                    <EditText
-                        android:id="@+id/searchView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/EditText"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:drawableStart="@drawable/baseline_search_24"
-                       android:hint="@string/search_"
-                        android:clickable="true"
-                        android:iconifiedByDefault="false" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:id="@+id/llcandidateName"
-                        android:layout_marginTop="@dimen/dp_10"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/llFName">
-
-                        <!-- Label -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/unableto_find_yourself_in_secc_drop_down"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-
-                            <TextView
-                                android:id="@+id/optionOrigSecccYesSelect"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/card_background"
-                                android:elevation="4dp"
-                                android:gravity="center"
-                                android:text="@string/yes"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16" />
-
-                            <TextView
-                                android:id="@+id/optionOrigSecccNoSelect"
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/card_background_selected"
-                                android:elevation="4dp"
-                                android:gravity="center"
-                                android:text="@string/no"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16" />
-                        </LinearLayout>
 
 
 
-                        <TextView
-                            android:id="@+id/btnSeccSubmit"
-                            style="@style/Button"
-                            android:layout_marginTop="@dimen/dp_15"
-                            android:drawablePadding="@dimen/dp_20"
-                            android:text="@string/submit"
-                            app:drawableEndCompat="@drawable/ic_right_arrow"/>
                     </LinearLayout>
-
-
-
-                </LinearLayout>
-
 
 
 
@@ -2477,7 +2015,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopEducational" />
@@ -2488,7 +2026,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEducational">
@@ -2512,28 +2050,15 @@
                         android:text="@string/select_HighestEducation"
                         android:textColor="@color/color_dark_green" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/ethighestEdu"
+                        android:background="@drawable/edittext_background"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:hint="@string/select_HighestEducation1"
-                        android:padding="1dp"
-                        android:textColorHint="@color/color_dark_green"
-                        app:boxStrokeColor="@color/color_dark_green">
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
 
-                        <AutoCompleteTextView
-                            android:id="@+id/spinnerHighestEducation"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -2559,13 +2084,11 @@
                     <TextView
                         android:id="@+id/tvClickYearOfPassing"
                         style="@style/EditText"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:hint="@string/select_YearOfPassing"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="15sp"
-                        tools:ignore="LabelFor" />
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -2580,12 +2103,11 @@
                     <TextView
                         android:id="@+id/tvLanguages"
                         style="@style/EditText"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:hint="@string/select_languages"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="15sp"
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
                         tools:ignore="LabelFor" />
 
 
@@ -2596,56 +2118,14 @@
                         android:layout_marginTop="@dimen/dp_10"
                         android:id="@+id/llTechnicalEducation">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/anyTechnicalEducation"
-                            android:fontFamily="@font/avenir_next_demi_bold"
-                            android:textColor="@android:color/black"
-                            android:textSize="16sp"
-                            android:layout_marginBottom="8dp" />
 
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
-
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="Yes"
-                                android:gravity="center"
-                                android:id="@+id/optionTechnicalEducationYesSelect"
-                                android:textColor="@color/black"
-                                android:elevation="4dp"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="40dp"
-                                android:layout_weight="1"
-                                android:text="No"
-                                android:gravity="center"
-                                android:id="@+id/optionTechnicalEducationNoSelect"
-                                android:elevation="4dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/sp_16"
-                                android:background="@drawable/card_background"
-                                android:layout_margin="8dp" />
-                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/llTechEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:orientation="vertical">
 
 
@@ -2658,28 +2138,16 @@
                             android:text="@string/TechnicalEducation1"
                             android:textColor="@color/color_dark_green" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/etTechEduc"
+                            style="@style/EditText"
+                            android:background="@drawable/edittext_background"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_next_demi_bold"
-                            android:hint="@string/TechnicalEducation1"
-                            android:padding="1dp"
-                            android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green">
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"/>
 
-                            <AutoCompleteTextView
-                                android:id="@+id/spinnerTechnicalEducation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"
-                                android:inputType="none"
-                                android:textColor="@color/color_dark_green"
-                                android:textSize="15sp"
-                                tools:ignore="LabelFor" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
 
 
                     </LinearLayout>
@@ -2690,7 +2158,7 @@
                         android:id="@+id/llDomainOfTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:orientation="vertical">
 
 
@@ -2703,28 +2171,16 @@
                             android:text="@string/DomainOfTech"
                             android:textColor="@color/color_dark_green" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/etTechDomain"
+                            style="@style/EditText"
+                            android:background="@drawable/edittext_background"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_next_demi_bold"
-                            android:hint="@string/DomainOfTech"
-                            android:padding="1dp"
-                            android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green">
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"/>
 
-                            <AutoCompleteTextView
-                                android:id="@+id/spinnerDomainOfTech"
-                                android:focusable="false"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:focusableInTouchMode="false"
-                                android:inputType="none"
-                                android:textColor="@color/color_dark_green"
-                                android:textSize="15sp"
-                                tools:ignore="LabelFor" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
 
 
                     </LinearLayout>
@@ -2732,7 +2188,7 @@
                         android:id="@+id/llYearOfPassingTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:visibility="visible"
 
                         android:orientation="vertical">
 
@@ -2749,28 +2205,16 @@
                         <TextView
                             android:id="@+id/tvClickYearOfPassingTech"
                             style="@style/EditText"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:inputType="none"
-                            android:hint="@string/select_YearOfPassingTech"
-                            android:textColor="@color/color_dark_green"
-                            android:textSize="15sp"
-                            tools:ignore="LabelFor" />
+                            android:background="@drawable/edittext_background"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"/>
 
 
 
 
                     </LinearLayout>
-
-
-                    <TextView
-                        android:id="@+id/btnEIddressSubmit"
-                        style="@style/Button"
-                        android:visibility="gone"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:drawablePadding="@dimen/dp_20"
-                        android:text="@string/submit"
-                        app:drawableEndCompat="@drawable/ic_right_arrow" />
 
                 </LinearLayout>
 
@@ -2838,7 +2282,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopEmployment" />
@@ -2849,7 +2293,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewEmployment">
@@ -2980,54 +2424,16 @@
 
 
 
-                    <!-- Chip Group -->
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleSelection="false"
-                        app:selectionRequired="false"
-                        app:chipSpacing="8dp"
-                        android:padding="16dp"
-                        android:orientation="horizontal">
+                 <TextView
+                     android:id="@+id/etIntrestedIn"
+                     style="@style/EditText"
+                     android:background="@drawable/edittext_background"
+                     android:padding="12dp"
+                     android:textColor="@android:color/black"
+                     android:textSize="16sp"
+                     android:layout_height="wrap_content"/>
 
-                        <!-- Chip 1: Job -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipOption1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/CustomChip"
-                            android:text="@string/job"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 2: Training -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipOption2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/training"
-                            style="@style/CustomChip"
-
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 3: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipOption3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/both"
-                            style="@style/CustomChip"
-
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                    </com.google.android.material.chip.ChipGroup>
-
-            </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -3047,51 +2453,15 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipemployementPrefGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleSelection="false"
-                        app:selectionRequired="false"
-                        app:chipSpacing="8dp"
-                        android:padding="16dp"
-                        android:orientation="horizontal">
 
-                        <!-- Chip 1: Job -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipEmPreOption1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/CustomChip"
-                            android:text="@string/self_employed"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 2: Training -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipEmPreOption2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/salaried"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 3: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipEmPreOption3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/both"
-                            style="@style/CustomChip"
-
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                    </com.google.android.material.chip.ChipGroup>
-
+                    <TextView
+                        android:id="@+id/etEmploPref"
+                        style="@style/EditText"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -3111,60 +2481,14 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipJobLocGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleSelection="false"
-                        app:selectionRequired="false"
-                        app:chipSpacing="8dp"
-                        android:padding="16dp"
-                        android:orientation="horizontal">
-
-                        <!-- Chip 1: Job -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipJobLocOption1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/CustomChip"
-                            android:text="@string/within_district"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 2: Training -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipJobLocOption2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/within_state"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 3: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipJobLocOption3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/outside_side"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                        <!-- Chip 4: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipJobLocOption4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/outside_country"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                    </com.google.android.material.chip.ChipGroup>
-
+                    <TextView
+                        android:id="@+id/etJobLoc"
+                        style="@style/EditText"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
 
 
 
@@ -3189,12 +2513,11 @@
                         android:layout_marginBottom="8dp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etCurrentEarning"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
                         android:hint="@string/CurrentEarningHint"
-                        android:inputType="phone"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
@@ -3220,25 +2543,15 @@
                         android:layout_marginBottom="8dp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etExpectationSalary"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
-                        android:hint="@string/ExpectationSalary"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
-                        android:inputType="phone"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"/>
 
-                    <TextView
-                        android:id="@+id/btnEmployementSubmit"
-                        style="@style/Button"
-                        android:visibility="visible"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:drawablePadding="@dimen/dp_20"
-                        android:text="@string/submit"
-                        app:drawableEndCompat="@drawable/ic_right_arrow" />
 
 
                 </LinearLayout>
@@ -3314,7 +2627,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopTraining" />
@@ -3325,7 +2638,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
                 android:id="@+id/expandTraining"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewTraining">
@@ -3390,7 +2703,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llrecievedAnyTrainingBefore">
 
@@ -3405,69 +2718,16 @@
                         android:textColor="@color/black" />
 
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipPreviousComTraGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleSelection="false"
-                        app:selectionRequired="false"
-                        app:chipSpacing="8dp"
-                        android:padding="16dp"
-                        android:orientation="horizontal">
-
-                        <!-- Chip 1: Job -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/CustomChip"
-                            android:text="@string/ddugky"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 2: Training -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/rseti"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 3: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pmkvy"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                        <!-- Chip 4: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/others"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                    </com.google.android.material.chip.ChipGroup>
-
-                    <EditText
-                        android:id="@+id/tvPreviouslycompletedOthers"
+                    <TextView
+                        android:id="@+id/etPrevComTra"
                         style="@style/EditText"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/mention_others_training"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content"/>
+
+
 
 
                 </LinearLayout>
@@ -3520,7 +2780,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:layout_marginTop="@dimen/dp_10"
-                           >
+                            >
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -3573,34 +2833,19 @@
                             android:layout_height="wrap_content"
                             android:text="@string/HeardAboutddugky"
                             android:textColor="@android:color/black"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:id="@+id/tvHeardAboutddugky"
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_next_demi_bold"
-                            android:visibility="gone"
-                            android:hint="@string/selectScheme"
-                            android:id="@+id/upHeardAboutddugky"
-                            android:padding="1dp"
-                            android:textColorHint="@color/color_dark_green"
-                            app:boxStrokeColor="@color/color_dark_green">
-
-                            <AutoCompleteTextView
-                                android:id="@+id/spinnerHeardAboutddugky"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="none"
-                                android:textColor="@color/color_dark_green"
-                                android:textSize="15sp"
-                                android:focusable="false"
-                                tools:ignore="LabelFor" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
+                        <TextView
+                            android:id="@+id/etWhereHaveHeard"
+                            style="@style/EditText"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
 
 
 
@@ -3622,16 +2867,18 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp" />
+
                         <TextView
-                            android:id="@+id/tvSectorItems"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:id="@+id/etSector"
                             style="@style/EditText"
-                            android:text="@string/select_sector"/>
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
 
 
-            </LinearLayout>
+                    </LinearLayout>
 
 
                     <LinearLayout
@@ -3651,23 +2898,17 @@
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp" />
                         <TextView
-                            android:id="@+id/tvTradeItems"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:id="@+id/etTrade"
                             style="@style/EditText"
-                            android:text="@string/select_trade"/>
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
 
 
 
-                        <TextView
-                            android:id="@+id/btnTrainingSubmit"
-                            style="@style/Button"
-                            android:visibility="visible"
-                            android:layout_marginTop="@dimen/dp_15"
-                            android:drawablePadding="@dimen/dp_20"
-                            android:text="@string/submit"
-                            app:drawableEndCompat="@drawable/ic_right_arrow" />
+
 
 
                     </LinearLayout>
@@ -3748,7 +2989,7 @@
                 android:layout_height="@dimen/dp_1"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="#F7F7F7"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopBanking" />
@@ -3759,7 +3000,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopBanking">
@@ -3781,28 +3022,16 @@
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <EditText
-                        android:id="@+id/etIfscCode"
+                    <TextView
+                        android:id="@+id/etIfsc"
                         style="@style/EditText"
-                        android:hint="@string/enter_ifsc_code"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
-                        android:inputType="textCapCharacters"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
-                        />
-                    <include
-                        android:id="@+id/progressButton"
-                        layout="@layout/circular_button_progress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:elevation="@dimen/dp_10"
-                        android:layout_gravity="end"
-                        tools:visibility="visible" />
-                </LinearLayout>
+                        android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
 
                 <LinearLayout
@@ -3888,13 +3117,12 @@
                         android:layout_marginBottom="8dp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etBankAcNo"
                         style="@style/EditText"
                         android:hint="@string/bank_account_number"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
-                        android:inputType="number"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         />
@@ -3921,7 +3149,7 @@
                         android:layout_marginBottom="8dp" />
 
                     <!-- EditText with custom background -->
-                    <EditText
+                    <TextView
                         android:id="@+id/etPanNumber"
                         style="@style/EditText"
                         android:hint="@string/enter_pan_no"

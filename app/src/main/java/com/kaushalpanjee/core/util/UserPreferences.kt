@@ -41,6 +41,7 @@ private const val USER_ROLE_ID = "USER_ROLE_ID"
 private const val IS_REGISTERED = "IS_REGISTERED"
 private const val SELECTED_SCHEME_CODE = "SELECTED_SCHEME_CODE"
 private const val PROFILE_DATA = "PROFILE_DATA"
+private const val SELECTED_LANGUAGE = "SELECTED_LANGUAGE"
 
 
 
@@ -330,6 +331,28 @@ class UserPreferences @Inject constructor(@ApplicationContext context: Context) 
 
     fun getUseID(): String {
         val key = stringPreferencesKey(USER_ID)
+        var value = ""
+        runBlocking {
+            value = appContext.dataStore.data.map {
+                it[key] ?: ""
+            }.first()
+        }
+        return value
+    }
+
+    suspend fun updateLanguage(languageCode: String?) {
+        val key = stringPreferencesKey(SELECTED_LANGUAGE)
+        appContext.dataStore.edit { preferences ->
+            if (languageCode == null) {
+                preferences.remove(key)
+            } else {
+                preferences[key] = languageCode
+            }
+        }
+    }
+
+    fun getLanguage(): String {
+        val key = stringPreferencesKey(SELECTED_LANGUAGE)
         var value = ""
         runBlocking {
             value = appContext.dataStore.data.map {
