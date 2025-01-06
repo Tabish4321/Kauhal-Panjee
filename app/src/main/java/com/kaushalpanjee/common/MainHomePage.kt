@@ -81,6 +81,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
+     binding.trainingImageLogo.setOnClickListener {
+
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingFragment())
+     }
 
 
 

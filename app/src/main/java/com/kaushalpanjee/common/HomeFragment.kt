@@ -277,6 +277,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesDomainCode = ArrayList<String>()
 
     private var heardName = ArrayList<String>()
+    private var languageName = ArrayList<String>()
+    private var languageCode = ArrayList<String>()
     private var fatherName = ArrayList<String>()
     private var ahlTinNo = ArrayList<String>()
     private var seccName = ArrayList<String>()
@@ -361,7 +363,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSeccListResponse()
         collectSetionAndPerResponse()
         collectBankResponse()
-
+        //collectLanguageListResponse()
         collectInsertPersonalResponse()
         collectInsertAddressResponse()
         collectInsertSeccResponse()
@@ -372,6 +374,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
+      //  commonViewModel.getLanguageListAPI()
         commonViewModel.getAadhaarListAPI(
             AdharDetailsReq(
                 BuildConfig.VERSION_NAME,
@@ -3153,6 +3156,46 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
+    private fun collectLanguageListResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getLanguageListAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getLanguageList ->
+                            if (getLanguageList.responseCode == 200) {
+                                val languageList = getLanguageList.languageList
+
+                                languageName.clear()
+                                languageCode.clear()
+                                for (x in languageList) {
+
+                                    languageName.add(x.languageName)
+                                    languageCode.add(x.languageCode)
+                                }
+                                HeardAdapter.notifyDataSetChanged()
+                            } else if (getLanguageList.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun collectSeccListResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSeccListAPI) {
@@ -3712,13 +3755,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val languages = listOf(
-            Language("हिंदी"),
+            Language("Gujarati"),
             Language("English"),
-            Language("ಕನ್ನಡ"),
-            Language("ଓଡିଆ"),
-            Language("मराठी"),
-            Language("தமிழ்"),
-            Language("తెలుగు")
+            Language("Assamese"),
+            Language("Bengali"),
+            Language("Hindi"),
+            Language("Kannada"),
+            Language("Kashmiri"),
+            Language("Maithili"),
+            Language("Malayalam"),
+            Language("Marathi"),
+            Language("Meitei"),
+            Language("Odia"),
+            Language("Punjabi"),
+            Language("Sanskrit"),
+            Language("Tamil"),
+            Language("Telugu"),
+            Language("Urdu")
         )
 
         // Create adapter with the language list and the map to store checkbox states

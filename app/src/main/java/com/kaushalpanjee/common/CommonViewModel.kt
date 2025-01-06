@@ -28,6 +28,7 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -39,6 +40,9 @@ import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.JobcardResponse
+import com.kaushalpanjee.common.model.response.LanguageList
+import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -348,7 +352,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
+    private  var _getLoginAPI =  MutableStateFlow<Resource<out LoginRes>>(Resource.Loading())
+    val getLoginAPI = _getLoginAPI.asStateFlow()
 
+
+    fun getLoginAPI(loginReq: LoginReq) {
+        viewModelScope.launch {
+            commonRepository.getLoginAPI(loginReq).collectLatest {
+                _getLoginAPI.emit(it)
+            }
+        }
+
+
+    }
 
     private  var _getBankDetailsAPI =  MutableStateFlow<Resource<out BankingRes>>(Resource.Loading())
     val getBankDetailsAPI = _getBankDetailsAPI.asSharedFlow()
@@ -363,6 +379,21 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+    private  var _getLanguageListAPI =  MutableStateFlow<Resource<out LanguageList>>(Resource.Loading())
+    val getLanguageListAPI = _getLanguageListAPI.asSharedFlow()
+
+
+    fun getLanguageListAPI(){
+        viewModelScope.launch {
+            commonRepository.getLanguageListAPI().collectLatest {
+                _getLanguageListAPI.emit(it)
+            }
+        }
+
+
+    }
+
 
     private var _postOnAUAFaceAuthNREGA = MutableSharedFlow<Resource<out Response<UidaiResp>>>()
     val postOnAUAFaceAuthNREGA = _postOnAUAFaceAuthNREGA.asSharedFlow()
@@ -388,6 +419,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             }
         }
     }
+    private var _nRegaValidate = MutableSharedFlow<Resource<out Response<JobcardResponse>>>()
+    val nRegaValidate = _nRegaValidate.asSharedFlow()
+
+    fun getCheckJobCardAPI( username: String, password: String,jobcardNo: String){
+        viewModelScope.launch {
+            commonRepository.getCheckJobCardAPI(username,password,jobcardNo).collectLatest {
+                _nRegaValidate.emit(it)
+            }
+        }
+    }
+
+
 
 
 }

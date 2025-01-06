@@ -23,6 +23,7 @@ import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
+import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -40,6 +41,9 @@ import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.JobcardResponse
+import com.kaushalpanjee.common.model.response.LanguageList
+import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -48,6 +52,9 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Headers
 
 interface AppLevelApi {
 
@@ -150,6 +157,16 @@ interface AppLevelApi {
     suspend fun insertBankingAPI(@Body bankingInsertReq: BankingInsertReq):InsertRes
 
 
+
+    @POST(ApiConstant.API_LOGIN)
+    suspend fun getLoginAPI(@Body loginReq: LoginReq):LoginRes
+
+
+
+    @POST(ApiConstant.LANGUAGE_LIST)
+    suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
+
+
     @POST
     suspend fun postOnAUAFaceAuthNREGA(
         @Url url: String,
@@ -162,6 +179,19 @@ interface AppLevelApi {
         @Url url: String,
         @Body request: ShgValidateReq
     ): Response<ShgValidateRes>
+
+
+
+        @FormUrlEncoded
+        @POST("checkjobcard")
+        @Headers("Content-Type: application/x-www-form-urlencoded")
+        fun checkJobcard(
+            @Url url: String,
+            @Field("username") username: String,
+            @Field("password") password: String,
+            @Field("jobcardno") jobcardNo: String
+        ): Response<JobcardResponse>
+
 
 
 }

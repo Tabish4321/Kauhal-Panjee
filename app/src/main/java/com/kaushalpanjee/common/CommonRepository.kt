@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -29,6 +30,7 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -42,6 +44,9 @@ import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.JobcardResponse
+import com.kaushalpanjee.common.model.response.LanguageList
+import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.ShgValidateRes
@@ -213,6 +218,21 @@ class CommonRepository @Inject constructor(
 
 
 
+    suspend fun getLoginAPI(loginReq: LoginReq): Flow<Resource<out LoginRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getLoginAPI(loginReq)
+        }
+    }
+
+
+    suspend fun getLanguageListAPI(): Flow<Resource<out LanguageList>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getLanguageListAPI(BuildConfig.VERSION_NAME)
+        }
+    }
+
 
 
 
@@ -238,5 +258,17 @@ class CommonRepository @Inject constructor(
             appLevelApi.shgValidateAPI(url,shgValidateReq)
         }
     }
+
+
+
+    fun getCheckJobCardAPI( username: String, password: String,jobcardNo: String): Flow<Resource<out Response<JobcardResponse>>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.checkJobcard("https://nregarep2.nic.in/webapi/api/checkjobcard",username,password,jobcardNo)
+        }
+    }
+
+
+
 
 }

@@ -13,6 +13,7 @@ import com.kaushalpanjee.common.model.MultiLanguage
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.UserPreferences
+import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentLanguageChangeBinding
 import kotlinx.coroutines.launch
@@ -30,11 +31,14 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
         if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")){
 
             binding.checkEnglishIcon.visible()
+            binding.checkIconHindi.gone()
+
 
 
         }
         else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("hi")){
             binding.checkIconHindi.visible()
+            binding.checkEnglishIcon.gone()
 
         }
         else
@@ -53,6 +57,8 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
                     lifecycleScope.launch {
                       AppUtil.saveLanguagePreference(requireContext(),"eng")
                         binding.checkEnglishIcon.visible()
+                        binding.checkIconHindi.gone()
+
 
 
 
@@ -79,6 +85,7 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
 
                     AppUtil.changeAppLanguage(requireContext(),"hi")
                     binding.checkIconHindi.visible()
+                        binding.checkEnglishIcon.gone()
                         AppUtil.saveLanguagePreference(requireContext(),"hi")
 
 

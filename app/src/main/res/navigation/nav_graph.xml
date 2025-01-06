@@ -88,6 +88,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_languageChangeFragment"
             app:destination="@id/languageChangeFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -101,4 +104,10 @@
         android:name="com.kaushalpanjee.common.ViewDetailsFragment"
         android:label="ViewDetailsFragment"
         tools:layout="@layout/fragment_view_details"/>
+    <fragment
+        android:id="@+id/trainingFragment"
+        android:name="com.kaushalpanjee.common.TrainingFragment"
+        android:label="TrainingFragment"
+        tools:layout="@layout/fragment_training"
+        />
 </navigation>

@@ -8,15 +8,23 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.model.request.LoginReq
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setRightDrawablePassword
+import com.kaushalpanjee.core.util.toastShort
+import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,6 +35,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
   private var showPassword = true
 
+    private val commonViewModel: CommonViewModel by activityViewModels()
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,24 +46,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
         init()
+
+
     }
 
 
     private fun init(){
         listeners()
+
+
+
         }
 
     private fun listeners(){
         binding.tvRegister.setOnClickListener {
           findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
-           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
-            /*if (userPreferences.getIsRegistered()){
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEkycFragment())
-               // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToEKYCNew())
-            }else findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())*/
+
         }
         binding.tvLogin.setOnClickListener {
-           // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
             lifecycleScope.launch{
                 if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")){
 
@@ -63,9 +74,23 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 else
                     AppUtil.changeAppLanguage(requireContext(),AppUtil.getSavedLanguagePreference(requireContext()))
 
-                userPreferences.updateUserId(null)
-                userPreferences.updateUserId("2505000001")
-                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
+
+                if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()){
+
+
+                    commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+
+                    collectLoginResponse()
+
+                }
+                else
+                    showSnackBar("Please enter id and password")
+
+
+
+
+
+
             }
 
         }
@@ -91,6 +116,55 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             }
 
         }
+
+
+
     }
+
+    private fun collectLoginResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getLoginAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getLoginResponse ->
+                            when (getLoginResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(getLoginResponse.responseMsg)
+
+                                    userPreferences.updateUserId(null)
+                                    userPreferences.updateUserId("2505000001")
+                                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
+
+
+                                }
+                                203->{
+                                    showSnackBar(getLoginResponse.responseMsg)
+
+                                }
+
+                                301 -> {
+                                    showSnackBar(getLoginResponse.responseMsg)
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
 
 }
