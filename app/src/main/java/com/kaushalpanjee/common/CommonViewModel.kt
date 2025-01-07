@@ -45,9 +45,11 @@ import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
+import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
 import javax.inject.Inject
@@ -388,6 +390,33 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getLanguageListAPI().collectLatest {
                 _getLanguageListAPI.emit(it)
+            }
+        }
+
+
+    }
+    private  var _getSectorListAPI =  MutableStateFlow<Resource<out SectorResponse>>(Resource.Loading())
+    val getSectorListAPI = _getSectorListAPI.asSharedFlow()
+
+
+    fun getSectorListAPI(){
+        viewModelScope.launch {
+            commonRepository.getSectorListAPI().collectLatest {
+                _getSectorListAPI.emit(it)
+            }
+        }
+
+
+    }
+
+    private  var _getTradeListAPI =  MutableStateFlow<Resource<out TradeResponse>>(Resource.Loading())
+    val getTradeListAPI = _getTradeListAPI.asSharedFlow()
+
+
+    fun getTradeListAPI(sectorId :String){
+        viewModelScope.launch {
+            commonRepository.getTradeListAPI(sectorId).collectLatest {
+                _getTradeListAPI.emit(it)
             }
         }
 

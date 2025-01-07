@@ -41,6 +41,8 @@ object ApiConstant {
      const val  BANK_DETAILS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}bankDetails"
      const val  LANGUAGE_LIST= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}languageList"
      const val  API_LOGIN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}login"
+     const val  API_SECTOR= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}sectorList"
+     const val  API_TRADE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}tradeList"
 
 
 

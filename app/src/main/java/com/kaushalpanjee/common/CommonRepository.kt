@@ -49,9 +49,11 @@ import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
+import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import javax.inject.Inject
 
@@ -230,6 +232,23 @@ class CommonRepository @Inject constructor(
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getLanguageListAPI(BuildConfig.VERSION_NAME)
+        }
+    }
+
+
+
+    suspend fun getSectorListAPI(): Flow<Resource<out SectorResponse>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getSectorListAPI(BuildConfig.VERSION_NAME)
+        }
+    }
+
+
+    suspend fun getTradeListAPI(sectorId:String): Flow<Resource<out TradeResponse>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getTradeListAPI(BuildConfig.VERSION_NAME,sectorId)
         }
     }
 

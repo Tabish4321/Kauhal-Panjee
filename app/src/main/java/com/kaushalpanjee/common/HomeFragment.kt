@@ -64,6 +64,8 @@ import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.response.SectorResponse
+import com.kaushalpanjee.common.model.response.SubSector
 import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
@@ -340,8 +342,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val highestEducationList =
         listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
+    private var sectorList = ArrayList<String>()
+    private var sectorCode = ArrayList<String>()
+    private var tradeName = ArrayList<String>()
+
     private var selectedIndices = listOf<Int>()
     private val searchQuery = MutableLiveData<String>()
+
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -376,10 +384,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectInsertEmployementResponse()
         collectInsertTrainingResponse()
         collectInsertBankingResponse()
+        collectTradeResponse()
+        //collectSectorResponse()
 
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
-      //  commonViewModel.getLanguageListAPI()
+        commonViewModel.getSectorListAPI()
         commonViewModel.getAadhaarListAPI(
             AdharDetailsReq(
                 BuildConfig.VERSION_NAME,
@@ -2061,7 +2071,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             MaterialDialog(requireContext()).show {
                 title(text = "Select Items")
-                val itemList = items.toList()
+                val itemList = seccName.toList()
 
                 listItemsMultiChoice(
                     items = itemList,
@@ -3509,6 +3519,91 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
+    private fun collectSectorResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getSectorList ->
+                            if (getSectorList.responseCode == 200) {
+                              val   sectorList1 = getSectorList.wrappedList
+
+                                for (x in sectorList1) {
+                                    sectorList.add(x.sectorName)
+                                    sectorCode.add(x.sectorId)
+
+                                }
+
+
+
+                            } else if (getSectorList.responseCode == 301) {
+                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else if (getSectorList.responseCode == 302) {
+                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectTradeResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getTradeListAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getTradeList ->
+                            if (getTradeList.responseCode == 200) {
+                                val   sectorList1 = getTradeList.wrappedList
+
+                                for (x in sectorList1) {
+                                    tradeName.add(x.trade)
+
+                                }
+
+
+
+                            } else if (getTradeList.responseCode == 301) {
+                                getTradeList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else if (getTradeList.responseCode == 302) {
+                                getTradeList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
 
 
 

@@ -46,9 +46,11 @@ import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
+import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
@@ -162,6 +164,16 @@ interface AppLevelApi {
     @POST(ApiConstant.API_LOGIN)
     suspend fun getLoginAPI(@Body loginReq: LoginReq):LoginRes
 
+
+
+
+    @POST(ApiConstant.API_SECTOR)
+    suspend fun getSectorListAPI(@Body appVersion :String):SectorResponse
+
+
+
+    @POST(ApiConstant.API_TRADE)
+    suspend fun getTradeListAPI(@Body appVersion :String, sectorId : String):TradeResponse
 
 
     @POST(ApiConstant.LANGUAGE_LIST)

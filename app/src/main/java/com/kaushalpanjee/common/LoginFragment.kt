@@ -39,6 +39,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
+   private  var userName=""
+   private  var password=""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,9 +78,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
                 if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()){
+                     userName= binding.etEmail.text.toString()
+                     password= binding.etPassword.text.toString()
 
 
-                    commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                  //  commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                    commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
 
                     collectLoginResponse()
 
