@@ -684,33 +684,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.llTopPersonal.setOnClickListener {
 
             if (isPersonalVisible && personalStatus.contains("0")) {
+
                 isPersonalVisible = false
                 binding.personalExpand.visible()
                 binding.viewSecc.visible()
 
             }
+
             else {
-
-                showYesNoDialog(
-                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
-                    title = "Confirmation",
-                    message = "Do you want to edit your personal info?",
-                    onYesClicked = {
-                        // Action for Yes button
-                        isPersonalVisible = false
-                        binding.personalExpand.visible()
-                        binding.viewSecc.visible()
-                    },
-                    onNoClicked = {
-
-                    }
-                )
-
-
                 isPersonalVisible = true
                 binding.personalExpand.gone()
                 binding.viewSecc.gone()
             }
+
+
+             if (personalStatus.contains("1")){
+
+                 showYesNoDialog(
+                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                     title = "Confirmation",
+                     message = "Do you want to edit your personal info?",
+                     onYesClicked = {
+                         // Action for Yes button
+                         isPersonalVisible = false
+                         binding.personalExpand.visible()
+                         binding.viewSecc.visible()
+                     },
+                     onNoClicked = {
+
+                     }
+                 )
+
+
+
+            }
+
+
+
+
         }
 
         binding.llTopSecc.setOnClickListener {
@@ -737,6 +748,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             } else {
 
+                isSeccInfoVisible = true
+                binding.expandSecc.gone()
+                binding.viewSeccc.gone()}
+
+            if (seccStatus.contains("1")){
+
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
                     title = "Confirmation",
@@ -751,9 +768,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 )
 
-                isSeccInfoVisible = true
-                binding.expandSecc.gone()
-                binding.viewSeccc.gone()
             }
 
         }
@@ -765,7 +779,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandAddress.visible()
                 binding.viewAddress.visible()
             } else {
+                isAddressVisible = true
+                binding.expandAddress.gone()
+                binding.viewAddress.gone()
+            }
 
+            if (addressStatus.contains("0")){
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
                     title = "Confirmation",
@@ -780,9 +799,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 )
 
-                isAddressVisible = true
-                binding.expandAddress.gone()
-                binding.viewAddress.gone()
+
             }
         }
 
@@ -795,6 +812,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandEducational.visible()
                 binding.viewEducational.visible()
             } else {
+
+
+                isEducationalInfoVisible = true
+                binding.expandEducational.gone()
+                binding.viewEducational.gone()}
+
+            if (educationalStatus.contains("1")){
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
                     title = "Confirmation",
@@ -809,9 +833,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 )
 
-                isEducationalInfoVisible = true
-                binding.expandEducational.gone()
-                binding.viewEducational.gone()
             }
         }
 
@@ -823,6 +844,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.viewEmployment.visible()
             } else {
 
+                isEmploymentInfoVisible = true
+                binding.expandEmployment.gone()
+                binding.viewEmployment.gone()}
+            if (employmentStatus.contains("1")){
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
                     title = "Confirmation",
@@ -837,9 +862,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 )
 
-                isEmploymentInfoVisible = true
-                binding.expandEmployment.gone()
-                binding.viewEmployment.gone()
+
             }
         }
 
@@ -851,7 +874,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.viewBanking.visible()
             } else {
 
-
+                isBankingInfoVisible = true
+                binding.expandBanking.gone()
+                binding.viewBanking.gone()}
+            if ( bankingStatus.contains("1")){
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
                     title = "Confirmation",
@@ -865,9 +891,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     }
                 )
-                isBankingInfoVisible = true
-                binding.expandBanking.gone()
-                binding.viewBanking.gone()
+
             }
         }
 
@@ -878,6 +902,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandTraining.visible()
                 binding.viewTraining.visible()
             } else {
+                isTrainingInfoVisible = true
+                binding.expandTraining.gone()
+                binding.viewTraining.gone()}
+            if (trainingStatus.contains("1")){
 
 
                 showYesNoDialog(
@@ -893,9 +921,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     }
                 )
-                isTrainingInfoVisible = true
-                binding.expandTraining.gone()
-                binding.viewTraining.gone()
+
             }
         }
 

@@ -788,6 +788,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 {
                                     userPreferences.updateUserId(null)
                                     userPreferences.updateUserId(x.userId)
+
+                                    toastLong("userId: ${x.userId}"+"password: ${x.password}")
+
                                 }
                                 toastLong("Your username and password have been sent to your email.")
 
