@@ -54,6 +54,7 @@ import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Header
 import retrofit2.http.Headers
 
 interface AppLevelApi {
@@ -183,14 +184,15 @@ interface AppLevelApi {
 
 
         @FormUrlEncoded
-        @POST("checkjobcard")
+        @POST
         @Headers("Content-Type: application/x-www-form-urlencoded")
         fun checkJobcard(
             @Url url: String,
-            @Field("username") username: String,
-            @Field("password") password: String,
+            @Header("username") username: String,
+            @Header("password") password: String,
             @Field("jobcardno") jobcardNo: String
         ): Response<JobcardResponse>
+
 
 
 

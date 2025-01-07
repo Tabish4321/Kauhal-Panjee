@@ -74,6 +74,7 @@ import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
+import java.security.MessageDigest
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -125,9 +126,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedMaritalItem = ""
     private var selectedHighestEducationItem = ""
     private var shgValidateStatus = ""
+    private var nregaValidateStatus = ""
     private var shgName = ""
     private var shgCode = ""
     private var shgStatus = ""
+    private var nregaStatus = ""
     private var rsbyStatus = ""
     private var rsbyImage = ""
     private var pipStatus = ""
@@ -166,6 +169,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var branchName = ""
     private var selectedSeccName = ""
     private var selectedAhlTin = ""
+    private var jobCardNo= ""
    private val result = StringBuilder()
 
 
@@ -363,6 +367,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSeccListResponse()
         collectSetionAndPerResponse()
         collectBankResponse()
+        collectNregaValidateResponse()
         //collectLanguageListResponse()
         collectInsertPersonalResponse()
         collectInsertAddressResponse()
@@ -1853,6 +1858,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
+
+        //Nrega Selection If yes
+        binding.optionNregaJobYesSelect.setOnClickListener {
+            binding.optionNregaJobYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionNregaJobNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            nregaStatus = "Yes"
+            binding.etNregaValidate.visible()
+            binding.btnjobcardnoValidate.visible()
+
+
+        }
+        //Nrega Selection If No
+        binding.optionNregaJobNoSelect.setOnClickListener {
+            binding.optionNregaJobYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionNregaJobNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            nregaStatus = "No"
+            binding.etNregaValidate.gone()
+            binding.btnjobcardnoValidate.gone()
+
+
+        }
+
+
         //Antoyada Selection If yes
         binding.optionAntyodayaYesSelect.setOnClickListener {
             binding.optionAntyodayaYesSelect.setBackgroundResource(R.drawable.card_background_selected)
@@ -2051,7 +2081,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //All Submit Button Here
 
 
-        binding.viewDetails.setOnClickListener {
+        binding.profileView.viewDetails.setOnClickListener {
 
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToViewDetailsFragment())
         }
@@ -2305,6 +2335,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.tvShgValidate.text = "Validate Successfully: $shgName"
                 } else toastLong("Validation Failed please check your SHG Code")
             }
+        }
+
+
+        binding.btnjobcardnoValidate.setOnClickListener {
+
+            val username = HashUtils.sha512("Nrega") // Encrypt the username
+            val password = HashUtils.sha512("Nrg2k18") // Encrypt the password
+            jobCardNo= binding.etNregaValidate.text.toString()
+            if (jobCardNo.isNotEmpty()){
+
+                commonViewModel.getCheckJobCardAPI(username,password,"HR-01-005-001-001/1128" )
+
+            }
+            else toastShort("Please enter jobCard")
         }
 
         binding.btnAddressSubmit.setOnClickListener {
@@ -2899,16 +2943,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 for (x in userAadhaarDetailsList) {
 
-                                    binding.tvAadhaarName.setText(x.userName)
-                                    binding.tvAaadharMobile.setText(x.mobileNo)
-                                    binding.tvAaadharGender.setText(x.gender)
-                                    binding.tvAaadharDob.setText(x.dateOfBirth)
-                                    binding.tvAaadharAddress.setText(x.comAddress)
+                                    binding.profileView.tvAadhaarName.setText(x.userName)
+                                    binding.profileView.tvAaadharMobile.setText(x.mobileNo)
+                                    binding.profileView.tvAaadharGender.setText(x.gender)
+                                    binding.profileView.tvAaadharDob.setText(x.dateOfBirth)
+                                    binding.profileView.tvAaadharAddress.setText(x.comAddress)
 
                                     val bytes: ByteArray =
                                         Base64.decode(x.imagePath, Base64.DEFAULT)
                                     val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                    binding.circleImageView.setImageBitmap(bitmap)
+                                    binding.profileView.circleImageView.setImageBitmap(bitmap)
 
                                 }
                             } else if (getAadharDetailsRes.responseCode == 301) {
@@ -3275,7 +3319,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 // set dynamic meter
 
-                                binding.ivProgress.setImageBitmap(
+
+                                binding.profileView.ivProgress.setImageBitmap(
                                     createHalfCircleProgressBitmap(
                                         300, 300, totalPercentange,
                                         ContextCompat.getColor(requireContext(), R.color.color_dark_green),
@@ -3388,6 +3433,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
+    private fun collectNregaValidateResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.nRegaValidate) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getValidateStatus ->
+                            if (getValidateStatus.isSuccessful) {
+                                nregaValidateStatus = getValidateStatus.body()?.Status ?: "False"
+                              //  nregaValidateStatus = getValidateStatus.body()?.Remarks.toString()
+                                showSnackBar(getValidateStatus.body()?.Remarks.toString())
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
 
     private fun collectBankResponse() {
         lifecycleScope.launch {
@@ -3872,6 +3946,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+    object HashUtils {
+        fun sha512(input: String): String {
+            val bytes = MessageDigest.getInstance("SHA-512").digest(input.toByteArray())
+            return bytes.joinToString("") { "%02x".format(it) }
+        }
+    }
 
 }
 

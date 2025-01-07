@@ -261,10 +261,10 @@ class CommonRepository @Inject constructor(
 
 
 
-    fun getCheckJobCardAPI( username: String, password: String,jobcardNo: String): Flow<Resource<out Response<JobcardResponse>>>{
+    fun getCheckJobCardAPI( url: String, username: String, password: String,jobcardNo: String): Flow<Resource<out Response<JobcardResponse>>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.checkJobcard("https://nregarep2.nic.in/webapi/api/checkjobcard",username,password,jobcardNo)
+            appLevelApi.checkJobcard(url,username,password,jobcardNo)
         }
     }
 
