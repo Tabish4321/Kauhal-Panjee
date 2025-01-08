@@ -34,7 +34,12 @@ import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.TechDomainReq
+import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
@@ -50,6 +55,7 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
 import javax.inject.Inject
@@ -399,9 +405,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getSectorListAPI = _getSectorListAPI.asSharedFlow()
 
 
-    fun getSectorListAPI(){
+    fun getSectorListAPI(techQualification: TechQualification){
         viewModelScope.launch {
-            commonRepository.getSectorListAPI().collectLatest {
+            commonRepository.getSectorListAPI(techQualification).collectLatest {
                 _getSectorListAPI.emit(it)
             }
         }
@@ -413,10 +419,39 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getTradeListAPI = _getTradeListAPI.asSharedFlow()
 
 
-    fun getTradeListAPI(sectorId :String){
+    fun getTradeListAPI(tradeReq: TradeReq){
         viewModelScope.launch {
-            commonRepository.getTradeListAPI(sectorId).collectLatest {
+            commonRepository.getTradeListAPI(tradeReq).collectLatest {
                 _getTradeListAPI.emit(it)
+            }
+        }
+
+
+    }
+
+    private  var _getTrainingSearchAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
+    val getTrainingSearchAPI = _getTrainingSearchAPI.asSharedFlow()
+
+
+    fun getTrainingSearchAPI(trainingSearch: TrainingSearch){
+        viewModelScope.launch {
+            commonRepository.getTrainingSearchAPI(trainingSearch).collectLatest {
+                _getTrainingSearchAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private  var _getTrainingListAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
+    val getTrainingListAPI = _getTrainingListAPI.asSharedFlow()
+
+
+    fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq){
+        viewModelScope.launch {
+            commonRepository.getTrainingListAPI(trainingCenterReq).collectLatest {
+                _getTrainingListAPI.emit(it)
             }
         }
 

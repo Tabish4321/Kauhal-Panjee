@@ -38,7 +38,10 @@ import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
@@ -54,6 +57,7 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import javax.inject.Inject
 
@@ -237,22 +241,40 @@ class CommonRepository @Inject constructor(
 
 
 
-    suspend fun getSectorListAPI(): Flow<Resource<out SectorResponse>>{
+    suspend fun getSectorListAPI(techQualification: TechQualification): Flow<Resource<out SectorResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getSectorListAPI(BuildConfig.VERSION_NAME)
+            appLevelApi.getSectorListAPI(techQualification)
         }
     }
 
 
-    suspend fun getTradeListAPI(sectorId:String): Flow<Resource<out TradeResponse>>{
+    suspend fun getTradeListAPI(tradeReq: TradeReq): Flow<Resource<out TradeResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getTradeListAPI(BuildConfig.VERSION_NAME,sectorId)
+            appLevelApi.getTradeListAPI(tradeReq)
         }
     }
 
 
+
+
+    suspend fun getTrainingSearchAPI(trainingSearch: TrainingSearch): Flow<Resource<out TrainingCenterRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getTrainingSearchAPI(trainingSearch)
+        }
+    }
+
+
+
+
+    suspend fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq): Flow<Resource<out TrainingCenterRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getTrainingListAPI(trainingCenterReq)
+        }
+    }
 
 
 

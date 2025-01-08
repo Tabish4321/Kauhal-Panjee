@@ -228,11 +228,11 @@
 
 
         <TextView
-            android:id="@+id/tvLogin"
+            android:id="@+id/tvSubmit"
             style="@style/Button"
             android:layout_marginBottom="@dimen/dp_20"
             android:drawablePadding="@dimen/dp_20"
-            android:text="@string/login"
+            android:text="@string/submit"
             android:layout_marginTop="@dimen/dp_20"
             app:drawableEndCompat="@drawable/ic_right_arrow"
             app:layout_constraintBottom_toTopOf="@+id/tvRegister"

@@ -10,7 +10,5 @@ data class SectorResponse(
 
 data class SubSector(
     val sectorId: String,
-    val subSectorName: String,
-    val sectorName: String,
-    val subSectorId: String
+    val sectorName: String
 )

@@ -108,7 +108,7 @@
     <string name="pan_no">PAN No</string>
     <string name="enter_pan_no">Enter PAN No</string>
     <string name="image">Image</string>
-    <string name="search">Enter Name</string>
+    <string name="search">Enter training center Name</string>
     <string name="services_for_you">Services for you</string>
     <string name="unableto_find_yourself_in_secc_drop_down">Unable to find yourself in SECC drop_down?</string>
     <string name="ahl_tin">AHL-TIN</string>
@@ -178,6 +178,8 @@
     <string name="enter_jobcardno">Enter jobcardno</string>
     <string name="enter_shg_code">Enter SHG code</string>
     <string name="upload_nrega_jobcard">Upload Nrega image</string>
+    <string name="training_name">Training Name</string>
+    <string name="contact_no">Contact no</string>
 
 
 </resources>

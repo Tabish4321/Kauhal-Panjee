@@ -3,22 +3,28 @@ package com.kaushalpanjee.common
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
+import com.kaushalpanjee.core.util.gone
+import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -41,7 +47,20 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var addressStatus = ""
     private var employmentStatus = ""
     private var bankingStatus = ""
+    private var selectedTrainingName = ""
+    private var selectedTrainingContact = ""
+    private var selectedTrainingAddress = ""
+    private var selectedTrainingImage = ""
+    private var traningName = ArrayList<String>()
+    private var trainingAddress = ArrayList<String>()
+    private var trainingContactno = ArrayList<String>()
+    private var trainingImage = ArrayList<String>()
+
     private var totalPercentange =0.0f
+    private val searchQuery = MutableLiveData<String>()
+    private lateinit var trainingSearchAdapter: TrainingSearchAdapter
+
+
 
 
     private val imageList = listOf(
@@ -70,6 +89,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          )
 
          collectSetionAndPerResponse()
+         collectTrainingSearchResponse()
 
 
 
@@ -77,6 +97,36 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      }
 
  private fun  listeners(){
+
+
+    //Training Adapter Setting
+
+     binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+     trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
+         selectedTrainingName = selectedItem.centerName
+         toastShort("Selected Item: ${selectedItem.centerName}")
+     }
+     binding.trainingRecyclerView.adapter = trainingSearchAdapter
+
+     // Training Search Text
+     searchQuery.observe(viewLifecycleOwner) { query ->
+         if (query.length >= 4) {
+             handleTrainingSearchQuery(query) // Trigger API call
+         }
+     }
+
+     // Add TextWatcher to EditText
+     binding.etSearch.addTextChangedListener(object : TextWatcher {
+         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+             searchQuery.value = s.toString()
+         }
+
+         override fun afterTextChanged(s: Editable?) {}
+     })
+
+
 
 
 
@@ -273,7 +323,44 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
     }
 
+    private fun collectTrainingSearchResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getTrainingSearchAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getTrainingSearchAPI ->
+                            if (getTrainingSearchAPI.responseCode == 200) {
+                                val trainingList = getTrainingSearchAPI.centerList
+                                trainingSearchAdapter.submitList(trainingList)
+                            } else if (getTrainingSearchAPI.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
 
 
+
+
+    private fun handleTrainingSearchQuery(query: String) {
+
+        commonViewModel.getTrainingSearchAPI(TrainingSearch(BuildConfig.VERSION_NAME,query))
+
+
+    }
 
 }

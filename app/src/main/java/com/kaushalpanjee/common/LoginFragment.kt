@@ -82,8 +82,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                      password= binding.etPassword.text.toString()
 
 
-                  //  commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
-                    commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                  //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                    commonViewModel.getLoginAPI(LoginReq("2501000005","aSMe#D1oU*",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                 //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
 
                     collectLoginResponse()
 
@@ -147,7 +148,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                     showSnackBar(getLoginResponse.responseMsg)
 
                                     userPreferences.updateUserId(null)
-                                    userPreferences.updateUserId("2505000001")
+                                    userPreferences.updateUserId(userName)
                                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
 
 

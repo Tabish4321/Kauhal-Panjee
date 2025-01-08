@@ -63,7 +63,10 @@ import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
+import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.SubSector
 import com.kaushalpanjee.common.model.response.UserDetails
@@ -153,6 +156,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var natureEmpEmpStatus = ""
     private var traingBeforeStatus = ""
     private var selectedSector = ""
+    private var selectedSectorCode = ""
     private var selectedTrade = ""
     private var haveUHeardStatus = ""
     private var totalPercentange = 0.0f
@@ -346,7 +350,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var sectorCode = ArrayList<String>()
     private var tradeName = ArrayList<String>()
 
-    private var selectedIndices = listOf<Int>()
+    private var selectedSectorIndices: MutableList<Int> = mutableListOf()
+    private var selectedTradeIndices: MutableList<Int> = mutableListOf()
     private val searchQuery = MutableLiveData<String>()
 
 
@@ -376,7 +381,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSetionAndPerResponse()
         collectBankResponse()
         collectNregaValidateResponse()
-        //collectLanguageListResponse()
         collectInsertPersonalResponse()
         collectInsertAddressResponse()
         collectInsertSeccResponse()
@@ -385,11 +389,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectInsertTrainingResponse()
         collectInsertBankingResponse()
         collectTradeResponse()
-        //collectSectorResponse()
+        collectSectorResponse()
 
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
-        commonViewModel.getSectorListAPI()
+        commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME))
         commonViewModel.getAadhaarListAPI(
             AdharDetailsReq(
                 BuildConfig.VERSION_NAME,
@@ -430,6 +434,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+
 
 
         binding.llPresentAddressState.gone()
@@ -2070,50 +2076,67 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-
         binding.tvSectorItems.setOnClickListener {
-
             MaterialDialog(requireContext()).show {
-                title(text = "Select Items")
-                val itemList = items.toList()
+                title(text = "Select Sectors")
+                val itemList = sectorList.toList()
 
                 listItemsMultiChoice(
                     items = itemList,
-                    initialSelection = selectedIndices.toIntArray() // Convert List<Int> to IntArray
+                    initialSelection = selectedSectorIndices.toIntArray() // Use sector-specific indices
                 ) { _, indices, _ ->
-                    // Update selected indices
-                    selectedIndices = indices.toList()
+                    // Update selected indices for sectors
+                    selectedSectorIndices = indices.toMutableList()
+
+                    // Display selected items in the TextView
                     binding.tvSectorItems.text =
-                        "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
-                    selectedSector = "${indices.joinToString(", ") { itemList[it] }}"
+                        "Selected Items: ${indices.joinToString(",") { itemList[it] }}"
+
+                    // Store the selected sectors as a comma-separated string
+                    selectedSector = indices.joinToString(",") { itemList[it] }
+
+                    // Store the selected sector codes as a comma-separated string
+                    selectedSectorCode = indices.joinToString(",") { sectorCode[it] }
+                    toastLong("Value at index $selectedSectorCode")
+
+                    // Call API with selected sector codes
+                    commonViewModel.getTradeListAPI(TradeReq(BuildConfig.VERSION_NAME, selectedSectorCode))
+                    selectedTradeIndices.clear()
+                    binding.tvTradeItems.text ="Select Trade"
+                    selectedTrade=""
+
+
                 }
+
                 positiveButton(text = "OK")
                 negativeButton(text = "Cancel")
             }
         }
-
 
         binding.tvTradeItems.setOnClickListener {
-
             MaterialDialog(requireContext()).show {
-                title(text = "Select Items")
-                val itemList = seccName.toList()
+                title(text = "Select Trades")
+                val itemList = tradeName.toList()
 
                 listItemsMultiChoice(
                     items = itemList,
-                    initialSelection = selectedIndices.toIntArray() // Convert List<Int> to IntArray
+                    initialSelection = selectedTradeIndices.toIntArray() // Use trade-specific indices
                 ) { _, indices, _ ->
-                    // Update selected indices
-                    selectedIndices = indices.toList()
+                    // Update selected indices for trades
+                    selectedTradeIndices = indices.toMutableList()
+
+                    // Display selected items in the TextView
                     binding.tvTradeItems.text =
-                        "Selected Items: ${indices.joinToString(", ") { itemList[it] }}"
-                    selectedTrade = "${indices.joinToString(", ") { itemList[it] }}"
+                        "Selected Items: ${indices.joinToString(",") { itemList[it] }}"
+
+                    // Store the selected trades as a comma-separated string
+                    selectedTrade = indices.joinToString(",") { itemList[it] }
                 }
+
                 positiveButton(text = "OK")
                 negativeButton(text = "Cancel")
             }
         }
-
         //All Submit Button Here
 
 
@@ -3546,6 +3569,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun collectSectorResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
@@ -3564,6 +3588,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getSectorList.responseCode == 200) {
                               val   sectorList1 = getSectorList.wrappedList
 
+                                sectorCode.clear()
+                                sectorList.clear()
                                 for (x in sectorList1) {
                                     sectorList.add(x.sectorName)
                                     sectorCode.add(x.sectorId)
@@ -3606,6 +3632,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getTradeList.responseCode == 200) {
                                 val   sectorList1 = getTradeList.wrappedList
 
+                                tradeName.clear()
                                 for (x in sectorList1) {
                                     tradeName.add(x.trade)
 
@@ -3931,6 +3958,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     }
+
 
 
     // This map will hold the checkbox states, ensuring persistent selection across dialog opens

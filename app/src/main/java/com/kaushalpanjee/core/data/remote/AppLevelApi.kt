@@ -31,7 +31,10 @@ import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -51,6 +54,7 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
@@ -168,12 +172,23 @@ interface AppLevelApi {
 
 
     @POST(ApiConstant.API_SECTOR)
-    suspend fun getSectorListAPI(@Body appVersion :String):SectorResponse
+    suspend fun getSectorListAPI(@Body techQualification: TechQualification):SectorResponse
 
 
 
     @POST(ApiConstant.API_TRADE)
-    suspend fun getTradeListAPI(@Body appVersion :String, sectorId : String):TradeResponse
+    suspend fun getTradeListAPI(@Body tradeReq: TradeReq):TradeResponse
+
+
+
+    @POST(ApiConstant.API_TRAINING_SEARCH)
+    suspend fun getTrainingSearchAPI(@Body trainingSearch: TrainingSearch):TrainingCenterRes
+
+
+
+    @POST(ApiConstant.API_TRAINING_LIST)
+    suspend fun getTrainingListAPI(@Body trainingCenterReq: TrainingCenterReq):TrainingCenterRes
+
 
 
     @POST(ApiConstant.LANGUAGE_LIST)

@@ -6,10 +6,13 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.response.DistrictList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.FragmentTrainingBinding
 import kotlinx.coroutines.launch
@@ -29,6 +32,10 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
     private var stateLgdCode = ArrayList<String>()
     private var selectedStateCodeItem = ""
     private var selectedStateItem = ""
+    private var selectedSectorItem = ""
+    private var selectedSectorCodeItem = ""
+    private var sectorList = ArrayList<String>()
+    private var sectorCode = ArrayList<String>()
 
 
 
@@ -41,6 +48,8 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
     private var selectedDistrictCodeItem = ""
     private var selectedDistrictLgdCodeItem = ""
     private var selectedDistrictItem = ""
+    private lateinit var sectorAdapter: ArrayAdapter<String>
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +59,7 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
         commonViewModel.getStateListApi()
         collectStateResponse()
         collectDistrictResponse()
+        collectSectorResponse()
 
 
     }
@@ -60,6 +70,34 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
 
     }
     private fun listener(){
+
+
+
+        binding.tvSubmit.setOnClickListener {
+
+            if (selectedSectorItem.isNotEmpty()&& selectedDistrictItem.isNotEmpty()){
+
+                commonViewModel.getTrainingListAPI(TrainingCenterReq(BuildConfig.VERSION_NAME,selectedSectorCodeItem,selectedDistrictCodeItem))
+
+            }
+
+            toastLong("Kindly fill details first")
+
+
+        }
+
+
+
+
+        //Adapter Sector setting
+
+        sectorAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            sectorList
+        )
+
+        binding.SpinnerSectorName.setAdapter(sectorAdapter)
 
 
         //Adapter state setting
@@ -114,6 +152,19 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
             }
         }
 
+
+
+        //Sector selection
+        binding.SpinnerSectorName.setOnItemClickListener { parent, view, position, id ->
+            selectedSectorItem = parent.getItemAtPosition(position).toString()
+            if (position in sectorList.indices) {
+                selectedSectorCodeItem = sectorCode[position]
+
+            }
+            else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 
@@ -202,5 +253,50 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
             }
         }
     }
+
+    private fun collectSectorResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getSectorList ->
+                            if (getSectorList.responseCode == 200) {
+                                val   sectorList1 = getSectorList.wrappedList
+
+                                sectorCode.clear()
+                                sectorList.clear()
+                                for (x in sectorList1) {
+                                    sectorList.add(x.sectorName)
+                                    sectorCode.add(x.sectorId)
+
+                                }
+
+
+
+                            } else if (getSectorList.responseCode == 301) {
+                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else if (getSectorList.responseCode == 302) {
+                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
 
 }
