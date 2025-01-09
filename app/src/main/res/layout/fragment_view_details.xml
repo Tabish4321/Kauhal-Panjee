@@ -1862,6 +1862,7 @@
                         style="@style/EditText"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
+                        android:id="@+id/etBloch"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:hint="@string/select_Block"
@@ -1894,6 +1895,7 @@
                     <TextView
                         android:hint="@string/select_gp"
                         android:layout_height="wrap_content"
+                        android:id="@+id/etSeccgp"
                         style="@style/EditText"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
@@ -1926,6 +1928,7 @@
                         style="@style/EditText"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
+                        android:id="@+id/etSeccVillage"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:hint="@string/select_Village" />
@@ -1935,7 +1938,7 @@
                     <EditText
                         android:id="@+id/etATINNo"
                         style="@style/EditText"
-                        android:hint="@string/search"
+                        android:hint="@string/a_tin_no"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:visibility="visible"

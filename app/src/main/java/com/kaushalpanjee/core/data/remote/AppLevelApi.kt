@@ -19,6 +19,7 @@ import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BlockReq
+import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
@@ -40,6 +41,7 @@ import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BlockResponse
+import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.GrampanchayatList
@@ -188,6 +190,13 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_TRAINING_LIST)
     suspend fun getTrainingListAPI(@Body trainingCenterReq: TrainingCenterReq):TrainingCenterRes
+
+
+
+    @POST(ApiConstant.API_CANDIDATE_DETAILS)
+    suspend fun getCandidateDetailsAPI(@Body candidateReq: CandidateReq):CandidateDetails
+
+
 
 
 

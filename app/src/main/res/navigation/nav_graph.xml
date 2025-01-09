@@ -109,5 +109,24 @@
         android:name="com.kaushalpanjee.common.TrainingFragment"
         android:label="TrainingFragment"
         tools:layout="@layout/fragment_training"
-        />
+        >
+        <action
+            android:id="@+id/action_trainingFragment_to_trainingCenterView"
+            app:destination="@id/trainingCenterView" >
+
+            <argument
+                android:name="districtCode"
+                app:argType="string" />
+            <argument
+                android:name="sectorCode"
+                app:argType="string" />
+
+
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/trainingCenterView"
+        android:name="com.kaushalpanjee.common.TrainingCenterView"
+        android:label="TrainingCenterView"
+        tools:layout="@layout/training_center_view"/>
 </navigation>

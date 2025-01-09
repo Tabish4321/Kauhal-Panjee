@@ -180,6 +180,9 @@
     <string name="upload_nrega_jobcard">Upload Nrega image</string>
     <string name="training_name">Training Name</string>
     <string name="contact_no">Contact no</string>
+    <string name="center_name">Center Name</string>
+    <string name="address">Address</string>
+    <string name="contact_number">Contact Number</string>
 
 
 </resources>

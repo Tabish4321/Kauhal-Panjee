@@ -26,6 +26,7 @@ import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -43,6 +44,7 @@ import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
+import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
@@ -452,6 +454,20 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getTrainingListAPI(trainingCenterReq).collectLatest {
                 _getTrainingListAPI.emit(it)
+            }
+        }
+
+
+    }
+
+    private  var _getCandidateDetailsAPI =  MutableStateFlow<Resource<out CandidateDetails>>(Resource.Loading())
+    val getCandidateDetailsAPI = _getCandidateDetailsAPI.asSharedFlow()
+
+
+    fun getCandidateDetailsAPI(candidateReq: CandidateReq){
+        viewModelScope.launch {
+            commonRepository.getCandidateDetailsAPI(candidateReq).collectLatest {
+                _getCandidateDetailsAPI.emit(it)
             }
         }
 

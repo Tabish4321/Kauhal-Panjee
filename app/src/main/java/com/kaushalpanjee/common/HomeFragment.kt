@@ -73,6 +73,7 @@ import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
+import com.kaushalpanjee.core.util.isNull
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
@@ -790,7 +791,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.viewAddress.gone()
             }
 
-            if (addressStatus.contains("0")){
+            if (addressStatus.contains("1")){
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
                     title = "Confirmation",
@@ -2307,7 +2308,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 //HitInsertAPI
                 val currentSalary: Int = binding.etCurrentEarning.text.toString().toIntOrNull() ?: 0
                 val salaryExpectation: Int = binding.etExpectationSalary.text.toString().toIntOrNull() ?: 0
-                if (salaryExpectation.toString().contains("0")){
+                if (salaryExpectation.isNull){
+
 
                     toastShort("Please fill Salary expectation first")
 

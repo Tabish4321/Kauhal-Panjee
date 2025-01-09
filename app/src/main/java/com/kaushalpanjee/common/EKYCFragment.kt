@@ -263,8 +263,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
-            //binding.tvWelcomeMsg.gone()
-            // binding.tvWelcome.text = getString(R.string.slected_state)
+
             binding.tvWelcomeMsg.text = selectedState
             binding.etAadhaar.gone()
             binding.progressButton.root.visible()
@@ -351,7 +350,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var intentResponse: IntentResponse? = null
     private val neededPermissions = arrayOf(Manifest.permission.CAMERA)
     private var startTime: Long = 0
-    private var computationTime: String = ""
     private var userPhotoUIADI: Bitmap? = null
     private var ekycImage: String = ""
 
@@ -515,7 +513,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             e.printStackTrace()
             toastShort("An error occurred while processing the response.")
             log("EKYCDATA", "Exception: ${e.message}")
-            e.message?.copyToClipboard(requireContext())
+           // e.message?.copyToClipboard(requireContext())
         } finally {
             // Ensure progress bar is hidden after processing
             hideProgressBar()

@@ -28,6 +28,7 @@ import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -45,6 +46,7 @@ import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
+import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
@@ -275,6 +277,14 @@ class CommonRepository @Inject constructor(
             appLevelApi.getTrainingListAPI(trainingCenterReq)
         }
     }
+
+    suspend fun getCandidateDetailsAPI(candidateReq: CandidateReq): Flow<Resource<out CandidateDetails>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getCandidateDetailsAPI(candidateReq)
+        }
+    }
+
 
 
 

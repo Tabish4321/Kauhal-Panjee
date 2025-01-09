@@ -6,8 +6,10 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.response.DistrictList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
@@ -46,7 +48,6 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
     private var districtCode = ArrayList<String>()
     private var districtLgdCode = ArrayList<String>()
     private var selectedDistrictCodeItem = ""
-    private var selectedDistrictLgdCodeItem = ""
     private var selectedDistrictItem = ""
     private lateinit var sectorAdapter: ArrayAdapter<String>
 
@@ -76,12 +77,14 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
         binding.tvSubmit.setOnClickListener {
 
             if (selectedSectorItem.isNotEmpty()&& selectedDistrictItem.isNotEmpty()){
+                findNavController().navigate(TrainingFragmentDirections.actionTrainingFragmentToTrainingCenterView(selectedDistrictCodeItem,selectedSectorCodeItem))
 
-                commonViewModel.getTrainingListAPI(TrainingCenterReq(BuildConfig.VERSION_NAME,selectedSectorCodeItem,selectedDistrictCodeItem))
 
             }
 
-            toastLong("Kindly fill details first")
+            else  toastLong("Kindly fill details first")
+
+
 
 
         }
@@ -129,8 +132,9 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
         binding.SpinnerDistrictName.setOnItemClickListener { parent, view, position, id ->
             selectedDistrictItem = parent.getItemAtPosition(position).toString()
             if (position in district.indices) {
+                commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME))
                 selectedDistrictCodeItem = districtCode[position]
-                selectedDistrictLgdCodeItem = districtLgdCode[position]
+            //    selectedDistrictCodeItem = districtLgdCode[position]
 
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
@@ -215,7 +219,7 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
     }
 
 
-    private fun collectDistrictResponse() {
+            private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
                 when (it) {
@@ -254,7 +258,7 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
         }
     }
 
-    private fun collectSectorResponse() {
+            private fun collectSectorResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
                 when (it) {
