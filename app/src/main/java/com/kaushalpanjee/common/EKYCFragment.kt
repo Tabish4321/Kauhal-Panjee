@@ -27,6 +27,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -756,7 +757,24 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         // Handle OK button click
         okButton.setOnClickListener {
-            findNavController().navigate(EKYCFragmentDirections.actionEkycFragmentToMainHomePage())
+           // findNavController().navigate(EKYCFragmentDirections.actionEkycFragmentToMainHomePage())
+
+         AppUtil.saveLoginStatus(requireContext(),true)
+
+            val navController = findNavController()
+
+            // Pop `thirdFragment`
+            navController.popBackStack(R.id.loginFragment, true)
+
+
+            // Pop `secondFragment`
+            navController.popBackStack(R.id.registerFragment, true)
+
+            // Pop `firstFragment`
+            navController.popBackStack(R.id.ekycFragment, true)
+
+             // Finally navigate to `targetFragment`
+            navController.navigate(R.id.mainHomePage)
             bottomSheetDialog.dismiss() // Close the BottomSheetDialog
         }
 

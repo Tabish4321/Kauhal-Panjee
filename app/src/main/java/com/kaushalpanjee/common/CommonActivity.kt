@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseActivity
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.databinding.ActivityCommonBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,19 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         val graphInflater = navHostFragment.navController.navInflater
         val navGraph = graphInflater.inflate(R.navigation.nav_graph)
 
-        navGraph.setStartDestination(R.id.loginFragment)
+        val isLoggedIn = AppUtil.getLoginStatus(this)
+
+        if(isLoggedIn){
+            navGraph.setStartDestination(R.id.mainHomePage)
+
+
+        }
+        else{
+            navGraph.setStartDestination(R.id.loginFragment)
+
+
+        }
+
 
         navController?.let {
             it.graph = navGraph

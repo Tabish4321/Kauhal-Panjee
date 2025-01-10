@@ -27,8 +27,12 @@ import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
+import com.kaushalpanjee.common.model.request.GetSearchTraining
+import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
@@ -46,6 +50,7 @@ import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
@@ -460,6 +465,24 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
+
+    private  var _getSelectedTrainingListAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
+    val getSelectedTrainingListAPI = _getSelectedTrainingListAPI.asSharedFlow()
+
+
+
+    fun getSelectedTrainingListAPI(getSearchTraining: GetSearchTraining){
+        viewModelScope.launch {
+            commonRepository.getSelectedTrainingListAPI(getSearchTraining).collectLatest {
+                _getSelectedTrainingListAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+
     private  var _getCandidateDetailsAPI =  MutableStateFlow<Resource<out CandidateDetails>>(Resource.Loading())
     val getCandidateDetailsAPI = _getCandidateDetailsAPI.asSharedFlow()
 
@@ -471,6 +494,63 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             }
         }
 
+
+    }
+
+
+    private  var _getImageChangeAPI =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val getImageChangeAPI = _getImageChangeAPI.asSharedFlow()
+
+
+    fun getImageChangeAPI(imageChangeReq: ImageChangeReq){
+        viewModelScope.launch {
+            commonRepository.getImageChangeAPI(imageChangeReq).collectLatest {
+                _getImageChangeAPI.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private  var _getChangePass =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val getChangePass = _getChangePass.asSharedFlow()
+
+
+    fun getChangePass(changePassReq: ChangePassReq){
+        viewModelScope.launch {
+            commonRepository.getChangePass(changePassReq).collectLatest {
+                _getChangePass.emit(it)
+            }
+        }
+
+    }
+
+
+    private  var _getChangePassOtp =  MutableStateFlow<Resource<out ForgotIdOtpRes>>(Resource.Loading())
+    val getChangePassOtp = _getChangePassOtp.asSharedFlow()
+
+
+    fun getChangePass(getLoginIdNdPassReq: GetLoginIdNdPassReq){
+        viewModelScope.launch {
+            commonRepository.getChangePassOtp(getLoginIdNdPassReq).collectLatest {
+                _getChangePassOtp.emit(it)
+            }
+        }
+
+    }
+
+
+    private  var _getLoginIdPass =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val getLoginIdPass = _getLoginIdPass.asSharedFlow()
+
+
+    fun getLoginIdPass(getLoginIdNdPassReq: GetLoginIdNdPassReq){
+        viewModelScope.launch {
+            commonRepository.getLoginIdPass(getLoginIdNdPassReq).collectLatest {
+                _getLoginIdPass.emit(it)
+            }
+        }
 
     }
 

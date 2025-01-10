@@ -91,6 +91,12 @@
         <action
             android:id="@+id/action_mainHomePage_to_trainingFragment"
             app:destination="@id/trainingFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_searchTrainingFragment"
+            app:destination="@id/searchTrainingFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -129,4 +135,14 @@
         android:name="com.kaushalpanjee.common.TrainingCenterView"
         android:label="TrainingCenterView"
         tools:layout="@layout/training_center_view"/>
+    <fragment
+        android:id="@+id/searchTrainingFragment"
+        android:name="com.kaushalpanjee.common.SearchTrainingFragment"
+        android:label="SearchTrainingFragment"
+        tools:layout="@layout/search_training_fragment">
+        <argument
+            android:name="centerCode"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

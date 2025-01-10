@@ -46,6 +46,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
 
         lifecycleScope.launch {
             delay(3000)
+
             navigate()
         }
 

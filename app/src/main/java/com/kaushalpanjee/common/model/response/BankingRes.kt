@@ -5,7 +5,9 @@ data class BankDetail(
     val branchCode: String,
     val bankCode: String,
     val branchName: String,
-    val bankName: String
+    val bankName: String,
+    val accLength: String
+
 )
 
 // Data class to represent the overall response

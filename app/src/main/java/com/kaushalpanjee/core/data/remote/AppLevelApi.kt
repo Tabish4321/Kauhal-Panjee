@@ -20,10 +20,14 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
+import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
+import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
@@ -44,6 +48,7 @@ import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
+import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
@@ -191,6 +196,10 @@ interface AppLevelApi {
     @POST(ApiConstant.API_TRAINING_LIST)
     suspend fun getTrainingListAPI(@Body trainingCenterReq: TrainingCenterReq):TrainingCenterRes
 
+    @POST(ApiConstant.API_GET_SEARCH_TRAINING)
+    suspend fun getSelectedTrainingListAPI(@Body getSearchTraining: GetSearchTraining):TrainingCenterRes
+
+
 
 
     @POST(ApiConstant.API_CANDIDATE_DETAILS)
@@ -198,6 +207,23 @@ interface AppLevelApi {
 
 
 
+
+    @POST(ApiConstant.API_CHANGE_IMAGE_CANDIDATE)
+    suspend fun getImageChangeAPI(@Body imageChangeReq: ImageChangeReq):InsertRes
+
+
+
+    @POST(ApiConstant.API_CHANGE_PASSWORD)
+    suspend fun getChangePass(@Body changePassReq: ChangePassReq):InsertRes
+
+
+    @POST(ApiConstant.Forgot_PASSWORD_OTP)
+    suspend fun getChangePassOtp(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):ForgotIdOtpRes
+
+
+
+    @POST(ApiConstant.GET_LOGINID_PASS)
+    suspend fun getLoginIdPass(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):InsertRes
 
 
     @POST(ApiConstant.LANGUAGE_LIST)

@@ -11,5 +11,6 @@ data class Center(
     val address: String,
     val centerImage: String,
     val centerName: String,
-    val contactNo: String
+    val contactNo: String,
+    val centerCode: String
 )

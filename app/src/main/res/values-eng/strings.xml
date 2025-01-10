@@ -178,6 +178,13 @@
     <string name="enter_jobcardno">Enter jobcardno</string>
     <string name="enter_shg_code">Enter SHG code</string>
     <string name="upload_nrega_jobcard">Upload Nrega image</string>
+    <string name="training_name">Training Name</string>
+    <string name="contact_no">Contact no</string>
+    <string name="center_name">Center Name</string>
+    <string name="address">Address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="logout">Logout</string>
+    <string name="changePass">Change password</string>
 
 
 </resources>

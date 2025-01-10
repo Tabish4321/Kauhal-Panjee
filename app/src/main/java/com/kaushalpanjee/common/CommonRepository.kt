@@ -29,8 +29,12 @@ import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
+import com.kaushalpanjee.common.model.request.GetSearchTraining
+import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
@@ -48,6 +52,7 @@ import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
@@ -278,12 +283,54 @@ class CommonRepository @Inject constructor(
         }
     }
 
+
+
+    suspend fun getSelectedTrainingListAPI(getSearchTraining: GetSearchTraining): Flow<Resource<out TrainingCenterRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getSelectedTrainingListAPI(getSearchTraining)
+        }
+    }
+
+
     suspend fun getCandidateDetailsAPI(candidateReq: CandidateReq): Flow<Resource<out CandidateDetails>>{
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getCandidateDetailsAPI(candidateReq)
         }
     }
+
+
+    suspend fun getImageChangeAPI(imageChangeReq: ImageChangeReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getImageChangeAPI(imageChangeReq)
+        }
+    }
+
+
+    suspend fun getChangePass(changePassReq: ChangePassReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getChangePass(changePassReq)
+        }
+    }
+
+    suspend fun getChangePassOtp(loginIdNdPassReq: GetLoginIdNdPassReq): Flow<Resource<out ForgotIdOtpRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getChangePassOtp(loginIdNdPassReq)
+        }
+    }
+
+    suspend fun getLoginIdPass(loginIdNdPassReq: GetLoginIdNdPassReq): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getLoginIdPass(loginIdNdPassReq)
+        }
+    }
+
+
 
 
 

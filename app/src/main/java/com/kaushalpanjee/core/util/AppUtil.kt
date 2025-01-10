@@ -90,6 +90,26 @@ object AppUtil {
         context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
     }
 
+    fun getLoginStatus(context: Context): Boolean {
+        // Get the SharedPreferences instance
+        val sharedPreferences = context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+
+        // Retrieve the login status (false is the default value if not found)
+        return sharedPreferences.getBoolean("isLoggedIn", false)
+    }
+
+
+    fun saveLoginStatus(context: Context, isLoggedIn: Boolean) {
+        // Get the SharedPreferences instance
+        val sharedPreferences = context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+
+        // Save the login status
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isLoggedIn", isLoggedIn)
+        editor.apply()  // Use apply() for asynchronous saving
+    }
+
+
     fun isNetworkAvailable(context: Context?): Boolean {
         if (context == null) return false
         val connectivityManager =
@@ -258,5 +278,8 @@ object AppUtil {
         val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("language_code", "en") ?: "en" // Default to English
     }
+
+
+
 
 }

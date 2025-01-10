@@ -7,14 +7,24 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationView
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -25,7 +35,9 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.toastShort
+import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
+import com.kaushalpanjee.databinding.NavigationHeaderBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,7 +60,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var employmentStatus = ""
     private var bankingStatus = ""
     private var selectedTrainingName = ""
-    private var selectedTrainingContact = ""
+    private var selectedTrainingCenterCode = ""
     private var selectedTrainingAddress = ""
     private var selectedTrainingImage = ""
     private var traningName = ArrayList<String>()
@@ -73,13 +85,84 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     )
 
 
+   /* override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        setHasOptionsMenu(true) // Enable menu in fragment
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.languagech -> {
+                findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
+                return true
+            }
+            R.id.logout -> {
+                findNavController().navigate(
+                    R.id.loginFragment,
+                    null,
+                    NavOptions.Builder()
+                        .setPopUpTo(R.id.mainHomePage, true)
+                        .build()
+                )
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+*/
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        handleBackPress()
         init()
+
+
 
     }
      private fun init(){
+
+
+
+         val drawerLayout = binding.drawerLayout
+
+         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+             when (menuItem.itemId) {
+
+                 R.id.logout -> {
+                     // Handle profile click
+
+                     AppUtil.saveLoginStatus(requireContext(), false)  // false means user is logged out
+
+                     findNavController().navigate(
+                         R.id.loginFragment,
+                         null,
+                         NavOptions.Builder()
+                             .setPopUpTo(R.id.mainHomePage, true)
+                             .build()
+                     )
+                 }
+
+                 R.id.changePass -> {
+
+                     //For change password
+
+                 }
+
+             }
+             drawerLayout.closeDrawers()
+             true
+         }
+
+         binding.trainingRecyclerView.gone()
+
          listeners()
          autoScroll()
          commonViewModel.getSecctionAndPerAPI(
@@ -104,7 +187,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
      trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
          selectedTrainingName = selectedItem.centerName
-         toastShort("Selected Item: ${selectedItem.centerName}")
+         selectedTrainingCenterCode = selectedItem.centerCode
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToSearchTrainingFragment(selectedTrainingCenterCode))
+
      }
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
 
@@ -112,7 +197,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      searchQuery.observe(viewLifecycleOwner) { query ->
          if (query.length >= 4) {
              handleTrainingSearchQuery(query) // Trigger API call
+
          }
+         else  binding.trainingRecyclerView.gone()
+
      }
 
      // Add TextWatcher to EditText
@@ -138,9 +226,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
-     binding.changeLanguage.setOnClickListener {
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
-     }
+
      binding.personalImageLogo.setOnClickListener {
          lifecycleScope.launch {
 
@@ -311,6 +397,18 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                 binding.circleImageViewMH.setImageBitmap(bitmap)
 
 
+                               // First, get the header view using getHeaderView()
+                                val headerView = binding.navigationView.getHeaderView(0)
+
+                             // Now, bind the header layout using the generated ViewBinding for the header
+                                val headerBinding = NavigationHeaderBinding.bind(headerView)
+
+                              // Access the ImageView from the header layout
+                                val headerImageView: ImageView = headerBinding.circleImageView
+
+                                headerImageView.setImageBitmap(bitmap)
+
+
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
@@ -323,35 +421,37 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
     }
 
-    private fun collectTrainingSearchResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getTrainingSearchAPI) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { getTrainingSearchAPI ->
-                            if (getTrainingSearchAPI.responseCode == 200) {
-                                val trainingList = getTrainingSearchAPI.centerList
-                                trainingSearchAdapter.submitList(trainingList)
-                            } else if (getTrainingSearchAPI.responseCode == 301) {
-                                showSnackBar("Please Update from PlayStore")
-                            } else {
-                                showSnackBar("Something went wrong")
+        private fun collectTrainingSearchResponse() {
+            lifecycleScope.launch {
+                collectLatestLifecycleFlow(commonViewModel.getTrainingSearchAPI) {
+                    when (it) {
+                        is Resource.Loading -> showProgressBar()
+                        is Resource.Error -> {
+                            hideProgressBar()
+                            it.error?.let { baseErrorResponse ->
+                                showSnackBar("Not Found")
                             }
-                        } ?: showSnackBar("Internal Server Error")
+                        }
+
+                        is Resource.Success -> {
+                            hideProgressBar()
+                            it.data?.let { getTrainingSearchAPI ->
+                                if (getTrainingSearchAPI.responseCode == 200) {
+                                    val trainingList = getTrainingSearchAPI.centerList
+                                    trainingSearchAdapter.submitList(trainingList)
+                                    binding.trainingRecyclerView.visible()
+
+                                } else if (getTrainingSearchAPI.responseCode == 301) {
+                                    showSnackBar("Please Update from PlayStore")
+                                } else {
+                                    showSnackBar("Something went wrong")
+                                }
+                            } ?: showSnackBar("Internal Server Error")
+                        }
                     }
                 }
             }
         }
-    }
 
 
 
@@ -361,6 +461,27 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         commonViewModel.getTrainingSearchAPI(TrainingSearch(BuildConfig.VERSION_NAME,query))
 
 
+    }
+
+    private fun handleBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                private var backPressedTime: Long = 0
+                private val exitInterval = 2000 // 2 seconds
+
+                override fun handleOnBackPressed() {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - backPressedTime < exitInterval) {
+                        isEnabled =
+                            false // Disable callback to let the system handle the back press
+                        requireActivity().onBackPressed() // Exit the app
+                    } else {
+                        backPressedTime = currentTime
+                        showSnackBar("Press back again to exit")
+                    }
+                }
+            })
     }
 
 }

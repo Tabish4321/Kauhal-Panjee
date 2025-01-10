@@ -16,8 +16,10 @@ import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentLanguageChangeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Locale
+@AndroidEntryPoint
 
 class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (FragmentLanguageChangeBinding :: inflate)  {
 

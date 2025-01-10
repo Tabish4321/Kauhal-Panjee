@@ -35,8 +35,10 @@ import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentViewDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentViewDetailsBinding::inflate) {
 
 

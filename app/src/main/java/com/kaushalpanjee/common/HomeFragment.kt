@@ -58,6 +58,7 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -94,7 +95,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val REQUEST_PICK_CATEGORY = 104
     private val REQUEST_PICK_PWD = 105
     private val REQUEST_PICK_ANTOYADA = 106
-    private val REQUEST_PICK_RSBY = 107
+    private val REQUEST_PICK_RSBY = 109
+    private val REQUEST_PICK_PROFILE_PIC = 108
     private val REQUEST_PICK_RESIDENCE = 107
     private val PERMISSION_READ_MEDIA_IMAGES = 201
 
@@ -114,6 +116,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var addressLine2 = ""
     private var pinCode = ""
     private var voterIdImage = ""
+    private var profilePicIdImage = ""
     private var voterIdNo = ""
     private var guardianName = ""
     private var motherName = ""
@@ -411,6 +414,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     @SuppressLint("SetTextI18n", "CheckResult")
     private fun listener() {
 
+        binding.profileView.editImageButton.setOnClickListener {
+
+
+            checkAndRequestPermissionsForPurpose("PROFILE_PIC")
+
+
+
+
+
+
+
+        }
 
         binding.tvLanguages.setOnClickListener {
 
@@ -3262,9 +3277,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-    private fun collectLanguageListResponse() {
+    private fun collectDpChangeResponse() {
         lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getLanguageListAPI) {
+            collectLatestLifecycleFlow(commonViewModel.getImageChangeAPI) {
                 when (it) {
                     is Resource.Loading -> showProgressBar()
                     is Resource.Error -> {
@@ -3276,19 +3291,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     is Resource.Success -> {
                         hideProgressBar()
-                        it.data?.let { getLanguageList ->
-                            if (getLanguageList.responseCode == 200) {
-                                val languageList = getLanguageList.languageList
+                        it.data?.let { getImageChangeAPI ->
+                            if (getImageChangeAPI.responseCode == 200) {
+                                showSnackBar(getImageChangeAPI.responseMsg)
 
-                                languageName.clear()
-                                languageCode.clear()
-                                for (x in languageList) {
+                                commonViewModel.getAadhaarListAPI(
+                                    AdharDetailsReq(
+                                        BuildConfig.VERSION_NAME,
+                                        AppUtil.getAndroidId(requireContext()),
+                                        userPreferences.getUseID()
+                                    )
+                                )
 
-                                    languageName.add(x.languageName)
-                                    languageCode.add(x.languageCode)
-                                }
-                                HeardAdapter.notifyDataSetChanged()
-                            } else if (getLanguageList.responseCode == 301) {
+                            } else if (getImageChangeAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
                                 showSnackBar("Something went wrong")
@@ -3731,6 +3746,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             "ANTOYADA_CERTIFICATE" -> openGalleryForAntoyada()
             "RSBY_CERTIFICATE" -> openGalleryForRsby()
             "RESIDENCE_CERTIFICATE" -> openGalleryForResidence()
+            "PROFILE_PIC" -> openGalleryForDPId()
         }
     }
 
@@ -3738,6 +3754,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_PICK_VOTER_ID)
+    }
+
+    private fun openGalleryForDPId() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_PROFILE_PIC)
     }
 
     private fun openGalleryForDrivingLicense() {
@@ -3814,6 +3836,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.voterimageText.text = fileName
 
                             voterIdImage=  compressAndConvertImageToBase64(selectedImageUri)
+
+
+
+                }
+                REQUEST_PICK_PROFILE_PIC -> {
+                // Handle voter ID image
+
+                    profilePicIdImage=  compressAndConvertImageToBase64(selectedImageUri)
+
+                    commonViewModel.getImageChangeAPI(ImageChangeReq(BuildConfig.VERSION_NAME,profilePicIdImage,userPreferences.getUseID()))
+
+                    collectDpChangeResponse()
+
+
+
+
 
 
 

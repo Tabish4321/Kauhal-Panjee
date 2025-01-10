@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kaushalpanjee.BuildConfig
@@ -31,16 +33,15 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate){
+class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
-  private var showPassword = true
+    private var showPassword = true
 
     private val commonViewModel: CommonViewModel by activityViewModels()
 
 
-
-   private  var userName=""
-   private  var password=""
+    private var userName = ""
+    private var password = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,53 +49,59 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
         init()
+        handleBackPress()
 
 
     }
 
 
-    private fun init(){
+    private fun init() {
         listeners()
 
 
+    }
 
-        }
 
-    private fun listeners(){
+    private fun listeners() {
         binding.tvRegister.setOnClickListener {
-          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
 
         }
         binding.tvLogin.setOnClickListener {
-            lifecycleScope.launch{
-                if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")){
+            lifecycleScope.launch {
+                if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")) {
 
-                    AppUtil.saveLanguagePreference(requireContext(),"eng")
-
-
-                }
-                else
-                    AppUtil.changeAppLanguage(requireContext(),AppUtil.getSavedLanguagePreference(requireContext()))
+                    AppUtil.saveLanguagePreference(requireContext(), "eng")
 
 
-                if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()){
-                     userName= binding.etEmail.text.toString()
-                     password= binding.etPassword.text.toString()
+                } else
+                    AppUtil.changeAppLanguage(
+                        requireContext(),
+                        AppUtil.getSavedLanguagePreference(requireContext())
+                    )
 
 
-                  //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
-                    commonViewModel.getLoginAPI(LoginReq("2501000005","aSMe#D1oU*",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
-                 //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()) {
+                    userName = binding.etEmail.text.toString()
+                    password = binding.etPassword.text.toString()
+
+
+                    //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                    commonViewModel.getLoginAPI(
+                        LoginReq(
+                            "2501000005",
+                            "nrlm",
+                            AppUtil.getAndroidId(requireContext()),
+                            BuildConfig.VERSION_NAME,
+                            ""
+                        )
+                    )
+                    //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
 
                     collectLoginResponse()
 
-                }
-                else
+                } else
                     showSnackBar("Please enter id and password")
-
-
-
-
 
 
             }
@@ -103,26 +110,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         binding.tvForgotPassword.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPasswordFragment())
+
+
         }
 
         binding.etPassword.onRightDrawableClicked {
 
             log("onRightDrawableClicked", "onRightDrawableClicked")
-            if (showPassword){
+            if (showPassword) {
                 showPassword = false
-                binding.etPassword.setRightDrawablePassword(true,null,null,
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye),null)
-            }
-            else {
+                binding.etPassword.setRightDrawablePassword(
+                    true, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
+                )
+            } else {
                 showPassword = true
 
-                binding.etPassword.setRightDrawablePassword(false,null,null,
-                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye),null)
+                binding.etPassword.setRightDrawablePassword(
+                    false, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
+                )
 
             }
 
         }
-
 
 
     }
@@ -149,11 +160,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                     userPreferences.updateUserId(null)
                                     userPreferences.updateUserId(userName)
-                                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
+                                   AppUtil.saveLoginStatus(requireContext(), true)  // true means user is logged in
+
+                                    // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
+
+                                    findNavController().navigate(
+                                        R.id.mainHomePage,
+                                        null,
+                                        NavOptions.Builder()
+                                            .setPopUpTo(R.id.loginFragment, true)
+                                            .build()
+                                    )
 
 
                                 }
-                                203->{
+
+                                203 -> {
                                     showSnackBar(getLoginResponse.responseMsg)
 
                                 }
@@ -161,6 +183,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 301 -> {
                                     showSnackBar(getLoginResponse.responseMsg)
                                 }
+
                                 else -> {
                                     showSnackBar("Something went wrong")
                                 }
@@ -173,4 +196,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
 
+    private fun handleBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                private var backPressedTime: Long = 0
+                private val exitInterval = 2000 // 2 seconds
+
+                override fun handleOnBackPressed() {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - backPressedTime < exitInterval) {
+                        isEnabled =
+                            false // Disable callback to let the system handle the back press
+                        requireActivity().finish()
+                    } else {
+                        backPressedTime = currentTime
+                        showSnackBar("Press back again to exit")
+                    }
+                }
+            })
+    }
 }

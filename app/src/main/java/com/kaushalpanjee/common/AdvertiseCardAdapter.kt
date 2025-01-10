@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.kaushalpanjee.R
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class AdvertiseCardAdapter(private val images: List<Int>)
     : RecyclerView.Adapter<AdvertiseCardAdapter.ImageViewHolder>() {
