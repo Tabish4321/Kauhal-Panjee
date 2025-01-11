@@ -149,7 +149,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     )
                 }
 
-            } else {
+            }
+            else {
 
 
                 if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
@@ -263,6 +264,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
                                 mobileOTP = sendMobileOTPResponse.otp
+                                showSnackBar(mobileOTP!!)
+
                                 binding.clOTP.visible()
                                 if (BuildConfig.DEBUG)
                                     showSnackBar(sendMobileOTPResponse.otp)

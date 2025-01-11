@@ -245,15 +245,17 @@ interface AppLevelApi {
 
 
 
-        @FormUrlEncoded
-        @POST
-        @Headers("Content-Type: application/x-www-form-urlencoded")
-        fun checkJobcard(
-            @Url url: String,
-            @Header("username") username: String,
-            @Header("password") password: String,
-            @Field("jobcardno") jobcardNo: String
-        ): Response<JobcardResponse>
+
+
+    @FormUrlEncoded
+    @POST
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    suspend fun checkJobcard(
+        @Url url: String, // Full URL passed manually
+        @Header("username") username: String,
+        @Header("password") password: String,
+        @Field("jobcardno") jobcardNo: String
+    ): Response<JobcardResponse>
 
 
 

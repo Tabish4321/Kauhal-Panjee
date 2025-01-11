@@ -6,6 +6,6 @@
         android:title="@string/changePass"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/logout"
-        android:icon="@drawable/ic_logout"
+        android:icon="@drawable/baseline_logout_24"
         android:title="@string/logout" />
 </menu>

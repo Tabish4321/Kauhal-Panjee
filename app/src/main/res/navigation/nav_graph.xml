@@ -97,6 +97,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -145,4 +148,9 @@
             app:argType="string" />
 
     </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.kaushalpanjee.common.ChangePasswordFragment"
+        android:label="ChangePasswordFragment"
+        tools:layout="@layout/change_pass_fragment"/>
 </navigation>

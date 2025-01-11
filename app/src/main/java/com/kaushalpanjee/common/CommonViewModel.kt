@@ -531,7 +531,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getChangePassOtp = _getChangePassOtp.asSharedFlow()
 
 
-    fun getChangePass(getLoginIdNdPassReq: GetLoginIdNdPassReq){
+    fun getChangePassOtp(getLoginIdNdPassReq: GetLoginIdNdPassReq){
         viewModelScope.launch {
             commonRepository.getChangePassOtp(getLoginIdNdPassReq).collectLatest {
                 _getChangePassOtp.emit(it)
@@ -582,11 +582,10 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var _nRegaValidate = MutableSharedFlow<Resource<out Response<JobcardResponse>>>()
     val nRegaValidate = _nRegaValidate.asSharedFlow()
 
-    fun getCheckJobCardAPI( username: String, password: String,jobcardNo: String){
+    fun getCheckJobCardAPI( url: String,username: String, password: String,jobcardNo: String){
         viewModelScope.launch {
-            val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
 
-            commonRepository.getCheckJobCardAPI(fullUrl,username,password,jobcardNo).collectLatest {
+            commonRepository.getCheckJobCardAPI(url,username,password,jobcardNo).collectLatest {
                 _nRegaValidate.emit(it)
             }
         }

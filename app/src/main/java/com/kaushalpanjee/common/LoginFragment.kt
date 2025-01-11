@@ -89,8 +89,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
                     commonViewModel.getLoginAPI(
                         LoginReq(
-                            "2501000005",
-                            "nrlm",
+                            userName,
+                            password,
                             AppUtil.getAndroidId(requireContext()),
                             BuildConfig.VERSION_NAME,
                             ""

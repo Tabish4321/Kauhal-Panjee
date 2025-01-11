@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/metern"
+        android:src="@drawable/no_training"
         android:layout_marginTop="@dimen/sp_20"
         />
 
@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:text="@string/no_training_center_found"
         android:layout_marginTop="8dp" />
 
     <TextView

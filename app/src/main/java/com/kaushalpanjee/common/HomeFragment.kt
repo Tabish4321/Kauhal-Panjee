@@ -56,6 +56,7 @@ import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
@@ -68,8 +69,17 @@ import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.response.Address
+import com.kaushalpanjee.common.model.response.AddressDetail
+import com.kaushalpanjee.common.model.response.Bank
+import com.kaushalpanjee.common.model.response.Educational
+import com.kaushalpanjee.common.model.response.Employment
+import com.kaushalpanjee.common.model.response.Personal
+import com.kaushalpanjee.common.model.response.PersonalDetail
+import com.kaushalpanjee.common.model.response.Secc
 import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.SubSector
+import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
@@ -96,6 +106,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val REQUEST_PICK_PWD = 105
     private val REQUEST_PICK_ANTOYADA = 106
     private val REQUEST_PICK_RSBY = 109
+    private val REQUEST_PICK_NREGA = 110
     private val REQUEST_PICK_PROFILE_PIC = 108
     private val REQUEST_PICK_RESIDENCE = 107
     private val PERMISSION_READ_MEDIA_IMAGES = 201
@@ -122,6 +133,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var motherName = ""
     private var guardianMobileNumber = ""
     private var drivingLicenceNumber = ""
+    private var yearlyIncomeFamily = 0
     private var categoryCertiImage = ""
     private var drivingLicenceImage = ""
     private var minorityStatus = ""
@@ -136,6 +148,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedHighestEducationItem = ""
     private var shgValidateStatus = ""
     private var nregaValidateStatus = ""
+    private var nregaJobCard = ""
+    private var nregaImageJobCard = ""
     private var shgName = ""
     private var shgCode = ""
     private var shgStatus = ""
@@ -174,13 +188,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var employmentStatus = ""
     private var bankingStatus = ""
     private var bankCode = ""
-    private var bankName = ""
+    private var bankName1 = ""
     private var branchCode = ""
     private var branchName = ""
     private var selectedSeccName = ""
     private var selectedAhlTin = ""
     private var jobCardNo= ""
-   private val result = StringBuilder()
+    private var IfscCode= ""
+    private var BankName= ""
+    private var BranchName= ""
+    private var PanNumber= ""
+    private var BankAcNo= ""
+    private var previousTrainingDuration= ""
+   private var result = StringBuilder()
+    private var userAadhaarDetailsListNew: List<UserDetails> = mutableListOf()
+    private var userCandidatePersonalDetailsList: List<Personal> = mutableListOf()
+    private var userCandidatePersonalDetailsList2: List<PersonalDetail> = mutableListOf()
+    private var userCandidateAddressDetailsList: List<Address> = mutableListOf()
+    private var userCandidateAddressDetailsList2: List<AddressDetail> = mutableListOf()
+    private var userCandidateSeccDetailsList: List<Secc> = mutableListOf()
+    private var userCandidateEducationalDetailsList: List<Educational> = mutableListOf()
+    private var userCandidateEmploymentDetailsList: List<Employment> = mutableListOf()
+    private var userCandidateTrainingDetailsList: List<Training> = mutableListOf()
+    private var userCandidateBankDetailsList: List<Bank> = mutableListOf()
+    private var currentSalary =""
+    private var salaryExpectation=""
+
 
 
 
@@ -394,6 +427,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectInsertBankingResponse()
         collectTradeResponse()
         collectSectorResponse()
+        collectCandidateDetailsResponse()
+
+        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
 
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
@@ -731,6 +767,63 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                          isPersonalVisible = false
                          binding.personalExpand.visible()
                          binding.viewSecc.visible()
+
+                         for (x in userCandidatePersonalDetailsList2) {
+                             try {
+                                 // Populate the UI
+                                 binding.etGName.setText(x.guardianName)
+                                 binding.etGNumber.setText(x.guardianMobilNo)
+                                 binding.etMotherName.setText(x.motherName)
+                                 binding.etFIncome.setText(x.annualFamilyIncome)
+                                 binding.etllVoterId.setText(x.voterId)
+                                 binding.etdrivingId.setText(x.dlNo)
+                               //  binding.SpinnerCategory.setText(x.castCategory)
+                                 setDropdownValue(binding.SpinnerCategory, x.castCategory, categoryList)
+                                 setDropdownValue(binding.SpinnerMarital, x.maritalStatus, maritalList)
+
+                               //  binding.SpinnerMarital.setText(x.maritalStatus)
+                                 binding.etShgValidate.setText(x.shgNo)
+
+                                 val minorityStatusn = x.isMinority
+                                 val pwdStatusn = x.isDisablity
+                                 val nregaJobCardStatusn = x.isNarega
+                                 val shgStatusn = x.isSHG
+                                 val antyodayaStatusn = x.antyodaya
+                                 val rsbyStatusm = x.isRSBY
+                                 val pipStatusn = x.isPIP
+
+                                 // Set the UI based on conditions
+                                 handleStatus(binding.optionMinorityYesSelect, binding.optionMinorityNoSelect, minorityStatusn)
+                                 handleStatus(binding.optionPwdYesSelect, binding.optionPwdNoSelect, pwdStatusn)
+                                 handleStatus(binding.optionNregaJobYesSelect, binding.optionNregaJobNoSelect, nregaJobCardStatusn)
+                                 handleStatus(binding.optionShgYesSelect, binding.optionShgNoSelect, shgStatusn)
+                                 handleStatus(binding.optionAntyodayaYesSelect, binding.optionAntyodayaNoSelect, antyodayaStatusn)
+                                 handleStatus(binding.optionllRsbyYesSelect, binding.optionllRsbyNoSelect, rsbyStatusm)
+                                 handleStatus(binding.optionPipYesSelect, binding.optionPipNoSelect, pipStatusn)
+
+                                 guardianName =x.guardianName
+                                 motherName= x.motherName
+                                 guardianMobileNumber= x.guardianMobilNo
+                                 yearlyIncomeFamily=x.annualFamilyIncome.toIntOrNull() ?: 0
+                                 voterIdNo =x.voterId
+                                 drivingLicenceNumber=x.dlNo
+                                 selectedCategoryItem=x.castCategory
+                                 selectedMaritalItem=x.maritalStatus
+                                 minorityStatus=  x.isMinority
+                                 pwdStatus =x.isDisablity
+                                 nregaStatus = x.isNarega
+                                 nregaJobCard=x.naregaJobCard
+                                 shgStatus= x.isSHG
+                                 shgCode=x.shgNo
+                                 antoyadaStatus=x.antyodaya
+                                 rsbyStatus=x.isRSBY
+                                 pipStatus=x.isPIP
+
+                             } catch (e: Exception) {
+                                 showSnackBar("Error setting data: ${e.message}")
+                             }
+                         }
+
                      },
                      onNoClicked = {
 
@@ -753,10 +846,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
 
-                setDropdownValue(
-                    binding.spinnerStateSecc,
-                    selectedStateItem, state
-                )
+                setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
                 setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
                 setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
                 setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
@@ -784,6 +874,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isSeccInfoVisible = false
                         binding.expandSecc.visible()
                         binding.viewSeccc.visible()
+
+
+                        for (x in userCandidateSeccDetailsList){
+
+                            setDropdownValue(binding.spinnerStateSecc, x.seccStateName, state)
+                            setDropdownValue(binding.spinnerDistrictSecc, x.seccDistrictName, district)
+                            setDropdownValue(binding.spinnerBlockSecc, x.seccBlockName, block)
+                            setDropdownValue(binding.spinnerGpSecc, x.seccGPName, gp)
+                            setDropdownValue(binding.spinnerVillageSecc, x.seccVillageName, village)
+
+                            selectedSeccStateCodeItem = x.seccStateCode
+                            selectedSeccDistrictCodeItem = x.seccDistrictCode
+                            selectedSeccBlockCodeItem = x.seccBlcokCode
+                            selectedSeccGpCodeItem = x.seccGPCode
+                            selectedSeccVillageCodeItem = x.seccVillageCode
+                            selectedSeccName= x.seccCandidateName
+                            selectedAhlTin=x.seccAHLTIN
+
+
+
+                        }
+
+
+
                     },
                     onNoClicked = {
 
@@ -815,6 +929,60 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isAddressVisible = false
                         binding.expandAddress.visible()
                         binding.viewAddress.visible()
+
+                        for (x in userCandidateAddressDetailsList2){
+
+                            setDropdownValue(binding.SpinnerStateName, x.presentStateName, state)
+                            setDropdownValue(binding.spinnerDistrict, x.presentDistrictName, district)
+                            setDropdownValue(binding.spinnerBlock, x.presentBlockName, block)
+                            setDropdownValue(binding.spinnerGp, x.presentGPName, gp)
+                            setDropdownValue(binding.spinnerVillage, x.presentVillageName, village)
+                            setDropdownValue(binding.SpinnerPresentAddressStateName, x.permanentStateName, state)
+                            setDropdownValue(binding.spinnerPresentAddressDistrict, x.permanentDistrictName, district)
+                            setDropdownValue(binding.spinnerPresentAddressBlock, x.permanentBlockName, block)
+                            setDropdownValue(binding.spinnerPresentAddressGp, x.permanentGPName, gp)
+                            setDropdownValue(binding.spinnerPresentAddressVillage, x.permanentVillageName, village)
+
+
+                            /*  binding.spinnerDistrict.setText(x.presentDistrictName)
+                            binding.spinnerBlock.setText(x.presentBlockName)
+                            binding.spinnerGp.setText(x.presentGPName)
+                            binding.spinnerDistrict.setText(x.presentDistrictName)*/
+
+                            binding.etAdressLine.setText(x.presentStreet1)
+                            binding.etAdressLine2.setText(x.presentStreet2)
+                            binding.etPinCode.setText(x.presentPinCode)
+                            val adreessStatus = x.isPresentAddressSame
+
+                            binding.etPresentAddressAdressLine.setText(x.permanentStreet1)
+                            binding.etPresentLine2.setText(x.permanentStreet2)
+                            binding.etPresentPinCode.setText(x.permanentPinCode)
+
+                            handleStatus(binding.optionllSamePermanentYesSelect, binding.optionSamePermanentNoSelect, adreessStatus)
+
+
+                            selectedStateCodeItem  =  x.presentStateCode
+                            selectedDistrictCodeItem= x.presentDistrictCode
+                            selectedBlockCodeItem  = x.presentBlcokCode
+                            selectedGpCodeItem = x.presentGPCode
+                            selectedVillageCodeItem=  x.presentVillageCode
+                            addressLine1 = x.presentStreet1
+                            addressLine2= x.presentStreet2
+                            pinCode=x.presentPinCode
+                            isPermanentStatus=x.isPresentAddressSame
+                            selectedStatePresentCodeItem=x.permanentStateCode
+                            selectedDistrictPresentCodeItem=x.permanentDistrictCode
+                            selectedBlockPresentCodeItem= x.permanentBlcokCode
+                            selectedGpPresentCodeItem=x.permanentGPCode
+                            selectedVillagePresentCodeItem=x.permanentVillageCode
+                            addressPresentLine1=x.permanentStreet1
+                            addressPresentLine2=x.permanentStreet2
+                            pinCodePresent=x.permanentPinCode
+
+
+                        }
+
+
                     },
                     onNoClicked = {
 
@@ -849,6 +1017,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isEducationalInfoVisible = false
                         binding.expandEducational.visible()
                         binding.viewEducational.visible()
+                        for (x in userCandidateEducationalDetailsList ){
+                            setDropdownValue(binding.spinnerHighestEducation, x.highesteducation, highestEducationList)
+                            setDropdownValue(binding.spinnerTechnicalEducation, x.techQualification, courseesName)
+                            setDropdownValue(binding.spinnerDomainOfTech, x.techDomain, courseesDomainName)
+                            binding.tvClickYearOfPassing.setText(x.monthYearOfPassing)
+                            binding.tvLanguages.setText(x.language)
+                            handleStatus(binding.optionTechnicalEducationYesSelect, binding.optionTechnicalEducationNoSelect, x.isTechEducate)
+                            binding.tvClickYearOfPassingTech.setText(x.passingTechYear)
+
+
+
+                            selectedHighestEducationItem=x.highesteducation
+                            highestEducationDate=x.monthYearOfPassing
+                            result= StringBuilder(x.language)
+
+                            technicalEducationStatus =x.isTechEducate
+                            selectedTechEducationItemCode = x.techQualification
+                            selectedTechEducationDate = x.passingTechYear
+                            selectedTechEducationDomainCode= x.techDomain
+
+
+                        }
                     },
                     onNoClicked = {
 
@@ -878,6 +1068,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isEmploymentInfoVisible = false
                         binding.expandEmployment.visible()
                         binding.viewEmployment.visible()
+
+
+                        for (x in userCandidateEmploymentDetailsList ){
+
+                            val currentluempo = x.isEmployeed
+                            val natureEmp = x.empNature
+
+                            if (natureEmp.contains("Self Employed")){
+                                binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+                                binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background)
+                            }
+                            else if (natureEmp.contains("Salaried")){
+
+                                binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+                                binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background)
+                            }
+
+                            handleStatus(binding.optionrecievedAnyTrainingBeforeYesSelect, binding.optioRecievedAnyTrainingBeforeNoSelect, currentluempo)
+
+
+                            binding.etCurrentEarning.setText(x.monthlyEarning)
+                            binding.etExpectationSalary.setText(x.expectedSalary)
+
+
+                            currentlyEmpStatus= x.isEmployeed
+                            natureEmpEmpStatus= x.empNature
+                            selectedInterestedIn= x.intrestedIn
+                            selectedIEmploymentPref = x.empPreference
+                            selectedJobLocation= x.preferJobLocation
+                            currentSalary =x.monthlyEarning
+                            salaryExpectation= x.expectedSalary
+
+
+
+                        }
+
+
                     },
                     onNoClicked = {
 
@@ -908,6 +1135,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isBankingInfoVisible = false
                         binding.expandBanking.visible()
                         binding.viewBanking.visible()
+
+                  for (x in userCandidateBankDetailsList){
+
+
+                          BankName = x.bankName
+                          BankAcNo= x.bankAccNumber
+                          IfscCode = x.ifscCode
+                          PanNumber= x.panNo
+
+                  }
+
+
                     },
                     onNoClicked = {
 
@@ -938,6 +1177,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isTrainingInfoVisible = false
                         binding.expandTraining.visible()
                         binding.viewTraining.visible()
+
+
+
+                        for (x in userCandidateTrainingDetailsList){
+
+                            val recievedTrainingBeforeStatus = x.isPreTraining
+                            val heardStatus = x.hearedAboutScheme
+
+                            // Set the UI based on conditions
+                            handleStatus(binding.optionrecievedAnyTrainingBeforeYesSelect, binding.optioRecievedAnyTrainingBeforeNoSelect, recievedTrainingBeforeStatus)
+                            handleStatus(binding.optionHaveYouHeardYes, binding.optionHaveYouHeardNo, heardStatus)
+                            setDropdownValue(binding.spinnerHeardAboutddugky, x.hearedFrom, highestEducationList)
+
+                            binding.tvClickPreviouslycompletedduring.text = x.compTrainingDuration
+                            binding.tvSectorItems.text = x.sectorName
+                            binding.tvTradeItems.text = x.trade
+
+
+                            traingBeforeStatus = x.isPreTraining
+                            selectedPrevCompleteTraining= x.preCompTraining
+                            previousTrainingDuration= x.compTrainingDuration
+                            haveUHeardStatus= x.hearedAboutScheme
+                            selectedHeardABoutItem=x.hearedFrom
+                            selectedSector= x.sectorName
+                            selectedTrade= x.trade
+
+                        }
+
+
+
+
+
                     },
                     onNoClicked = {
 
@@ -1925,6 +2196,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             nregaStatus = "Yes"
             binding.etNregaValidate.visible()
             binding.btnjobcardnoValidate.visible()
+            binding.nregaJobUpload.visible()
 
 
         }
@@ -1936,6 +2208,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             nregaStatus = "No"
             binding.etNregaValidate.gone()
             binding.btnjobcardnoValidate.gone()
+            binding.nregaJobUpload.gone()
 
 
         }
@@ -2163,15 +2436,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnBnakingSubmit.setOnClickListener {
 
-            if (binding.etIfscCode.text.toString().isNotEmpty() && binding.etBankName.text.toString().isNotEmpty() &&
-                binding.etBranchName.text.toString().isNotEmpty() && binding.etBankAcNo.text.toString().isNotEmpty()
-                && binding.etPanNumber.text.toString().isNotEmpty()){
+            IfscCode = binding.etIfscCode.text.toString()
+            BankName = binding.etBankName.text.toString()
+            BranchName = binding.etBranchName.text.toString()
+            BankAcNo =  binding.etBankAcNo.text.toString()
+            PanNumber = binding.etPanNumber.text.toString()
+
+
+            if (IfscCode.isNotEmpty() && BankName.isNotEmpty() &&
+                BranchName.isNotEmpty() && BankAcNo.isNotEmpty()
+                && PanNumber.isNotEmpty()){
+
 
 
                 // Hit Insert API
                 commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
-                    "7",binding.etBankName.text.toString(),binding.etBankAcNo.text.toString(),binding.etIfscCode.text.toString(),
-                    binding.etPanNumber.text.toString()))
+                    "7",BankName,BankAcNo,IfscCode,
+                    PanNumber))
 
 
 
@@ -2197,7 +2478,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             // Join the selected options into a comma-separated string
             selectedPrevCompleteTraining = selectedOptions.joinToString(", ")
             traingBeforeStatus
-           val previousTrainingDuration= binding.tvPreviouslycompletedOthers.text.toString()
+            previousTrainingDuration= binding.tvPreviouslycompletedOthers.text.toString()
             previouslycompletedduring
             haveUHeardStatus
             selectedHeardABoutItem
@@ -2321,8 +2602,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                 //HitInsertAPI
-                val currentSalary: Int = binding.etCurrentEarning.text.toString().toIntOrNull() ?: 0
-                val salaryExpectation: Int = binding.etExpectationSalary.text.toString().toIntOrNull() ?: 0
+                 currentSalary = binding.etCurrentEarning.text.toString()
+                 salaryExpectation = binding.etExpectationSalary.text.toString()
                 if (salaryExpectation.isNull){
 
 
@@ -2333,7 +2614,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else{
 
                     commonViewModel.insertEmploymentAPI(EmploymentInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"5",
-                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary,salaryExpectation))
+                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary.toInt(),salaryExpectation.toInt()))
 
 
                 }
@@ -2419,9 +2700,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val username = HashUtils.sha512("Nrega") // Encrypt the username
             val password = HashUtils.sha512("Nrg2k18") // Encrypt the password
             jobCardNo= binding.etNregaValidate.text.toString()
+            val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
+
             if (jobCardNo.isNotEmpty()){
 
-                commonViewModel.getCheckJobCardAPI(username,password,"HR-01-005-001-001/1128" )
+              //  commonViewModel.getCheckJobCardAPI(fullUrl,username,password,jobCardNo )
+                commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
 
             }
             else toastShort("Please enter jobCard")
@@ -2529,7 +2813,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             guardianName = binding.etGName.text.toString()
             motherName = binding.etMotherName.text.toString()
             guardianMobileNumber = binding.etGNumber.text.toString()
-            val yearlyIncomeFamily = binding.etFIncome.text.toString().toIntOrNull() ?: 0
+             yearlyIncomeFamily = (binding.etFIncome.text.toString().toIntOrNull() ?: 0)
 
             //            voterIdNo = binding.etllVoterId.text.toString()
 
@@ -2541,7 +2825,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 //Hit Insert API
                 commonViewModel.insertPersonalDataAPI(PersonalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"1" ,
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
-                    selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,"","","",shgStatus,shgCode,antoyadaStatus,antoyadaImage,
+                    selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
                     rsbyStatus,rsbyImage,pipStatus))
 
 
@@ -2559,6 +2843,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.voterIdUpload.setOnClickListener {
             checkAndRequestPermissionsForPurpose("VOTER_ID")
+        }
+        binding.nregaJobUpload.setOnClickListener {
+
+            checkAndRequestPermissionsForPurpose("NREGA_ID")
+
         }
 
         binding.drivingLicenceUpload.setOnClickListener {
@@ -3526,9 +3815,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         hideProgressBar()
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
-                                nregaValidateStatus = getValidateStatus.body()?.Status ?: "False"
-                              //  nregaValidateStatus = getValidateStatus.body()?.Remarks.toString()
-                                showSnackBar(getValidateStatus.body()?.Remarks.toString())
+                                nregaValidateStatus = getValidateStatus.body()?.Status ?: ""
+                               showSnackBar(getValidateStatus.body()?.Remarks.toString())
+                              nregaJobCard=  binding.etNregaValidate.text.toString()
+
+
 
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3559,14 +3850,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 for (x in bankList) {
                                     bankCode=   x.bankCode
-                                    bankName=    x.bankName
+                                    bankName1=    x.bankName
                                     branchCode=  x.branchCode
                                     branchName=   x.branchName
                                 }
 
                                 binding.btnBnakingSubmit.visible()
 
-                                binding.etBankName.setText(bankName)
+                                binding.etBankName.setText(bankName1)
                                 binding.etBranchName.setText(branchName)
 
 
@@ -3747,7 +4038,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             "RSBY_CERTIFICATE" -> openGalleryForRsby()
             "RESIDENCE_CERTIFICATE" -> openGalleryForResidence()
             "PROFILE_PIC" -> openGalleryForDPId()
+            "NREGA_ID" -> openGalleryForNregaId()
         }
+    }
+
+
+    private fun openGalleryForNregaId() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_NREGA)
     }
 
     private fun openGalleryForVoterId() {
@@ -3840,6 +4139,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                 }
+                REQUEST_PICK_NREGA -> {
+                    // Handle voter ID image
+
+                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
+                    binding.tvNregaJob.text = fileName
+
+                    nregaImageJobCard=  compressAndConvertImageToBase64(selectedImageUri)
+
+
+
+                }
+
                 REQUEST_PICK_PROFILE_PIC -> {
                 // Handle voter ID image
 
@@ -4141,6 +4452,95 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             return bytes.joinToString("") { "%02x".format(it) }
         }
     }
+
+
+
+    private fun collectCandidateDetailsResponse() {
+        lifecycleScope.launch {
+            try {
+                collectLatestLifecycleFlow(commonViewModel.getCandidateDetailsAPI) {
+                    when (it) {
+                        is Resource.Loading -> showProgressBar()
+                        is Resource.Error -> {
+                            hideProgressBar()
+                            it.error?.let { baseErrorResponse ->
+                                showSnackBar(baseErrorResponse.message ?: "Unknown error occurred")
+                            } ?: showSnackBar("Unknown error occurred")
+                        }
+
+                        is Resource.Success -> {
+                            hideProgressBar()
+                            try {
+                                it.data?.let { getCandidateDetailsAPI ->
+                                    if (getCandidateDetailsAPI.responseCode == 200) {
+                                        // Extract details from the API response
+                                        userCandidatePersonalDetailsList = getCandidateDetailsAPI.personalList
+                                        userCandidateAddressDetailsList = getCandidateDetailsAPI.addressList
+                                        userCandidateSeccDetailsList = getCandidateDetailsAPI.seccList
+                                        userCandidateEducationalDetailsList = getCandidateDetailsAPI.educationalList
+                                        userCandidateEmploymentDetailsList = getCandidateDetailsAPI.employementList
+                                        userCandidateTrainingDetailsList = getCandidateDetailsAPI.trainingList
+                                        userCandidateBankDetailsList = getCandidateDetailsAPI.bankList
+
+                                        for (x in userCandidatePersonalDetailsList) {
+                                            userCandidatePersonalDetailsList2 = x.personaldetails
+
+                                        }
+                                        for (x in userCandidateAddressDetailsList ){
+
+                                            userCandidateAddressDetailsList2=   x.addressDetails
+
+                                        }
+
+                                    } else if (getCandidateDetailsAPI.responseCode == 301) {
+                                        showSnackBar("Please Update from PlayStore")
+                                    } else {
+                                        showSnackBar("Something went wrong")
+                                    }
+                                } ?: showSnackBar("Internal Server Error")
+                            } catch (e: Exception) {
+                                showSnackBar("Error processing response: ${e.message}")
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                hideProgressBar()
+                showSnackBar("Unexpected error occurred: ${e.message}")
+            }
+        }
+    }
+
+    // Helper function to handle status UI
+    private fun handleStatus(viewYes: View, viewNo: View, status: String) {
+        if (status.contains("Yes", ignoreCase = true)) {
+            viewYes.setBackgroundResource(R.drawable.card_background_selected)
+            viewNo.setBackgroundResource(R.drawable.card_background)
+        } else if (status.contains("No", ignoreCase = true)) {
+            viewYes.setBackgroundResource(R.drawable.card_background)
+            viewNo.setBackgroundResource(R.drawable.card_background_selected)
+        }
+    }
+
+   /* fun getValueFromSecondList(list1: List<String>, list2: List<String>, searchString: String): String? {
+        // Ensure the lists are the same size to avoid IndexOutOfBoundsException
+        if (list1.size != list2.size) {
+            throw IllegalArgumentException("Both lists must have the same size.")
+        }
+
+        // Find the index of the search string in the first list
+        val index = list1.indexOf(searchString)
+
+        // If the string exists in list1, return the corresponding value from list2
+        return if (index != -1) {
+            list2[index]
+        } else {
+            null // Return null if the string is not found in list1
+        }
+    }*/
+
+
+
 
 }
 

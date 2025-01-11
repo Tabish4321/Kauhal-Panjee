@@ -675,6 +675,7 @@
                         android:id="@+id/nregaJobUpload"
                         android:layout_width="wrap_content"
                         android:layout_gravity="right"
+                        android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_12"
                         tools:ignore="RtlHardcoded">
@@ -786,7 +787,7 @@
                         style="@style/EditText"
                         android:drawablePadding="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_15"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:text="@string/validate" />
                     <TextView
                         android:id="@+id/btnShgValidate"
@@ -1366,7 +1367,7 @@
                         style="@style/EditText"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edittext_background"
-                        android:hint="@string/AdressLine"
+                        android:hint="@string/street"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
@@ -2429,7 +2430,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="40dp"
                                 android:layout_weight="1"
-                                android:text="Yes"
+                                android:text="@string/yes"
                                 android:gravity="center"
                                 android:id="@+id/optionTechnicalEducationYesSelect"
                                 android:textColor="@color/black"
@@ -2442,7 +2443,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="40dp"
                                 android:layout_weight="1"
-                                android:text="No"
+                                android:text="@string/no"
                                 android:gravity="center"
                                 android:id="@+id/optionTechnicalEducationNoSelect"
                                 android:elevation="4dp"

@@ -1,11 +1,14 @@
 package com.kaushalpanjee.common
 
+import android.app.Dialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -72,6 +75,15 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var employmentStatus = ""
     private var bankingStatus = ""
     private var totalPercentange = 0.0f
+    private var voterImage: Bitmap? = null
+    private var dlImage: Bitmap? = null
+    private var categoryImage: Bitmap? = null
+    private var minorityImage : Bitmap? = null
+    private var pwdImage : Bitmap? = null
+    private var nregaImage : Bitmap? = null
+    private var antyodyaImage: Bitmap? = null
+    private var rsbyImage : Bitmap? = null
+    private var residenceImage: Bitmap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -107,6 +119,48 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     }
 
     private fun listeners() {
+
+
+
+        binding.voterIdUpload.setOnClickListener {
+            showImageDialog(voterImage)
+        }
+
+        binding.dlIdUpload.setOnClickListener {
+            showImageDialog(dlImage)
+        }
+
+
+        binding.categoryCertificateUpload.setOnClickListener {
+            showImageDialog(categoryImage)
+        }
+
+        binding.minorityImageUpload.setOnClickListener {
+            showImageDialog(minorityImage)
+        }
+
+        binding.pwdImageUpload.setOnClickListener {
+            showImageDialog(pwdImage)
+        }
+
+        binding.nregaCardUpload.setOnClickListener {
+            showImageDialog(nregaImage)
+        }
+
+        binding.antyodayaCardUpload.setOnClickListener {
+            showImageDialog(antyodyaImage)
+        }
+
+
+        binding.rsbyUpload.setOnClickListener {
+            showImageDialog(rsbyImage)
+        }
+
+
+        binding.uploadResidenceImage.setOnClickListener {
+            showImageDialog(residenceImage)
+        }
+
 
 
 
@@ -403,32 +457,21 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                             try {
                                                 // Decode and display images
-                                                val bitmapCategory = decodeBase64Image(x.categoryCertPath)
-                                                binding.categoryCertificateUpload.setImageBitmap(bitmapCategory)
+                                                 categoryImage = decodeBase64Image(x.categoryCertPath)
 
-                                               /* val bytes: ByteArray =
-                                                    Base64.decode(x.categoryCertPath, Base64.DEFAULT)
-                                                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                                binding.categoryCertificateUpload.setImageBitmap(bitmap)
-*/
+                                                 minorityImage = decodeBase64Image(x.minorityCertPath)
 
-                                                val bitmapMinority = decodeBase64Image(x.minorityCertPath)
-                                                binding.minorityImageUpload.setImageBitmap(bitmapMinority)
+                                                 pwdImage = decodeBase64Image(x.disablityCertPath)
 
-                                                val bitmapDisability = decodeBase64Image(x.disablityCertPath)
-                                                binding.pwdImageUpload.setImageBitmap(bitmapDisability)
+                                                 dlImage = decodeBase64Image(x.dlImagePath)
 
-                                                val bitmapDl = decodeBase64Image(x.dlImagePath)
-                                                binding.pwdImageUpload.setImageBitmap(bitmapDl)
+                                                 nregaImage = decodeBase64Image(x.naregaCardPath)
 
-                                                val bitmapRsby = decodeBase64Image(x.rsbyCardPath)
-                                                binding.rsbyUpload.setImageBitmap(bitmapRsby)
+                                                 rsbyImage = decodeBase64Image(x.rsbyCardPath)
 
-                                                val bitmapVoterId = decodeBase64Image(x.VoterImagePath)
-                                                binding.rsbyUpload.setImageBitmap(bitmapVoterId)
+                                                voterImage = decodeBase64Image(x.VoterImagePath)
 
-                                                val bitmapRation = decodeBase64Image(x.rationCardPath)
-                                                binding.rsbyUpload.setImageBitmap(bitmapRation)
+                                                antyodyaImage = decodeBase64Image(x.rationCardPath)
                                             } catch (e: Exception) {
                                                 showSnackBar("Error decoding image: ${e.message}")
                                             }
@@ -473,13 +516,9 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                             userCandidateAddressDetailsList2=   x.addressDetails
 
                                             try {
-                                               /* val bitmapResidence = decodeBase64Image(x.residenceCertPath)
-                                                binding.uploadResidenceImage.setImageBitmap(bitmapResidence)
-*/
-                                                val bytes: ByteArray =
-                                                    Base64.decode(x.residenceCertPath, Base64.DEFAULT)
-                                                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                                binding.uploadResidenceImage.setImageBitmap(bitmap)
+
+                                                residenceImage = decodeBase64Image(x.residenceCertPath)
+
                                             } catch (e: Exception) {
                                                 showSnackBar("Error decoding image: ${e.message}")
                                             }
@@ -609,17 +648,6 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
             }
         }
     }
-    private fun decodeBase64Image(base64String: String?): Bitmap? {
-        if (base64String.isNullOrEmpty()) return null
-        return try {
-            val cleanedBase64String = base64String.substringAfter(",")
-            val bytes = Base64.decode(cleanedBase64String, Base64.DEFAULT)
-            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-        } catch (e: IllegalArgumentException) {
-            Log.e("DecodeError", "Invalid Base64 string: ${e.message}")
-            null
-        }
-    }
 
     // Helper function to handle status UI
     private fun handleStatus(viewYes: View, viewNo: View, status: String) {
@@ -632,6 +660,34 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         }
     }
 
+    private fun decodeBase64Image(base64String: String?): Bitmap? {
+        if (base64String.isNullOrEmpty()) return null
+        return try {
+            val cleanedBase64String = base64String.substringAfter(",")
+            val bytes = Base64.decode(cleanedBase64String, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        } catch (e: IllegalArgumentException) {
+            Log.e("DecodeError", "Invalid Base64 string: ${e.message}")
+            null
+        }
+    }
 
+    private fun showImageDialog(imageResId: Bitmap?) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.layout_view_image)
+
+        val imageView = dialog.findViewById<ImageView>(R.id.imageViewDialog)
+        val closeButton = dialog.findViewById<TextView>(R.id.btnClose)
+
+        // Set the image to display
+        imageView.setImageBitmap(imageResId)
+
+        // Close the dialog on button click
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
 
 }

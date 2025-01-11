@@ -189,6 +189,10 @@
     <string name="oldPass">Old Password</string>
     <string name="newPass">New Password</string>
     <string name="confirmPass">Confirm Password</string>
+    <string name="view"><u>View</u></string>
+    <string name="close">Close</string>
+    <string name="no_training_center_found">No training center found</string>
+    <string name="street">Street 1</string>
 
 
 </resources>

@@ -85,39 +85,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     )
 
 
-   /* override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true) // Enable menu in fragment
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.languagech -> {
-                findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
-                return true
-            }
-            R.id.logout -> {
-                findNavController().navigate(
-                    R.id.loginFragment,
-                    null,
-                    NavOptions.Builder()
-                        .setPopUpTo(R.id.mainHomePage, true)
-                        .build()
-                )
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -153,6 +120,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                  R.id.changePass -> {
 
                      //For change password
+
+                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
 
                  }
 
@@ -191,6 +160,12 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToSearchTrainingFragment(selectedTrainingCenterCode))
 
      }
+
+     binding.changeLanguage.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
+
+     }
+
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
 
      // Training Search Text
