@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.response.Center
+import com.kaushalpanjee.core.util.isNull
 
 class CenterAdapter(private val centers: List<Center>) :
     RecyclerView.Adapter<CenterAdapter.CenterViewHolder>() {
@@ -28,13 +30,20 @@ class CenterAdapter(private val centers: List<Center>) :
         return CenterViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CenterViewHolder, position: Int) {
         val center = centers[position]
 
         // Bind text data
-        holder.centerName.text = center.centerName
-        holder.address.text = center.address
-        holder.contactNo.text = center.contactNo
+        if (center.centerName.isNotEmpty()){
+
+            holder.centerName.text = center.centerName
+            holder.address.text = center.address
+            holder.contactNo.text = center.contactNo
+        }
+        else  holder.centerName.text = "No center available"
+
+
 
         // Decode Base64 image
         try {
@@ -42,7 +51,10 @@ class CenterAdapter(private val centers: List<Center>) :
             val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
 
             // Set image
-            holder.centerImage.setImageBitmap(bitmap)
+            if (bitmap.isNull){
+                holder.centerImage.setImageResource(R.drawable.no_training)
+            }
+            else holder.centerImage.setImageBitmap(bitmap)
         } catch (e: Exception) {
             Log.e("CenterAdapter", "Error decoding Base64 image: ${e.message}")
             holder.centerImage.setImageResource(R.drawable.banner) // Default image

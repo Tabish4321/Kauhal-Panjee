@@ -36,6 +36,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Base64
 import android.widget.Button
@@ -213,6 +214,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var userCandidateBankDetailsList: List<Bank> = mutableListOf()
     private var currentSalary =""
     private var salaryExpectation=""
+    private var accLenghth=""
 
 
 
@@ -418,13 +420,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSetionAndPerResponse()
         collectBankResponse()
         collectNregaValidateResponse()
-        collectInsertPersonalResponse()
-        collectInsertAddressResponse()
-        collectInsertSeccResponse()
-        collectInsertEducationalResponse()
-        collectInsertEmployementResponse()
-        collectInsertTrainingResponse()
-        collectInsertBankingResponse()
         collectTradeResponse()
         collectSectorResponse()
         collectCandidateDetailsResponse()
@@ -878,11 +873,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                         for (x in userCandidateSeccDetailsList){
 
-                            setDropdownValue(binding.spinnerStateSecc, x.seccStateName, state)
-                            setDropdownValue(binding.spinnerDistrictSecc, x.seccDistrictName, district)
-                            setDropdownValue(binding.spinnerBlockSecc, x.seccBlockName, block)
-                            setDropdownValue(binding.spinnerGpSecc, x.seccGPName, gp)
-                            setDropdownValue(binding.spinnerVillageSecc, x.seccVillageName, village)
+
+
+                            lifecycleScope.launch {
+
+                                commonViewModel.getDistrictListApi(x.seccStateCode)
+                                commonViewModel.getBlockListApi(x.seccDistrictCode)
+                                commonViewModel.getGpListApi(x.seccBlcokCode)
+                                commonViewModel.getVillageListApi(x.seccGPCode)
+                                delay(2000)
+
+
+                                setDropdownValue(binding.spinnerStateSecc, x.seccStateName, state)
+                                setDropdownValue(binding.spinnerDistrictSecc, x.seccDistrictName, district)
+                                setDropdownValue(binding.spinnerBlockSecc, x.seccBlockName, block)
+                                setDropdownValue(binding.spinnerGpSecc, x.seccGPName, gp)
+                                setDropdownValue(binding.spinnerVillageSecc, x.seccVillageName, village)
+
+                            }
+
+
 
                             selectedSeccStateCodeItem = x.seccStateCode
                             selectedSeccDistrictCodeItem = x.seccDistrictCode
@@ -929,25 +939,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isAddressVisible = false
                         binding.expandAddress.visible()
                         binding.viewAddress.visible()
+                        binding.btnAddressSubmit.visible()
+
 
                         for (x in userCandidateAddressDetailsList2){
 
-                            setDropdownValue(binding.SpinnerStateName, x.presentStateName, state)
-                            setDropdownValue(binding.spinnerDistrict, x.presentDistrictName, district)
-                            setDropdownValue(binding.spinnerBlock, x.presentBlockName, block)
-                            setDropdownValue(binding.spinnerGp, x.presentGPName, gp)
-                            setDropdownValue(binding.spinnerVillage, x.presentVillageName, village)
-                            setDropdownValue(binding.SpinnerPresentAddressStateName, x.permanentStateName, state)
-                            setDropdownValue(binding.spinnerPresentAddressDistrict, x.permanentDistrictName, district)
-                            setDropdownValue(binding.spinnerPresentAddressBlock, x.permanentBlockName, block)
-                            setDropdownValue(binding.spinnerPresentAddressGp, x.permanentGPName, gp)
-                            setDropdownValue(binding.spinnerPresentAddressVillage, x.permanentVillageName, village)
+
+                            lifecycleScope.launch {
+
+                                commonViewModel.getDistrictListApi(x.presentStateCode)
+                                commonViewModel.getBlockListApi(x.presentDistrictCode)
+                                commonViewModel.getGpListApi(x.presentBlcokCode)
+                                commonViewModel.getVillageListApi(x.presentGPCode)
+                                commonViewModel.getDistrictListApi(x.permanentStateCode)
+                                commonViewModel.getBlockListApi(x.permanentBlcokCode)
+                                commonViewModel.getGpListApi(x.permanentGPCode)
+                                commonViewModel.getVillageListApi(x.permanentGPCode)
+                                commonViewModel.getVillageListApi(x.permanentGPCode)
 
 
-                            /*  binding.spinnerDistrict.setText(x.presentDistrictName)
-                            binding.spinnerBlock.setText(x.presentBlockName)
-                            binding.spinnerGp.setText(x.presentGPName)
-                            binding.spinnerDistrict.setText(x.presentDistrictName)*/
+
+
+
+                                delay(2000)
+
+                                setDropdownValue(binding.SpinnerStateName, x.presentStateName, state)
+                                setDropdownValue(binding.spinnerDistrict, x.presentDistrictName, district)
+                                setDropdownValue(binding.spinnerBlock, x.presentBlockName, block)
+                                setDropdownValue(binding.spinnerGp, x.presentGPName, gp)
+                                setDropdownValue(binding.spinnerVillage, x.presentVillageName, village)
+
+                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.permanentStateName, state)
+                                setDropdownValue(binding.spinnerPresentAddressDistrict, x.permanentDistrictName, district)
+                                setDropdownValue(binding.spinnerPresentAddressBlock, x.permanentBlockName, block)
+                                setDropdownValue(binding.spinnerPresentAddressGp, x.permanentGPName, gp)
+                                setDropdownValue(binding.spinnerPresentAddressVillage, x.permanentVillageName, village)
+
+
+
+
+                            }
+
+
+
 
                             binding.etAdressLine.setText(x.presentStreet1)
                             binding.etAdressLine2.setText(x.presentStreet2)
@@ -1017,6 +1051,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isEducationalInfoVisible = false
                         binding.expandEducational.visible()
                         binding.viewEducational.visible()
+                        binding.btnEIddressSubmit.visible()
+                        binding.spinnerDomainOfTech.visible()
+                        binding.spinnerTechnicalEducation.visible()
+                        binding.tvClickYearOfPassingTech.visible()
+
                         for (x in userCandidateEducationalDetailsList ){
                             setDropdownValue(binding.spinnerHighestEducation, x.highesteducation, highestEducationList)
                             setDropdownValue(binding.spinnerTechnicalEducation, x.techQualification, courseesName)
@@ -1085,7 +1124,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background)
                             }
 
-                            handleStatus(binding.optionrecievedAnyTrainingBeforeYesSelect, binding.optioRecievedAnyTrainingBeforeNoSelect, currentluempo)
+                            handleStatus(binding.optionCurentlyEmployedYesSelect, binding.optionCurentlyEmployedNoSelect, currentluempo)
 
 
                             binding.etCurrentEarning.setText(x.monthlyEarning)
@@ -1135,9 +1174,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isBankingInfoVisible = false
                         binding.expandBanking.visible()
                         binding.viewBanking.visible()
+                        binding.btnBnakingSubmit.visible()
 
                   for (x in userCandidateBankDetailsList){
 
+
+                      binding.etIfscCode.setText(x.ifscCode)
+                      binding.etBankName.setText(x.bankName)
+                      binding.etBranchName.setText(x.bankBranchName)
+                      binding.etBankAcNo.setText(x.bankAccNumber)
+                      binding.etPanNumber.setText(x.panNo)
 
                           BankName = x.bankName
                           BankAcNo= x.bankAccNumber
@@ -2301,7 +2347,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            natureEmpEmpStatus = "Yes"
+            natureEmpEmpStatus = "Self Employed"
 
 
         }
@@ -2310,7 +2356,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionnatureOfEmpldNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
-            natureEmpEmpStatus = "No"
+            natureEmpEmpStatus = "Salary"
 
         }
 
@@ -2454,6 +2500,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     "7",BankName,BankAcNo,IfscCode,
                     PanNumber))
 
+                collectInsertBankingResponse()
 
 
             }
@@ -2496,6 +2543,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
                         previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
 
+                    collectInsertTrainingResponse()
+
+
 
 
                 }
@@ -2509,6 +2559,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
                         previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
 
+                    collectInsertTrainingResponse()
+
+
 
 
                 }
@@ -2517,6 +2570,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
                         previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+
+                    collectInsertTrainingResponse()
+
 
                 }
                 else {
@@ -2617,6 +2673,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary.toInt(),salaryExpectation.toInt()))
 
 
+                    collectInsertEmployementResponse()
+
+
                 }
 
 
@@ -2652,6 +2711,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     result.toString(),technicalEducationStatus,selectedTechEducationItemCode,selectedTechEducationDate,
                     selectedTechEducationDomainCode ))
 
+                collectInsertEducationalResponse()
+
 
             } else if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
                 technicalEducationStatus.contains("Yes") && selectedTechEducationItemCode.isNotEmpty() &&
@@ -2666,6 +2727,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     "4",selectedHighestEducationItem,highestEducationDate,
                     result.toString(),technicalEducationStatus,selectedTechEducationItemCode,selectedTechEducationDate,
                     selectedTechEducationDomainCode ))
+
+                collectInsertEducationalResponse()
+
 
 
             } else toastLong("Please complete Education Info First")
@@ -2748,6 +2812,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
                     addressPresentLine1,addressPresentLine2,pinCodePresent))
 
+                collectInsertAddressResponse()
+
+
             } else toastLong("Please complete your address first")
         }
 
@@ -2765,6 +2832,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     commonViewModel.insertSeccAPI(SeccInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
                         "3",selectedSeccStateCodeItem,selectedDistrictCodeItem,selectedSeccBlockCodeItem,selectedSeccGpCodeItem,selectedSeccVillageCodeItem,
                         selectedSeccName,selectedAhlTin))
+
+                    collectInsertSeccResponse()
+
 
 
                 }
@@ -2789,6 +2859,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 selectedAhlTin
                             )
                         )
+
+                        collectInsertSeccResponse()
+
 
 
                     }
@@ -2827,6 +2900,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
                     rsbyStatus,rsbyImage,pipStatus))
+
+
+                collectInsertPersonalResponse()
+
 
 
             }
@@ -3853,12 +3930,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     bankName1=    x.bankName
                                     branchCode=  x.branchCode
                                     branchName=   x.branchName
+                                    accLenghth=   x.accLength
+
                                 }
 
                                 binding.btnBnakingSubmit.visible()
 
                                 binding.etBankName.setText(bankName1)
                                 binding.etBranchName.setText(branchName)
+                                binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(accLenghth.toInt()))
+
 
 
                             } else if (getBankList.responseCode == 301) {

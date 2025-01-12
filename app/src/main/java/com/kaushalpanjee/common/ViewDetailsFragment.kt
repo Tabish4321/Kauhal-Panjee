@@ -35,6 +35,7 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
+import com.kaushalpanjee.core.util.isNull
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentViewDetailsBinding
@@ -594,7 +595,8 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background)
                                             }
 
-                                            handleStatus(binding.optionrecievedAnyTrainingBeforeYesSelect, binding.optioRecievedAnyTrainingBeforeNoSelect, currentluempo)
+                                            handleStatus(binding.optionCurentlyEmployedYesSelect, binding.optionCurentlyEmployedNoSelect, currentluempo)
+
 
                                             binding.etIntrestedIn.setText(x.intrestedIn)
                                             binding.etEmploPref.setText(x.empPreference)
@@ -680,7 +682,12 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         val closeButton = dialog.findViewById<TextView>(R.id.btnClose)
 
         // Set the image to display
-        imageView.setImageBitmap(imageResId)
+        if (imageResId.isNull){
+
+            imageView.setImageResource(R.drawable.no_image)
+
+        }
+        else imageView.setImageBitmap(imageResId)
 
         // Close the dialog on button click
         closeButton.setOnClickListener {

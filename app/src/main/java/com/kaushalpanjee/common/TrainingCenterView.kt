@@ -2,15 +2,21 @@ package com.kaushalpanjee.common
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.response.Center
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.toastShort
+import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.TrainingCenterViewBinding
 import kotlinx.coroutines.launch
 
@@ -23,6 +29,7 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        handleBackPress()
     }
 
     private fun init() {
@@ -54,7 +61,12 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
                     is Resource.Loading -> showProgressBar()
                     is Resource.Error -> {
                         hideProgressBar()
-                        resource.error?.message?.let { toastShort(it) }
+                        resource.error?.message
+
+                        binding.noTrainingTv.visible()
+                        binding.recyclerView.gone()
+                        binding.noTrainingImage.visible()
+
                     }
                     is Resource.Success -> {
                         hideProgressBar()
@@ -63,7 +75,7 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
                                 updateCenterList(response.centerList)
                             } else if (response.responseCode == 301) {
                                 showSnackBar("Please update from PlayStore")
-                            } else {
+                            }else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -78,4 +90,25 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
         centerList.addAll(newList)
         centerAdapter.notifyDataSetChanged() // Notify adapter about data changes
     }
+
+    private fun handleBackPress() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+
+
+                    findNavController().navigate(
+                        R.id.trainingFragment,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.trainingCenterView, true)
+                            .build()
+                    )
+
+                }
+            })
+    }
+
 }

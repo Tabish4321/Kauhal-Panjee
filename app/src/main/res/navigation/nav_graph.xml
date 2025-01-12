@@ -137,7 +137,11 @@
         android:id="@+id/trainingCenterView"
         android:name="com.kaushalpanjee.common.TrainingCenterView"
         android:label="TrainingCenterView"
-        tools:layout="@layout/training_center_view"/>
+        tools:layout="@layout/training_center_view">
+        <action
+            android:id="@+id/action_trainingCenterView_to_trainingFragment"
+            app:destination="@id/trainingFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchTrainingFragment"
         android:name="com.kaushalpanjee.common.SearchTrainingFragment"
