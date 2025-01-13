@@ -9,6 +9,5 @@ data class BankingInsertReq(
     val bankBranchCode: String,
     val bankAccountNo: String,
     val ifscCode: String,
-    val panNo: String,
-    val PanNumber: String
+    val panNo: String
 )

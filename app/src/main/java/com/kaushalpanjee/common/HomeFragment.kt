@@ -320,6 +320,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesDomainName = ArrayList<String>()
     private var courseesDomainCode = ArrayList<String>()
 
+    private var statePer = ArrayList<String>()
+    private var districtPer = ArrayList<String>()
+    private var blockPer = ArrayList<String>()
+    private var gpPer = ArrayList<String>()
+    private var villagePer = ArrayList<String>()
+
+
+
     private var heardName = ArrayList<String>()
     private var languageName = ArrayList<String>()
     private var languageCode = ArrayList<String>()
@@ -836,7 +844,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
 
-                setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
+               /* setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
                 setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
                 setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
                 setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
@@ -846,7 +854,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccDistrictCodeItem = selectedDistrictCodeItem
                 selectedSeccBlockCodeItem = selectedBlockCodeItem
                 selectedSeccGpCodeItem = selectedGpCodeItem
-                selectedSeccVillageCodeItem = selectedVillageCodeItem
+                selectedSeccVillageCodeItem = selectedVillageCodeItem*/
 
             } else {
 
@@ -946,17 +954,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 commonViewModel.getBlockListApi(x.presentDistrictCode)
                                 commonViewModel.getGpListApi(x.presentBlcokCode)
                                 commonViewModel.getVillageListApi(x.presentGPCode)
-                                commonViewModel.getDistrictListApi(x.permanentStateCode)
-                                commonViewModel.getBlockListApi(x.permanentBlcokCode)
-                                commonViewModel.getGpListApi(x.permanentGPCode)
-                                commonViewModel.getVillageListApi(x.permanentGPCode)
-                                commonViewModel.getVillageListApi(x.permanentGPCode)
 
-
-
-
-
-                                delay(2000)
+                                delay(1000)
 
                                 setDropdownValue(binding.SpinnerStateName, x.presentStateName, state)
                                 setDropdownValue(binding.spinnerDistrict, x.presentDistrictName, district)
@@ -964,11 +963,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 setDropdownValue(binding.spinnerGp, x.presentGPName, gp)
                                 setDropdownValue(binding.spinnerVillage, x.presentVillageName, village)
 
-                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.permanentStateName, state)
-                                setDropdownValue(binding.spinnerPresentAddressDistrict, x.permanentDistrictName, district)
-                                setDropdownValue(binding.spinnerPresentAddressBlock, x.permanentBlockName, block)
-                                setDropdownValue(binding.spinnerPresentAddressGp, x.permanentGPName, gp)
-                                setDropdownValue(binding.spinnerPresentAddressVillage, x.permanentVillageName, village)
+
+
+
+
+
+                                commonViewModel.getDistrictListApi(x.permanentStateCode)
+                                commonViewModel.getBlockListApi(x.permanentDistrictCode)
+                                commonViewModel.getGpListApi(x.permanentBlcokCode)
+                                commonViewModel.getVillageListApi(x.permanentGPCode)
+
+                                delay(1000)
+
+                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.permanentStateName, statePer)
+                                setDropdownValue(binding.spinnerPresentAddressDistrict, x.permanentDistrictName, districtPer)
+                                setDropdownValue(binding.spinnerPresentAddressBlock, x.permanentBlockName, blockPer)
+                                setDropdownValue(binding.spinnerPresentAddressGp, x.permanentGPName, gpPer)
+                                setDropdownValue(binding.spinnerPresentAddressVillage, x.permanentVillageName, villagePer)
+
+                                district.clear()
+                                block.clear()
+                                gp.clear()
+                                village.clear()
+                                districtPer.clear()
+                                blockPer.clear()
+                                gpPer.clear()
+                                villagePer.clear()
+
 
 
 
@@ -1916,7 +1937,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in gp.indices) {
                 selectedGpPresentCodeItem = gpCode[position]
                 selectedbGpPresentLgdCodeItem = gpLgdCode[position]
-                commonViewModel.getVillageListApi(selectedGpCodeItem)
+                commonViewModel.getVillageListApi(selectedGpPresentCodeItem)
 
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
@@ -2491,9 +2512,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                 // Hit Insert API
-                commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
-                    "7",bankCode,branchCode,BankName,BankAcNo,IfscCode,
-                    PanNumber))
+
+                commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"7",
+                    bankCode,branchCode,BankAcNo,IfscCode,PanNumber))
 
                 collectInsertBankingResponse()
 
@@ -2520,12 +2541,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             // Join the selected options into a comma-separated string
             selectedPrevCompleteTraining = selectedOptions.joinToString(", ")
             traingBeforeStatus
-            previousTrainingDuration= binding.tvPreviouslycompletedOthers.text.toString()
-            previouslycompletedduring
-            haveUHeardStatus
-            selectedHeardABoutItem
-            selectedSector
-            selectedTrade
+            previousTrainingDuration= binding.tvClickPreviouslycompletedduring.text.toString()
+
 
             if (traingBeforeStatus.isNotEmpty() && selectedSector.isNotEmpty() && selectedTrade.isNotEmpty()) {
 
@@ -2536,7 +2553,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade))
 
                     collectInsertTrainingResponse()
 
@@ -2802,13 +2819,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 // Hit The Insert API
 
                 commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
-                    selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
-                    addressLine2,pinCode,residenceImage,isPermanentStatus,
+
                     selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
-                    addressPresentLine1,addressPresentLine2,pinCodePresent))
+                    addressPresentLine1,addressPresentLine2,pinCodePresent,residenceImage,isPermanentStatus, selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
+                    addressLine2,pinCode))
 
                 collectInsertAddressResponse()
-
 
             } else toastLong("Please complete your address first")
         }
@@ -2822,18 +2838,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 && selectedSeccVillageCodeItem.isNotEmpty()
             ) {
 
-                if (selectedAhlTin.isNotEmpty()&& selectedSeccName.isNotEmpty()){
+                if (seccStatus.contains("No")){
+                    if (selectedAhlTin.isNotEmpty()&& selectedSeccName.isNotEmpty()){
 
-                    commonViewModel.insertSeccAPI(SeccInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
-                        "3",selectedSeccStateCodeItem,selectedDistrictCodeItem,selectedSeccBlockCodeItem,selectedSeccGpCodeItem,selectedSeccVillageCodeItem,
-                        selectedSeccName,selectedAhlTin))
+                        commonViewModel.insertSeccAPI(SeccInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
+                            "3",selectedSeccStateCodeItem,selectedSeccDistrictCodeItem,selectedSeccBlockCodeItem,selectedSeccGpCodeItem,selectedSeccVillageCodeItem,
+                            selectedSeccName,selectedAhlTin))
+                        collectInsertSeccResponse()
 
-                    collectInsertSeccResponse()
-
+                    }
 
 
                 }
+
                 else {
+                    selectedSeccName=""
                     selectedSeccName = binding.etATINName.text.toString()
 
                     if ( selectedSeccName.isNotEmpty()){
@@ -2846,7 +2865,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 AppUtil.getAndroidId(requireContext()),
                                 "3",
                                 selectedSeccStateCodeItem,
-                                selectedDistrictCodeItem,
+                                selectedSeccDistrictCodeItem,
                                 selectedSeccBlockCodeItem,
                                 selectedSeccGpCodeItem,
                                 selectedSeccVillageCodeItem,
@@ -2883,7 +2902,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             guardianMobileNumber = binding.etGNumber.text.toString()
              yearlyIncomeFamily = binding.etFIncome.text.toString()
 
-            //            voterIdNo = binding.etllVoterId.text.toString()
+            voterIdNo = binding.etllVoterId.text.toString()
+            drivingLicenceNumber = binding.etdrivingId.text.toString()
 
 
             if(guardianName.isNotEmpty()&& motherName.isNotEmpty()&& guardianMobileNumber.isNotEmpty()
@@ -2969,7 +2989,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
 
                                     if (isPersonalVisible && personalStatus.contains("0")) {
@@ -3019,6 +3039,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                     showSnackBar(insertPersResponse.responseMsg)
 
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
                                     if (isAddressVisible && addressStatus.contains("0")) {
                                         isAddressVisible = false
@@ -3066,6 +3088,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                     showSnackBar(insertPersResponse.responseMsg)
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
 
                                     if (isSeccInfoVisible && seccStatus.contains("0")) {
 
@@ -3115,6 +3138,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
                                     if (isEducationalInfoVisible && educationalStatus.contains("0")) {
                                         isEducationalInfoVisible = false
@@ -3159,6 +3184,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                     showSnackBar(insertPersResponse.responseMsg)
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
 
                                     if (isEmploymentInfoVisible && employmentStatus.contains("0")) {
                                         isEmploymentInfoVisible = false
@@ -3206,6 +3232,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
                                     if (isTrainingInfoVisible && trainingStatus.contains("1")) {
                                         isTrainingInfoVisible = false
@@ -3251,6 +3279,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
                                     if (isBankingInfoVisible && bankingStatus.contains("0")) {
                                         isBankingInfoVisible = false
@@ -3277,9 +3307,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
-
-
     private fun collectStateResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getStateList) {
@@ -3303,6 +3330,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 for (x in stateList) {
                                     state.add(x.stateName)
+                                    statePer.add(x.stateName)
                                     stateCode.add(x.stateCode) // Replace with actual field
                                     stateLgdCode.add(x.lgdStateCode) // Replace with actual field
                                 }
@@ -3338,11 +3366,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getDistrictResponse.responseCode == 200) {
                                 districtList = getDistrictResponse.districtList
                                 district.clear()
+                                districtPer.clear()
                                 districtCode.clear()
                                 districtLgdCode.clear()
 
                                 for (x in districtList) {
                                     district.add(x.districtName)
+                                    districtPer.add(x.districtName)
                                     districtCode.add(x.districtCode) // Replace with actual field
                                     districtLgdCode.add(x.lgdDistrictCode) // Replace with actual field
                                 }
@@ -3423,11 +3453,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getBlockResponse.responseCode == 200) {
                                 blockList = getBlockResponse.blockList
                                 block.clear()
+                                blockPer.clear()
                                 blockCode.clear()
                                 blockLgdCode.clear()
 
                                 for (x in blockList) {
                                     block.add(x.blockName)
+                                    blockPer.add(x.blockName)
                                     blockCode.add(x.blockCode) // Replace with actual field
                                     blockLgdCode.add(x.lgdBlockCode) // Replace with actual field
                                 }
@@ -3462,11 +3494,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getGpResponse.responseCode == 200) {
                                 gpList = getGpResponse.grampanchayatList
                                 gp.clear()
+                                gpPer.clear()
                                 gpCode.clear()
                                 gpLgdCode.clear()
 
                                 for (x in gpList) {
                                     gp.add(x.gpName)
+                                    gpPer.add(x.gpName)
                                     gpCode.add(x.gpCode) // Replace with actual field
                                     gpLgdCode.add(x.lgdGpCode) // Replace with actual field
                                 }
@@ -3501,11 +3535,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getVillageResponse.responseCode == 200) {
                                 villageList = getVillageResponse.villageList
                                 village.clear()
+                                villagePer.clear()
                                 villageCode.clear()
                                 villageLgdCode.clear()
 
                                 for (x in villageList) {
                                     village.add(x.villageName)
+                                    villagePer.add(x.villageName)
                                     villageCode.add(x.villageCode) // Replace with actual field
                                     villageLgdCode.add(x.lgdVillageCode) // Replace with actual field
 
