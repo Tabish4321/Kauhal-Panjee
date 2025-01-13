@@ -10,6 +10,6 @@ data class EmploymentInsertReq(
     val intrestedIn: String,
     val employmentPreference: String,
     val jobLocationPreference: String,
-    val monthlyEarning: Int,
-    val expectedMonthlySalary: Int
+    val monthlyEarning: String,
+    val expectedMonthlySalary: String
 )

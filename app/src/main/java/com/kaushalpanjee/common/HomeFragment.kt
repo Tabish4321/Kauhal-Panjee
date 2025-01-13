@@ -34,7 +34,6 @@ import android.content.pm.PackageManager // For checking permissions
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -69,7 +68,6 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
-import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.response.Address
 import com.kaushalpanjee.common.model.response.AddressDetail
 import com.kaushalpanjee.common.model.response.Bank
@@ -78,11 +76,8 @@ import com.kaushalpanjee.common.model.response.Employment
 import com.kaushalpanjee.common.model.response.Personal
 import com.kaushalpanjee.common.model.response.PersonalDetail
 import com.kaushalpanjee.common.model.response.Secc
-import com.kaushalpanjee.common.model.response.SectorResponse
-import com.kaushalpanjee.common.model.response.SubSector
 import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
-import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.isNull
@@ -134,7 +129,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var motherName = ""
     private var guardianMobileNumber = ""
     private var drivingLicenceNumber = ""
-    private var yearlyIncomeFamily = 0
+    private var yearlyIncomeFamily = ""
     private var categoryCertiImage = ""
     private var drivingLicenceImage = ""
     private var minorityStatus = ""
@@ -799,7 +794,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  guardianName =x.guardianName
                                  motherName= x.motherName
                                  guardianMobileNumber= x.guardianMobilNo
-                                 yearlyIncomeFamily=x.annualFamilyIncome.toIntOrNull() ?: 0
+                                 yearlyIncomeFamily=x.annualFamilyIncome
                                  voterIdNo =x.voterId
                                  drivingLicenceNumber=x.dlNo
                                  selectedCategoryItem=x.castCategory
@@ -2497,7 +2492,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 // Hit Insert API
                 commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
-                    "7",BankName,BankAcNo,IfscCode,
+                    "7",bankCode,branchCode,BankName,BankAcNo,IfscCode,
                     PanNumber))
 
                 collectInsertBankingResponse()
@@ -2670,7 +2665,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else{
 
                     commonViewModel.insertEmploymentAPI(EmploymentInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"5",
-                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary.toInt(),salaryExpectation.toInt()))
+                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary,salaryExpectation))
 
 
                     collectInsertEmployementResponse()
@@ -2886,7 +2881,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             guardianName = binding.etGName.text.toString()
             motherName = binding.etMotherName.text.toString()
             guardianMobileNumber = binding.etGNumber.text.toString()
-             yearlyIncomeFamily = (binding.etFIncome.text.toString().toIntOrNull() ?: 0)
+             yearlyIncomeFamily = binding.etFIncome.text.toString()
 
             //            voterIdNo = binding.etllVoterId.text.toString()
 
@@ -3153,9 +3148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     is Resource.Loading -> showProgressBar()
                     is Resource.Error -> {
                         hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
-                        }
+                    //    it.error?.let { it1 -> toastShort(it1.message) }
                     }
 
                     is Resource.Success -> {
@@ -3187,6 +3180,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
+
+                    else -> {}
                 }
             }
         }

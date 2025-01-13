@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.Resource
@@ -83,6 +86,13 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                             if (getChangePass.responseCode == 200) {
 
                                 toastShort(getChangePass.responseDesc)
+                                findNavController().navigate(
+                                    R.id.mainHomePage,
+                                    null,
+                                    NavOptions.Builder()
+                                        .setPopUpTo(R.id.changePasswordFragment, true)
+                                        .build()
+                                )
 
                             } else if (getChangePass.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
