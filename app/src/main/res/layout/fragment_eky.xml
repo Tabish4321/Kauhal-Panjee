@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,13 +53,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="600dp"
             android:layout_marginTop="@dimen/dp_30"
             android:visibility="visible"
+            android:layout_marginHorizontal="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf
                 ="@+id/tvWelcomeMsg"
             tools:listitem="@layout/spinner_text" />

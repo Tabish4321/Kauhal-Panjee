@@ -36,6 +36,8 @@ android {
 
             buildConfigField("String", "CLIENT_SECRET_KEY", projectProperties["CLIENT_SECRET_KEY"] as String)
             buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
+            buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
+            buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
         }
 
         debug {
@@ -47,6 +49,8 @@ android {
 
             buildConfigField("String", "CLIENT_SECRET_KEY", projectProperties["CLIENT_SECRET_KEY"] as String)
             buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
+            buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
+            buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
         }
     }
 

@@ -28,7 +28,7 @@ import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
 import android.provider.Settings
-
+import com.google.gson.Gson
 
 
 object AppUtil {
@@ -277,6 +277,17 @@ object AppUtil {
     fun getSavedLanguagePreference(context: Context): String {
         val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("language_code", "en") ?: "en" // Default to English
+    }
+
+
+    inline fun <reified T> fromJson(json: String): T {
+        val gson = Gson()
+        return gson.fromJson(json, T::class.java)
+    }
+
+    fun <T> toJson(model: T): String {
+        val gson = Gson()
+        return gson.toJson(model)
     }
 
 
