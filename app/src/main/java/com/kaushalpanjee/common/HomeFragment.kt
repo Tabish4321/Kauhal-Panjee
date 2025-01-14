@@ -4467,7 +4467,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         // Handle Save button click
         btnSave.setOnClickListener {
             // Prepare the result as a string for display
-
+            binding.tvLanguages.text = ""
+            result.clear()
             for (language in languages) {
                 // Get the checkbox states for each language
                 val languageState = selectedLanguageStates[language.name] ?: mutableMapOf()

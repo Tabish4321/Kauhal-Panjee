@@ -250,17 +250,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
 
-        binding.progressButton.centerButton.setOnClickListener {
-            binding.recyclerView.gone()
-            binding.progressButton.root.gone()
-            binding.etAadhaar.visible()
-            if (binding.etAadhaar.text.isNotEmpty()) {
-                binding.etAadhaar.setText("")
-            }
 
-            isStateSelected = true
 
-        }
 
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
@@ -283,7 +274,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     ContextCompat.getDrawable(requireContext(), R.drawable.icon_aadhaar), null,
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
                 )
-            } else {
+            }
+            else {
                 showPassword = true
 
                 binding.etAadhaar.setRightDrawablePassword(
@@ -469,6 +461,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
             // Parse the capture response XML to an object
             val response = CaptureResponse.fromXML(captureResponse)
+
 
             if (response.isSuccess) {
                 toastLong("Please wait")

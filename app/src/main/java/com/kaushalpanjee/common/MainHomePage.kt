@@ -60,14 +60,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var employmentStatus = ""
     private var bankingStatus = ""
     private var selectedTrainingName = ""
-    private var selectedTrainingCenterCode = ""
-    private var selectedTrainingAddress = ""
-    private var selectedTrainingImage = ""
-    private var traningName = ArrayList<String>()
-    private var trainingAddress = ArrayList<String>()
-    private var trainingContactno = ArrayList<String>()
-    private var trainingImage = ArrayList<String>()
-
     private var totalPercentange =0.0f
     private val searchQuery = MutableLiveData<String>()
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
@@ -151,12 +143,15 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
  private fun  listeners(){
 
 
+
+
     //Training Adapter Setting
 
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
      trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
          selectedTrainingName = selectedItem.centerName
-         selectedTrainingCenterCode = selectedItem.centerCode
+         val selectedTrainingCenterCode = selectedItem.centerCode
+         binding.etSearch.setText("")
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToSearchTrainingFragment(selectedTrainingCenterCode))
 
      }
