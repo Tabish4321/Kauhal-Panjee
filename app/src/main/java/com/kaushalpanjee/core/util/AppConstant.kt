@@ -12,6 +12,9 @@ object AppConstant {
         const val BUCKET_DOCUMENTS= "documents/"
         const val BUCKET_CATEGORY= "category/"
         const val FACE_AUTH_UIADI= "https://nregarep1.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
+        const val baseUrl= "http://10.197.183.177:8080/"
+
+
     }
 
     object Constants{
@@ -25,6 +28,8 @@ object AppConstant {
         const val WADH_KEY = "sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
+         var ENCRYPT_IV_KEY = "$10A80$10A80$10A";
+        var ENCRYPT_KEY = "$10A80$10A80$10A";
 
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "production"

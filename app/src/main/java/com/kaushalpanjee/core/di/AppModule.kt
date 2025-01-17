@@ -7,6 +7,7 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
 import com.kaushalpanjee.core.util.ApiConstant
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.CustomInterceptor
 import com.kaushalpanjee.core.util.UserPreferences
 
@@ -63,7 +64,8 @@ object AppModule {
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            //.baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(AppConstant.StaticURL.baseUrl)
             .client(
                 getRetrofitClient(
                     null, userPreferences = userPreferences,
@@ -81,7 +83,8 @@ object AppModule {
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+           // .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(AppConstant.StaticURL.baseUrl)
             .client(getRetrofitClient(null, userPreferences = userPreferences, context = context))
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

@@ -1,6 +1,8 @@
 package com.kaushalpanjee.core.util
 
 import android.util.Base64
+import com.kaushalpanjee.BuildConfig.ENCRYPT_IV_KEY
+import com.kaushalpanjee.BuildConfig.ENCRYPT_KEY
 import java.io.UnsupportedEncodingException
 import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException
@@ -9,6 +11,9 @@ import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import java.nio.charset.StandardCharsets;
+
+
 
 object AESCryptography {
 
@@ -22,44 +27,52 @@ object AESCryptography {
         BadPaddingException::class
     )
 
-    fun encryptIntoHexString(inputText: String, secretKey: String, ivKey: String): String {
+    fun encryptIntoBase64String(inputText: String, secretKey: String, ivKey: String): String {
         if (enableEncryption) {
-            val keySpec = SecretKeySpec(secretKey.toByteArray(charset("UTF-8")), "AES")
-            val ivSpec = IvParameterSpec(ivKey.toByteArray(charset("UTF-8")))
-            val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+            val keySpec = SecretKeySpec(secretKey.toByteArray(StandardCharsets.UTF_8), "AES")
+            val ivSpec = IvParameterSpec(ivKey.toByteArray(StandardCharsets.UTF_8))
+            val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
-            val results: ByteArray = cipher.doFinal(inputText.toByteArray(charset("UTF-8")))
-            return convertByteArrayToHexString(results)
-        } else return inputText
 
+            val encryptedBytes: ByteArray = cipher.doFinal(inputText.toByteArray(StandardCharsets.UTF_8))
+
+            // ✅ Encode as Base64 instead of hex
+            return Base64.encodeToString(encryptedBytes, Base64.DEFAULT).trim()
+        }
+        return inputText
     }
+
 
     fun decryptIntoString(inputText: String, secretKey: String, ivKey: String): String {
-        try {
-//            if (ivKey.toByteArray(Charsets.UTF_8).size != 16) {
-//                throw IllegalArgumentException("Decryption failed: IV must be 16 bytes long")
-//            }
-//            if (secretKey.trim().toByteArray(Charsets.UTF_8).size != 16) {
-//                throw IllegalArgumentException("Decryption failed : Key must be 16 bytes long")
-//            }
+        return try {
+            // Ensure key and IV are exactly 16 bytes (AES-128)
+            val keyBytes = secretKey.toByteArray(StandardCharsets.UTF_8)
+            val ivBytes = ivKey.toByteArray(StandardCharsets.UTF_8)
 
-            val keySpec = SecretKeySpec(secretKey.toByteArray(Charsets.UTF_8), "AES")
-            val ivSpec = IvParameterSpec(ivKey.toByteArray(Charsets.UTF_8))
-            val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+            if (keyBytes.size != 16) {
+                throw IllegalArgumentException("Key must be 16 bytes long (AES-128)")
+            }
+            if (ivBytes.size != 16) {
+                throw IllegalArgumentException("IV must be 16 bytes long")
+            }
+
+            val keySpec = SecretKeySpec(keyBytes, "AES")
+            val ivSpec = IvParameterSpec(ivBytes)
+            val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
 
-            val decodedValue = Base64.decode(inputText, Base64.DEFAULT)
-            val decryptedBytes = cipher.doFinal(decodedValue)
+            // ✅ Decode Base64 (check input)
+            val decodedBytes = Base64.decode(inputText, Base64.DEFAULT)
+            val decryptedBytes = cipher.doFinal(decodedBytes)
 
-            return String(decryptedBytes, Charsets.UTF_8)
-
+            String(decryptedBytes, StandardCharsets.UTF_8)
         } catch (e: Exception) {
             e.printStackTrace()
-            log("Decryption failed cause", e.message.toString())
-            return ""
+            log("Decryption failed: ", e.message.toString())
+            ""
         }
-
     }
+
 
     private fun convertByteArrayToHexString(byteArray: ByteArray): String {
         val sb = StringBuffer()

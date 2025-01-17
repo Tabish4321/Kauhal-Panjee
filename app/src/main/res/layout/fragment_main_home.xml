@@ -296,22 +296,44 @@ android:layout_height="match_parent"
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/personal_image_logo"
-                android:layout_width="@dimen/dp_113"
-                android:layout_height="@dimen/dp_113"
-                android:layout_marginStart="@dimen/dp_20"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_70"
+                android:layout_marginStart="@dimen/dp_30"
                 android:layout_marginTop="@dimen/dp_10"
-                android:src="@drawable/person_logo"
+                android:src="@drawable/candidate_details"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/services_provided" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/candidate_details"
+                android:id="@+id/personaltv"
+                android:textColor="@color/color_dark_green"
+                android:fontFamily="@font/avenir_next_bold"
+                android:layout_marginStart="@dimen/dp_30"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintTop_toBottomOf="@+id/personal_image_logo"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/training_image_logo"
-                android:layout_width="@dimen/dp_113"
-                android:layout_height="@dimen/dp_113"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_70"
                 android:layout_marginTop="@dimen/dp_10"
-                android:src="@drawable/training_log"
+                android:layout_marginStart="@dimen/dp_50"
+                android:src="@drawable/training_details"
                 app:layout_constraintStart_toEndOf="@+id/personal_image_logo"
                 app:layout_constraintTop_toBottomOf="@+id/services_provided" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/training_details"
+                android:textColor="@color/color_dark_green"
+                android:fontFamily="@font/avenir_next_bold"
+                android:layout_marginStart="@dimen/dp_45"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintTop_toBottomOf="@+id/training_image_logo"
+                app:layout_constraintStart_toEndOf="@+id/personaltv"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

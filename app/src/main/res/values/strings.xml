@@ -194,6 +194,9 @@
     <string name="no_training_center_found">No training center found</string>
     <string name="street">Street 1</string>
     <string name="kyc_failed_msg">Kyc process has been failed please try again.</string>
+    <string name="candidate_details">Candidate\n    details</string>
+    <string name="training_details">Training\n    details</string>
+
 
 
 </resources>

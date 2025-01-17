@@ -188,7 +188,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun setUI() {
 
-         layoutManager = LinearLayoutManager(requireContext())
+        layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = stateAdaptor
 
@@ -643,33 +643,33 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                 selectedStateLgdCode
                                             )
 
-                                 /*           val userRequest =  UserCreationReq(
-                                                maskedString,
-                                                name,
-                                                gender,
-                                                dob,
-                                                state,
-                                                selectedStateCode,
-                                                dist,
-                                                block,
-                                                po,
-                                                village,
-                                                pinCode,
-                                                phone,
-                                                email,
-                                                careOf,
-                                                street,
-                                                BuildConfig.VERSION_NAME,
-                                                photo,
-                                                AppUtil.getAndroidId(requireContext())
-                                            )
+                                            /*           val userRequest =  UserCreationReq(
+                                                           maskedString,
+                                                           name,
+                                                           gender,
+                                                           dob,
+                                                           state,
+                                                           selectedStateCode,
+                                                           dist,
+                                                           block,
+                                                           po,
+                                                           village,
+                                                           pinCode,
+                                                           phone,
+                                                           email,
+                                                           careOf,
+                                                           street,
+                                                           BuildConfig.VERSION_NAME,
+                                                           photo,
+                                                           AppUtil.getAndroidId(requireContext())
+                                                       )
 
-                                            commonViewModel.getCreateUserAPI(
+                                                       commonViewModel.getCreateUserAPI(
 
-                                                AESCryptography.encryptIntoHexString(AppUtil.toJson(userRequest)
-                                                    , BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)
+                                                           AESCryptography.encryptIntoHexString(AppUtil.toJson(userRequest)
+                                                               , BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)
 
-                                            )*/
+                                                       )*/
                                             commonViewModel.getCreateUserAPI(UserCreationReq(
                                                 maskedString,
                                                 name,
@@ -700,7 +700,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         hideProgressBar()
                                         showBottomSheet(bitmap, name, gender, dob, careOf)
 
-                                       // toastShort("Ekyc Completed")
+                                        // toastShort("Ekyc Completed")
                                     } else {
                                         hideProgressBar()
                                         val decodedRar = decodeBase64(kycResp.rar)
@@ -823,7 +823,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 when (it) {
                     is Resource.Loading -> {}
                     is Resource.Error -> {
-                       // hideProgressBar()
+                        // hideProgressBar()
                         it.error?.let { baseErrorResponse ->
                             showSnackBar(baseErrorResponse.message)
                             toastShort("error in create Api")
@@ -832,7 +832,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     }
 
                     is Resource.Success -> {
-                       // hideProgressBar()
+                        // hideProgressBar()
                         it.data?.let { getUserCreationRes ->
                             if (getUserCreationRes.responseCode == 200) {
                                 for (x in getUserCreationRes.wrappedList) {

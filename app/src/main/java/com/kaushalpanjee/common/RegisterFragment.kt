@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
@@ -12,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
@@ -54,6 +57,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun listeners() {
 
         binding.etEmail.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO)
@@ -83,8 +87,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         binding.tvEnterCodeMsg.text = it
                     }
 
+                    val etMobile = binding.etPhone.text.toString()
+
+                 val encryptedEtMobile =   AESCryptography.encryptIntoBase64String(etMobile,AppConstant.Constants.ENCRYPT_IV_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
                     commonViewModel.sendMobileOTP(
-                        binding.etPhone.text.toString(),
+                        encryptedEtMobile,
                         BuildConfig.VERSION_NAME
                     )
 
@@ -93,6 +102,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         binding.tvEnterCodeMsg.text = it
 
                     }
+
+                   /* val etEmail = binding.etPhone.text.toString()
+
+                    val encryptedEtEmail =   AESCryptography.encryptIntoHexString(etEmail, BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)*/
 
                     commonViewModel.sendEmailOTP(
                         binding.etEmail.text.toString(),
@@ -202,8 +215,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 )
             )
             if (isEmailVerified) {
+                val etMobile = binding.etPhone.text.toString()
+
+                val encryptedEtMobile =   AESCryptography.encryptIntoBase64String(etMobile, BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)
+
+
                 commonViewModel.sendMobileOTP(
-                    binding.etPhone.text.toString(),
+                    encryptedEtMobile,
                     BuildConfig.VERSION_NAME
                 )
             } else commonViewModel.sendEmailOTP(
@@ -263,12 +281,13 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         hideProgressBar()
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
-                                mobileOTP = sendMobileOTPResponse.otp
+                                val encyMobileOTP = sendMobileOTPResponse.otp
+                                 mobileOTP = AESCryptography.decryptIntoString(encyMobileOTP,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
                                 showSnackBar(mobileOTP!!)
 
                                 binding.clOTP.visible()
                                 if (BuildConfig.DEBUG)
-                                    showSnackBar(sendMobileOTPResponse.otp)
+                                    showSnackBar(mobileOTP!!)
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
                             else showSnackBar("Internal Sever Error")
