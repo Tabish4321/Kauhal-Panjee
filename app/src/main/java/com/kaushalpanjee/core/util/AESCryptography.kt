@@ -1,8 +1,7 @@
 package com.kaushalpanjee.core.util
 
 import android.util.Base64
-import com.kaushalpanjee.BuildConfig.ENCRYPT_IV_KEY
-import com.kaushalpanjee.BuildConfig.ENCRYPT_KEY
+
 import java.io.UnsupportedEncodingException
 import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException

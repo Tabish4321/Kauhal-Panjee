@@ -30,6 +30,8 @@ import com.kaushalpanjee.common.model.response.Secc
 import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
@@ -285,11 +287,37 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                 for (x in userAadhaarDetailsList) {
 
-                                    binding.tvAadhaarName.setText(x.userName)
-                                    binding.tvAaadharMobile.setText(x.mobileNo)
-                                    binding.tvAaadharGender.setText(x.gender)
-                                    binding.tvAaadharDob.setText(x.dateOfBirth)
-                                    binding.tvAaadharAddress.setText(x.comAddress)
+                                    val encryptedUserName = AESCryptography.decryptIntoString(x.userName,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+                                    val encryptedGender = AESCryptography.decryptIntoString(x.gender,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+
+                                    val encryptedMobileNo = AESCryptography.decryptIntoString(x.mobileNo,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedDateOfBirth = AESCryptography.decryptIntoString(x.dateOfBirth,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedComAddress = AESCryptography.decryptIntoString(x.comAddress,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+
+
+                                    binding.tvAadhaarName.setText(encryptedUserName)
+                                    binding.tvAaadharMobile.setText(encryptedMobileNo)
+                                    binding.tvAaadharGender.setText(encryptedGender)
+                                    binding.tvAaadharDob.setText(encryptedDateOfBirth)
+                                    binding.tvAaadharAddress.setText(encryptedComAddress)
 
                                     val bytes: ByteArray =
                                         Base64.decode(x.imagePath, Base64.DEFAULT)
@@ -530,24 +558,27 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                         for (x in userCandidateAddressDetailsList2){
 
-                                            binding.statespinn.setText(x.presentStateName)
-                                            binding.etDist.setText(x.presentDistrictName)
-                                            binding.etBlock.setText(x.presentBlockName)
-                                            binding.etGp.setText(x.presentGPName)
-                                            binding.etVillage.setText(x.presentVillageName)
-                                            binding.etAdressLine.setText(x.presentStreet1)
-                                            binding.etAdressLine2.setText(x.presentStreet2)
-                                            binding.etPinCode.setText(x.presentPinCode)
+                                            binding.statespinn.setText(x.permanentStateName)
+                                            binding.etDist.setText(x.permanentDistrictName)
+                                            binding.etBlock.setText(x.permanentBlockName)
+                                            binding.etGp.setText(x.permanentGPName)
+                                            binding.etVillage.setText(x.permanentVillageName)
+                                            binding.etAdressLine.setText(x.permanentStreet1)
+                                            binding.etAdressLine2.setText(x.permanentStreet2)
+                                            binding.etPinCode.setText(x.permanentPinCode)
                                             val adreessStatus = x.isPresentAddressSame
 
-                                            binding.etPrState.setText(x.permanentStateName)
-                                            binding.etPrDist.setText(x.permanentDistrictName)
-                                            binding.etPrBlock.setText(x.permanentBlockName)
-                                            binding.etPrGp.setText(x.permanentGPName)
-                                            binding.etPrVillage.setText(x.permanentVillageName)
-                                            binding.etPresentAddressAdressLine.setText(x.permanentStreet1)
-                                            binding.etPresentLine2.setText(x.permanentStreet2)
-                                            binding.etPresentPinCode.setText(x.permanentPinCode)
+                                            binding.etPrState.setText(x.presentStateName)
+                                            binding.etPrDist.setText(x.presentDistrictName)
+                                            binding.etPrBlock.setText(x.presentBlockName)
+                                            binding.etPrGp.setText(x.presentGPName)
+                                            binding.etPrVillage.setText(x.presentVillageName)
+                                            binding.etPresentAddressAdressLine.setText(x.presentStreet1)
+                                            binding.etPresentLine2.setText(x.presentStreet2)
+                                            binding.etPresentPinCode.setText(x.presentPinCode)
+
+
+
 
                                             handleStatus(binding.optionllSamePermanentYesSelect, binding.optionSamePermanentNoSelect, adreessStatus)
 
@@ -625,11 +656,20 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                         for (x in userCandidateBankDetailsList){
 
-                                            binding.etIfsc.setText(x.ifscCode)
-                                            binding.etBankName.setText(x.bankName)
-                                            binding.etBranchName.setText(x.bankBranchName)
-                                            binding.etBankAcNo.setText(x.bankAccNumber)
-                                            binding.etPanNumber.setText(x.panNo)
+
+                                            val DecIfscCode = AESCryptography.decryptIntoString(x.ifscCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val DecBankName = AESCryptography.decryptIntoString(x.bankName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val DecbankBranchName = AESCryptography.decryptIntoString(x.bankBranchName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val DecbankbankAccNumber = AESCryptography.decryptIntoString(x.bankAccNumber,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+
+                                            binding.etIfsc.setText(DecIfscCode)
+                                            binding.etBankName.setText(DecBankName)
+                                            binding.etBranchName.setText(DecbankBranchName)
+                                            binding.etBankAcNo.setText(DecbankbankAccNumber)
+                                            binding.etPanNumber.setText(DecpanNo)
                                         }
 
                                     } else if (getCandidateDetailsAPI.responseCode == 301) {

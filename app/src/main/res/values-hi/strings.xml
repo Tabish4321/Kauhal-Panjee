@@ -186,4 +186,17 @@
     <string name="contact_number">Contact Number</string>
     <string name="logout">Logout</string>
     <string name="changePass">Change password</string>
+    <string name="change_password">Change Password</string>
+    <string name="oldPass">Old Password</string>
+    <string name="newPass">New Password</string>
+    <string name="confirmPass">Confirm Password</string>
+    <string name="view"><u>View</u></string>
+    <string name="close">Close</string>
+    <string name="no_training_center_found">No training center found</string>
+    <string name="street">Street 1</string>
+    <string name="kyc_failed_msg">Kyc process has been failed please try again.</string>
+    <string name="candidate_details">Candidate\n    details</string>
+    <string name="training_details">Training\n    details</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">Please select your state carefully. This selection cannot be changed once your account created</string>
+
 </resources>

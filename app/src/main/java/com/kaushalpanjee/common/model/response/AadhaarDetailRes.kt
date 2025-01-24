@@ -19,6 +19,8 @@ data class UserDetails(
     val emailId: String,
     val mobileNo: String,
     val statename: String,
+    val regStateCode: String,
+    val regState: String,
     val aadharNo: String,
     val userName: String,
     val deviceDate: String,

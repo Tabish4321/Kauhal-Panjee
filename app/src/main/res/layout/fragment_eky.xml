@@ -15,17 +15,30 @@
 
 
         <TextView
-            android:id="@+id/tvWelcome"
+            android:id="@+id/tvStateNotC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_70"
+            android:fontFamily="@font/avenir_next_semi_bold"
+            android:text="@string/please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created"
+            android:textColor="@color/color_green"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
             android:fontFamily="@font/avenir_next_bold"
             android:text="@string/select_state"
             android:textColor="@color/color_dark_green"
             android:textSize="@dimen/sp_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tvStateNotC"/>
 
         <TextView
             android:id="@+id/tvWelcomeMsg"

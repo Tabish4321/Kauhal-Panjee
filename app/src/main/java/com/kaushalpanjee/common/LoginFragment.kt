@@ -84,13 +84,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()) {
                     userName = binding.etEmail.text.toString()
                     password = binding.etPassword.text.toString()
+                    val shaPass = AppUtil.sha512Hash(password)
 
 
                     //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
                     commonViewModel.getLoginAPI(
                         LoginReq(
                             userName,
-                            password,
+                            shaPass,
                             AppUtil.getAndroidId(requireContext()),
                             BuildConfig.VERSION_NAME,
                             ""

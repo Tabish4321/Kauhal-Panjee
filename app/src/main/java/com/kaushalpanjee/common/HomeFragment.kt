@@ -38,6 +38,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Base64
+import android.util.Log
 import android.widget.Button
 import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
@@ -78,6 +79,8 @@ import com.kaushalpanjee.common.model.response.PersonalDetail
 import com.kaushalpanjee.common.model.response.Secc
 import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.isNull
@@ -85,6 +88,8 @@ import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
@@ -216,6 +221,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+
     //Secc Address
 
 
@@ -282,6 +288,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var districtAdapter: ArrayAdapter<String>
     private var district = ArrayList<String>()
     private var districtCode = ArrayList<String>()
+    private var districtCodePer = ArrayList<String>()
     private var districtLgdCode = ArrayList<String>()
     private var selectedDistrictCodeItem = ""
     private var selectedDistrictLgdCodeItem = ""
@@ -410,7 +417,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun init() {
         listener()
         collectStateResponse()
-        collectDistrictResponse()
         collectBlockResponse()
         collectGpResponse()
         collectVillageResponse()
@@ -429,6 +435,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
 
+
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
         commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME))
@@ -442,10 +449,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+
     }
 
 
-    @SuppressLint("SetTextI18n", "CheckResult")
+    @SuppressLint("SetTextI18n", "CheckResult", "SuspiciousIndentation")
     private fun listener() {
 
         binding.profileView.editImageButton.setOnClickListener {
@@ -527,14 +535,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.spinnerHighestEducation.setAdapter(highestEducationAdapter)
 
         //Adapter state setting
-        stateAdapter = ArrayAdapter(
+      /*  stateAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
             state
         )
 
         binding.SpinnerStateName.setAdapter(stateAdapter)
-
+*/
         //Secc Adapter Setting
 
 
@@ -881,6 +889,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             lifecycleScope.launch {
 
                                 commonViewModel.getDistrictListApi(x.seccStateCode)
+                                collectDistrictResponse(true)
                                 commonViewModel.getBlockListApi(x.seccDistrictCode)
                                 commonViewModel.getGpListApi(x.seccBlcokCode)
                                 commonViewModel.getVillageListApi(x.seccGPCode)
@@ -948,47 +957,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         for (x in userCandidateAddressDetailsList2){
 
 
+
                             lifecycleScope.launch {
 
-                                commonViewModel.getDistrictListApi(x.presentStateCode)
-                                commonViewModel.getBlockListApi(x.presentDistrictCode)
-                                commonViewModel.getGpListApi(x.presentBlcokCode)
-                                commonViewModel.getVillageListApi(x.presentGPCode)
 
-                                delay(1000)
-
-                                setDropdownValue(binding.SpinnerStateName, x.presentStateName, state)
-                                setDropdownValue(binding.spinnerDistrict, x.presentDistrictName, district)
-                                setDropdownValue(binding.spinnerBlock, x.presentBlockName, block)
-                                setDropdownValue(binding.spinnerGp, x.presentGPName, gp)
-                                setDropdownValue(binding.spinnerVillage, x.presentVillageName, village)
-
-
-
-
-
+                                district.clear()
+                                Log.d("StateCode", "Selected Value: ${x.permanentStateCode}")
 
                                 commonViewModel.getDistrictListApi(x.permanentStateCode)
                                 commonViewModel.getBlockListApi(x.permanentDistrictCode)
                                 commonViewModel.getGpListApi(x.permanentBlcokCode)
                                 commonViewModel.getVillageListApi(x.permanentGPCode)
 
+
+
                                 delay(1000)
+                                collectDistrictResponse(true)
 
-                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.permanentStateName, statePer)
-                                setDropdownValue(binding.spinnerPresentAddressDistrict, x.permanentDistrictName, districtPer)
-                                setDropdownValue(binding.spinnerPresentAddressBlock, x.permanentBlockName, blockPer)
-                                setDropdownValue(binding.spinnerPresentAddressGp, x.permanentGPName, gpPer)
-                                setDropdownValue(binding.spinnerPresentAddressVillage, x.permanentVillageName, villagePer)
 
-                                district.clear()
-                                block.clear()
-                                gp.clear()
-                                village.clear()
-                                districtPer.clear()
-                                blockPer.clear()
-                                gpPer.clear()
-                                villagePer.clear()
+                                binding.TvSpinnerStateName.text = x.permanentStateName
+                                setDropdownValue(binding.spinnerDistrict, x.permanentDistrictName, district)
+                                setDropdownValue(binding.spinnerBlock, x.permanentBlockName, block)
+                                setDropdownValue(binding.spinnerGp, x.permanentGPName, gp)
+                                setDropdownValue(binding.spinnerVillage, x.permanentVillageName, village)
+
+
+                                commonViewModel.getDistrictListApi(x.presentStateCode)
+                                collectDistrictResponse(false)
+                                commonViewModel.getBlockListApi(x.presentDistrictCode)
+                                commonViewModel.getGpListApi(x.presentBlcokCode)
+                                commonViewModel.getVillageListApi(x.presentGPCode)
+
+                                                       delay(1000)
+
+                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, statePer)
+                                setDropdownValue(binding.spinnerPresentAddressDistrict, x.presentDistrictName, districtPer)
+                                setDropdownValue(binding.spinnerPresentAddressBlock, x.presentBlockName, blockPer)
+                                setDropdownValue(binding.spinnerPresentAddressGp, x.presentGPName, gpPer)
+                                setDropdownValue(binding.spinnerPresentAddressVillage, x.presentVillageName, villagePer)
 
 
 
@@ -999,38 +1005,55 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                            binding.etAdressLine.setText(x.presentStreet1)
-                            binding.etAdressLine2.setText(x.presentStreet2)
-                            binding.etPinCode.setText(x.presentPinCode)
+
+                            binding.etAdressLine.setText(x.permanentStreet1)
+                            binding.etAdressLine2.setText(x.permanentStreet2)
+                            binding.etPinCode.setText(x.permanentPinCode)
                             val adreessStatus = x.isPresentAddressSame
 
-                            binding.etPresentAddressAdressLine.setText(x.permanentStreet1)
-                            binding.etPresentLine2.setText(x.permanentStreet2)
-                            binding.etPresentPinCode.setText(x.permanentPinCode)
+                            binding.etPresentAddressAdressLine.setText(x.presentStreet1)
+                            binding.etPresentLine2.setText(x.presentStreet2)
+                            binding.etPresentPinCode.setText(x.presentPinCode)
 
                             handleStatus(binding.optionllSamePermanentYesSelect, binding.optionSamePermanentNoSelect, adreessStatus)
 
 
-                            selectedStateCodeItem  =  x.presentStateCode
-                            selectedDistrictCodeItem= x.presentDistrictCode
-                            selectedBlockCodeItem  = x.presentBlcokCode
-                            selectedGpCodeItem = x.presentGPCode
-                            selectedVillageCodeItem=  x.presentVillageCode
+                            selectedStateCodeItem  =  x.permanentStateCode
+                            selectedDistrictCodeItem= x.permanentDistrictCode
+                            selectedBlockCodeItem  = x.permanentBlcokCode
+                            selectedGpCodeItem = x.permanentGPCode
+                            selectedVillageCodeItem=  x.permanentVillageCode
                             addressLine1 = x.presentStreet1
                             addressLine2= x.presentStreet2
                             pinCode=x.presentPinCode
                             isPermanentStatus=x.isPresentAddressSame
-                            selectedStatePresentCodeItem=x.permanentStateCode
-                            selectedDistrictPresentCodeItem=x.permanentDistrictCode
-                            selectedBlockPresentCodeItem= x.permanentBlcokCode
-                            selectedGpPresentCodeItem=x.permanentGPCode
-                            selectedVillagePresentCodeItem=x.permanentVillageCode
+
+
+                            selectedStatePresentCodeItem=x.presentStateCode
+                            selectedDistrictPresentCodeItem=x.presentDistrictCode
+                            selectedBlockPresentCodeItem= x.presentBlcokCode
+                            selectedGpPresentCodeItem=x.presentGPCode
+                            selectedVillagePresentCodeItem=x.presentVillageCode
+
+
                             addressPresentLine1=x.permanentStreet1
                             addressPresentLine2=x.permanentStreet2
                             pinCodePresent=x.permanentPinCode
 
 
                         }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     },
@@ -1195,16 +1218,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                   for (x in userCandidateBankDetailsList){
 
 
-                      binding.etIfscCode.setText(x.ifscCode)
-                      binding.etBankName.setText(x.bankName)
-                      binding.etBranchName.setText(x.bankBranchName)
-                      binding.etBankAcNo.setText(x.bankAccNumber)
-                      binding.etPanNumber.setText(x.panNo)
+                   val DecIfscCode = AESCryptography.decryptIntoString(x.ifscCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                   val DecBankName = AESCryptography.decryptIntoString(x.bankName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                   val DecbankBranchName = AESCryptography.decryptIntoString(x.bankBranchName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                   val DecbankbankAccNumber = AESCryptography.decryptIntoString(x.bankAccNumber,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                   val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
 
-                          BankName = x.bankName
-                          BankAcNo= x.bankAccNumber
-                          IfscCode = x.ifscCode
-                          PanNumber= x.panNo
+
+                      binding.etIfscCode.setText(DecIfscCode)
+                      binding.etBankName.setText(DecBankName)
+                      binding.etBranchName.setText(DecbankBranchName)
+                      binding.etBankAcNo.setText(DecbankbankAccNumber)
+                      binding.etPanNumber.setText(DecpanNo)
+
+                          BankName =DecBankName
+                          BankAcNo= DecbankbankAccNumber
+                          IfscCode = DecIfscCode
+                          PanNumber= DecpanNo
 
                   }
 
@@ -1313,11 +1343,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //Ifsc Search
 
         binding.progressButton.centerButton.setOnClickListener {
-
             val inputText = binding.etIfscCode.text.toString()
             val upperCaseText = inputText.uppercase()
+            val encryptedUpperCaseText =   AESCryptography.encryptIntoBase64String(upperCaseText, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
             commonViewModel.getBankDetailsAPI(BankingReq(BuildConfig.VERSION_NAME,
-                upperCaseText
+                encryptedUpperCaseText
             ))
 
         }
@@ -1388,6 +1419,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccStateCodeItem = stateCode[position]
                 selectedSeccStateLgdCodeItem = stateLgdCode[position]
                 commonViewModel.getDistrictListApi(selectedSeccStateCodeItem)
+                lifecycleScope.launch {
+                    collectDistrictResponse(true)
+
+                }
 
                 //Clearing Data
                 selectedSeccDistrictCodeItem = ""
@@ -1532,12 +1567,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         //State selection
+
+
+/*
         binding.SpinnerStateName.setOnItemClickListener { parent, view, position, id ->
             selectedStateItem = parent.getItemAtPosition(position).toString()
             if (position in state.indices) {
                 selectedStateCodeItem = stateCode[position]
                 selectedStateLgdCodeItem = stateLgdCode[position]
-                commonViewModel.getDistrictListApi(selectedStateCodeItem)
 
                 //Clearing Data
                 selectedDistrictCodeItem = ""
@@ -1601,6 +1638,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
         }
+*/
 
 
         //District selection
@@ -1838,6 +1876,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedStatePresentCodeItem = stateCode[position]
                 selectedStatePresentLgdCodeItem = stateLgdCode[position]
                 commonViewModel.getDistrictListApi(selectedStatePresentCodeItem)
+
+                lifecycleScope.launch {
+                    collectDistrictResponse(false)
+                }
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
                 selectedVillagePresentItem = ""
@@ -2513,8 +2555,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 // Hit Insert API
 
+            //    val encryptedUserID =   AESCryptography.encryptIntoBase64String(userPreferences.getUseID(), AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                val encryptedBankCode =   AESCryptography.encryptIntoBase64String(bankCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                val encryptedBranchCode =   AESCryptography.encryptIntoBase64String(branchCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                val encryptedBankAcNo =   AESCryptography.encryptIntoBase64String(BankAcNo, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                val encryptedIfscCode =   AESCryptography.encryptIntoBase64String(IfscCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                val encryptedPanNumber =   AESCryptography.encryptIntoBase64String(PanNumber, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
                 commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"7",
-                    bankCode,branchCode,BankAcNo,IfscCode,PanNumber))
+                    encryptedBankCode,encryptedBranchCode,encryptedBankAcNo,encryptedIfscCode,encryptedPanNumber))
 
                 collectInsertBankingResponse()
 
@@ -2820,9 +2870,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
 
-                    selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
-                    addressPresentLine1,addressPresentLine2,pinCodePresent,residenceImage,isPermanentStatus, selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
-                    addressLine2,pinCode))
+                    selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
+                    addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
+                    addressPresentLine1,addressPresentLine2,pinCodePresent))
+
+
+
 
                 collectInsertAddressResponse()
 
@@ -3268,7 +3321,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
+                         //   toastShort(baseErrorResponse.message)
                         }
                     }
 
@@ -3335,7 +3388,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     stateLgdCode.add(x.lgdStateCode) // Replace with actual field
                                 }
 
-                                stateAdapter.notifyDataSetChanged()
+                           //     stateAdapter.notifyDataSetChanged()
                             } else if (getStateResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
@@ -3348,6 +3401,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+/*
     private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
@@ -3388,6 +3442,53 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+*/
+
+    private suspend fun collectDistrictResponse(isPermanent: Boolean) {
+        collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
+            when (it) {
+                is Resource.Loading -> showProgressBar()
+                is Resource.Error -> {
+                    hideProgressBar()
+                    it.error?.let { baseErrorResponse ->
+                        showSnackBar(baseErrorResponse.message)
+                    }
+                }
+                is Resource.Success -> {
+                    hideProgressBar()
+                    it.data?.let { getDistrictResponse ->
+                        if (getDistrictResponse.responseCode == 200) {
+                            val districtNames = getDistrictResponse.districtList.map { it.districtName }
+                            val districtCodes = getDistrictResponse.districtList.map { it.districtCode }
+                            val districtLgdCodes = getDistrictResponse.districtList.map { it.lgdDistrictCode }
+
+                            if (isPermanent) {
+                                district.clear()
+                                district.addAll(districtNames)
+                                Log.d("DropdownDebug", "✅ Permanent District List: $district")
+                            } else {
+                                districtPer.clear()
+                                districtPer.addAll(districtNames)
+                                Log.d("DropdownDebug", "✅ Present District List: $districtPer")
+                            }
+
+                            districtCode.clear()
+                            districtCode.addAll(districtCodes)
+                            districtLgdCode.clear()
+                            districtLgdCode.addAll(districtLgdCodes)
+
+                            districtAdapter.notifyDataSetChanged()
+                        } else if (getDistrictResponse.responseCode == 301) {
+                            showSnackBar("Please Update from PlayStore")
+                        } else {
+                            showSnackBar("Something went wrong")
+                        }
+                    } ?: showSnackBar("Internal Server Error")
+                }
+            }
+        }
+    }
+
 
     private fun collectAadharDetailsResponse() {
         lifecycleScope.launch {
@@ -3410,11 +3511,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 for (x in userAadhaarDetailsList) {
 
-                                    binding.profileView.tvAadhaarName.setText(x.userName)
-                                    binding.profileView.tvAaadharMobile.setText(x.mobileNo)
-                                    binding.profileView.tvAaadharGender.setText(x.gender)
-                                    binding.profileView.tvAaadharDob.setText(x.dateOfBirth)
-                                    binding.profileView.tvAaadharAddress.setText(x.comAddress)
+                              val encryptedUserName = AESCryptography.decryptIntoString(x.userName,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+                                    val encryptedGender = AESCryptography.decryptIntoString(x.gender,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+
+                                    val encryptedMobileNo = AESCryptography.decryptIntoString(x.mobileNo,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedDateOfBirth = AESCryptography.decryptIntoString(x.dateOfBirth,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedComAddress = AESCryptography.decryptIntoString(x.comAddress,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+
+
+                                    selectedStateItem=x.regState
+                                    binding.TvSpinnerStateName.setText(x.regState)
+
+
+
+                                    selectedStateCodeItem=x.regStateCode
+                                    commonViewModel.getDistrictListApi(x.regStateCode)
+                                    collectDistrictResponse(true)
+                                    binding.profileView.tvAadhaarName.setText(encryptedUserName)
+                                    binding.profileView.tvAaadharMobile.setText(encryptedMobileNo)
+                                    binding.profileView.tvAaadharGender.setText(encryptedGender)
+                                    binding.profileView.tvAaadharDob.setText(encryptedDateOfBirth)
+                                    binding.profileView.tvAaadharAddress.setText(encryptedComAddress)
 
                                     val bytes: ByteArray =
                                         Base64.decode(x.imagePath, Base64.DEFAULT)
@@ -3957,11 +4092,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 val bankList = getBankList.bankDetailsList
 
                                 for (x in bankList) {
-                                    bankCode=   x.bankCode
-                                    bankName1=    x.bankName
-                                    branchCode=  x.branchCode
-                                    branchName=   x.branchName
-                                    accLenghth=   x.accLength
+
+
+
+                                    val encryptedbankCode = AESCryptography.decryptIntoString(x.bankCode,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedbankName = AESCryptography.decryptIntoString(x.bankName,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedbranchCode = AESCryptography.decryptIntoString(x.branchCode,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedbranchName = AESCryptography.decryptIntoString(x.branchName,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val encryptedaccLength = AESCryptography.decryptIntoString(x.accLength,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    bankCode=  encryptedbankCode
+                                    bankName1=    encryptedbankName
+                                    branchCode=  encryptedbranchCode
+                                    branchName=   encryptedbranchName
+                                    accLenghth=  encryptedaccLength
 
                                 }
 
@@ -4078,20 +4236,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-
-
     private fun setDropdownValue(
         autoCompleteTextView: AutoCompleteTextView,
         value: String,
         dataList: List<String>
     ) {
-        if (dataList.contains(value)) { // Check if the value exists in the list
-            autoCompleteTextView.setText(
-                value,
-                false
-            ) // Set text without filtering or triggering dropdown
+        Log.d("DropdownDebug", "🔍 Dropdown Data for ${autoCompleteTextView.id}: $dataList")
+        Log.d("DropdownDebug", "🎯 Selected Value: $value")
+
+        autoCompleteTextView.post {
+            val adapter = ArrayAdapter(autoCompleteTextView.context, android.R.layout.simple_dropdown_item_1line, dataList)
+            autoCompleteTextView.setAdapter(null) // Force refresh
+            autoCompleteTextView.setAdapter(adapter) // Set updated data
+
+            if (dataList.contains(value)) {
+                autoCompleteTextView.setText(value, false)
+            }
         }
     }
+
+
+
 
 
     private fun checkAndRequestPermissionsForPurpose(purpose: String) {

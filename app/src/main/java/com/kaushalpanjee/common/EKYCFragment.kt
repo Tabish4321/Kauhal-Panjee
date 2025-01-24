@@ -77,7 +77,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private var selectedState = ""
     private var showPassword = true
-
     private var name = ""
     private var dob = ""
     private var gender = ""
@@ -92,7 +91,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var photo = ""
     private var selectedStateCode = ""
     private var selectedStateLgdCode = ""
-
     private lateinit var layoutManager : LinearLayoutManager
 
 
@@ -643,52 +641,49 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                 selectedStateLgdCode
                                             )
 
-                                            /*           val userRequest =  UserCreationReq(
-                                                           maskedString,
-                                                           name,
-                                                           gender,
-                                                           dob,
-                                                           state,
-                                                           selectedStateCode,
-                                                           dist,
-                                                           block,
-                                                           po,
-                                                           village,
-                                                           pinCode,
-                                                           phone,
-                                                           email,
-                                                           careOf,
-                                                           street,
-                                                           BuildConfig.VERSION_NAME,
-                                                           photo,
-                                                           AppUtil.getAndroidId(requireContext())
-                                                       )
 
-                                                       commonViewModel.getCreateUserAPI(
+                                            val encryptedMaskedString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(), AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedName =   AESCryptography.encryptIntoBase64String(name, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedGender =   AESCryptography.encryptIntoBase64String(gender, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedDob =   AESCryptography.encryptIntoBase64String(dob, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedState =   AESCryptography.encryptIntoBase64String(state, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedSelectedStateCode =   AESCryptography.encryptIntoBase64String(selectedStateCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedDist =   AESCryptography.encryptIntoBase64String(dist, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedBlock =   AESCryptography.encryptIntoBase64String(block, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedPo =   AESCryptography.encryptIntoBase64String(po, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedVillage =   AESCryptography.encryptIntoBase64String(village, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedPinCode =   AESCryptography.encryptIntoBase64String(pinCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedPhone = phone?.let {
+                                                AESCryptography.encryptIntoBase64String(
+                                                    it, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            }
+                                            val encryptedEmail = email?.let {
+                                                AESCryptography.encryptIntoBase64String(
+                                                    it, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            }
+                                            val encryptedCareOf =   AESCryptography.encryptIntoBase64String(careOf, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedStreet =   AESCryptography.encryptIntoBase64String(street, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedLdgdCode =   AESCryptography.encryptIntoBase64String(selectedStateLgdCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
-                                                           AESCryptography.encryptIntoHexString(AppUtil.toJson(userRequest)
-                                                               , BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)
-
-                                                       )*/
                                             commonViewModel.getCreateUserAPI(UserCreationReq(
-                                                maskedString,
-                                                name,
-                                                gender,
-                                                dob,
-                                                state,
-                                                selectedStateCode,
-                                                dist,
-                                                block,
-                                                po,
-                                                village,
-                                                pinCode,
-                                                phone,
-                                                email,
-                                                careOf,
-                                                street,
+                                                encryptedMaskedString,
+                                                encryptedName,
+                                                encryptedGender,
+                                                encryptedDob,
+                                                encryptedState,
+                                                encryptedSelectedStateCode,
+                                                encryptedDist,
+                                                encryptedBlock,
+                                                encryptedPo,
+                                                encryptedVillage,
+                                                encryptedPinCode,
+                                                encryptedPhone,
+                                                encryptedEmail,
+                                                encryptedCareOf,
+                                                encryptedStreet,
                                                 BuildConfig.VERSION_NAME,
                                                 photo,
-                                                AppUtil.getAndroidId(requireContext())
+                                                AppUtil.getAndroidId(requireContext()),encryptedLdgdCode
                                             )
                                             )
 

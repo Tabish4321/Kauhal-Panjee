@@ -29,6 +29,7 @@ import java.util.TimeZone
 import android.content.res.Configuration
 import android.provider.Settings
 import com.google.gson.Gson
+import java.security.MessageDigest
 
 
 object AppUtil {
@@ -37,6 +38,14 @@ object AppUtil {
     fun getAndroidId(context: Context) : String{
 
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+    }
+
+    fun sha512Hash(input: String): String {
+        val digest = MessageDigest.getInstance("SHA-512")
+        val hashBytes = digest.digest(input.toByteArray(Charsets.UTF_8))
+
+        // Convert bytes to hex string
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 
     fun createFileName(userId: Int?): String {
