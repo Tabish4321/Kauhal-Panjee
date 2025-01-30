@@ -17,6 +17,7 @@ import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -90,7 +91,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
+
          val drawerLayout = binding.drawerLayout
+
+
 
          binding.navigationView.setNavigationItemSelectedListener { menuItem ->
              when (menuItem.itemId) {
@@ -198,27 +202,13 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
      binding.personalImageLogo.setOnClickListener {
-         lifecycleScope.launch {
+             findNavController().navigate(MainHomePageDirections.actionMainHomePageToViewDetailsFragment())
 
-             showProgressBar()
-             findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
-             delay(2000)
-             hideProgressBar()
-
-
-         }
      }
 
          binding.circleImageViewMH.setOnClickListener {
-             lifecycleScope.launch {
+             binding.drawerLayout.openDrawer(GravityCompat.START)
 
-                 showProgressBar()
-                 findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
-                 delay(2000)
-                 hideProgressBar()
-
-
-             }
          }
 
      binding.tvCompleteNow.setOnClickListener {
@@ -229,7 +219,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
              findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
              delay(2000)
              hideProgressBar()
-
 
          }
      }

@@ -29,11 +29,15 @@ import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager // For checking permissions
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -44,6 +48,7 @@ import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
+import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,10 +93,16 @@ import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 import java.security.MessageDigest
 
 @AndroidEntryPoint
@@ -111,6 +122,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val REQUEST_PICK_PROFILE_PIC = 108
     private val REQUEST_PICK_RESIDENCE = 107
     private val PERMISSION_READ_MEDIA_IMAGES = 201
+    private val REQUEST_PICK_IMAGE = 201
+    private  val REQUEST_PICK_PDF = 202
+    private  val REQUEST_CAPTURE_IMAGE = 203
+    private var cameraImageUri: Uri? = null
+
 
     //Boolean Values
     private var isPersonalVisible = true
@@ -185,6 +201,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var educationalStatus = ""
     private var trainingStatus = ""
     private var seccStatus = ""
+    private var isSeccStatus = "No"
     private var addressStatus = ""
     private var employmentStatus = ""
     private var bankingStatus = ""
@@ -264,6 +281,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     var addressPresentLine1 = ""
     var addressPresentLine2 = ""
     var pinCodePresent = ""
+    var isValidPan = false
 
 
     private lateinit var categoryAdapter: ArrayAdapter<String>
@@ -312,6 +330,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var gpAdapter: ArrayAdapter<String>
     private var gp = ArrayList<String>()
     private var gpCode = ArrayList<String>()
+    private var gpCodePer = ArrayList<String>()
     private var gpLgdCode = ArrayList<String>()
     private var selectedGpCodeItem = ""
     private var selectedbGpLgdCodeItem = ""
@@ -330,8 +349,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var statePer = ArrayList<String>()
     private var districtPer = ArrayList<String>()
     private var blockPer = ArrayList<String>()
+    private var blockCodePer = ArrayList<String>()
     private var gpPer = ArrayList<String>()
     private var villagePer = ArrayList<String>()
+    private var villageCodePer = ArrayList<String>()
 
 
 
@@ -411,12 +432,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         init()
-    }
-
-
-    private fun init() {
-        listener()
         collectStateResponse()
+        collectDistrictResponse()
         collectBlockResponse()
         collectGpResponse()
         collectVillageResponse()
@@ -424,7 +441,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTechEducationDomainResponse()
         collectWhereHaveUHeardResponse()
         collectTechEducationResponse()
-        collectAadharDetailsResponse()
         collectSeccListResponse()
         collectSetionAndPerResponse()
         collectBankResponse()
@@ -433,19 +449,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSectorResponse()
         collectCandidateDetailsResponse()
 
+    }
+
+
+    private fun init() {
+        listener()
+
+                commonViewModel.getAadhaarListAPI(AdharDetailsReq
+            (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID())
+        )
+
+
+        collectAadharDetailsResponse()
+
+
+
+
+
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
 
 
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         commonViewModel.getStateListApi()
         commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME))
-        commonViewModel.getAadhaarListAPI(
-            AdharDetailsReq(
-                BuildConfig.VERSION_NAME,
-                AppUtil.getAndroidId(requireContext()),
-               userPreferences.getUseID()
-            )
-        )
+
 
 
 
@@ -459,7 +486,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.profileView.editImageButton.setOnClickListener {
 
 
-            checkAndRequestPermissionsForPurpose("PROFILE_PIC")
+            checkAndRequestPermissionsForEveryPurpose("PROFILE_PIC")
 
 
 
@@ -524,6 +551,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.SpinnerMarital.setAdapter(maritalAdapter)
 
+
+        gpPresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            gp
+        )
+
+        binding.spinnerPresentAddressGp.setAdapter(gpPresentAdapter)
+
+
         //Adapter Highest Education
 
         highestEducationAdapter = ArrayAdapter(
@@ -551,6 +588,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             selectedAhlTin   =  selectedItem.ahltin
             selectedSeccName=  selectedItem.seccName
+            binding.searchView.setText("Father:-"+selectedItem.fatherName)
             toastShort("Selected Item: ${selectedItem.seccName}")
             binding.recyclerView.gone()
         }
@@ -629,27 +667,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             android.R.layout.simple_spinner_dropdown_item,
             block
         )
-
         binding.spinnerPresentAddressBlock.setAdapter(blockPresentAdapter)
 
-        //Adapter GP setting
 
-        gpPresentAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            gp
-        )
-
-        binding.spinnerPresentAddressGp.setAdapter(gpPresentAdapter)
-
-
-        //Adapter Village setting
 
         villagePresentAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
             village
         )
+
+
+
 
         binding.spinnerPresentAddressVillage.setAdapter(villagePresentAdapter)
 
@@ -662,7 +691,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             state
         )
 
-        binding.spinnerStateSecc.setAdapter(stateSeccAdapter)
 
 
         //Adapter District setting
@@ -738,6 +766,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         binding.spinnerHeardAboutddugky.setAdapter(HeardAdapter)
+
+
+        binding.profileView.viewDetails.setText(R.string.view_profile)
 
 
         // open llTop by 1 change 0
@@ -889,14 +920,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             lifecycleScope.launch {
 
                                 commonViewModel.getDistrictListApi(x.seccStateCode)
-                                collectDistrictResponse(true)
                                 commonViewModel.getBlockListApi(x.seccDistrictCode)
+                                gpSeccAdapter.notifyDataSetChanged()
                                 commonViewModel.getGpListApi(x.seccBlcokCode)
                                 commonViewModel.getVillageListApi(x.seccGPCode)
+
                                 delay(2000)
 
+                                binding.stateesecc.text = x.seccStateName
 
-                                setDropdownValue(binding.spinnerStateSecc, x.seccStateName, state)
+
+                               // setDropdownValue(binding.spinnerStateSecc, x.seccStateName, state)
                                 setDropdownValue(binding.spinnerDistrictSecc, x.seccDistrictName, district)
                                 setDropdownValue(binding.spinnerBlockSecc, x.seccBlockName, block)
                                 setDropdownValue(binding.spinnerGpSecc, x.seccGPName, gp)
@@ -913,6 +947,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             selectedSeccVillageCodeItem = x.seccVillageCode
                             selectedSeccName= x.seccCandidateName
                             selectedAhlTin=x.seccAHLTIN
+                            selectedbSeccVillageLgdCodeItem= x.seccLgdVillCode
 
 
 
@@ -959,46 +994,61 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                             lifecycleScope.launch {
-
-
                                 district.clear()
-                                Log.d("StateCode", "Selected Value: ${x.permanentStateCode}")
 
-                                commonViewModel.getDistrictListApi(x.permanentStateCode)
+                             //   commonViewModel.getDistrictListApi(x.permanentStateCode)
                                 commonViewModel.getBlockListApi(x.permanentDistrictCode)
+                                gpAdapter.notifyDataSetChanged()
+                                binding.TvDisName.visible()
+                                binding.spinnerAutoDistrict.gone()
+                                binding.TvDisName.text = x.permanentDistrictName
                                 commonViewModel.getGpListApi(x.permanentBlcokCode)
                                 commonViewModel.getVillageListApi(x.permanentGPCode)
 
 
-
                                 delay(1000)
-                                collectDistrictResponse(true)
 
 
-                                binding.TvSpinnerStateName.text = x.permanentStateName
-                                setDropdownValue(binding.spinnerDistrict, x.permanentDistrictName, district)
-                                setDropdownValue(binding.spinnerBlock, x.permanentBlockName, block)
+
+
+                                // binding.TvSpinnerStateName.text = x.permanentStateName
+                               // binding.spinnerDistrict.setText(x.permanentDistrictName)
+
+
+
+
+                               // setDropdownValue(binding.spinnerDistrict, x.permanentDistrictName, district)
+
+                                 setDropdownValue(binding.spinnerBlock, x.permanentBlockName, block)
                                 setDropdownValue(binding.spinnerGp, x.permanentGPName, gp)
                                 setDropdownValue(binding.spinnerVillage, x.permanentVillageName, village)
 
-
+                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, state)
                                 commonViewModel.getDistrictListApi(x.presentStateCode)
-                                collectDistrictResponse(false)
-                                commonViewModel.getBlockListApi(x.presentDistrictCode)
-                                commonViewModel.getGpListApi(x.presentBlcokCode)
-                                commonViewModel.getVillageListApi(x.presentGPCode)
-
-                                                       delay(1000)
-
-                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, statePer)
-                                setDropdownValue(binding.spinnerPresentAddressDistrict, x.presentDistrictName, districtPer)
-                                setDropdownValue(binding.spinnerPresentAddressBlock, x.presentBlockName, blockPer)
-                                setDropdownValue(binding.spinnerPresentAddressGp, x.presentGPName, gpPer)
-                                setDropdownValue(binding.spinnerPresentAddressVillage, x.presentVillageName, villagePer)
 
 
 
+                                /*  commonViewModel.getDistrictListApi(x.presentStateCode)
+                                  collectDistrictResponse()
+                                  commonViewModel.getBlockListApi(x.presentDistrictCode)
+                                  collectBlockResponse()
+                                  gpPresentAdapter.notifyDataSetChanged()
 
+                                  commonViewModel.getGpListApi(x.presentBlcokCode)
+                                  collectGpResponse()
+                                  commonViewModel.getVillagePerListApi(x.presentGPCode)
+
+
+                                  delay(1000)
+
+                                  setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, statePer)
+                                  setDropdownValue(binding.spinnerPresentAddressDistrict, x.presentDistrictName, districtPer)
+                                  setDropdownValue(binding.spinnerPresentAddressBlock, x.presentBlockName, blockPer)
+                                  setDropdownValue(binding.spinnerPresentAddressGp, x.presentGPName, gpPer)
+                                  setDropdownValue(binding.spinnerPresentAddressVillage, x.presentVillageName, villagePer)
+
+
+  */
 
                             }
 
@@ -1280,7 +1330,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             // Set the UI based on conditions
                             handleStatus(binding.optionrecievedAnyTrainingBeforeYesSelect, binding.optioRecievedAnyTrainingBeforeNoSelect, recievedTrainingBeforeStatus)
                             handleStatus(binding.optionHaveYouHeardYes, binding.optionHaveYouHeardNo, heardStatus)
-                            setDropdownValue(binding.spinnerHeardAboutddugky, x.hearedFrom, highestEducationList)
+                            setDropdownValue(binding.spinnerHeardAboutddugky, x.hearedFrom, heardName)
 
                             binding.tvClickPreviouslycompletedduring.text = x.compTrainingDuration
                             binding.tvSectorItems.text = x.sectorName
@@ -1412,57 +1462,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         // Secc State selection
 
-        binding.spinnerStateSecc.setOnItemClickListener { parent, view, position, id ->
-            selectedSeccStateItem = parent.getItemAtPosition(position).toString()
-            binding.stateesecc.setHint("")
-            if (position in state.indices) {
-                selectedSeccStateCodeItem = stateCode[position]
-                selectedSeccStateLgdCodeItem = stateLgdCode[position]
-                commonViewModel.getDistrictListApi(selectedSeccStateCodeItem)
-                lifecycleScope.launch {
-                    collectDistrictResponse(true)
-
-                }
-
-                //Clearing Data
-                selectedSeccDistrictCodeItem = ""
-                selectedSeccDistrictLgdCodeItem = ""
-                selectedSeccDistrictItem = ""
-                binding.spinnerDistrictSecc.clearFocus()
-                binding.spinnerDistrictSecc.setText("", false)
-
-                selectedSeccBlockCodeItem = ""
-                selectedSeccBlockLgdCodeItem = ""
-                selectedBlockItem = ""
-                binding.spinnerBlockSecc.clearFocus()
-                binding.spinnerBlockSecc.setText("", false)
-
-                district.clear()
-                block.clear()
-                gp.clear()
-                village.clear()
-
-
-
-                selectedSeccGpCodeItem = ""
-                selectedSeccGpLgdCodeItem = ""
-                selectedSeccGpItem = ""
-                binding.spinnerGpSecc.clearFocus()
-                binding.spinnerGpSecc.setText("", false)
-
-
-                selectedSeccVillageCodeItem = ""
-                selectedbSeccVillageLgdCodeItem = ""
-                selectedSeccVillageItem = ""
-                binding.spinnerVillageSecc.clearFocus()
-                binding.spinnerVillageSecc.setText("", false)
-
-
-            } else {
-                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
-            }
-        }
-
 
         // Secc District selection
 
@@ -1472,6 +1471,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccDistrictCodeItem = districtCode[position]
                 selectedSeccDistrictLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedSeccDistrictCodeItem)
+                gpSeccAdapter.notifyDataSetChanged()
+
 
                 selectedSeccBlockCodeItem = ""
                 selectedSeccBlockLgdCodeItem = ""
@@ -1509,7 +1510,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccBlockLgdCodeItem = blockLgdCode[position]
                 commonViewModel.getGpListApi(selectedSeccBlockCodeItem)
 
-
                 selectedSeccGpCodeItem = ""
                 selectedSeccGpLgdCodeItem = ""
                 selectedSeccGpItem = ""
@@ -1537,6 +1537,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedSeccGpCodeItem = gpCode[position]
                 selectedSeccGpLgdCodeItem = gpLgdCode[position]
                 commonViewModel.getVillageListApi(selectedSeccGpCodeItem)
+
 
 
                 selectedSeccVillageCodeItem = ""
@@ -1648,9 +1649,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictCodeItem = districtCode[position]
                 selectedDistrictLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedDistrictCodeItem)
-
-
-
+                gpAdapter.notifyDataSetChanged()
 
                 selectedBlockCodeItem = ""
                 selectedbBlockLgdCodeItem = ""
@@ -1720,14 +1719,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedbBlockLgdCodeItem = blockLgdCode[position]
                 commonViewModel.getGpListApi(selectedBlockCodeItem)
 
-
                 selectedGpCodeItem = ""
                 selectedbGpLgdCodeItem = ""
                 selectedGpItem = ""
                 binding.spinnerGp.clearFocus()
                 binding.spinnerGp.setText("", false)
-
-
 
 
 
@@ -1780,14 +1776,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedbGpLgdCodeItem = gpLgdCode[position]
                 commonViewModel.getVillageListApi(selectedGpCodeItem)
 
+                collectVillageResponse()
+
+
+
+
+
 
                 selectedVillageCodeItem = ""
                 selectedbVillageLgdCodeItem = ""
                 selectedVillageItem = ""
                 binding.spinnerVillage.clearFocus()
                 binding.spinnerVillage.setText("", false)
-
-
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
                 selectedVillagePresentItem = ""
@@ -1878,7 +1878,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getDistrictListApi(selectedStatePresentCodeItem)
 
                 lifecycleScope.launch {
-                    collectDistrictResponse(false)
                 }
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
@@ -1921,8 +1920,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 selectedDistrictPresentLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem)
-
-
+                collectBlockResponse()
+                gpPresentAdapter.notifyDataSetChanged()
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
                 selectedVillagePresentItem = ""
@@ -1980,6 +1979,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedGpPresentCodeItem = gpCode[position]
                 selectedbGpPresentLgdCodeItem = gpLgdCode[position]
                 commonViewModel.getVillageListApi(selectedGpPresentCodeItem)
+
 
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
@@ -2466,6 +2466,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.etATINName.gone()
             binding.searchView.visible()
             binding.recyclerView.visible()
+            isSeccStatus= "Yes"
+
 
         }
 
@@ -2533,6 +2535,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //All Submit Button Here
 
 
+
+        binding.etPanNumber.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val panRegex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+
+                if (s.toString().matches(panRegex)) {
+                    binding.etPanNumber.error = null  // ✅ Valid PAN
+                    isValidPan = true
+                } else {
+                    binding.etPanNumber.error = "Invalid PAN Format"
+                    isValidPan = false
+
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+
         binding.profileView.viewDetails.setOnClickListener {
 
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToViewDetailsFragment())
@@ -2544,7 +2566,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             BankName = binding.etBankName.text.toString()
             BranchName = binding.etBranchName.text.toString()
             BankAcNo =  binding.etBankAcNo.text.toString()
-            PanNumber = binding.etPanNumber.text.toString()
+
+            if (isValidPan){
+
+                PanNumber = binding.etPanNumber.text.toString()
+
+            }
 
 
             if (IfscCode.isNotEmpty() && BankName.isNotEmpty() &&
@@ -2891,7 +2918,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 && selectedSeccVillageCodeItem.isNotEmpty()
             ) {
 
-                if (seccStatus.contains("No")){
+                if (isSeccStatus.contains("No")){
                     if (selectedAhlTin.isNotEmpty()&& selectedSeccName.isNotEmpty()){
 
                         commonViewModel.insertSeccAPI(SeccInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
@@ -2987,38 +3014,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //image Upload
 
         binding.voterIdUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("VOTER_ID")
+            checkAndRequestPermissionsForEveryPurpose("VOTER_ID")
         }
         binding.nregaJobUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForPurpose("NREGA_ID")
+            checkAndRequestPermissionsForEveryPurpose("NREGA_ID")
 
         }
 
         binding.drivingLicenceUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("DRIVING_LICENSE")
+            checkAndRequestPermissionsForEveryPurpose("DRIVING_LICENSE")
         }
 
         binding.minorityImageUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("MINORITY_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("MINORITY_CERTIFICATE")
         }
         binding.categoryCertificateUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("CATEGORY_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("CATEGORY_CERTIFICATE")
         }
 
         binding.pwdImageUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("PWD_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("PWD_CERTIFICATE")
         }
 
         binding.antyodayaCardUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("ANTOYADA_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("ANTOYADA_CERTIFICATE")
         }
         binding.rsbyUpload.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("RSBY_CERTIFICATE")
         }
 
         binding.uploadResidenceImage.setOnClickListener {
-            checkAndRequestPermissionsForPurpose("RSBY_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("RSBY_CERTIFICATE")
         }
     }
 
@@ -3401,7 +3428,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-/*
     private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
@@ -3418,19 +3444,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         hideProgressBar()
                         it.data?.let { getDistrictResponse ->
                             if (getDistrictResponse.responseCode == 200) {
-                                districtList = getDistrictResponse.districtList
-                                district.clear()
-                                districtPer.clear()
-                                districtCode.clear()
-                                districtLgdCode.clear()
+                             districtList = getDistrictResponse.districtList
 
-                                for (x in districtList) {
-                                    district.add(x.districtName)
-                                    districtPer.add(x.districtName)
-                                    districtCode.add(x.districtCode) // Replace with actual field
-                                    districtLgdCode.add(x.lgdDistrictCode) // Replace with actual field
+                                districtLgdCode.clear()
+                                    district.clear()
+                                    districtCode.clear()
+
+                                    for (x in districtList) {
+                                        district.add(x.districtName)
+                                        districtCode.add(x.districtCode)
+                                        districtLgdCode.add(x.lgdDistrictCode)
+                                    }
+
+
+
+
+
+                                withContext(Dispatchers.Main) {
+                                    districtAdapter.notifyDataSetChanged()
+                                    districtSeccAdapter.notifyDataSetChanged()
+                                    districtPresentAdapter.notifyDataSetChanged()
+
                                 }
-                                districtAdapter.notifyDataSetChanged()
                             } else if (getDistrictResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
@@ -3442,44 +3477,94 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-*/
 
-    private suspend fun collectDistrictResponse(isPermanent: Boolean) {
-        collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
+
+
+
+    private fun collectAadharDetailsResponse() {
+    lifecycleScope.launch {
+        collectLatestLifecycleFlow(commonViewModel.getAadhaarList) {
             when (it) {
                 is Resource.Loading -> showProgressBar()
                 is Resource.Error -> {
                     hideProgressBar()
-                    it.error?.let { baseErrorResponse ->
-                        showSnackBar(baseErrorResponse.message)
+                    it.error?.let { error ->
+                        showSnackBar(error.message ?: "Unknown Error")
                     }
                 }
                 is Resource.Success -> {
                     hideProgressBar()
-                    it.data?.let { getDistrictResponse ->
-                        if (getDistrictResponse.responseCode == 200) {
-                            val districtNames = getDistrictResponse.districtList.map { it.districtName }
-                            val districtCodes = getDistrictResponse.districtList.map { it.districtCode }
-                            val districtLgdCodes = getDistrictResponse.districtList.map { it.lgdDistrictCode }
+                    it.data?.let { getAadharDetailsRes ->
+                        if (getAadharDetailsRes.responseCode == 200) {
+                            userAadhaarDetailsList = getAadharDetailsRes.wrappedList
 
-                            if (isPermanent) {
-                                district.clear()
-                                district.addAll(districtNames)
-                                Log.d("DropdownDebug", "✅ Permanent District List: $district")
+                            if (userAadhaarDetailsList.isNotEmpty()) {
+                                withContext(Dispatchers.Main) {
+                                    for (x in userAadhaarDetailsList) {
+
+                                        // Decrypt Aadhaar Details
+                                        val decryptedUserName = AESCryptography.decryptIntoString(
+                                            x.userName,
+                                            AppConstant.Constants.ENCRYPT_KEY,
+                                            AppConstant.Constants.ENCRYPT_IV_KEY
+                                        ) ?: "N/A"
+
+                                        val decryptedGender = AESCryptography.decryptIntoString(
+                                            x.gender,
+                                            AppConstant.Constants.ENCRYPT_KEY,
+                                            AppConstant.Constants.ENCRYPT_IV_KEY
+                                        ) ?: "N/A"
+
+                                        val decryptedMobileNo = AESCryptography.decryptIntoString(
+                                            x.mobileNo,
+                                            AppConstant.Constants.ENCRYPT_KEY,
+                                            AppConstant.Constants.ENCRYPT_IV_KEY
+                                        ) ?: "N/A"
+
+                                        val decryptedDob = AESCryptography.decryptIntoString(
+                                            x.dateOfBirth,
+                                            AppConstant.Constants.ENCRYPT_KEY,
+                                            AppConstant.Constants.ENCRYPT_IV_KEY
+                                        ) ?: "N/A"
+
+                                        val decryptedAddress = AESCryptography.decryptIntoString(
+                                            x.comAddress,
+                                            AppConstant.Constants.ENCRYPT_KEY,
+                                            AppConstant.Constants.ENCRYPT_IV_KEY
+                                        ) ?: "N/A"
+
+                                        val decryptedEmail = AESCryptography.decryptIntoString(
+                                            x.emailId,
+                                            AppConstant.Constants.ENCRYPT_KEY,
+                                            AppConstant.Constants.ENCRYPT_IV_KEY
+                                        ) ?: "N/A"
+
+                                        // Set Data to UI
+                                        binding.profileView.tvAadhaarName.text = decryptedUserName
+                                        binding.profileView.tvAaadharMobile.text = decryptedMobileNo
+                                        binding.profileView.tvAaadharGender.text = decryptedGender
+                                        binding.profileView.tvAaadharDob.text = decryptedDob
+                                        binding.profileView.tvAaadharAddress.text = decryptedAddress
+                                        binding.profileView.tvEmailMobile.text = decryptedEmail
+
+                                        // Set Profile Image
+                                        val bytes: ByteArray = Base64.decode(x.imagePath, Base64.DEFAULT)
+                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                        binding.profileView.circleImageView.setImageBitmap(bitmap)
+
+                                        // Set State & District
+                                        selectedStateItem = x.regState
+                                        selectedSeccStateItem = x.regState
+                                        selectedStateCodeItem = x.regStateCode
+                                        selectedSeccStateCodeItem = x.regStateCode
+                                        binding.TvSpinnerStateName.text = x.regState
+                                        binding.stateesecc.text = x.regState
+                                        commonViewModel.getDistrictListApi(x.regStateCode)
+                                    }
+                                }
                             } else {
-                                districtPer.clear()
-                                districtPer.addAll(districtNames)
-                                Log.d("DropdownDebug", "✅ Present District List: $districtPer")
+                                Log.e("AadhaarDetails", "List is empty!")
                             }
-
-                            districtCode.clear()
-                            districtCode.addAll(districtCodes)
-                            districtLgdCode.clear()
-                            districtLgdCode.addAll(districtLgdCodes)
-
-                            districtAdapter.notifyDataSetChanged()
-                        } else if (getDistrictResponse.responseCode == 301) {
-                            showSnackBar("Please Update from PlayStore")
                         } else {
                             showSnackBar("Something went wrong")
                         }
@@ -3488,87 +3573,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
-
-    private fun collectAadharDetailsResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getAadhaarList) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { getAadharDetailsRes ->
-                            if (getAadharDetailsRes.responseCode == 200) {
-                                userAadhaarDetailsList = getAadharDetailsRes.wrappedList
-
-
-                                for (x in userAadhaarDetailsList) {
-
-                              val encryptedUserName = AESCryptography.decryptIntoString(x.userName,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-
-                                    val encryptedGender = AESCryptography.decryptIntoString(x.gender,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-
-
-                                    val encryptedMobileNo = AESCryptography.decryptIntoString(x.mobileNo,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                                    val encryptedDateOfBirth = AESCryptography.decryptIntoString(x.dateOfBirth,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                                    val encryptedComAddress = AESCryptography.decryptIntoString(x.comAddress,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-
-
-
-                                    selectedStateItem=x.regState
-                                    binding.TvSpinnerStateName.setText(x.regState)
-
-
-
-                                    selectedStateCodeItem=x.regStateCode
-                                    commonViewModel.getDistrictListApi(x.regStateCode)
-                                    collectDistrictResponse(true)
-                                    binding.profileView.tvAadhaarName.setText(encryptedUserName)
-                                    binding.profileView.tvAaadharMobile.setText(encryptedMobileNo)
-                                    binding.profileView.tvAaadharGender.setText(encryptedGender)
-                                    binding.profileView.tvAaadharDob.setText(encryptedDateOfBirth)
-                                    binding.profileView.tvAaadharAddress.setText(encryptedComAddress)
-
-                                    val bytes: ByteArray =
-                                        Base64.decode(x.imagePath, Base64.DEFAULT)
-                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                    binding.profileView.circleImageView.setImageBitmap(bitmap)
-
-                                }
-                            } else if (getAadharDetailsRes.responseCode == 301) {
-                                showSnackBar("Please Update from PlayStore")
-                            } else {
-                                showSnackBar("Something went wrong")
-                            }
-                        } ?: showSnackBar("Internal Server Error")
-                    }
-                }
-            }
-        }
-    }
-
+}
 
     private fun collectBlockResponse() {
         lifecycleScope.launch {
@@ -3651,39 +3656,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
     private fun collectVillageResponse() {
         lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getVillageList) {
-                when (it) {
+            collectLatestLifecycleFlow(commonViewModel.getVillageList) { result ->
+                when (result) {
                     is Resource.Loading -> showProgressBar()
                     is Resource.Error -> {
                         hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
+                        showSnackBar(result.error?.message ?: "Error fetching data")
                     }
-
                     is Resource.Success -> {
                         hideProgressBar()
-                        it.data?.let { getVillageResponse ->
+                        result.data?.let { getVillageResponse ->
                             if (getVillageResponse.responseCode == 200) {
                                 villageList = getVillageResponse.villageList
+
                                 village.clear()
-                                villagePer.clear()
                                 villageCode.clear()
                                 villageLgdCode.clear()
 
                                 for (x in villageList) {
                                     village.add(x.villageName)
-                                    villagePer.add(x.villageName)
-                                    villageCode.add(x.villageCode) // Replace with actual field
-                                    villageLgdCode.add(x.lgdVillageCode) // Replace with actual field
-
+                                    villageCode.add(x.villageCode)
+                                    villageLgdCode.add(x.lgdVillageCode)
                                 }
-                                villageAdapter.notifyDataSetChanged()
-                            } else if (getVillageResponse.responseCode == 301) {
-                                showSnackBar("Please Update from PlayStore")
+
+                                // ✅ Update UI after data is set
+                                withContext(Dispatchers.Main) {
+                                    villageAdapter.notifyDataSetChanged()
+                                }
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -3693,6 +3694,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
 
     @SuppressLint("SuspiciousIndentation")
     private fun collectTechEducationResponse() {
@@ -3865,10 +3867,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getSeccList ->
                             if (getSeccList.responseCode == 200) {
                                 val heardList = getSeccList.wrappedList
-
                                 seccName.clear()
                                 fatherName.clear()
                                 ahlTinNo.clear()
+                                binding.recyclerView.visible()
+
                                 for (x in heardList) {
 
                                     seccName.add(x.seccName)
@@ -3885,9 +3888,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             else if (getSeccList.responseCode == 302) {
                                 showSnackBar(getSeccList.responseMsg)
                             }
-                            else {
-                                showSnackBar("Something went wrong")
-                            }
+
                         } ?: showSnackBar("Internal Server Error")
                     }
                 }
@@ -4147,7 +4148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
     private fun collectSectorResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
@@ -4235,22 +4236,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-
     private fun setDropdownValue(
         autoCompleteTextView: AutoCompleteTextView,
         value: String,
         dataList: List<String>
     ) {
-        Log.d("DropdownDebug", "🔍 Dropdown Data for ${autoCompleteTextView.id}: $dataList")
-        Log.d("DropdownDebug", "🎯 Selected Value: $value")
 
         autoCompleteTextView.post {
-            val adapter = ArrayAdapter(autoCompleteTextView.context, android.R.layout.simple_dropdown_item_1line, dataList)
-            autoCompleteTextView.setAdapter(null) // Force refresh
-            autoCompleteTextView.setAdapter(adapter) // Set updated data
+            if (dataList.isNotEmpty()) {
+                val adapter = ArrayAdapter(autoCompleteTextView.context, android.R.layout.simple_dropdown_item_1line, dataList)
+                autoCompleteTextView.setAdapter(adapter)
+                adapter.notifyDataSetChanged()
 
-            if (dataList.contains(value)) {
-                autoCompleteTextView.setText(value, false)
+
+
+
+                    autoCompleteTextView.setText(value, false)
+
             }
         }
     }
@@ -4258,127 +4260,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-
-    private fun checkAndRequestPermissionsForPurpose(purpose: String) {
-        currentRequestPurpose = purpose
-
-        when {
-            // Android 13+ (API level 33 and above)
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                if (ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.READ_MEDIA_IMAGES
-                    )
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                        PERMISSION_READ_MEDIA_IMAGES
-                    )
-                } else {
-                    handlePermissionGranted(purpose)
-                }
-            }
-
-            // Android 6.0 to 12 (API levels 23 to 32)
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                if (ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    )
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-                    requestPermissions(
-                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                        PERMISSION_READ_MEDIA_IMAGES
-                    )
-                } else {
-                    handlePermissionGranted(purpose)
-                }
-            }
-
-            // Below Android 6.0 (No runtime permissions)
-            else -> {
-                handlePermissionGranted(purpose)
-            }
-        }
-    }
-
-    private fun handlePermissionGranted(purpose: String) {
-        when (purpose) {
-            "VOTER_ID" -> openGalleryForVoterId()
-            "DRIVING_LICENSE" -> openGalleryForDrivingLicense()
-            "MINORITY_CERTIFICATE" -> openGalleryForMinority()
-            "CATEGORY_CERTIFICATE" -> openGalleryForCategory()
-            "PWD_CERTIFICATE" -> openGalleryForPwd()
-            "ANTOYADA_CERTIFICATE" -> openGalleryForAntoyada()
-            "RSBY_CERTIFICATE" -> openGalleryForRsby()
-            "RESIDENCE_CERTIFICATE" -> openGalleryForResidence()
-            "PROFILE_PIC" -> openGalleryForDPId()
-            "NREGA_ID" -> openGalleryForNregaId()
-        }
-    }
-
-
-    private fun openGalleryForNregaId() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_NREGA)
-    }
-
-    private fun openGalleryForVoterId() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_VOTER_ID)
-    }
-
-    private fun openGalleryForDPId() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_PROFILE_PIC)
-    }
-
-    private fun openGalleryForDrivingLicense() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_DRIVING_LICENSE)
-    }
-
-    private fun openGalleryForMinority() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_MINORITY)
-    }
-
-    private fun openGalleryForCategory() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_CATEGORY)
-    }
-
-    private fun openGalleryForPwd() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_PWD)
-    }
-
-    private fun openGalleryForAntoyada() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_ANTOYADA)
-    }
-
-    private fun openGalleryForRsby() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_RSBY)
-    }
-
-    private fun openGalleryForResidence() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_RESIDENCE)
-    }
 
 
     override fun onRequestPermissionsResult(
@@ -4387,151 +4268,240 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            when (requestCode) {
-                PERMISSION_READ_MEDIA_IMAGES -> handlePermissionGranted(currentRequestPurpose ?: "")
-            }
+            // ✅ Show dialog after permission is granted
+            showFileSelectionDialog(currentRequestPurpose ?: "")
         } else {
-            Toast.makeText(
-                requireContext(),
-                "Permission denied for $currentRequestPurpose",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(requireContext(), "Permission denied for $currentRequestPurpose", Toast.LENGTH_SHORT).show()
         }
+    }
+
+
+
+    private fun checkAndRequestPermissionsForEveryPurpose(purpose: String) {
+        currentRequestPurpose = purpose
+
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(arrayOf(Manifest.permission.READ_MEDIA_IMAGES), PERMISSION_READ_MEDIA_IMAGES)
+                } else {
+                    showFileSelectionDialog(purpose)
+                }
+            }
+
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_READ_MEDIA_IMAGES)
+                } else {
+                    showFileSelectionDialog(purpose)
+                }
+            }
+
+            else -> {
+                showFileSelectionDialog(purpose)
+            }
+        }
+    }
+
+    private fun showFileSelectionDialog(purpose: String) {
+        if (purpose == "PROFILE_PIC") {
+            // Directly open the gallery for profile picture
+            openGalleryForDocument(purpose)
+            return
+        }
+
+        val options = arrayOf("Capture Image", "Select Image", "Select PDF")
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Choose File")
+        builder.setItems(options) { _, which ->
+            when (which) {
+                0 -> openCameraForDocument(purpose)
+                1 -> openGalleryForDocument(purpose)
+                2 -> openPdfPickerForDocument(purpose)
+            }
+        }
+        builder.show()
+    }
+
+    // Capture Image from Camera
+    private fun openCameraForDocument(purpose: String) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, REQUEST_CAPTURE_IMAGE)
+        currentRequestPurpose = purpose
+    }
+
+    // Select Image from Gallery
+    private fun openGalleryForDocument(purpose: String) {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_PICK_IMAGE)
+        currentRequestPurpose = purpose
+    }
+
+    // Select PDF from File Picker
+    private fun openPdfPickerForDocument(purpose: String) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "application/pdf"
+        startActivityForResult(intent, REQUEST_PICK_PDF)
+        currentRequestPurpose = purpose
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            val selectedImageUri = data.data
+
+        if (resultCode == AppCompatActivity.RESULT_OK) {
+            var selectedUri: Uri? = data?.data
+            var fileName: String? = selectedUri?.let { getFileName(requireContext(), it) } ?: "Unknown File"
+
+            // If image is captured from Camera (REQUEST_CAPTURE_IMAGE), save it as a file first
+            if (requestCode == REQUEST_CAPTURE_IMAGE) {
+                selectedUri = cameraImageUri // Use the stored file URI
+                fileName = selectedUri?.let { getFileName(requireContext(), it) } ?: "Captured_Image.jpg"
+            }
+
             when (requestCode) {
-                REQUEST_PICK_VOTER_ID -> {
-                    // Handle voter ID image
-
-                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.voterimageText.text = fileName
-
-                            voterIdImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-
-
-                }
-                REQUEST_PICK_NREGA -> {
-                    // Handle voter ID image
-
-                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.tvNregaJob.text = fileName
-
-                    nregaImageJobCard=  compressAndConvertImageToBase64(selectedImageUri)
-
-
-
-                }
-
-                REQUEST_PICK_PROFILE_PIC -> {
-                // Handle voter ID image
-
-                    profilePicIdImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-                    commonViewModel.getImageChangeAPI(ImageChangeReq(BuildConfig.VERSION_NAME,profilePicIdImage,userPreferences.getUseID()))
-
-                    collectDpChangeResponse()
-
-
-
-
-
-
-
-                }
-
-                REQUEST_PICK_DRIVING_LICENSE -> {
-                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.drivingLicenceimageText.text = fileName
-
-                    drivingLicenceImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-
-
-                }
-
-                REQUEST_PICK_CATEGORY -> {
-                    // Handle voter ID image
-
-
-                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.categoryCertimageText.text = fileName
-
-                    categoryCertiImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-
-
-                }
-
-                REQUEST_PICK_MINORITY -> {
-                    // Handle driving license image
-
-                    var fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.minorityimageText.text = fileName
-
-
-                    minorityImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-                }
-
-
-                REQUEST_PICK_PWD -> {
-                    // Handle driving license image
-
-
-                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.pwdImageText.text = fileName
-
-                    pwdImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-                }
-
-
-                REQUEST_PICK_ANTOYADA -> {
-                    // Handle driving license image
-
-                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.antyodayamageText.text = fileName
-
-
-                    antoyadaImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-                }
-
-                REQUEST_PICK_RSBY -> {
-
-
-                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.rsbyimageText.text = fileName
-
-
-                    rsbyImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-                }
-
-
-                REQUEST_PICK_RESIDENCE -> {
-
-
-                    val fileName = selectedImageUri?.let { getFileName(requireContext(), it) }
-                    binding.residentalimageText.text = fileName
-
-
-                    residenceImage=  compressAndConvertImageToBase64(selectedImageUri)
-
-                }
-
+                REQUEST_PICK_IMAGE, REQUEST_CAPTURE_IMAGE -> handleImageSelection(selectedUri, fileName)
+                REQUEST_PICK_PDF -> handlePdfSelection(selectedUri, fileName)
             }
         }
+    }
+    fun openCamera() {
+        val imageFile = createImageFile()  // Create a file to store the image
+        cameraImageUri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            imageFile
+        )
 
-
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri)
+        startActivityForResult(cameraIntent, REQUEST_CAPTURE_IMAGE)
     }
 
+    // Create a File to store captured image
+    private fun createImageFile(): File {
+        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "captured_image_${System.currentTimeMillis()}",
+            ".jpg",
+            storageDir
+        )
+    }
+
+    private fun handleImageSelection(uri: Uri?, fileName: String?) {
+        val base64Image = uri?.let { compressAndConvertImageToBase64(it) } ?: ""
+
+        when (currentRequestPurpose) {
+            "VOTER_ID" -> {
+                binding.voterimageText.text = fileName
+                voterIdImage = base64Image
+            }
+            "DRIVING_LICENSE" -> {
+                binding.drivingLicenceimageText.text = fileName
+                drivingLicenceImage = base64Image
+            }
+            "MINORITY_CERTIFICATE" -> {
+                binding.minorityimageText.text = fileName
+                minorityImage = base64Image
+            }
+            "CATEGORY_CERTIFICATE" -> {
+                binding.categoryCertimageText.text = fileName
+                categoryCertiImage = base64Image
+            }
+            "PWD_CERTIFICATE" -> {
+                binding.pwdImageText.text = fileName
+                pwdImage = base64Image
+            }
+            "ANTOYADA_CERTIFICATE" -> {
+                binding.antyodayamageText.text = fileName
+                antoyadaImage = base64Image
+            }
+            "RSBY_CERTIFICATE" -> {
+                binding.rsbyimageText.text = fileName
+                rsbyImage = base64Image
+            }
+            "RESIDENCE_CERTIFICATE" -> {
+                binding.residentalimageText.text = fileName
+                residenceImage = base64Image
+            }
+            "PROFILE_PIC" -> {
+                profilePicIdImage = base64Image
+                commonViewModel.getImageChangeAPI(
+                    ImageChangeReq(BuildConfig.VERSION_NAME, profilePicIdImage, userPreferences.getUseID())
+                )
+                collectDpChangeResponse()
+            }
+            "NREGA_ID" -> {
+                binding.tvNregaJob.text = fileName
+                nregaImageJobCard = base64Image
+            }
+        }
+    }
+
+    private fun handlePdfSelection(uri: Uri?, fileName: String?) {
+        val base64Pdf = uri?.let { convertPdfToBase64(it) } ?: ""
+
+        when (currentRequestPurpose) {
+            "VOTER_ID" -> {
+                binding.voterimageText.text = fileName
+                voterIdImage = base64Pdf
+            }
+            "DRIVING_LICENSE" -> {
+                binding.drivingLicenceimageText.text = fileName
+                drivingLicenceImage = base64Pdf
+            }
+            "MINORITY_CERTIFICATE" -> {
+                binding.minorityimageText.text = fileName
+                minorityImage = base64Pdf
+            }
+            "CATEGORY_CERTIFICATE" -> {
+                binding.categoryCertimageText.text = fileName
+                categoryCertiImage = base64Pdf
+            }
+            "PWD_CERTIFICATE" -> {
+                binding.pwdImageText.text = fileName
+                pwdImage = base64Pdf
+            }
+            "ANTOYADA_CERTIFICATE" -> {
+                binding.antyodayamageText.text = fileName
+                antoyadaImage = base64Pdf
+            }
+            "RSBY_CERTIFICATE" -> {
+                binding.rsbyimageText.text = fileName
+                rsbyImage = base64Pdf
+            }
+            "RESIDENCE_CERTIFICATE" -> {
+                binding.residentalimageText.text = fileName
+                residenceImage = base64Pdf
+            }
+            "PROFILE_PIC" -> {
+                profilePicIdImage = base64Pdf
+            }
+            "NREGA_ID" -> {
+                binding.tvNregaJob.text = fileName
+                nregaImageJobCard = base64Pdf
+            }
+        }
+    }
+
+    // Convert Image (URI) to Base64
+    private fun compressAndConvertImageToBase64(imageUri: Uri): String {
+        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+        val byteArray = inputStream?.readBytes()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
+    }
+
+
+
+    // Convert PDF to Base64
+    private fun convertPdfToBase64(pdfUri: Uri): String {
+        val inputStream = requireContext().contentResolver.openInputStream(pdfUri)
+        val byteArray = inputStream?.readBytes()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
+    }
 
     @SuppressLint("MissingInflatedId")
     private fun showMonthYearPicker(onDateSelected: (year: Int, month: Int) -> Unit) {
@@ -4671,30 +4641,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
     }
-
-    private fun compressAndConvertImageToBase64(uri: Uri?): String {
-        return try {
-            // Load the image as a Bitmap
-            val inputStream = uri?.let { requireContext().contentResolver.openInputStream(it) }
-            val originalBitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream?.close()
-
-            // Compress the image
-            val outputStream = ByteArrayOutputStream()
-            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // 50% quality
-            val compressedBytes = outputStream.toByteArray()
-
-            // Convert to Base64 without white spaces
-            Base64.encodeToString(compressedBytes, Base64.NO_WRAP)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            ""
-        }
+    private fun compressAndConvertImageToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream) // You can adjust quality as needed
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 
 
 
-    fun showYesNoDialog(context: Context, title: String, message: String, onYesClicked: () -> Unit, onNoClicked: () -> Unit) {
+
+    private fun showYesNoDialog(context: Context, title: String, message: String, onYesClicked: () -> Unit, onNoClicked: () -> Unit) {
         // Create the AlertDialog.Builder
         val builder = AlertDialog.Builder(context)
 
@@ -4799,26 +4756,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             viewNo.setBackgroundResource(R.drawable.card_background_selected)
         }
     }
-
-   /* fun getValueFromSecondList(list1: List<String>, list2: List<String>, searchString: String): String? {
-        // Ensure the lists are the same size to avoid IndexOutOfBoundsException
-        if (list1.size != list2.size) {
-            throw IllegalArgumentException("Both lists must have the same size.")
-        }
-
-        // Find the index of the search string in the first list
-        val index = list1.indexOf(searchString)
-
-        // If the string exists in list1, return the corresponding value from list2
-        return if (index != -1) {
-            list2[index]
-        } else {
-            null // Return null if the string is not found in list1
-        }
-    }*/
-
-
-
 
 }
 

@@ -106,6 +106,48 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvAaadharMobile"
             />
 
+
+        <ImageView
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_12"
+            tools:viewBindingIgnore="true"
+            android:id="@+id/ivEmailIcon"
+            android:src="@drawable/baseline_email_24"
+            app:layout_constraintTop_toBottomOf="@+id/ivPhoneIcon"
+            app:layout_constraintStart_toStartOf="@+id/circleImageView"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvEmailMobile"
+            android:fontFamily="@font/avenir_next_semi_bold"
+            android:textColor="@color/color_dark_green"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textSize="@dimen/sp_14"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/ivEmailIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/ivEmailIcon"
+            app:layout_constraintStart_toEndOf="@+id/ivEmailIcon"
+            />
+
+        <ImageView
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:src="@drawable/ic_verified"
+            tools:viewBindingIgnore="true"
+            android:id="@+id/ivEmailVerified"
+            android:contentDescription="@string/image"
+            android:layout_marginStart="@dimen/dp_6"
+            app:layout_constraintStart_toEndOf="@+id/tvEmailMobile"
+            app:layout_constraintTop_toTopOf="@+id/tvEmailMobile"
+            app:layout_constraintBottom_toBottomOf="@+id/tvEmailMobile"
+            />
+
+
+
         <ImageView
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
@@ -114,7 +156,7 @@
             android:contentDescription="@string/image"
             android:src="@drawable/gender"
             tools:viewBindingIgnore="true"
-            app:layout_constraintTop_toBottomOf="@+id/ivPhoneIcon"
+            app:layout_constraintTop_toBottomOf="@+id/ivEmailIcon"
             app:layout_constraintStart_toStartOf="@+id/circleImageView"
             />
 
@@ -125,7 +167,6 @@
             android:layout_marginStart="@dimen/dp_10"
             android:textSize="@dimen/sp_16"
             tools:viewBindingIgnore="true"
-
             android:layout_gravity="center"
             app:layout_constraintTop_toTopOf="@+id/ivGenderIcon"
             app:layout_constraintBottom_toBottomOf="@+id/ivGenderIcon"
@@ -189,9 +230,9 @@
         <ImageView
             android:layout_width="@dimen/dp_135"
             android:layout_height="@dimen/dp_135"
-            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_15"
             android:id="@+id/ivProgress"
-            app:layout_constraintTop_toBottomOf="@+id/tvAadhaarName"
+            app:layout_constraintTop_toBottomOf="@+id/viewDetails"
             app:layout_constraintStart_toEndOf="@+id/ivPhoneVerified"
             app:layout_constraintEnd_toEndOf="parent"
             />

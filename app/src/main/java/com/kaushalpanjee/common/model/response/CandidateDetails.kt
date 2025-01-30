@@ -85,6 +85,7 @@ data class Secc(
     val seccVillageName: String,
     val seccGPCode: String,
     val seccBlcokCode: String,
+    val seccLgdVillCode: String,
     val seccAHLTIN: String,
     val seccVillageCode: String,
     val seccGPName: String,

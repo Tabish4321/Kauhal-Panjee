@@ -3,16 +3,21 @@ package com.kaushalpanjee.common
 import android.app.Dialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
@@ -41,8 +46,11 @@ import com.kaushalpanjee.core.util.isNull
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentViewDetailsBinding
+import com.rajat.pdfviewer.PdfRendererView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 @AndroidEntryPoint
 class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentViewDetailsBinding::inflate) {
@@ -78,15 +86,15 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var employmentStatus = ""
     private var bankingStatus = ""
     private var totalPercentange = 0.0f
-    private var voterImage: Bitmap? = null
-    private var dlImage: Bitmap? = null
-    private var categoryImage: Bitmap? = null
-    private var minorityImage : Bitmap? = null
-    private var pwdImage : Bitmap? = null
-    private var nregaImage : Bitmap? = null
-    private var antyodyaImage: Bitmap? = null
-    private var rsbyImage : Bitmap? = null
-    private var residenceImage: Bitmap? = null
+    private var voterImage=  ""
+    private var dlImage=  ""
+    private var categoryImage=  ""
+    private var minorityImage =  ""
+    private var pwdImage =  ""
+    private var nregaImage =  ""
+    private var antyodyaImage=  ""
+    private var rsbyImage =  ""
+    private var residenceImage=  ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -123,45 +131,52 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
     private fun listeners() {
 
+        binding.profileView.viewDetails.setText(R.string.edit)
+
+
 
 
         binding.voterIdUpload.setOnClickListener {
-            showImageDialog(voterImage)
+            showDocumentDialog(voterImage)
         }
 
         binding.dlIdUpload.setOnClickListener {
-            showImageDialog(dlImage)
+            showDocumentDialog(dlImage)
         }
 
 
         binding.categoryCertificateUpload.setOnClickListener {
-            showImageDialog(categoryImage)
+            showDocumentDialog(categoryImage)
         }
 
         binding.minorityImageUpload.setOnClickListener {
-            showImageDialog(minorityImage)
+            showDocumentDialog(minorityImage)
         }
 
         binding.pwdImageUpload.setOnClickListener {
-            showImageDialog(pwdImage)
+            showDocumentDialog(pwdImage)
         }
 
         binding.nregaCardUpload.setOnClickListener {
-            showImageDialog(nregaImage)
+            showDocumentDialog(nregaImage)
         }
 
         binding.antyodayaCardUpload.setOnClickListener {
-            showImageDialog(antyodyaImage)
+            showDocumentDialog(antyodyaImage)
         }
 
 
         binding.rsbyUpload.setOnClickListener {
-            showImageDialog(rsbyImage)
+            showDocumentDialog(rsbyImage)
         }
 
 
         binding.uploadResidenceImage.setOnClickListener {
-            showImageDialog(residenceImage)
+            showDocumentDialog(residenceImage)
+        }
+        binding.profileView.viewDetails.setOnClickListener {
+
+            findNavController().navigate(ViewDetailsFragmentDirections.actionViewDetailsFragmentToHomeFragment())
         }
 
 
@@ -287,42 +302,47 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                 for (x in userAadhaarDetailsList) {
 
-                                    val encryptedUserName = AESCryptography.decryptIntoString(x.userName,
+                                    val decryptedUserName = AESCryptography.decryptIntoString(x.userName,
                                         AppConstant.Constants.ENCRYPT_KEY,
                                         AppConstant.Constants.ENCRYPT_IV_KEY)
 
 
-                                    val encryptedGender = AESCryptography.decryptIntoString(x.gender,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-
-
-                                    val encryptedMobileNo = AESCryptography.decryptIntoString(x.mobileNo,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                                    val encryptedDateOfBirth = AESCryptography.decryptIntoString(x.dateOfBirth,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                                    val encryptedComAddress = AESCryptography.decryptIntoString(x.comAddress,
+                                    val decryptedGender = AESCryptography.decryptIntoString(x.gender,
                                         AppConstant.Constants.ENCRYPT_KEY,
                                         AppConstant.Constants.ENCRYPT_IV_KEY)
 
 
 
+                                    val decryptedMobileNo = AESCryptography.decryptIntoString(x.mobileNo,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
 
-                                    binding.tvAadhaarName.setText(encryptedUserName)
-                                    binding.tvAaadharMobile.setText(encryptedMobileNo)
-                                    binding.tvAaadharGender.setText(encryptedGender)
-                                    binding.tvAaadharDob.setText(encryptedDateOfBirth)
-                                    binding.tvAaadharAddress.setText(encryptedComAddress)
+                                    val decryptedDob = AESCryptography.decryptIntoString(x.dateOfBirth,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    val decryptedAddress = AESCryptography.decryptIntoString(x.comAddress,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+                                    val decryptedEmail = AESCryptography.decryptIntoString(x.emailId,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    binding.profileView.tvAadhaarName.text = decryptedUserName
+                                    binding.profileView.tvAaadharMobile.text = decryptedMobileNo
+                                    binding.profileView.tvAaadharGender.text = decryptedGender
+                                    binding.profileView.tvAaadharDob.text = decryptedDob
+                                    binding.profileView.tvAaadharAddress.text = decryptedAddress
+                                    binding.profileView.tvEmailMobile.text = decryptedEmail
+
+
 
                                     val bytes: ByteArray =
                                         Base64.decode(x.imagePath, Base64.DEFAULT)
                                     val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                    binding.circleImageView.setImageBitmap(bitmap)
+                                    binding.profileView.circleImageView.setImageBitmap(bitmap)
 
                                 }
                             } else if (getAadharDetailsRes.responseCode == 301) {
@@ -369,7 +389,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                 }
                                 // set dynamic meter
 
-                                binding.ivProgress.setImageBitmap(
+                                binding.profileView.ivProgress.setImageBitmap(
                                     createHalfCircleProgressBitmap(
                                         300, 300, totalPercentange,
                                         ContextCompat.getColor(requireContext(), R.color.color_dark_green),
@@ -486,21 +506,21 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                             try {
                                                 // Decode and display images
-                                                 categoryImage = decodeBase64Image(x.categoryCertPath)
+                                                 categoryImage = x.categoryCertPath
 
-                                                 minorityImage = decodeBase64Image(x.minorityCertPath)
+                                                 minorityImage = x.minorityCertPath
 
-                                                 pwdImage = decodeBase64Image(x.disablityCertPath)
+                                                 pwdImage = x.disablityCertPath
 
-                                                 dlImage = decodeBase64Image(x.dlImagePath)
+                                                 dlImage = x.dlImagePath
 
-                                                 nregaImage = decodeBase64Image(x.naregaCardPath)
+                                                 nregaImage = x.naregaCardPath
 
-                                                 rsbyImage = decodeBase64Image(x.rsbyCardPath)
+                                                 rsbyImage = x.rsbyCardPath
 
-                                                voterImage = decodeBase64Image(x.VoterImagePath)
+                                                voterImage = x.VoterImagePath
 
-                                                antyodyaImage = decodeBase64Image(x.rationCardPath)
+                                                antyodyaImage = x.rationCardPath
                                             } catch (e: Exception) {
                                                 showSnackBar("Error decoding image: ${e.message}")
                                             }
@@ -546,7 +566,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                             try {
 
-                                                residenceImage = decodeBase64Image(x.residenceCertPath)
+                                                residenceImage = x.residenceCertPath
 
                                             } catch (e: Exception) {
                                                 showSnackBar("Error decoding image: ${e.message}")
@@ -702,39 +722,139 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         }
     }
 
-    private fun decodeBase64Image(base64String: String?): Bitmap? {
-        if (base64String.isNullOrEmpty()) return null
+
+    private fun decodeBase64Image(base64String: String?): Pair<Bitmap?, String?> {
+        if (base64String.isNullOrEmpty()) return Pair(null, null)
+
         return try {
             val cleanedBase64String = base64String.substringAfter(",")
             val bytes = Base64.decode(cleanedBase64String, Base64.DEFAULT)
-            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+            // Check file type (PDF or Image)
+            val fileType = getFileType(bytes)
+
+            if (fileType == "pdf") {
+                return Pair(null, "pdf")
+            } else {
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                Pair(bitmap, "image")
+            }
         } catch (e: IllegalArgumentException) {
             Log.e("DecodeError", "Invalid Base64 string: ${e.message}")
-            null
+            Pair(null, null)
         }
     }
 
-    private fun showImageDialog(imageResId: Bitmap?) {
+    // Function to determine file type
+    private fun getFileType(bytes: ByteArray): String? {
+        return when {
+            bytes.isNotEmpty() && bytes.size > 4 -> {
+                val header = bytes.copyOfRange(0, 4).joinToString("") { "%02X".format(it) }
+                when {
+                        header.startsWith("25504446") -> "pdf"  // PDF file starts with "%PDF"
+                        header.startsWith("FFD8FF") -> "image"  // JPEG
+                        header.startsWith("89504E47") -> "image" // PNG
+                    else -> null
+                }
+            }
+            else -> null
+        }
+    }
+
+    // Show Image or PDF Dialog
+    private fun showDocumentDialog(base64String: String?) {
+        val (bitmap, fileType) = decodeBase64Image(base64String)
+
+        if (fileType == "pdf") {
+            showPdfDialog(base64String)
+        } else {
+            showImageDialog(bitmap)
+        }
+    }
+
+    // Show Image Dialog
+    private fun showImageDialog(image: Bitmap?) {
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.layout_view_image)
 
         val imageView = dialog.findViewById<ImageView>(R.id.imageViewDialog)
         val closeButton = dialog.findViewById<TextView>(R.id.btnClose)
 
-        // Set the image to display
-        if (imageResId.isNull){
-
+        if (image == null) {
             imageView.setImageResource(R.drawable.no_image)
-
+        } else {
+            imageView.setImageBitmap(image)
         }
-        else imageView.setImageBitmap(imageResId)
 
-        // Close the dialog on button click
         closeButton.setOnClickListener {
             dialog.dismiss()
         }
 
         dialog.show()
     }
+
+    private fun showPdfDialog(base64String: String?) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.layout_view_pdf)
+
+        // Set the dialog window size to full screen
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+
+        // Use the correct package for PDFView
+        val pdfView = dialog.findViewById<com.github.barteksc.pdfviewer.PDFView>(R.id.pdfViewDiologe)
+        val closeButton = dialog.findViewById<TextView>(R.id.btnClose)
+
+        // Save Base64 string as PDF file
+        val pdfFile = saveBase64AsPdf(base64String)
+
+        if (pdfFile != null && pdfFile.exists()) {
+            Log.d("PDF_DEBUG", "Loading PDF from File: ${pdfFile.absolutePath}")
+
+            // Use the fromFile method to load the PDF
+            pdfView.fromFile(pdfFile)
+                .defaultPage(0)
+                .enableSwipe(true)
+                .swipeHorizontal(false)
+                .enableDoubletap(true)
+                .onError { error -> Log.e("PDF_VIEW_ERROR", "Error loading PDF: ${error.message}") }
+                .onLoad { Log.d("PDF_VIEW", "PDF Loaded successfully") }
+                .load()
+        } else {
+            Log.e("PDF_ERROR", "PDF File is null or does not exist")
+        }
+
+        // Close button action
+        closeButton.setOnClickListener { dialog.dismiss() }
+
+        // Show the dialog
+        dialog.show()
+    }
+
+    // Convert Base64 PDF to File
+    private fun saveBase64AsPdf(base64String: String?): File? {
+        if (base64String.isNullOrEmpty()) return null
+
+        return try {
+            val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
+            val pdfFile = File(requireContext().cacheDir, "temp.pdf")
+
+            FileOutputStream(pdfFile).use { fos ->
+                fos.write(decodedBytes)
+                fos.flush()
+            }
+
+            Log.d("PDF_DEBUG", "PDF File Saved: ${pdfFile.absolutePath}")  // Debugging Log
+            pdfFile
+        } catch (e: Exception) {
+            Log.e("PDF_ERROR", "Error Saving PDF: ${e.message}")
+            null
+        }
+    }
+
+
+
 
 }

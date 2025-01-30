@@ -100,6 +100,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_viewDetailsFragment"
+            app:destination="@id/viewDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -112,7 +115,11 @@
         android:id="@+id/viewDetailsFragment"
         android:name="com.kaushalpanjee.common.ViewDetailsFragment"
         android:label="ViewDetailsFragment"
-        tools:layout="@layout/fragment_view_details"/>
+        tools:layout="@layout/fragment_view_details">
+        <action
+            android:id="@+id/action_viewDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/trainingFragment"
         android:name="com.kaushalpanjee.common.TrainingFragment"

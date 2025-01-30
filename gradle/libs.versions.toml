@@ -5,6 +5,7 @@ circleimageview = "3.1.0"
 compiler = "4.13.0"
 converterGson = "2.9.0"
 core = "0.9.6.0"
+coreVersion = "3.0.0"
 datastore-preferences = "1.0.0"
 datastorePreferencesCore = "1.1.1"
 fragmentKtx = "1.8.5"
@@ -20,7 +21,6 @@ espressoCore = "3.6.1"
 appcompat = "1.7.0"
 kotlinxCoroutinesAndroid = "1.7.3"
 lifecycleRuntimeKtx = "2.8.7"
-material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
 materialVersion = "1.12.0"
@@ -56,6 +56,7 @@ circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circ
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "compiler" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 core = { module = "com.afollestad.material-dialogs:core", version.ref = "core" }
+core-v300 = { module = "com.afollestad.material-dialogs:core", version.ref = "coreVersion" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }

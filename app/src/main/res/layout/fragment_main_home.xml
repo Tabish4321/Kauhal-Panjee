@@ -54,31 +54,19 @@ android:layout_height="match_parent"
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivDDGKY"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_50"
+                android:layout_width="150dp"
+                android:layout_height="@dimen/dp_60"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_40"
                 android:background="@color/white"
                 android:padding="@dimen/dp_5"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_ddgky"
+                android:src="@drawable/dduresti_footer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/CustomRectangleShape" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/ivRSETI"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_50"
-                android:layout_marginStart="@dimen/dp_6"
-                android:background="@color/white"
-                android:padding="@dimen/dp_5"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_rseti"
-                app:layout_constraintBottom_toBottomOf="@+id/ivDDGKY"
-                app:layout_constraintStart_toEndOf="@+id/ivDDGKY"
-                app:layout_constraintTop_toTopOf="@+id/ivDDGKY"
-                app:shapeAppearanceOverlay="@style/CustomRectangleShape" />
+
 
 
             <androidx.cardview.widget.CardView

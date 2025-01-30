@@ -120,6 +120,14 @@ class CommonRepository @Inject constructor(
     }
 
 
+    suspend fun getDistrictPerListApi(stateCode: String,appVersion: String): Flow<Resource<out DistrictResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getDistrictPreListAPI(DistrictReq(stateCode, appVersion))
+        }
+    }
+
+
+
     suspend fun getCreateUserAPI(userCreationReq: UserCreationReq): Flow<Resource<out CreateUserRes>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getCreateUserAPI(userCreationReq)
@@ -134,6 +142,13 @@ class CommonRepository @Inject constructor(
     }
 
 
+    suspend fun getBlockPerListApi(districtCode: String,appVersion: String): Flow<Resource<out BlockResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getBlockPerListAPI(BlockReq(districtCode, appVersion))
+        }
+    }
+
+
 
     suspend fun getGPListApi(blockCode: String,appVersion: String): Flow<Resource<out grampanchayatResponse>>{
         return networkBoundResourceWithoutDb {
@@ -142,10 +157,25 @@ class CommonRepository @Inject constructor(
     }
 
 
+    suspend fun getGPPerListApi(blockCode: String,appVersion: String): Flow<Resource<out grampanchayatResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getGpPerListAPI(GramPanchayatReq(blockCode, appVersion))
+        }
+    }
+
+
+
 
     suspend fun getVillageListApi(gpCode: String,appVersion: String): Flow<Resource<out VillageResponse>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getVillageListAPI(VillageReq(gpCode, appVersion))
+        }
+    }
+
+
+    suspend fun getVillagePerListApi(gpCode: String,appVersion: String): Flow<Resource<out VillageResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getVillagePerListAPI(VillageReq(gpCode, appVersion))
         }
     }
 

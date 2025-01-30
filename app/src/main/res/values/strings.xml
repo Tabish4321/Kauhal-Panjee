@@ -171,6 +171,7 @@
     <string name="select_languages">Select Languages</string>
     <string name="branch_name">Branch Name</string>
     <string name="view_profile"><u>View details</u></string>
+    <string name="edit"><u>Edit details</u></string>
     <string name="as_per_aadhaar">Aadhaar Address</string>
     <string name="forgot_id_and_password">Forgot id and password</string>
     <string name="sector">Sector<font color='#FF0000'>*</font></string>

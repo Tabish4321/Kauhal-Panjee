@@ -176,6 +176,7 @@
     <string name="sector">Sector<font color='#FF0000'>*</font></string>
     <string name="find_a_training_center">Find a training center</string>
     <string name="enter_jobcardno">Enter jobcardno</string>
+    <string name="edit"><u>Edit details</u></string>
     <string name="enter_shg_code">Enter SHG code</string>
     <string name="upload_nrega_jobcard">Upload Nrega image</string>
     <string name="training_name">Training Name</string>

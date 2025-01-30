@@ -96,6 +96,9 @@ interface AppLevelApi {
     @POST(ApiConstant.API_DISTRICT)
     suspend fun getDistrictListAPI(@Body districtReq: DistrictReq):DistrictResponse
 
+    @POST(ApiConstant.API_DISTRICT)
+    suspend fun getDistrictPreListAPI(@Body districtReq: DistrictReq):DistrictResponse
+
 
     @POST(ApiConstant.API_CREATE_USER)
     suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
@@ -105,17 +108,29 @@ interface AppLevelApi {
     @POST(ApiConstant.API_BLOCK)
     suspend fun getBlockListAPI(@Body blockReq: BlockReq):BlockResponse
 
+    @POST(ApiConstant.API_BLOCK)
+    suspend fun getBlockPerListAPI(@Body blockReq: BlockReq):BlockResponse
+
+
 
 
 
     @POST(ApiConstant.API_GP)
     suspend fun getGpListAPI(@Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
 
+    @POST(ApiConstant.API_GP)
+    suspend fun getGpPerListAPI(@Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
+
+
 
 
     @POST(ApiConstant.API_VILLAGE)
     suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
 
+
+
+    @POST(ApiConstant.API_VILLAGE)
+    suspend fun getVillagePerListAPI(@Body villageReq: VillageReq):VillageResponse
 
 
     @POST(ApiConstant.API_AADHAAR_DETAILS)

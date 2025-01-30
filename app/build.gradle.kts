@@ -104,7 +104,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("com.afollestad.material-dialogs:core:3.0.0")
+    implementation (libs.core.v300)
+
+
+   implementation ("io.github.afreakyelf:Pdf-Viewer:2.0.6")
 
     implementation (libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -117,7 +120,7 @@ dependencies {
 
     implementation(libs.androidx.room.ktx)
     implementation (libs.androidx.room.runtime)
-    kapt (libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     implementation (libs.androidx.viewpager2)
 
 
@@ -135,7 +138,7 @@ dependencies {
 
     //Glide
     implementation (libs.glide)
-    annotationProcessor (libs.compiler)
+    kapt(libs.compiler)
 
     implementation (libs.androidx.core.splashscreen)
 

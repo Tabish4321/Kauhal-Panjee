@@ -157,6 +157,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
+    private var _districtListPer =  MutableStateFlow<Resource<out DistrictResponse>>(Resource.Loading())
+    val getDistrictListPer = _districtListPer.asStateFlow()
+
+
+    fun getDistrictListPerApi(state :String){
+        viewModelScope.launch {
+            commonRepository.getDistrictPerListApi(state,BuildConfig.VERSION_NAME).collectLatest {
+                _districtListPer.emit(it)
+            }
+        }
+    }
+
 
     private var _userCreation =  MutableStateFlow<Resource<out CreateUserRes>>(Resource.Loading())
     val getuserCreation = _userCreation.asStateFlow()
@@ -184,7 +196,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }}
 
 
-      private  var _gpList =  MutableStateFlow<Resource<out grampanchayatResponse>>(Resource.Loading())
+    private var _blockListPer =  MutableStateFlow<Resource<out BlockResponse>>(Resource.Loading())
+    val getBlockListPer = _blockListPer.asStateFlow()
+
+
+    fun getBlockPerListApi(district :String){
+        viewModelScope.launch {
+            commonRepository.getBlockPerListApi(district,BuildConfig.VERSION_NAME).collectLatest {
+                _blockListPer.emit(it)
+            }
+        }}
+
+
+    private  var _gpList =  MutableStateFlow<Resource<out grampanchayatResponse>>(Resource.Loading())
         val getGpList = _gpList.asStateFlow()
 
 
@@ -197,6 +221,22 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
         }
+
+
+    private  var _gpListPer =  MutableStateFlow<Resource<out grampanchayatResponse>>(Resource.Loading())
+    val getGpListPer = _gpListPer.asStateFlow()
+
+
+    fun getGpPerListApi(block :String) {
+        viewModelScope.launch {
+            commonRepository.getGPPerListApi(block, BuildConfig.VERSION_NAME).collectLatest {
+                _gpListPer.emit(it)
+            }
+        }
+
+
+    }
+
 
 
 
@@ -213,6 +253,22 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+
+    private  var _villageListPer =  MutableStateFlow<Resource<out VillageResponse>>(Resource.Loading())
+    val getVillageListPer = _villageListPer.asStateFlow()
+
+
+    fun getVillagePerListApi(gp :String) {
+        viewModelScope.launch {
+            commonRepository.getVillagePerListApi(gp, BuildConfig.VERSION_NAME).collectLatest {
+                _villageListPer.emit(it)
+            }
+        }
+
+
+    }
+
 
 
 
