@@ -735,7 +735,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         onBackPressedCallback.remove()
     }
 
-    private fun showBottomSheet(
+   /* private fun showBottomSheet(
         image: Bitmap,
         name: String,
         gender: String,
@@ -811,7 +811,74 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         // Show the BottomSheetDialog
         bottomSheetDialog.show()
-    }
+    }*/
+   private fun showBottomSheet(
+       image: Bitmap,
+       name: String,
+       gender: String,
+       dateOfBirth: String,
+       careOf: String
+   ) {
+       val bottomSheetDialog = BottomSheetDialog(requireContext())
+
+       // Inflate the layout
+       val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
+       bottomSheetDialog.setContentView(view)
+
+       // Prevent closing when tapping outside
+       bottomSheetDialog.setCanceledOnTouchOutside(false)
+
+       // Find views
+       val imageView = view.findViewById<ImageView>(R.id.circleImageView)
+       val nameView = view.findViewById<TextView>(R.id.eKYCCandidateName)
+       val genderView = view.findViewById<TextView>(R.id.eKYCGender)
+       val dobView = view.findViewById<TextView>(R.id.eKYCDob)
+       val careOfView = view.findViewById<TextView>(R.id.eKYCCareOf)
+       val okButton = view.findViewById<TextView>(R.id.tvLogin)
+
+       // Set data
+       imageView.setImageBitmap(image)
+       nameView.text = name
+       genderView.text = gender
+       dobView.text = dateOfBirth
+       careOfView.text = careOf
+
+       // Handle OK button click
+       okButton.setOnClickListener {
+           AppUtil.saveLoginStatus(requireContext(), true)
+
+           val navController = findNavController()
+
+           // Pop previous fragments and navigate to home
+           navController.popBackStack(R.id.loginFragment, true)
+           navController.popBackStack(R.id.registerFragment, true)
+           navController.popBackStack(R.id.ekycFragment, true)
+           navController.navigate(R.id.mainHomePage)
+
+           bottomSheetDialog.dismiss()
+       }
+
+       // Handle back button press
+       bottomSheetDialog.setOnKeyListener { dialog, keyCode, event ->
+           if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+               // Show a confirmation dialog before closing
+               AlertDialog.Builder(requireContext())
+                   .setTitle("Exit")
+                   .setMessage("Do you want to close this screen?")
+                   .setPositiveButton("Yes") { _, _ ->
+                       bottomSheetDialog.dismiss()
+                   }
+                   .setNegativeButton("No", null)
+                   .show()
+               return@setOnKeyListener true  // Consume the event
+           }
+           false
+       }
+
+       // Show the BottomSheetDialog
+       bottomSheetDialog.show()
+   }
+
 
     private fun collectUserCreationResponse() {
         lifecycleScope.launch {

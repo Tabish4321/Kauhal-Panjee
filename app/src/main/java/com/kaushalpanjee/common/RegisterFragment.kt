@@ -217,7 +217,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             if (isEmailVerified) {
                 val etMobile = binding.etPhone.text.toString()
 
-                val encryptedEtMobile =   AESCryptography.encryptIntoBase64String(etMobile, BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)
+                val encryptedEtMobile =   AESCryptography.encryptIntoBase64String(etMobile, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
 
                 commonViewModel.sendMobileOTP(
