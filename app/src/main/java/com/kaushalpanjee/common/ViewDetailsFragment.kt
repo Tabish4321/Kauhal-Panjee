@@ -1,20 +1,28 @@
 package com.kaushalpanjee.common
 
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -42,11 +50,9 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
-import com.kaushalpanjee.core.util.isNull
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentViewDetailsBinding
-import com.rajat.pdfviewer.PdfRendererView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -760,17 +766,67 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
             else -> null
         }
     }
-
-    // Show Image or PDF Dialog
+    // Show Image or Download PDF
     private fun showDocumentDialog(base64String: String?) {
         val (bitmap, fileType) = decodeBase64Image(base64String)
 
         if (fileType == "pdf") {
-            showPdfDialog(base64String)
+            downloadPdf(base64String)  // 🔹 Download instead of showing PDF
         } else {
             showImageDialog(bitmap)
         }
     }
+    private fun downloadPdf(base64String: String?) {
+        if (base64String.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), "Invalid PDF data", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        try {
+            val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
+            val fileName = "downloaded_document.pdf"
+            val resolver = requireContext().contentResolver
+
+            val uri: Uri? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.Files.FileColumns.DISPLAY_NAME, fileName)
+                    put(MediaStore.Files.FileColumns.MIME_TYPE, "application/pdf")
+                    put(MediaStore.Files.FileColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                }
+                resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+            } else {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val pdfFile = File(downloadsDir, fileName)
+                Uri.fromFile(pdfFile)
+            }
+
+            uri?.let {
+                resolver.openOutputStream(it)?.use { outputStream ->
+                    outputStream.write(decodedBytes)
+                    outputStream.flush()
+                }
+                Toast.makeText(requireContext(), "PDF saved successfully!", Toast.LENGTH_LONG).show()
+                openDownloadedPdf(it)
+            } ?: throw Exception("Failed to create file")
+
+        } catch (e: Exception) {
+            Log.e("PDF_ERROR", "Error Saving PDF: ${e.message}")
+            Toast.makeText(requireContext(), "Failed to save PDF", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun openDownloadedPdf(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/pdf")
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), "No PDF viewer found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     // Show Image Dialog
     private fun showImageDialog(image: Bitmap?) {
@@ -792,68 +848,6 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
         dialog.show()
     }
-
-    private fun showPdfDialog(base64String: String?) {
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(R.layout.layout_view_pdf)
-
-        // Set the dialog window size to full screen
-        dialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-
-        // Use the correct package for PDFView
-        val pdfView = dialog.findViewById<com.github.barteksc.pdfviewer.PDFView>(R.id.pdfViewDiologe)
-        val closeButton = dialog.findViewById<TextView>(R.id.btnClose)
-
-        // Save Base64 string as PDF file
-        val pdfFile = saveBase64AsPdf(base64String)
-
-        if (pdfFile != null && pdfFile.exists()) {
-            Log.d("PDF_DEBUG", "Loading PDF from File: ${pdfFile.absolutePath}")
-
-            // Use the fromFile method to load the PDF
-            pdfView.fromFile(pdfFile)
-                .defaultPage(0)
-                .enableSwipe(true)
-                .swipeHorizontal(false)
-                .enableDoubletap(true)
-                .onError { error -> Log.e("PDF_VIEW_ERROR", "Error loading PDF: ${error.message}") }
-                .onLoad { Log.d("PDF_VIEW", "PDF Loaded successfully") }
-                .load()
-        } else {
-            Log.e("PDF_ERROR", "PDF File is null or does not exist")
-        }
-
-        // Close button action
-        closeButton.setOnClickListener { dialog.dismiss() }
-
-        // Show the dialog
-        dialog.show()
-    }
-
-    // Convert Base64 PDF to File
-    private fun saveBase64AsPdf(base64String: String?): File? {
-        if (base64String.isNullOrEmpty()) return null
-
-        return try {
-            val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-            val pdfFile = File(requireContext().cacheDir, "temp.pdf")
-
-            FileOutputStream(pdfFile).use { fos ->
-                fos.write(decodedBytes)
-                fos.flush()
-            }
-
-            Log.d("PDF_DEBUG", "PDF File Saved: ${pdfFile.absolutePath}")  // Debugging Log
-            pdfFile
-        } catch (e: Exception) {
-            Log.e("PDF_ERROR", "Error Saving PDF: ${e.message}")
-            null
-        }
-    }
-
 
 
 

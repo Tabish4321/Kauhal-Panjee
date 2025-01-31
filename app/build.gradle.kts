@@ -106,9 +106,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation (libs.core.v300)
 
-
-   implementation ("io.github.afreakyelf:Pdf-Viewer:2.0.6")
-
     implementation (libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -138,7 +135,7 @@ dependencies {
 
     //Glide
     implementation (libs.glide)
-    kapt(libs.compiler)
+    annotationProcessor(libs.compiler)
 
     implementation (libs.androidx.core.splashscreen)
 

@@ -640,6 +640,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             userPreferences.updateUserStateLgdCode(
                                                 selectedStateLgdCode
                                             )
+                                            AppUtil.saveStateCode(requireContext(),selectedStateCode)
 
 
                                             val encryptedMaskedString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(), AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)

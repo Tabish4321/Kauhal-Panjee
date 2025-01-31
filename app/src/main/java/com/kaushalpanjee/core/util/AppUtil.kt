@@ -119,6 +119,19 @@ object AppUtil {
     }
 
 
+
+    fun saveStateCode(context: Context, stateCode: String) {
+        val sharedPreferences = context.getSharedPreferences("STATE_CODE", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("STATE_CODE", stateCode)
+        editor.apply()
+    }
+
+    fun getStateCode(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("STATE_CODE", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("STATE_CODE", "N/A") ?: "N/A" // Default to English
+    }
+
     fun isNetworkAvailable(context: Context?): Boolean {
         if (context == null) return false
         val connectivityManager =
@@ -287,6 +300,8 @@ object AppUtil {
         val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("language_code", "en") ?: "en" // Default to English
     }
+
+
 
 
     inline fun <reified T> fromJson(json: String): T {
