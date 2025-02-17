@@ -9,6 +9,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.SystemClock
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
@@ -65,6 +67,7 @@ import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.security.SecureRandom
 import kotlin.random.Random
 
 const val CAMERA_REQUEST = 101
@@ -77,6 +80,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private var selectedState = ""
     private var showPassword = true
+    private var aadhaarValidate = false
     private var name = ""
     private var dob = ""
     private var gender = ""
@@ -230,18 +234,37 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
         binding.aadhaarVerifyButton.root.gone()
 
+
         binding.aadhaarVerifyButton.centerButton.setOnClickListener {
 
-            if (binding.etAadhaar.text.length != 12) {
-
-                showSnackBar("Please enter valid aadhaar number")
-            } else {
-                //  showSnackBar("success")
+            if (aadhaarValidate) {
                 invokeCaptureIntent()
 
+            } else {
+                //  showSnackBar("success")
+                showSnackBar("Please enter valid aadhaar number")
             }
 
         }
+        binding.etAadhaar.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val aadhaar = s.toString()
+                if (aadhaar.length == 12) {
+                    if (AadhaarValidator.isValidAadhaar(aadhaar)) {
+                        binding.etAadhaar.error = null
+                        aadhaarValidate=true
+
+                    } else {
+                        binding.etAadhaar.error = "❌ Invalid Aadhaar Number"  // ❌ Show error
+                        aadhaarValidate=false
+
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
 
 
@@ -420,7 +443,13 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
 
 
-    private fun getTransactionID() = Random(System.currentTimeMillis()).nextInt(9999).toString()
+   // private fun getTransactionID() = Random(System.currentTimeMillis()).nextInt(9999).toString()
+
+    private fun getTransactionID(): String {
+        val secureRandom = SecureRandom()
+        return secureRandom.nextInt(9999).toString()
+    }
+
 
     private fun invokeCaptureIntent() {
 
@@ -508,10 +537,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             toastShort("An error occurred while processing the response.")
             log("EKYCDATA", "Exception: ${e.message}")
             // e.message?.copyToClipboard(requireContext())
-        } finally {
-            // Ensure progress bar is hidden after processing
-            hideProgressBar()
-            toastShort(getString(R.string.kyc_failed_msg))
         }
     }
 
@@ -913,6 +938,43 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     }
                 }
             }
+        }
+    }
+    object AadhaarValidator {
+        private val multiplicationTable = arrayOf(
+            intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+            intArrayOf(1, 2, 3, 4, 0, 6, 7, 8, 9, 5),
+            intArrayOf(2, 3, 4, 0, 1, 7, 8, 9, 5, 6),
+            intArrayOf(3, 4, 0, 1, 2, 8, 9, 5, 6, 7),
+            intArrayOf(4, 0, 1, 2, 3, 9, 5, 6, 7, 8),
+            intArrayOf(5, 9, 8, 7, 6, 0, 4, 3, 2, 1),
+            intArrayOf(6, 5, 9, 8, 7, 1, 0, 4, 3, 2),
+            intArrayOf(7, 6, 5, 9, 8, 2, 1, 0, 4, 3),
+            intArrayOf(8, 7, 6, 5, 9, 3, 2, 1, 0, 4),
+            intArrayOf(9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+        )
+
+        private val permutationTable = arrayOf(
+            intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+            intArrayOf(1, 5, 7, 6, 2, 8, 3, 0, 9, 4),
+            intArrayOf(5, 8, 0, 3, 7, 9, 6, 1, 4, 2),
+            intArrayOf(8, 9, 1, 6, 0, 4, 3, 5, 2, 7),
+            intArrayOf(9, 4, 5, 3, 1, 2, 6, 8, 7, 0),
+            intArrayOf(4, 2, 8, 6, 5, 7, 3, 9, 0, 1),
+            intArrayOf(2, 7, 9, 3, 8, 0, 6, 4, 1, 5),
+            intArrayOf(7, 0, 4, 6, 9, 1, 3, 2, 5, 8)
+        )
+
+        private val inverseTable = intArrayOf(0, 4, 3, 2, 1, 5, 6, 7, 8, 9)
+
+        fun isValidAadhaar(aadhaar: String): Boolean {
+            if (aadhaar.length != 12 || !aadhaar.all { it.isDigit() }) return false
+
+            var checksum = 0
+            aadhaar.reversed().forEachIndexed { index, char ->
+                checksum = multiplicationTable[checksum][permutationTable[index % 8][char - '0']]
+            }
+            return checksum == 0
         }
     }
 

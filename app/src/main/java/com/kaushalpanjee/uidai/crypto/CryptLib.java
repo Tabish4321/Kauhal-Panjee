@@ -47,7 +47,7 @@ public class CryptLib {
     public CryptLib() {
 
         try{
-            _cx = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            _cx = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES);
             _key = new byte[16]; //256 bit key space
             _iv = new byte[16]; //128 bit IV
         }catch (Exception exp ){

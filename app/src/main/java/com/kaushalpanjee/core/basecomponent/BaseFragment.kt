@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -27,9 +28,8 @@ import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
-abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (inflator: LayoutInflater) -> VB) :
+abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (inflater: LayoutInflater) -> VB) :
     Fragment() {
-
 
     private var _binding: VB? = null
     val binding: VB get() = _binding as VB
@@ -52,6 +52,13 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         _binding = bindingInflater.invoke(inflater)
         if (_binding == null)
             throw IllegalArgumentException("Binding cannot be null")
+
+        // 🔹 Prevent screenshots and screen recording for all fragments
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
+
         return binding.root
     }
 
@@ -59,24 +66,14 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         super.onAttach(context)
         this.baseActivity = activity as BaseActivity<VB>
     }
-/*
-    fun showProgressBar() {
-        progress?.show()
-    }
-
-    fun hideProgressBar() {
-        progress?.dismiss()
-    }*/
 
     fun showProgressBar() {
-        // Ensure context is not null and the fragment is attached
         if (context != null && isAdded && progress?.isShowing == false) {
             progress?.show()
         }
     }
 
     fun hideProgressBar() {
-        // Hide the progress bar if it's currently showing
         if (progress?.isShowing == true) {
             progress?.dismiss()
         }
@@ -91,7 +88,6 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         snackBar.show()
     }
 
-
     fun hideSoftKeyboard() {
         if (requireActivity().currentFocus == null) {
             return
@@ -100,7 +96,6 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
             requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
     }
-
 
     fun hideKeyboard() {
         val inputMethodManager =
@@ -118,7 +113,6 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
     }
 
     fun compressImageFile(file: File): File? {
-
         var compressedFile: File? = null
         if (!file.exists()) file.mkdirs()
         val actualSize = file.length() / 1024
@@ -134,9 +128,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
             }
         }
         return compressedFile
-
     }
-
 
     private fun bitmapToFile(activity: Activity, bitmap: Bitmap): File? {
         var file: File? = null
@@ -147,7 +139,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
             )
             file.createNewFile()
             val bos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // You can also save it in JPEG
             val bitmapData = bos.toByteArray()
             val fos = FileOutputStream(file)
             fos.write(bitmapData)
@@ -164,11 +156,9 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         var height = bitmap.height
         val bitmapRatio = width.toFloat() / height.toFloat()
         height = maxSize
-        //width = (height * bitmapRatio).toInt()
         width = (height * bitmapRatio).toInt()
         log("ProfilePicWidthAndHeight", "height: $height, width: $width")
 
         return Bitmap.createScaledBitmap(bitmap, width, height, true)
     }
-
 }

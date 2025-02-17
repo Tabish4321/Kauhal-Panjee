@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -67,6 +68,38 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
 
         }
+
+
+
+
+// Disable long-press (prevents copy-paste menu)
+        binding.etPassword.setOnLongClickListener { true }
+
+// Prevents context menu actions (copy, cut, paste)
+        binding.etPassword.customSelectionActionModeCallback = object : android.view.ActionMode.Callback {
+            override fun onCreateActionMode(mode: android.view.ActionMode?, menu: android.view.Menu?): Boolean = false
+            override fun onPrepareActionMode(mode: android.view.ActionMode?, menu: android.view.Menu?): Boolean = false
+            override fun onActionItemClicked(mode: android.view.ActionMode?, item: android.view.MenuItem?): Boolean = false
+            override fun onDestroyActionMode(mode: android.view.ActionMode?) {}
+        }
+
+// Disable clipboard pasting, but allow normal keyboard inputs
+        binding.etPassword.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                val clipboard = v.context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                clipboard.setPrimaryClip(android.content.ClipData.newPlainText("", "")) // Clear clipboard
+            }
+        }
+
+// Disable drag-and-drop text pasting
+        binding.etPassword.setOnDragListener { _, _ -> true }
+
+// Prevent programmatic clipboard pasting
+        binding.etPassword.setTextIsSelectable(false) // Prevents text selection
+        binding.etPassword.isLongClickable = false
+
+
+
         binding.tvLogin.setOnClickListener {
             lifecycleScope.launch {
                 if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")) {
@@ -95,8 +128,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             AppUtil.getAndroidId(requireContext()),
                             BuildConfig.VERSION_NAME,
                             ""
-                        )
-                    )
+                        ))
                     //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
 
                     collectLoginResponse()
@@ -182,6 +214,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 }
 
                                 301 -> {
+                                    showSnackBar(getLoginResponse.responseMsg)
+                                }
+                                300 -> {
                                     showSnackBar(getLoginResponse.responseMsg)
                                 }
 

@@ -124,8 +124,8 @@ interface AppLevelApi {
 
 
 
-    @POST(ApiConstant.API_VILLAGE)
-    suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
+        @POST(ApiConstant.API_VILLAGE)
+        suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
 
 
 

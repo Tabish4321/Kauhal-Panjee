@@ -51,6 +51,7 @@ android {
             buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
             buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
             buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
+
         }
     }
 
@@ -122,7 +123,7 @@ dependencies {
 
 
     implementation (libs.bundles.retrofitBundle)
-    implementation (libs.chucker)
+    //implementation (libs.chucker)
 
     //circle image
 

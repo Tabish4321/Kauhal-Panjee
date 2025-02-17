@@ -14,9 +14,7 @@
         app:shapeAppearanceOverlay="@style/CustomCircleShape"
         app:strokeColor="@color/color_dark_green"
         app:strokeWidth="1dp"
-        android:layout_marginStart="@dimen/dp_12"
-        android:src="@drawable/person"
-        />
+        android:layout_marginStart="@dimen/dp_12" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -12,7 +12,7 @@ object AppConstant {
         const val BUCKET_DOCUMENTS= "documents/"
         const val BUCKET_CATEGORY= "category/"
         const val FACE_AUTH_UIADI= "https://nregarep1.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
-        const val baseUrl= "http://10.197.183.177:8080/"
+        const val localUrl= "http://10.197.183.177:8080/"
 
 
     }
@@ -44,6 +44,7 @@ object AppConstant {
 
         const val CRYPT_ID = "8080808080808080"
         const val CRYPT_IV = "8080808080808080"
+        const val CRYPLIBAES = "AES/CBC/PKCS5PADDING"
 
 
     }

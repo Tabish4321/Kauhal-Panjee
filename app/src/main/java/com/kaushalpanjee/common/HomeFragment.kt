@@ -111,16 +111,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val commonViewModel: CommonViewModel by activityViewModels()
 
     private var currentRequestPurpose: String? = null
-    private val REQUEST_PICK_VOTER_ID = 101
-    private val REQUEST_PICK_DRIVING_LICENSE = 102
-    private val REQUEST_PICK_MINORITY = 103
-    private val REQUEST_PICK_CATEGORY = 104
-    private val REQUEST_PICK_PWD = 105
-    private val REQUEST_PICK_ANTOYADA = 106
-    private val REQUEST_PICK_RSBY = 109
-    private val REQUEST_PICK_NREGA = 110
-    private val REQUEST_PICK_PROFILE_PIC = 108
-    private val REQUEST_PICK_RESIDENCE = 107
     private val PERMISSION_READ_MEDIA_IMAGES = 201
     private val REQUEST_PICK_IMAGE = 201
     private  val REQUEST_PICK_PDF = 202
@@ -300,13 +290,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedStateCodeItem = ""
     private var selectedStateLgdCodeItem = ""
     private var selectedStateItem = ""
+    private var stateRegCode = ""
 
     // district var
     private var districtList: MutableList<DistrictList> = mutableListOf()
     private lateinit var districtAdapter: ArrayAdapter<String>
     private var district = ArrayList<String>()
     private var districtCode = ArrayList<String>()
-    private var districtCodePer = ArrayList<String>()
     private var districtLgdCode = ArrayList<String>()
     private var selectedDistrictCodeItem = ""
     private var selectedDistrictLgdCodeItem = ""
@@ -882,18 +872,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 isSeccInfoVisible = false
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
+                commonViewModel.getDistrictListApi(stateRegCode)
+                block.clear()
+                gp.clear()
+                village.clear()
 
-               /* setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
-                setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
-                setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
-                setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
-                setDropdownValue(binding.spinnerVillageSecc, selectedVillageItem, village)
 
-                selectedSeccStateCodeItem = selectedStateCodeItem
-                selectedSeccDistrictCodeItem = selectedDistrictCodeItem
-                selectedSeccBlockCodeItem = selectedBlockCodeItem
-                selectedSeccGpCodeItem = selectedGpCodeItem
-                selectedSeccVillageCodeItem = selectedVillageCodeItem*/
+                /* setDropdownValue(binding.spinnerStateSecc, selectedStateItem, state)
+                 setDropdownValue(binding.spinnerDistrictSecc, selectedDistrictItem, district)
+                 setDropdownValue(binding.spinnerBlockSecc, selectedBlockItem, block)
+                 setDropdownValue(binding.spinnerGpSecc, selectedGpItem, gp)
+                 setDropdownValue(binding.spinnerVillageSecc, selectedVillageItem, village)
+
+                 selectedSeccStateCodeItem = selectedStateCodeItem
+                 selectedSeccDistrictCodeItem = selectedDistrictCodeItem
+                 selectedSeccBlockCodeItem = selectedBlockCodeItem
+                 selectedSeccGpCodeItem = selectedGpCodeItem
+                 selectedSeccVillageCodeItem = selectedVillageCodeItem*/
 
             } else {
 
@@ -971,6 +966,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 isAddressVisible = false
                 binding.expandAddress.visible()
                 binding.viewAddress.visible()
+                commonViewModel.getDistrictListApi(stateRegCode)
+                block.clear()
+                gp.clear()
+                village.clear()
+
             } else {
                 isAddressVisible = true
                 binding.expandAddress.gone()
@@ -979,7 +979,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             if (addressStatus.contains("1")){
                 showYesNoDialog(
-                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    context = requireContext(),
                     title = "Confirmation",
                     message = "Do you want to edit your Address info?",
                     onYesClicked = {
@@ -1263,7 +1263,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isBankingInfoVisible = false
                         binding.expandBanking.visible()
                         binding.viewBanking.visible()
-                        binding.btnBnakingSubmit.visible()
+                        //binding.btnBnakingSubmit.visible()
 
                   for (x in userCandidateBankDetailsList){
 
@@ -2021,7 +2021,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedBlockCodeItem.isNotEmpty() &&
                 selectedGpCodeItem.isNotEmpty() &&
                 selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
-                && addressLine2.isNotEmpty() && pinCode.isNotEmpty()
+                && pinCode.isNotEmpty()
             ) {
 
 
@@ -2098,7 +2098,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedBlockCodeItem.isNotEmpty() &&
                 selectedGpCodeItem.isNotEmpty() &&
                 selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
-                && addressLine2.isNotEmpty() && pinCode.isNotEmpty()
+              && pinCode.isNotEmpty()
             ) {
 
 
@@ -2454,6 +2454,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.etATINName.visible()
             binding.searchView.gone()
             binding.recyclerView.gone()
+            isSeccStatus= "Yes"
+
 
 
         }
@@ -2466,7 +2468,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.etATINName.gone()
             binding.searchView.visible()
             binding.recyclerView.visible()
-            isSeccStatus= "Yes"
+            isSeccStatus= "No"
 
 
         }
@@ -2543,9 +2545,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 if (s.toString().matches(panRegex)) {
                     binding.etPanNumber.error = null  // ✅ Valid PAN
                     isValidPan = true
+                    binding.btnBnakingSubmit.visible()
+
                 } else {
                     binding.etPanNumber.error = "Invalid PAN Format"
                     isValidPan = false
+                    binding.btnBnakingSubmit.gone()
 
                 }
             }
@@ -2857,8 +2862,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             if (jobCardNo.isNotEmpty()){
 
-              //  commonViewModel.getCheckJobCardAPI(fullUrl,username,password,jobCardNo )
-                commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
+                commonViewModel.getCheckJobCardAPI(fullUrl,username,password,jobCardNo )
+            //    commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
 
             }
             else toastShort("Please enter jobCard")
@@ -2932,7 +2937,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
 
                 else {
-                    selectedSeccName=""
+                  //  selectedSeccName=""
                     selectedSeccName = binding.etATINName.text.toString()
 
                     if ( selectedSeccName.isNotEmpty()){
@@ -3088,7 +3093,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3138,7 +3143,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3188,7 +3193,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3236,7 +3241,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3281,7 +3286,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3330,7 +3335,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3377,7 +3382,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     showSnackBar("Please Update from PlayStore")
                                 }
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(insertPersResponse.responseDesc)
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3419,7 +3424,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             } else if (getStateResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
-                                showSnackBar("Something went wrong")
+                                showSnackBar(getStateResponse.responseDesc)
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -3427,7 +3432,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
     private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
@@ -3477,104 +3481,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
-
-
-
-    private fun collectAadharDetailsResponse() {
-    lifecycleScope.launch {
-        collectLatestLifecycleFlow(commonViewModel.getAadhaarList) {
-            when (it) {
-                is Resource.Loading -> showProgressBar()
-                is Resource.Error -> {
-                    hideProgressBar()
-                    it.error?.let { error ->
-                        showSnackBar(error.message ?: "Unknown Error")
-                    }
-                }
-                is Resource.Success -> {
-                    hideProgressBar()
-                    it.data?.let { getAadharDetailsRes ->
-                        if (getAadharDetailsRes.responseCode == 200) {
-                            userAadhaarDetailsList = getAadharDetailsRes.wrappedList
-
-                            if (userAadhaarDetailsList.isNotEmpty()) {
-                                withContext(Dispatchers.Main) {
-                                    for (x in userAadhaarDetailsList) {
-
-                                        // Decrypt Aadhaar Details
-                                        val decryptedUserName = AESCryptography.decryptIntoString(
-                                            x.userName,
-                                            AppConstant.Constants.ENCRYPT_KEY,
-                                            AppConstant.Constants.ENCRYPT_IV_KEY
-                                        ) ?: "N/A"
-
-                                        val decryptedGender = AESCryptography.decryptIntoString(
-                                            x.gender,
-                                            AppConstant.Constants.ENCRYPT_KEY,
-                                            AppConstant.Constants.ENCRYPT_IV_KEY
-                                        ) ?: "N/A"
-
-                                        val decryptedMobileNo = AESCryptography.decryptIntoString(
-                                            x.mobileNo,
-                                            AppConstant.Constants.ENCRYPT_KEY,
-                                            AppConstant.Constants.ENCRYPT_IV_KEY
-                                        ) ?: "N/A"
-
-                                        val decryptedDob = AESCryptography.decryptIntoString(
-                                            x.dateOfBirth,
-                                            AppConstant.Constants.ENCRYPT_KEY,
-                                            AppConstant.Constants.ENCRYPT_IV_KEY
-                                        ) ?: "N/A"
-
-                                        val decryptedAddress = AESCryptography.decryptIntoString(
-                                            x.comAddress,
-                                            AppConstant.Constants.ENCRYPT_KEY,
-                                            AppConstant.Constants.ENCRYPT_IV_KEY
-                                        ) ?: "N/A"
-
-                                        val decryptedEmail = AESCryptography.decryptIntoString(
-                                            x.emailId,
-                                            AppConstant.Constants.ENCRYPT_KEY,
-                                            AppConstant.Constants.ENCRYPT_IV_KEY
-                                        ) ?: "N/A"
-
-                                        // Set Data to UI
-                                        binding.profileView.tvAadhaarName.text = decryptedUserName
-                                        binding.profileView.tvAaadharMobile.text = decryptedMobileNo
-                                        binding.profileView.tvAaadharGender.text = decryptedGender
-                                        binding.profileView.tvAaadharDob.text = decryptedDob
-                                        binding.profileView.tvAaadharAddress.text = decryptedAddress
-                                        binding.profileView.tvEmailMobile.text = decryptedEmail
-
-                                        // Set Profile Image
-                                        val bytes: ByteArray = Base64.decode(x.imagePath, Base64.DEFAULT)
-                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                        binding.profileView.circleImageView.setImageBitmap(bitmap)
-
-                                        // Set State & District
-                                        selectedStateItem = x.regState
-                                        selectedSeccStateItem = x.regState
-                                        selectedStateCodeItem = x.regStateCode
-                                        selectedSeccStateCodeItem = x.regStateCode
-                                        binding.TvSpinnerStateName.text = x.regState
-                                        binding.stateesecc.text = x.regState
-                                        commonViewModel.getDistrictListApi(x.regStateCode)
-                                    }
-                                }
-                            } else {
-                                Log.e("AadhaarDetails", "List is empty!")
-                            }
-                        } else {
-                            showSnackBar("Something went wrong")
-                        }
-                    } ?: showSnackBar("Internal Server Error")
-                }
-            }
-        }
-    }
-}
-
     private fun collectBlockResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBlockList) {
@@ -3615,7 +3521,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
     private fun collectGpResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getGpList) {
@@ -3684,6 +3589,100 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 // ✅ Update UI after data is set
                                 withContext(Dispatchers.Main) {
                                     villageAdapter.notifyDataSetChanged()
+                                }
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+    private fun collectAadharDetailsResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getAadhaarList) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { error ->
+                            showSnackBar(error.message ?: "Unknown Error")
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getAadharDetailsRes ->
+                            if (getAadharDetailsRes.responseCode == 200) {
+                                userAadhaarDetailsList = getAadharDetailsRes.wrappedList
+
+                                if (userAadhaarDetailsList.isNotEmpty()) {
+                                    withContext(Dispatchers.Main) {
+                                        for (x in userAadhaarDetailsList) {
+
+                                            // Decrypt Aadhaar Details
+                                            val decryptedUserName = AESCryptography.decryptIntoString(
+                                                x.userName,
+                                                AppConstant.Constants.ENCRYPT_KEY,
+                                                AppConstant.Constants.ENCRYPT_IV_KEY
+                                            ) ?: "N/A"
+
+                                            val decryptedGender = AESCryptography.decryptIntoString(
+                                                x.gender,
+                                                AppConstant.Constants.ENCRYPT_KEY,
+                                                AppConstant.Constants.ENCRYPT_IV_KEY
+                                            ) ?: "N/A"
+
+                                            val decryptedMobileNo = AESCryptography.decryptIntoString(
+                                                x.mobileNo,
+                                                AppConstant.Constants.ENCRYPT_KEY,
+                                                AppConstant.Constants.ENCRYPT_IV_KEY
+                                            ) ?: "N/A"
+
+                                            val decryptedDob = AESCryptography.decryptIntoString(
+                                                x.dateOfBirth,
+                                                AppConstant.Constants.ENCRYPT_KEY,
+                                                AppConstant.Constants.ENCRYPT_IV_KEY
+                                            ) ?: "N/A"
+
+                                            val decryptedAddress = AESCryptography.decryptIntoString(
+                                                x.comAddress,
+                                                AppConstant.Constants.ENCRYPT_KEY,
+                                                AppConstant.Constants.ENCRYPT_IV_KEY
+                                            ) ?: "N/A"
+
+                                            val decryptedEmail = AESCryptography.decryptIntoString(
+                                                x.emailId,
+                                                AppConstant.Constants.ENCRYPT_KEY,
+                                                AppConstant.Constants.ENCRYPT_IV_KEY
+                                            ) ?: "N/A"
+
+                                            // Set Data to UI
+                                            binding.profileView.tvAadhaarName.text = decryptedUserName
+                                            binding.profileView.tvAaadharMobile.text = decryptedMobileNo
+                                            binding.profileView.tvAaadharGender.text = decryptedGender
+                                            binding.profileView.tvAaadharDob.text = decryptedDob
+                                            binding.profileView.tvAaadharAddress.text = decryptedAddress
+                                            binding.profileView.tvEmailMobile.text = decryptedEmail
+
+                                            // Set Profile Image
+                                            val bytes: ByteArray = Base64.decode(x.imagePath, Base64.DEFAULT)
+                                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                            binding.profileView.circleImageView.setImageBitmap(bitmap)
+
+                                            // Set State & District
+                                            selectedStateItem = x.regState
+                                            selectedSeccStateItem = x.regState
+                                            selectedStateCodeItem = x.regStateCode
+                                            selectedSeccStateCodeItem = x.regStateCode
+                                            binding.TvSpinnerStateName.text = x.regState
+                                            binding.stateesecc.text = x.regState
+                                            stateRegCode= x.regStateCode
+                                            commonViewModel.getDistrictListApi(x.regStateCode)
+                                        }
+                                    }
+                                } else {
+                                    Log.e("AadhaarDetails", "List is empty!")
                                 }
                             } else {
                                 showSnackBar("Something went wrong")
@@ -4124,11 +4123,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 }
 
-                                binding.btnBnakingSubmit.visible()
+                             //   binding.btnBnakingSubmit.visible()
 
                                 binding.etBankName.setText(bankName1)
                                 binding.etBranchName.setText(branchName)
-                                binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(accLenghth.toInt()))
+
+                                val lengths = accLenghth.split(",").mapNotNull { it.toIntOrNull() }.sorted()
+                                val maxLength = lengths.maxOrNull() ?: 0
+
+                                if (lengths.size == 1) {
+                                    binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
+                                } else {
+                                    binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
+
+                                    // Add text change listener for validation
+                                    binding.etBankAcNo.addTextChangedListener(object : TextWatcher {
+                                        override fun afterTextChanged(s: Editable?) {
+                                            s?.let {
+                                                if (it.length in lengths || it.isEmpty()) {
+                                                    binding.etBankAcNo.error = null
+
+
+                                                } else {
+                                                    binding.etBankAcNo.error = "Account number must be ${lengths.joinToString(", ")} digits"
+
+                                                }
+                                            }
+                                        }
+
+                                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                                    })
+                                }
+
 
 
 
@@ -4363,33 +4390,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
             when (requestCode) {
-                REQUEST_PICK_IMAGE, REQUEST_CAPTURE_IMAGE -> handleImageSelection(selectedUri, fileName)
+                REQUEST_CAPTURE_IMAGE -> handleImageSelection(selectedUri, fileName)
+                REQUEST_PICK_IMAGE -> handleImageSelection(selectedUri, fileName)
                 REQUEST_PICK_PDF -> handlePdfSelection(selectedUri, fileName)
             }
         }
     }
-    fun openCamera() {
-        val imageFile = createImageFile()  // Create a file to store the image
-        cameraImageUri = FileProvider.getUriForFile(
-            requireContext(),
-            "${requireContext().packageName}.provider",
-            imageFile
-        )
 
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri)
-        startActivityForResult(cameraIntent, REQUEST_CAPTURE_IMAGE)
-    }
-
-    // Create a File to store captured image
-    private fun createImageFile(): File {
-        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "captured_image_${System.currentTimeMillis()}",
-            ".jpg",
-            storageDir
-        )
-    }
 
     private fun handleImageSelection(uri: Uri?, fileName: String?) {
         val base64Image = uri?.let { compressAndConvertImageToBase64(it) } ?: ""
@@ -4425,6 +4432,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
             "RESIDENCE_CERTIFICATE" -> {
                 binding.residentalimageText.text = fileName
+                toastShort("Upload Success")
                 residenceImage = base64Image
             }
             "PROFILE_PIC" -> {
@@ -4435,7 +4443,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 collectDpChangeResponse()
             }
             "NREGA_ID" -> {
-                binding.tvNregaJob.text = fileName
+                binding.nrehaJobimageText.text = fileName
                 nregaImageJobCard = base64Image
             }
         }
@@ -4486,14 +4494,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+    private fun compressAndConvertImageToBase64(imageUri: Uri, maxSizeKB: Int = 200): String? {
+        try {
+            val context = requireContext()
+            val contentResolver = context.contentResolver
 
-    // Convert Image (URI) to Base64
-    private fun compressAndConvertImageToBase64(imageUri: Uri): String {
-        val inputStream = requireContext().contentResolver.openInputStream(imageUri)
-        val byteArray = inputStream?.readBytes()
-        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
+            // Decode the image from URI
+            val inputStream = contentResolver.openInputStream(imageUri)
+            val bitmap = BitmapFactory.decodeStream(inputStream) ?: return null
+            inputStream?.close()
+
+            // Compress and convert to Base64
+            return compressImageToBase64(bitmap, maxSizeKB)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
     }
 
+    // Function to compress bitmap and convert to Base64
+    private fun compressImageToBase64(bitmap: Bitmap, maxSizeKB: Int): String {
+        var quality = 100 // Start with full quality
+        val stream = ByteArrayOutputStream()
+
+        do {
+            stream.reset() // Clear the stream
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream) // Compress the bitmap
+            quality -= 5 // Reduce quality by 5%
+        } while (stream.size() / 1024 > maxSizeKB && quality > 10) // Stop when size is within limit
+
+        return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
+    }
 
 
     // Convert PDF to Base64

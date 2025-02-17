@@ -2,7 +2,6 @@ package com.kaushalpanjee.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
@@ -64,8 +63,8 @@ object AppModule {
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-          //  .baseUrl(AppConstant.StaticURL.baseUrl)
+            //.baseUrl(BuildConfig.BASE_URL)
+          .baseUrl(AppConstant.StaticURL.localUrl)
             .client(
                 getRetrofitClient(
                     null, userPreferences = userPreferences,
@@ -83,8 +82,8 @@ object AppModule {
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-           // .baseUrl(AppConstant.StaticURL.baseUrl)
+            //.baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(AppConstant.StaticURL.localUrl)
             .client(getRetrofitClient(null, userPreferences = userPreferences, context = context))
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
@@ -113,7 +112,7 @@ object AppModule {
                     val logging = HttpLoggingInterceptor()
                     logging.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logging)
-                    client.addInterceptor(ChuckerInterceptor(context))
+                   // client.addInterceptor(ChuckerInterceptor(context))
                 }
             }.build()
     }
