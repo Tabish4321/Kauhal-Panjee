@@ -30,6 +30,7 @@ import android.content.res.Configuration
 import android.provider.Settings
 import com.google.gson.Gson
 import java.security.MessageDigest
+import java.security.SecureRandom
 
 
 object AppUtil {
@@ -314,7 +315,10 @@ object AppUtil {
         return gson.toJson(model)
     }
 
-
+    fun generateOTP(): Int {
+        val secureRandom = SecureRandom()
+        return secureRandom.nextInt(9000) + 1000 // Ensures a 4-digit number (1000 - 9999)
+    }
 
 
 }
