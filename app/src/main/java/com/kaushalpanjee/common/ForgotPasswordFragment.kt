@@ -118,6 +118,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
 
         }
+
         }
 
 

@@ -668,7 +668,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             AppUtil.saveStateCode(requireContext(),selectedStateCode)
 
 
-                                            val encryptedMaskedString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(), AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedAadhaarString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(), AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedName =   AESCryptography.encryptIntoBase64String(name, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedGender =   AESCryptography.encryptIntoBase64String(gender, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedDob =   AESCryptography.encryptIntoBase64String(dob, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
@@ -692,7 +692,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             val encryptedLdgdCode =   AESCryptography.encryptIntoBase64String(selectedStateLgdCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
                                             commonViewModel.getCreateUserAPI(UserCreationReq(
-                                                encryptedMaskedString,
+                                                encryptedAadhaarString,
                                                 encryptedName,
                                                 encryptedGender,
                                                 encryptedDob,

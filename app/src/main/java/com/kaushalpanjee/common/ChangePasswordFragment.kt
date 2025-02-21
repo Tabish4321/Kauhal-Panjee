@@ -10,6 +10,7 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.toastShort
@@ -48,9 +49,11 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
 
                 if (newPassword.equals(confirmNewPassword)){
 
+                    var shaOldPassword= AppUtil.sha512Hash(oldPassword)
+                    var shaNewPassword= AppUtil.sha512Hash(newPassword)
 
                     commonViewModel.getChangePass(ChangePassReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
-                        oldPassword,newPassword))
+                        shaOldPassword,shaNewPassword))
 
                     collectChangePassResponse()
 

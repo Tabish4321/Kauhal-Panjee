@@ -2855,8 +2855,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnjobcardnoValidate.setOnClickListener {
 
-            val username = HashUtils.sha512("Nrega") // Encrypt the username
-            val password = HashUtils.sha512("Nrg2k18") // Encrypt the password
+            val username = HashUtils.sha512("Nrega")
+            val password = HashUtils.sha512("Nrg2k18")
             jobCardNo= binding.etNregaValidate.text.toString()
             val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
 
