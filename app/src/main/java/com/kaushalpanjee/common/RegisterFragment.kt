@@ -24,6 +24,7 @@ import com.kaushalpanjee.core.util.onDone
 import com.kaushalpanjee.core.util.setLeftDrawable
 import com.kaushalpanjee.core.util.showKeyboard
 import com.kaushalpanjee.core.util.toastLong
+import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentRegisterBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,8 +38,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private var isEmailVerified = false
     private var countDownTimer: CountDownTimer? = null
     private val commonViewModel: CommonViewModel by viewModels()
-    private var mobileOTP: String? = null
-    private var emailOTP: String? = null
+    private var otp: String = ""
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,6 +81,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 )
                 showProgressBar()
                 resendOTPTimer()
+                otp= AppUtil.generateOTP().toString()
+                showSnackBar(otp)
+
 
                 if (isEmailVerified) {
                     "${getString(R.string.enter_code_msg)} ${binding.etPhone.text}".also {
@@ -94,7 +98,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                     commonViewModel.sendMobileOTP(
                         encryptedEtMobile,
-                        BuildConfig.VERSION_NAME
+                        BuildConfig.VERSION_NAME, otp
                     )
 
                 } else {
@@ -109,7 +113,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                     commonViewModel.sendEmailOTP(
                         binding.etEmail.text.toString(),
-                        BuildConfig.VERSION_NAME
+                        BuildConfig.VERSION_NAME,otp
                     )
                 }
             } else showSnackBar("No internet connection")
@@ -117,10 +121,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
         binding.tvVerify.setOnClickListener {
 
+
+
             if (isEmailVerified) {
 
                 if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
-                        mobileOTP
+                        otp
                     )
                 ) {
                     binding.clOTP.gone()
@@ -167,7 +173,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
 
                 if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
-                        emailOTP
+                        otp
                     )
                 ) {
                     toastLong("Email is verified")
@@ -207,6 +213,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
 
         binding.tvSendOtpAgain.setOnClickListener {
+            otp= AppUtil.generateOTP().toString()
+            showSnackBar(otp)
+
+
             binding.tvSendOtpAgain.isEnabled = false
             binding.tvSendOtpAgain.setTextColor(
                 ContextCompat.getColor(
@@ -222,11 +232,11 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                 commonViewModel.sendMobileOTP(
                     encryptedEtMobile,
-                    BuildConfig.VERSION_NAME
+                    BuildConfig.VERSION_NAME,otp
                 )
             } else commonViewModel.sendEmailOTP(
                 binding.etEmail.text.toString(),
-                BuildConfig.VERSION_NAME
+                BuildConfig.VERSION_NAME,otp
             )
 
             resendOTPTimer()
@@ -281,13 +291,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         hideProgressBar()
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
-                                val encyMobileOTP = sendMobileOTPResponse.otp
-                                 mobileOTP = AESCryptography.decryptIntoString(encyMobileOTP,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-                                showSnackBar(mobileOTP!!)
-
+                                toastShort(sendMobileOTPResponse.responseDesc)
                                 binding.clOTP.visible()
-                                if (BuildConfig.DEBUG)
-                                    showSnackBar(mobileOTP!!)
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
                             else showSnackBar("Internal Sever Error")
@@ -318,9 +323,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
                                 binding.clOTP.visible()
-                                emailOTP = sendMobileOTPResponse.otp
-                                if (BuildConfig.DEBUG)
-                                    showSnackBar(sendMobileOTPResponse.otp)
+                               toastShort(sendMobileOTPResponse.responseDesc)
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
                             else showSnackBar("Internal Sever Error")

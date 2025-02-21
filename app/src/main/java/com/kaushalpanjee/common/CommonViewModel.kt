@@ -75,9 +75,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val sendMobileOTP = _sendMobileOTP.asSharedFlow()
 
 
-    fun sendMobileOTP(mobileNumber:String , appVersion:String){
+    fun sendMobileOTP(mobileNumber:String , appVersion:String, otp :String){
         viewModelScope.launch {
-            commonRepository.sendMobileOTP(mobileNumber,appVersion).collectLatest {
+            commonRepository.sendMobileOTP(mobileNumber,appVersion,otp).collectLatest {
                 _sendMobileOTP.emit(it)
             }
         }
@@ -88,9 +88,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var _sendEmailOTP = MutableSharedFlow<Resource<out SendMobileOTPResponse>>()
     val sendEmailOTP = _sendEmailOTP.asSharedFlow()
 
-    fun sendEmailOTP(email:String,appVersion: String){
+    fun sendEmailOTP(email:String,appVersion: String, otp :String){
         viewModelScope.launch {
-            commonRepository.sendEmailOTP(email,appVersion).collectLatest {
+            commonRepository.sendEmailOTP(email,appVersion,otp).collectLatest {
                 _sendEmailOTP.emit(it)
             }
         }}

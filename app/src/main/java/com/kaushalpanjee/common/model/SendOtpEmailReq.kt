@@ -1,3 +1,3 @@
 package com.kaushalpanjee.common.model
 
-data class SendOtpEmailReq(val email : String, val appVersion :String)
+data class SendOtpEmailReq(val email : String, val appVersion :String, val otp :String)

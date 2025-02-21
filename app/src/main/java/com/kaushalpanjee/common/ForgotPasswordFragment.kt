@@ -14,6 +14,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.gone
@@ -89,8 +90,9 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
             mobileNo= binding.etPhone.text.toString()
 
             if (email.isNotEmpty()&& mobileNo.isNotEmpty()){
+                otp= AppUtil.generateOTP().toString()
 
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email))
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,otp))
                 collectForgotOtpResponse()
 
             }
@@ -109,7 +111,9 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
             if (email.isNotEmpty()&& mobileNo.isNotEmpty()){
 
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email))
+                otp= AppUtil.generateOTP().toString()
+
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,otp))
                 collectForgotOtpResponse()
 
             }
@@ -139,15 +143,14 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
                         hideProgressBar()
                         it.data?.let { getChangePassOtp ->
                             if (getChangePassOtp.responseCode == 200) {
-
-                                 otp = getChangePassOtp.otp.toString()
-                                showSnackBar(otp)
+                                toastShort(getChangePassOtp.responseDesc)
 
                                 binding.clForgotOTP.visible()
                                 binding.tvVerify.visible()
                                 binding.etEmail.gone()
                                 binding.etPhone.gone()
                                 binding.progressButton.root.gone()
+
 
 
 
@@ -462,6 +465,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
     }
 
         private  fun validateAndNavigate(){
+            otp= AppUtil.generateOTP().toString()
 
             if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
                     otp
@@ -472,7 +476,8 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
                 // hit api
 
 
-                commonViewModel.getLoginIdPass(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email))
+                otp= AppUtil.generateOTP().toString()
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,otp))
                 collectGetIdPassResponse()
 
 

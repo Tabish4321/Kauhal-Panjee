@@ -73,15 +73,15 @@ class CommonRepository @Inject constructor(
     private val database: AppDatabase
     ){
 
-    suspend fun sendMobileOTP(mobileNumber : String, appVersion :String): Flow<Resource<out SendMobileOTPResponse>> {
+    suspend fun sendMobileOTP(mobileNumber : String, appVersion :String, otp :String): Flow<Resource<out SendMobileOTPResponse>> {
        return networkBoundResourceWithoutDb {
-            appLevelApi.sendMobileOTP(SendOTPRequest(mobileNumber,appVersion))
+            appLevelApi.sendMobileOTP(SendOTPRequest(mobileNumber,appVersion,otp))
         }
     }
 
-    suspend fun sendEmailOTP(email : String,appVersion: String): Flow<Resource<out SendMobileOTPResponse>> {
+    suspend fun sendEmailOTP(email : String,appVersion: String, otp :String): Flow<Resource<out SendMobileOTPResponse>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.sendEmailTP(SendOtpEmailReq(email,appVersion))
+            appLevelApi.sendEmailTP(SendOtpEmailReq(email,appVersion,otp))
         }
     }
 
