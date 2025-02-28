@@ -383,35 +383,7 @@ public class DigitalSigner {
 
 
 
-        /*PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.decode(context.getResources().getString(R.string.private_key_string),Base64.DEFAULT));
-        PrivateKey pk = null;
-        //KeyFactory fact = null;
-        KeyFactory fact2 = null;
-        try {
-            fact = KeyFactory.getInstance("RSA");
 
-        } catch (NoSuchAlgorithmException e) {
-
-            e.printStackTrace();
-        }
-        try {
-            pk = fact.generatePrivate(spec);
-        } catch (InvalidKeySpecException e) {
-            try {
-                fact2 = KeyFactory.getInstance("DER");
-            } catch (NoSuchAlgorithmException ex) {
-                ex.printStackTrace();
-            }
-            try {
-                pk = fact2.generatePrivate(spec);
-            } catch (InvalidKeySpecException ex) {
-                ex.printStackTrace();
-            }
-            e.printStackTrace();
-        }*/
-
-
-        //   return pk;
 
     }
 

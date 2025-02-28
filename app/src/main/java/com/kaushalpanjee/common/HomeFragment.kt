@@ -91,7 +91,10 @@ import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.isNull
+import com.kaushalpanjee.core.util.log
+import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setDrawable
+import com.kaushalpanjee.core.util.setRightDrawablePassword
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
@@ -273,6 +276,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     var addressPresentLine1 = ""
     var addressPresentLine2 = ""
     var pinCodePresent = ""
+    private var showPassword = true
     var isValidPan = false
 
 
@@ -2509,6 +2513,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 positiveButton(text = "OK")
                 negativeButton(text = "Cancel")
             }
+        }
+        binding.etBankAcNo.onRightDrawableClicked {
+
+            log("onRightDrawableClicked", "onRightDrawableClicked")
+            if (showPassword) {
+                showPassword = false
+                binding.etBankAcNo.setRightDrawablePassword(
+                    true, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
+                )
+            } else {
+                showPassword = true
+
+                binding.etBankAcNo.setRightDrawablePassword(
+                    false, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
+                )
+
+            }
+
         }
 
         binding.tvTradeItems.setOnClickListener {

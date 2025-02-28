@@ -691,12 +691,13 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                             val DecbankbankAccNumber = AESCryptography.decryptIntoString(x.bankAccNumber,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
 
+                                            val maskedAccountNo= maskString(DecbankbankAccNumber)
 
 
                                             binding.etIfsc.setText(DecIfscCode)
                                             binding.etBankName.setText(DecBankName)
                                             binding.etBranchName.setText(DecbankBranchName)
-                                            binding.etBankAcNo.setText(DecbankbankAccNumber)
+                                            binding.etBankAcNo.setText(maskedAccountNo)
                                             binding.etPanNumber.setText(DecpanNo)
                                         }
 
@@ -855,5 +856,15 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     }
 
 
-
+    fun maskString(input: String): String {
+        return if (input.length <= 4) {
+            // If the string is 4 or fewer characters, return it as is
+            input
+        } else {
+            // Mask all but the last 4 characters with '*'
+            val maskedPart = "*".repeat(input.length - 4)
+            val lastFour = input.takeLast(4)
+            return maskedPart + lastFour
+        }
+    }
 }

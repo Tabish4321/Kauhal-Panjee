@@ -108,6 +108,9 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                             else if (getChangePass.responseCode == 207) {
                                 toastShort(getChangePass.responseDesc)
                             }
+                            else if (getChangePass.responseCode == 208) {
+                                toastShort(getChangePass.responseDesc)
+                            }
                             else if (getChangePass.responseCode==401){
                                 AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }

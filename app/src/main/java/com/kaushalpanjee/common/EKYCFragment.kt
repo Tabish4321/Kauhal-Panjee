@@ -819,7 +819,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
            tokenGen= AppUtil.getSavedTokenPreference(requireContext())
 
-           if (tokenGen==(tokenViaCreate)){
+          // if (tokenGen==(tokenViaCreate)){
                AppUtil.saveLoginStatus(requireContext(), true)
 
                val navController = findNavController()
@@ -832,8 +832,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                bottomSheetDialog.dismiss()
 
-           }
-           else toastShort("Please Wait")
+           //}
+          // else toastShort("Please Wait")
 
        }
 

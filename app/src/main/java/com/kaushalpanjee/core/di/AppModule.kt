@@ -63,8 +63,8 @@ object AppModule {
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-            //.baseUrl(BuildConfig.BASE_URL)
-          .baseUrl(AppConstant.StaticURL.localUrl)
+            .baseUrl(BuildConfig.BASE_URL)
+          //.baseUrl(AppConstant.StaticURL.localUrl)
             .client(
                 getRetrofitClient(
                     null, userPreferences = userPreferences,
@@ -82,8 +82,8 @@ object AppModule {
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-            //.baseUrl(BuildConfig.BASE_URL)
-            .baseUrl(AppConstant.StaticURL.localUrl)
+            .baseUrl(BuildConfig.BASE_URL)
+            //.baseUrl(AppConstant.StaticURL.localUrl)
             .client(getRetrofitClient(null, userPreferences = userPreferences, context = context))
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())

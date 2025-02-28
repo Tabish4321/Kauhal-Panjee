@@ -153,7 +153,6 @@
                 android:drawableEnd="@drawable/close_eye"
                 android:hint="@string/password"
                 android:imeOptions="actionNext"
-
                 android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
