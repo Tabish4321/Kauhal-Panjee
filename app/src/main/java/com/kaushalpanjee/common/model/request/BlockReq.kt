@@ -1,3 +1,3 @@
 package com.kaushalpanjee.common.model.request
 
-data class BlockReq(val districtCode: String, val appVersion :String)
+data class BlockReq(val districtCode: String, val appVersion :String,var loginId :String)

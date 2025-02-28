@@ -53,7 +53,7 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                     var shaNewPassword= AppUtil.sha512Hash(newPassword)
 
                     commonViewModel.getChangePass(ChangePassReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
-                        shaOldPassword,shaNewPassword))
+                        shaOldPassword,shaNewPassword),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectChangePassResponse()
 
@@ -105,6 +105,12 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                                 toastShort(getChangePass.responseDesc)
                             }
 
+                            else if (getChangePass.responseCode == 207) {
+                                toastShort(getChangePass.responseDesc)
+                            }
+                            else if (getChangePass.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
 
 
                             else {

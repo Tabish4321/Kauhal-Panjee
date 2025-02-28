@@ -7,7 +7,6 @@ val gender: String,
 val dateOfBirth: String,
 val stateName: String,
 val stateCode: String,
-
 val districtName: String,
 val blockName: String,
 val postOffice: String,

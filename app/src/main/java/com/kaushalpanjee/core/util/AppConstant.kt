@@ -11,7 +11,7 @@ object AppConstant {
         const val BUCKET_PROFILE= "profile/"
         const val BUCKET_DOCUMENTS= "documents/"
         const val BUCKET_CATEGORY= "category/"
-        const val FACE_AUTH_UIADI= "https://nregarep1.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
+        const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
         const val localUrl= "http://10.197.183.177:8080/"
 
 
@@ -32,7 +32,7 @@ object AppConstant {
         var ENCRYPT_KEY = "$10A80$10A80$10A";
 
         const val PRE_PRODUCTION: String = "preProduction"
-        const val PRODUCTION: String = "production"
+        const val PRODUCTION: String = "P"
         const val ENGLISH: String = "english"
         const val STAGING_CODE: String = "S"
         const val PRE_PRODUCTION_CODE: String = "PP"

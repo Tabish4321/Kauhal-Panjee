@@ -43,11 +43,13 @@ import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TokenReq
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -63,9 +65,11 @@ import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
+import com.kaushalpanjee.core.util.AppUtil
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -73,56 +77,61 @@ class CommonRepository @Inject constructor(
     private val database: AppDatabase
     ){
 
-    suspend fun sendMobileOTP(mobileNumber : String, appVersion :String, otp :String): Flow<Resource<out SendMobileOTPResponse>> {
+    suspend fun getToken(imeiNo : String, appVersion :String): Flow<Resource<out TokenRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getToken(TokenReq(appVersion,imeiNo))
+        }
+    }
+    suspend fun sendMobileOTP(mobileNumber : String, appVersion :String, imeiNo :String): Flow<Resource<out SendMobileOTPResponse>> {
        return networkBoundResourceWithoutDb {
-            appLevelApi.sendMobileOTP(SendOTPRequest(mobileNumber,appVersion,otp))
+            appLevelApi.sendMobileOTP(SendOTPRequest(imeiNo,mobileNumber,appVersion))
         }
     }
 
-    suspend fun sendEmailOTP(email : String,appVersion: String, otp :String): Flow<Resource<out SendMobileOTPResponse>> {
+    suspend fun sendEmailOTP(email : String,appVersion: String, imeiNo :String): Flow<Resource<out SendMobileOTPResponse>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.sendEmailTP(SendOtpEmailReq(email,appVersion,otp))
+            appLevelApi.sendEmailTP(SendOtpEmailReq(imeiNo,email,appVersion))
         }
     }
 
-    suspend fun getTechEducationAPI(appVersion: String): Flow<Resource<out TechQualificationRes>>{
+    suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String): Flow<Resource<out TechQualificationRes>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getTechEducationAPI(TechQualification(appVersion))
-        }
-
-    }
-
-    suspend fun getTechEducationDomainAPI(appVersion: String,qual : String): Flow<Resource<out TechnicalEduDomain>>{
-        return networkBoundResourceWithoutDb {
-            appLevelApi.getTechEducationDomainAPI(TechDomainReq(appVersion,qual))
+            appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId))
         }
 
     }
 
-    suspend fun getStateListApi(appVersion: String): Flow<Resource<out StateDataResponse>>{
+    suspend fun getTechEducationDomainAPI(appVersion: String,qual : String,header :String,loginId :String): Flow<Resource<out TechnicalEduDomain>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getStateListAPI(StateListReq(appVersion))
+            appLevelApi.getTechEducationDomainAPI(header,TechDomainReq(appVersion,qual,loginId))
+        }
+
+    }
+
+    suspend fun getStateListApi(appVersion: String,loginId:String): Flow<Resource<out StateDataResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getStateListAPI(StateListReq(appVersion,loginId))
         }
     }
 
 
 
-    suspend fun getWhereHaveYouHeardAPI(appVersion: String): Flow<Resource<out WhereHaveYouHeardRes>>{
+    suspend fun getWhereHaveYouHeardAPI(appVersion: String,header :String,loginId :String): Flow<Resource<out WhereHaveYouHeardRes>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getWhereHaveYouHeardAPI(StateListReq(appVersion))
+            appLevelApi.getWhereHaveYouHeardAPI(header,StateListReq(appVersion,loginId))
         }
     }
 
-    suspend fun getDistrictListApi(stateCode: String,appVersion: String): Flow<Resource<out DistrictResponse>>{
+    suspend fun getDistrictListApi(stateCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out DistrictResponse>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getDistrictListAPI(DistrictReq(stateCode, appVersion))
+            appLevelApi.getDistrictListAPI(header,DistrictReq(stateCode, appVersion,loginId))
         }
     }
 
 
-    suspend fun getDistrictPerListApi(stateCode: String,appVersion: String): Flow<Resource<out DistrictResponse>>{
+    suspend fun getDistrictPerListApi(stateCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out DistrictResponse>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getDistrictPreListAPI(DistrictReq(stateCode, appVersion))
+            appLevelApi.getDistrictPreListAPI(header,DistrictReq(stateCode, appVersion,loginId))
         }
     }
 
@@ -135,126 +144,126 @@ class CommonRepository @Inject constructor(
     }
 
 
-    suspend fun getBlockListApi(districtCode: String,appVersion: String): Flow<Resource<out BlockResponse>>{
+    suspend fun getBlockListApi(districtCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out BlockResponse>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getBlockListAPI(BlockReq(districtCode, appVersion))
+            appLevelApi.getBlockListAPI(header,BlockReq(districtCode, appVersion,loginId))
         }
     }
 
 
-    suspend fun getBlockPerListApi(districtCode: String,appVersion: String): Flow<Resource<out BlockResponse>>{
+    suspend fun getBlockPerListApi(districtCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out BlockResponse>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getBlockPerListAPI(BlockReq(districtCode, appVersion))
-        }
-    }
-
-
-
-    suspend fun getGPListApi(blockCode: String,appVersion: String): Flow<Resource<out grampanchayatResponse>>{
-        return networkBoundResourceWithoutDb {
-            appLevelApi.getGpListAPI(GramPanchayatReq(blockCode, appVersion))
-        }
-    }
-
-
-    suspend fun getGPPerListApi(blockCode: String,appVersion: String): Flow<Resource<out grampanchayatResponse>>{
-        return networkBoundResourceWithoutDb {
-            appLevelApi.getGpPerListAPI(GramPanchayatReq(blockCode, appVersion))
+            appLevelApi.getBlockPerListAPI(header,BlockReq(districtCode, appVersion,loginId))
         }
     }
 
 
 
-
-    suspend fun getVillageListApi(gpCode: String,appVersion: String): Flow<Resource<out VillageResponse>>{
+    suspend fun getGPListApi(blockCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out grampanchayatResponse>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getVillageListAPI(VillageReq(gpCode, appVersion))
+            appLevelApi.getGpListAPI(header,GramPanchayatReq(blockCode, appVersion,loginId))
         }
     }
 
 
-    suspend fun getVillagePerListApi(gpCode: String,appVersion: String): Flow<Resource<out VillageResponse>>{
+    suspend fun getGPPerListApi(blockCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out grampanchayatResponse>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getVillagePerListAPI(VillageReq(gpCode, appVersion))
-        }
-    }
-
-
-
-    suspend fun getAadhaarListAPI(adharDetailsReq: AdharDetailsReq): Flow<Resource<out AadhaarDetailRes>>{
-        return networkBoundResourceWithoutDb {
-            appLevelApi.getAadhaarListAPI(adharDetailsReq)
-        }
-    }
-
-    suspend fun getSeccListAPI(seccReq: SeccReq): Flow<Resource<out SeccDetailsRes>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.getSeccListAPI(seccReq)
-        }
-    }
-
-
-    suspend fun getSecctionAndPerAPI(sectionAndPerReq: SectionAndPerReq): Flow<Resource<out SectionAndPer>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.getSecctionAndPerAPI(sectionAndPerReq)
-        }
-    }
-
-
-    suspend fun insertPersonalDataAPI(personalInsertReq: PersonalInsertReq): Flow<Resource<out InsertRes>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.insertPersonalDataAPI(personalInsertReq)
+            appLevelApi.getGpPerListAPI(header,GramPanchayatReq(blockCode, appVersion,loginId))
         }
     }
 
 
 
-    suspend fun insertAddressAPI(addressInsertReq: AddressInsertReq): Flow<Resource<out InsertRes>>{
+
+    suspend fun getVillageListApi(gpCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out VillageResponse>>{
         return networkBoundResourceWithoutDb {
-
-            appLevelApi.insertAddressAPI(addressInsertReq)
-        }
-    }
-
-    suspend fun insertSeccAPI(seccInsertReq: SeccInsertReq): Flow<Resource<out InsertRes>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.insertSeccAPI(seccInsertReq)
+            appLevelApi.getVillageListAPI(header,VillageReq(gpCode, appVersion,loginId))
         }
     }
 
 
-    suspend fun insertEducationAPI(educationalInsertReq: EducationalInsertReq): Flow<Resource<out InsertRes>>{
+    suspend fun getVillagePerListApi(gpCode: String,appVersion: String,header :String,loginId :String): Flow<Resource<out VillageResponse>>{
         return networkBoundResourceWithoutDb {
-
-            appLevelApi.insertEducatio0nAPI(educationalInsertReq)
-        }
-    }
-
-    suspend fun insertEmploymentAPI(employmentInsertReq: EmploymentInsertReq): Flow<Resource<out InsertRes>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.insertEmploymentAPI(employmentInsertReq)
-        }
-    }
-
-
-    suspend fun insertTrainingAPI(trainingInsertReq: TrainingInsertReq): Flow<Resource<out InsertRes>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.insertTrainingAPI(trainingInsertReq)
+            appLevelApi.getVillagePerListAPI(header,VillageReq(gpCode, appVersion,loginId))
         }
     }
 
 
 
-    suspend fun insertBankingAPI(bankingInsertReq: BankingInsertReq): Flow<Resource<out InsertRes>>{
+    suspend fun getAadhaarListAPI(adharDetailsReq: AdharDetailsReq,header :String): Flow<Resource<out AadhaarDetailRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getAadhaarListAPI(header,adharDetailsReq)
+        }
+    }
+
+    suspend fun getSeccListAPI(seccReq: SeccReq,header :String): Flow<Resource<out SeccDetailsRes>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.insertBankingAPI(bankingInsertReq)
+            appLevelApi.getSeccListAPI(header,seccReq)
+        }
+    }
+
+
+    suspend fun getSecctionAndPerAPI(sectionAndPerReq: SectionAndPerReq,header :String): Flow<Resource<out SectionAndPer>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getSecctionAndPerAPI(header,sectionAndPerReq)
+        }
+    }
+
+
+    suspend fun insertPersonalDataAPI(personalInsertReq: PersonalInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertPersonalDataAPI(header,personalInsertReq)
+        }
+    }
+
+
+
+    suspend fun insertAddressAPI(addressInsertReq: AddressInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertAddressAPI(header,addressInsertReq)
+        }
+    }
+
+    suspend fun insertSeccAPI(seccInsertReq: SeccInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertSeccAPI(header,seccInsertReq)
+        }
+    }
+
+
+    suspend fun insertEducationAPI(educationalInsertReq: EducationalInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertEducatio0nAPI(header,educationalInsertReq)
+        }
+    }
+
+    suspend fun insertEmploymentAPI(employmentInsertReq: EmploymentInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertEmploymentAPI(header,employmentInsertReq)
+        }
+    }
+
+
+    suspend fun insertTrainingAPI(trainingInsertReq: TrainingInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertTrainingAPI(header,trainingInsertReq)
+        }
+    }
+
+
+
+    suspend fun insertBankingAPI(bankingInsertReq: BankingInsertReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertBankingAPI(header,bankingInsertReq)
         }
     }
 
@@ -275,74 +284,79 @@ class CommonRepository @Inject constructor(
             appLevelApi.getLanguageListAPI(BuildConfig.VERSION_NAME)
         }
     }
-
-
-
-    suspend fun getSectorListAPI(techQualification: TechQualification): Flow<Resource<out SectorResponse>>{
+    suspend fun getOtpValidateApi(validateOtpReq: ValidateOtpReq): Flow<Resource<out SendMobileOTPResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getSectorListAPI(techQualification)
+            appLevelApi.getOtpValidateApi(validateOtpReq)
         }
     }
 
 
-    suspend fun getTradeListAPI(tradeReq: TradeReq): Flow<Resource<out TradeResponse>>{
+    suspend fun getSectorListAPI(techQualification: TechQualification,header :String): Flow<Resource<out SectorResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getTradeListAPI(tradeReq)
+            appLevelApi.getSectorListAPI(header,techQualification)
         }
     }
 
 
-
-
-    suspend fun getTrainingSearchAPI(trainingSearch: TrainingSearch): Flow<Resource<out TrainingCenterRes>>{
+    suspend fun getTradeListAPI(tradeReq: TradeReq,header :String): Flow<Resource<out TradeResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getTrainingSearchAPI(trainingSearch)
+            appLevelApi.getTradeListAPI(header,tradeReq)
         }
     }
 
 
 
 
-    suspend fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq): Flow<Resource<out TrainingCenterRes>>{
+    suspend fun getTrainingSearchAPI(trainingSearch: TrainingSearch,header :String): Flow<Resource<out TrainingCenterRes>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getTrainingListAPI(trainingCenterReq)
+            appLevelApi.getTrainingSearchAPI(header,trainingSearch)
         }
     }
 
 
 
-    suspend fun getSelectedTrainingListAPI(getSearchTraining: GetSearchTraining): Flow<Resource<out TrainingCenterRes>>{
+
+    suspend fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq,header :String): Flow<Resource<out TrainingCenterRes>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getSelectedTrainingListAPI(getSearchTraining)
+            appLevelApi.getTrainingListAPI(header,trainingCenterReq)
         }
     }
 
 
-    suspend fun getCandidateDetailsAPI(candidateReq: CandidateReq): Flow<Resource<out CandidateDetails>>{
+
+    suspend fun getSelectedTrainingListAPI(getSearchTraining: GetSearchTraining,header :String): Flow<Resource<out TrainingCenterRes>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getCandidateDetailsAPI(candidateReq)
+            appLevelApi.getSelectedTrainingListAPI(header,getSearchTraining)
         }
     }
 
 
-    suspend fun getImageChangeAPI(imageChangeReq: ImageChangeReq): Flow<Resource<out InsertRes>>{
+    suspend fun getCandidateDetailsAPI(candidateReq: CandidateReq,header :String): Flow<Resource<out CandidateDetails>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getImageChangeAPI(imageChangeReq)
+            appLevelApi.getCandidateDetailsAPI(header,candidateReq)
         }
     }
 
 
-    suspend fun getChangePass(changePassReq: ChangePassReq): Flow<Resource<out InsertRes>>{
+    suspend fun getImageChangeAPI(imageChangeReq: ImageChangeReq,header :String): Flow<Resource<out InsertRes>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getChangePass(changePassReq)
+            appLevelApi.getImageChangeAPI(header,imageChangeReq)
+        }
+    }
+
+
+    suspend fun getChangePass(changePassReq: ChangePassReq,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getChangePass(header,changePassReq)
         }
     }
 
@@ -365,10 +379,10 @@ class CommonRepository @Inject constructor(
 
 
 
-    suspend fun getBankDetailsAPI(bankingReq: BankingReq): Flow<Resource<out BankingRes>>{
+    suspend fun getBankDetailsAPI(bankingReq: BankingReq,header :String): Flow<Resource<out BankingRes>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.getBankDetailsAPI(bankingReq)
+            appLevelApi.getBankDetailsAPI(header,bankingReq)
         }
     }
 

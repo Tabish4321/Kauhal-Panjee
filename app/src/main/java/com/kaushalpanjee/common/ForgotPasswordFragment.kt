@@ -13,6 +13,7 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
+import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
@@ -35,7 +36,6 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
     private val commonViewModel: CommonViewModel by activityViewModels()
     private var countDownTimer: CountDownTimer? = null
-    private var otp = ""
     private var email = ""
     private var mobileNo = ""
 
@@ -90,9 +90,8 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
             mobileNo= binding.etPhone.text.toString()
 
             if (email.isNotEmpty()&& mobileNo.isNotEmpty()){
-                otp= AppUtil.generateOTP().toString()
 
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,otp))
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext())))
                 collectForgotOtpResponse()
 
             }
@@ -111,9 +110,8 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
             if (email.isNotEmpty()&& mobileNo.isNotEmpty()){
 
-                otp= AppUtil.generateOTP().toString()
 
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,otp))
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext())))
                 collectForgotOtpResponse()
 
             }
@@ -157,6 +155,8 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
                             } else if (getChangePassOtp.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                            }  else if (getChangePassOtp.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
 
                             else if (getChangePassOtp.responseCode == 207) {
@@ -203,6 +203,52 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
                                 toastShort(getLoginIdPass.responseDesc)
                             }
 
+                            else if (getLoginIdPass.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
+
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectValidateOtpResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getOtpValidateApi) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getOtpValidateApi ->
+                            if (getOtpValidateApi.responseCode == 200) {
+                                toastShort(getOtpValidateApi.responseDesc)
+                                binding.clForgotOTP.gone()
+                                commonViewModel.getLoginIdPass(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext())))
+                                collectGetIdPassResponse()
+
+                            } else if (getOtpValidateApi.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            }
+
+                            else if (getOtpValidateApi.responseCode == 207) {
+                                toastShort(getOtpValidateApi.responseDesc)
+                            }
+                            else if (getOtpValidateApi.responseCode == 210) {
+                                toastShort(getOtpValidateApi.responseDesc)
+                            }
+
 
 
                             else {
@@ -214,6 +260,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
             }
         }
     }
+
 
 
 
@@ -465,20 +512,19 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
     }
 
         private  fun validateAndNavigate(){
-            otp= AppUtil.generateOTP().toString()
 
-            if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
-                    otp
-                )
+            if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".isNotEmpty()
             ) {
-                binding.clForgotOTP.gone()
 
                 // hit api
+                var otp= "${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}"
 
 
-                otp= AppUtil.generateOTP().toString()
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,otp))
-                collectGetIdPassResponse()
+
+                commonViewModel.getOtpValidateApi(ValidateOtpReq(BuildConfig.VERSION_NAME, email,mobileNo,AppUtil.getAndroidId(requireContext()),otp))
+                collectValidateOtpResponse()
+
+
 
 
 

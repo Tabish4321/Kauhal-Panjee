@@ -119,20 +119,13 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private fun init()
     {
         listeners()
+        commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
-        commonViewModel.getSecctionAndPerAPI(
-            SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
-                AppUtil.getAndroidId(requireContext()))
-        )
-        commonViewModel.getAadhaarListAPI(
-            AdharDetailsReq(
-                BuildConfig.VERSION_NAME,
-                AppUtil.getAndroidId(requireContext()),
-                userPreferences.getUseID()
-            )
+        commonViewModel.getAadhaarListAPI(AdharDetailsReq
+            (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext())
         )
 
-        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
     }
 
     private fun listeners() {
@@ -351,9 +344,15 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                     binding.profileView.circleImageView.setImageBitmap(bitmap)
 
                                 }
-                            } else if (getAadharDetailsRes.responseCode == 301) {
+                            }
+                            else if (getAadharDetailsRes.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }
+                            else if (getAadharDetailsRes.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }
+                            else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -470,7 +469,10 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }  else if (getSecctionAndPerAPI.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -700,7 +702,10 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                     } else if (getCandidateDetailsAPI.responseCode == 301) {
                                         showSnackBar("Please Update from PlayStore")
-                                    } else {
+                                    }
+                                    else if (getCandidateDetailsAPI.responseCode==401){
+                                        AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                                    }else {
                                         showSnackBar("Something went wrong")
                                     }
                                 } ?: showSnackBar("Internal Server Error")

@@ -46,6 +46,7 @@ import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -61,6 +62,7 @@ import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
@@ -71,13 +73,30 @@ import javax.inject.Inject
 class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository) :ViewModel() {
 
 
+
+    private var _getToken = MutableSharedFlow<Resource<out TokenRes>>()
+    val getToken = _getToken.asSharedFlow()
+
+
+    fun getToken(imeiNo:String , appVersion:String){
+        viewModelScope.launch {
+            commonRepository.getToken(imeiNo,appVersion).collectLatest {
+                _getToken.emit(it)
+            }
+        }
+
+
+    }
+
+
+
     private var _sendMobileOTP = MutableSharedFlow<Resource<out SendMobileOTPResponse>>()
     val sendMobileOTP = _sendMobileOTP.asSharedFlow()
 
 
-    fun sendMobileOTP(mobileNumber:String , appVersion:String, otp :String){
+    fun sendMobileOTP(mobileNumber:String , appVersion:String, imeiNo :String){
         viewModelScope.launch {
-            commonRepository.sendMobileOTP(mobileNumber,appVersion,otp).collectLatest {
+            commonRepository.sendMobileOTP(mobileNumber,appVersion,imeiNo).collectLatest {
                 _sendMobileOTP.emit(it)
             }
         }
@@ -88,9 +107,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var _sendEmailOTP = MutableSharedFlow<Resource<out SendMobileOTPResponse>>()
     val sendEmailOTP = _sendEmailOTP.asSharedFlow()
 
-    fun sendEmailOTP(email:String,appVersion: String, otp :String){
+    fun sendEmailOTP(email:String,appVersion: String, imeiNo :String){
         viewModelScope.launch {
-            commonRepository.sendEmailOTP(email,appVersion,otp).collectLatest {
+            commonRepository.sendEmailOTP(email,appVersion,imeiNo).collectLatest {
                 _sendEmailOTP.emit(it)
             }
         }}
@@ -98,9 +117,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
          private var _techEducation = MutableSharedFlow<Resource<out TechQualificationRes>>()
          val techEducation = _techEducation.asSharedFlow()
 
-         fun getTechEducation(appVersion: String){
+         fun getTechEducation(appVersion: String,header :String,loginId :String){
             viewModelScope.launch {
-            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME,loginId,header).collectLatest {
                 _techEducation.emit(it)
             }
         }
@@ -111,9 +130,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var _techEducationDomain = MutableSharedFlow<Resource<out TechnicalEduDomain>>()
     val techEducationDomain = _techEducationDomain.asSharedFlow()
 
-    fun getTechEducationDomainAPI(appVersion: String,qual :String){
+    fun getTechEducationDomainAPI(appVersion: String,qual :String,header :String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getTechEducationDomainAPI(BuildConfig.VERSION_NAME,qual).collectLatest {
+            commonRepository.getTechEducationDomainAPI(BuildConfig.VERSION_NAME,qual,header,loginId).collectLatest {
                 _techEducationDomain.emit(it)
             }
         }
@@ -126,20 +145,20 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     fun getStateListApi(){
         viewModelScope.launch {
-            commonRepository.getStateListApi(BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getStateListApi(BuildConfig.VERSION_NAME,"").collectLatest {
                 _stateList.emit(it)
             }
         }
     }
-
+//Bearer LXaLQDGlmOJlb14mZbYxHw==
     private var _WhereHaveYouHeard =  MutableStateFlow<Resource<out WhereHaveYouHeardRes>>(Resource.Loading())
     val getWhereHaveYouHeard = _WhereHaveYouHeard.asStateFlow()
 
 
 
-    fun getWhereHaveYouHeardAPI(){
+    fun getWhereHaveYouHeardAPI(header :String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getWhereHaveYouHeardAPI(BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getWhereHaveYouHeardAPI(BuildConfig.VERSION_NAME,header,loginId).collectLatest {
                 _WhereHaveYouHeard.emit(it)
             }
         }
@@ -149,25 +168,15 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getDistrictList = _districtList.asStateFlow()
 
 
-    fun getDistrictListApi(state :String){
+    fun getDistrictListApi(state :String,header :String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getDistrictListApi(state,BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getDistrictListApi(state,BuildConfig.VERSION_NAME,header,loginId).collectLatest {
                 _districtList.emit(it)
             }
         }
     }
 
-    private var _districtListPer =  MutableStateFlow<Resource<out DistrictResponse>>(Resource.Loading())
-    val getDistrictListPer = _districtListPer.asStateFlow()
 
-
-    fun getDistrictListPerApi(state :String){
-        viewModelScope.launch {
-            commonRepository.getDistrictPerListApi(state,BuildConfig.VERSION_NAME).collectLatest {
-                _districtListPer.emit(it)
-            }
-        }
-    }
 
 
     private var _userCreation =  MutableStateFlow<Resource<out CreateUserRes>>(Resource.Loading())
@@ -188,9 +197,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getBlockList = _blockList.asStateFlow()
 
 
-    fun getBlockListApi(district :String){
+    fun getBlockListApi(district :String,header :String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getBlockListApi(district,BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getBlockListApi(district,BuildConfig.VERSION_NAME,header,loginId).collectLatest {
                 _blockList.emit(it)
             }
         }}
@@ -200,9 +209,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getBlockListPer = _blockListPer.asStateFlow()
 
 
-    fun getBlockPerListApi(district :String){
+    fun getBlockPerListApi(district :String,header :String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getBlockPerListApi(district,BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getBlockPerListApi(district,BuildConfig.VERSION_NAME,header,loginId).collectLatest {
                 _blockListPer.emit(it)
             }
         }}
@@ -212,9 +221,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         val getGpList = _gpList.asStateFlow()
 
 
-        fun getGpListApi(block :String) {
+        fun getGpListApi(block :String,header :String,loginId :String) {
             viewModelScope.launch {
-                commonRepository.getGPListApi(block, BuildConfig.VERSION_NAME).collectLatest {
+                commonRepository.getGPListApi(block, BuildConfig.VERSION_NAME,header,loginId).collectLatest {
                     _gpList.emit(it)
                 }
             }
@@ -223,30 +232,13 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
 
 
-    private  var _gpListPer =  MutableStateFlow<Resource<out grampanchayatResponse>>(Resource.Loading())
-    val getGpListPer = _gpListPer.asStateFlow()
-
-
-    fun getGpPerListApi(block :String) {
-        viewModelScope.launch {
-            commonRepository.getGPPerListApi(block, BuildConfig.VERSION_NAME).collectLatest {
-                _gpListPer.emit(it)
-            }
-        }
-
-
-    }
-
-
-
-
     private  var _villageList =  MutableStateFlow<Resource<out VillageResponse>>(Resource.Loading())
     val getVillageList = _villageList.asStateFlow()
 
 
-    fun getVillageListApi(gp :String) {
+    fun getVillageListApi(gp :String,header :String,loginId :String) {
         viewModelScope.launch {
-            commonRepository.getVillageListApi(gp, BuildConfig.VERSION_NAME).collectLatest {
+            commonRepository.getVillageListApi(gp, BuildConfig.VERSION_NAME,header,loginId).collectLatest {
                 _villageList.emit(it)
             }
         }
@@ -255,20 +247,6 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-    private  var _villageListPer =  MutableStateFlow<Resource<out VillageResponse>>(Resource.Loading())
-    val getVillageListPer = _villageListPer.asStateFlow()
-
-
-    fun getVillagePerListApi(gp :String) {
-        viewModelScope.launch {
-            commonRepository.getVillagePerListApi(gp, BuildConfig.VERSION_NAME).collectLatest {
-                _villageListPer.emit(it)
-            }
-        }
-
-
-    }
-
 
 
 
@@ -276,9 +254,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getAadhaarList = _aadhaarList.asStateFlow()
 
 
-    fun getAadhaarListAPI(adharDetailsReq: AdharDetailsReq) {
+    fun getAadhaarListAPI(adharDetailsReq: AdharDetailsReq,header :String) {
         viewModelScope.launch {
-            commonRepository.getAadhaarListAPI(adharDetailsReq).collectLatest {
+            commonRepository.getAadhaarListAPI(adharDetailsReq,header).collectLatest {
                 _aadhaarList.emit(it)
             }
         }
@@ -291,9 +269,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getSeccListAPI = _seccListAPI.asStateFlow()
 
 
-    fun getSeccListAPI(seccReq: SeccReq) {
+    fun getSeccListAPI(seccReq: SeccReq,header :String) {
         viewModelScope.launch {
-            commonRepository.getSeccListAPI(seccReq).collectLatest {
+            commonRepository.getSeccListAPI(seccReq,header).collectLatest {
                 _seccListAPI.emit(it)
             }
         }
@@ -306,9 +284,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getSecctionAndPerAPI = _getSecctionAndPerAPI.asStateFlow()
 
 
-    fun getSecctionAndPerAPI(sectionAndPerReq: SectionAndPerReq) {
+    fun getSecctionAndPerAPI(sectionAndPerReq: SectionAndPerReq,header :String) {
         viewModelScope.launch {
-            commonRepository.getSecctionAndPerAPI(sectionAndPerReq).collectLatest {
+            commonRepository.getSecctionAndPerAPI(sectionAndPerReq,header).collectLatest {
                 _getSecctionAndPerAPI.emit(it)
             }
         }
@@ -322,9 +300,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertPersonalDataAPI = _insertPersonalDataAPI.asStateFlow()
 
 
-    fun insertPersonalDataAPI(personalInsertReq: PersonalInsertReq) {
+    fun insertPersonalDataAPI(personalInsertReq: PersonalInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertPersonalDataAPI(personalInsertReq).collectLatest {
+            commonRepository.insertPersonalDataAPI(personalInsertReq,header).collectLatest {
                 _insertPersonalDataAPI.emit(it)
             }
         }
@@ -337,9 +315,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertAddressAPI = _insertAddressAPI.asStateFlow()
 
 
-    fun insertAddressAPI(addressInsertReq: AddressInsertReq) {
+    fun insertAddressAPI(addressInsertReq: AddressInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertAddressAPI(addressInsertReq).collectLatest {
+            commonRepository.insertAddressAPI(addressInsertReq,header).collectLatest {
                 _insertAddressAPI.emit(it)
             }
         }
@@ -351,9 +329,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertSeccAPI = _insertSeccAPI.asStateFlow()
 
 
-    fun insertSeccAPI(seccInsertReq: SeccInsertReq) {
+    fun insertSeccAPI(seccInsertReq: SeccInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertSeccAPI(seccInsertReq).collectLatest {
+            commonRepository.insertSeccAPI(seccInsertReq,header).collectLatest {
                 _insertSeccAPI.emit(it)
             }
         }
@@ -367,9 +345,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertEducationAPI = _insertEducationAPI.asStateFlow()
 
 
-    fun insertEducationAPI(educationalInsertReq: EducationalInsertReq) {
+    fun insertEducationAPI(educationalInsertReq: EducationalInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertEducationAPI(educationalInsertReq).collectLatest {
+            commonRepository.insertEducationAPI(educationalInsertReq,header).collectLatest {
                 _insertEducationAPI.emit(it)
             }
         }
@@ -381,9 +359,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertEmploymentAPI = _insertEmploymentAPI.asStateFlow()
 
 
-    fun insertEmploymentAPI(employmentInsertReq: EmploymentInsertReq) {
+    fun insertEmploymentAPI(employmentInsertReq: EmploymentInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertEmploymentAPI(employmentInsertReq).collectLatest {
+            commonRepository.insertEmploymentAPI(employmentInsertReq,header).collectLatest {
                 _insertEmploymentAPI.emit(it)
             }
         }
@@ -396,9 +374,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertTrainingAPI = _insertTrainingAPI.asStateFlow()
 
 
-    fun insertTrainingAPI(trainingInsertReq: TrainingInsertReq) {
+    fun insertTrainingAPI(trainingInsertReq: TrainingInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertTrainingAPI(trainingInsertReq).collectLatest {
+            commonRepository.insertTrainingAPI(trainingInsertReq,header).collectLatest {
                 _insertTrainingAPI.emit(it)
             }
         }
@@ -413,9 +391,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val insertBankingAPI = _insertBankingAPI.asStateFlow()
 
 
-    fun insertBankingAPI(bankingInsertReq: BankingInsertReq) {
+    fun insertBankingAPI(bankingInsertReq: BankingInsertReq,header :String) {
         viewModelScope.launch {
-            commonRepository.insertBankingAPI(bankingInsertReq).collectLatest {
+            commonRepository.insertBankingAPI(bankingInsertReq,header).collectLatest {
                 _insertBankingAPI.emit(it)
             }
         }
@@ -441,9 +419,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getBankDetailsAPI = _getBankDetailsAPI.asSharedFlow()
 
 
-    fun getBankDetailsAPI(bankingReq: BankingReq ){
+    fun getBankDetailsAPI(bankingReq: BankingReq,header :String ){
         viewModelScope.launch {
-            commonRepository.getBankDetailsAPI(bankingReq).collectLatest {
+            commonRepository.getBankDetailsAPI(bankingReq,header).collectLatest {
                 _getBankDetailsAPI.emit(it)
             }
         }
@@ -464,13 +442,30 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+    private  var _getOtpValidateApi =  MutableStateFlow<Resource<out SendMobileOTPResponse>>(Resource.Loading())
+    val getOtpValidateApi = _getOtpValidateApi.asSharedFlow()
+
+
+    fun getOtpValidateApi(validateOtpReq: ValidateOtpReq){
+        viewModelScope.launch {
+            commonRepository.getOtpValidateApi(validateOtpReq).collectLatest {
+                _getOtpValidateApi.emit(it)
+            }
+        }
+
+
+    }
+
+
+
     private  var _getSectorListAPI =  MutableStateFlow<Resource<out SectorResponse>>(Resource.Loading())
     val getSectorListAPI = _getSectorListAPI.asSharedFlow()
 
 
-    fun getSectorListAPI(techQualification: TechQualification){
+    fun getSectorListAPI(techQualification: TechQualification,header :String){
         viewModelScope.launch {
-            commonRepository.getSectorListAPI(techQualification).collectLatest {
+            commonRepository.getSectorListAPI(techQualification,header).collectLatest {
                 _getSectorListAPI.emit(it)
             }
         }
@@ -482,9 +477,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getTradeListAPI = _getTradeListAPI.asSharedFlow()
 
 
-    fun getTradeListAPI(tradeReq: TradeReq){
+    fun getTradeListAPI(tradeReq: TradeReq,header :String){
         viewModelScope.launch {
-            commonRepository.getTradeListAPI(tradeReq).collectLatest {
+            commonRepository.getTradeListAPI(tradeReq,header).collectLatest {
                 _getTradeListAPI.emit(it)
             }
         }
@@ -496,9 +491,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getTrainingSearchAPI = _getTrainingSearchAPI.asSharedFlow()
 
 
-    fun getTrainingSearchAPI(trainingSearch: TrainingSearch){
+    fun getTrainingSearchAPI(trainingSearch: TrainingSearch,header :String){
         viewModelScope.launch {
-            commonRepository.getTrainingSearchAPI(trainingSearch).collectLatest {
+            commonRepository.getTrainingSearchAPI(trainingSearch,header).collectLatest {
                 _getTrainingSearchAPI.emit(it)
             }
         }
@@ -511,9 +506,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getTrainingListAPI = _getTrainingListAPI.asSharedFlow()
 
 
-    fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq){
+    fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq,header :String){
         viewModelScope.launch {
-            commonRepository.getTrainingListAPI(trainingCenterReq).collectLatest {
+            commonRepository.getTrainingListAPI(trainingCenterReq,header).collectLatest {
                 _getTrainingListAPI.emit(it)
             }
         }
@@ -527,9 +522,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    fun getSelectedTrainingListAPI(getSearchTraining: GetSearchTraining){
+    fun getSelectedTrainingListAPI(getSearchTraining: GetSearchTraining,header :String){
         viewModelScope.launch {
-            commonRepository.getSelectedTrainingListAPI(getSearchTraining).collectLatest {
+            commonRepository.getSelectedTrainingListAPI(getSearchTraining,header).collectLatest {
                 _getSelectedTrainingListAPI.emit(it)
             }
         }
@@ -543,9 +538,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getCandidateDetailsAPI = _getCandidateDetailsAPI.asSharedFlow()
 
 
-    fun getCandidateDetailsAPI(candidateReq: CandidateReq){
+    fun getCandidateDetailsAPI(candidateReq: CandidateReq,header :String){
         viewModelScope.launch {
-            commonRepository.getCandidateDetailsAPI(candidateReq).collectLatest {
+            commonRepository.getCandidateDetailsAPI(candidateReq,header).collectLatest {
                 _getCandidateDetailsAPI.emit(it)
             }
         }
@@ -558,9 +553,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getImageChangeAPI = _getImageChangeAPI.asSharedFlow()
 
 
-    fun getImageChangeAPI(imageChangeReq: ImageChangeReq){
+    fun getImageChangeAPI(imageChangeReq: ImageChangeReq,header :String){
         viewModelScope.launch {
-            commonRepository.getImageChangeAPI(imageChangeReq).collectLatest {
+            commonRepository.getImageChangeAPI(imageChangeReq,header).collectLatest {
                 _getImageChangeAPI.emit(it)
             }
         }
@@ -573,9 +568,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getChangePass = _getChangePass.asSharedFlow()
 
 
-    fun getChangePass(changePassReq: ChangePassReq){
+    fun getChangePass(changePassReq: ChangePassReq,header :String){
         viewModelScope.launch {
-            commonRepository.getChangePass(changePassReq).collectLatest {
+            commonRepository.getChangePass(changePassReq,header).collectLatest {
                 _getChangePass.emit(it)
             }
         }
@@ -623,10 +618,8 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
-
     private var _shgValidate = MutableSharedFlow<Resource<out Response<ShgValidateRes>>>()
     val shgValidate = _shgValidate.asSharedFlow()
-
 
     fun shgValidateAPI(shgValidateReq: ShgValidateReq){
         viewModelScope.launch {

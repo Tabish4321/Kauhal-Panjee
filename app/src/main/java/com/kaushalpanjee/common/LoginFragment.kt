@@ -3,6 +3,8 @@ package com.kaushalpanjee.common
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -20,6 +22,8 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.gone
@@ -37,12 +41,15 @@ import kotlinx.coroutines.launch
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     private var showPassword = true
+    private var isApiCalled = false
 
     private val commonViewModel: CommonViewModel by activityViewModels()
 
 
     private var userName = ""
     private var password = ""
+    private var token = ""
+    private var saltPassword = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,12 +65,33 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun init() {
         listeners()
+        collectTokenResponse()
 
 
     }
 
 
     private fun listeners() {
+
+
+        binding.etEmail.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    if (it.isNotEmpty() && !isApiCalled) {
+                        isApiCalled = true
+                        commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME)
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+
+
+
         binding.tvRegister.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
 
@@ -119,12 +147,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     password = binding.etPassword.text.toString()
                     val shaPass = AppUtil.sha512Hash(password)
 
+                    val saltPass = shaPass+saltPassword
+                    val finalPass = AppUtil.sha512Hash(saltPass)
+
 
                     //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
                     commonViewModel.getLoginAPI(
                         LoginReq(
                             userName,
-                            shaPass,
+                            finalPass,
                             AppUtil.getAndroidId(requireContext()),
                             BuildConfig.VERSION_NAME,
                             ""
@@ -189,35 +220,43 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             when (getLoginResponse.responseCode) {
                                 200 -> {
 
-                                    showSnackBar(getLoginResponse.responseMsg)
 
-                                    userPreferences.updateUserId(null)
-                                    userPreferences.updateUserId(userName)
-                                   AppUtil.saveLoginStatus(requireContext(), true)  // true means user is logged in
+
+                                    val token1 = AESCryptography.decryptIntoString(getLoginResponse.appCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
 
                                     // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
 
-                                    findNavController().navigate(
-                                        R.id.mainHomePage,
-                                        null,
-                                        NavOptions.Builder()
-                                            .setPopUpTo(R.id.loginFragment, true)
-                                            .build()
-                                    )
+                                    if (token == token1){
+                                        AppUtil.saveTokenPreference(requireContext(),"Bearer "+getLoginResponse.appCode)
+                                        userPreferences.updateUserId(null)
+                                        userPreferences.updateUserId(userName)
+                                        AppUtil.saveLoginStatus(requireContext(), true)  // true means user is logged in
+
+
+                                        findNavController().navigate(
+                                            R.id.mainHomePage,
+                                            null,
+                                            NavOptions.Builder()
+                                                .setPopUpTo(R.id.loginFragment, true)
+                                                .build()
+                                        )
+                                    }
+                                    else toastShort("Session expired")
+
+
 
 
                                 }
 
                                 203 -> {
-                                    showSnackBar(getLoginResponse.responseMsg)
+                                    toastShort(getLoginResponse.responseMsg)
+                                    commonViewModel.getToken(AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME)
 
                                 }
 
                                 301 -> {
                                     showSnackBar(getLoginResponse.responseMsg)
-                                }
-                                300 -> {
-                                    showSnackBar(getLoginResponse.responseMsg)
+                                    //Update app
                                 }
 
                                 else -> {
@@ -252,4 +291,43 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 }
             })
     }
+
+
+    private fun collectTokenResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getToken) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getToken ->
+                            when (getToken.responseCode) {
+                                200 -> {
+
+                                   token= AESCryptography.decryptIntoString(getToken.authToken,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                                   saltPassword= AESCryptography.decryptIntoString(getToken.passString,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                }
+
+
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
 }
+

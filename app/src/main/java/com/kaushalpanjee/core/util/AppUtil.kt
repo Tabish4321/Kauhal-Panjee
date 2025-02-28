@@ -28,6 +28,10 @@ import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
 import android.provider.Settings
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -304,6 +308,45 @@ object AppUtil {
 
 
 
+    fun saveTokenPreference(context: Context, tokenCode: String) {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("token_code", tokenCode)
+        editor.apply()
+    }
+
+    fun getSavedTokenPreference(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("token_code", "") ?: "" // Default to English
+    }
+
+
+
+    fun saveMobileNoPreference(context: Context, mobileNo: String) {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("mobile_no", mobileNo)
+        editor.apply()
+    }
+
+    fun getSavedMobileNoPreference(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("mobile_no", "") ?: "" // Default to English
+    }
+
+
+    fun saveEmailPreference(context: Context, email: String) {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("email", email)
+        editor.apply()
+    }
+
+    fun getSavedEmailPreference(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("email", "") ?: "" // Default to English
+    }
+
 
     inline fun <reified T> fromJson(json: String): T {
         val gson = Gson()
@@ -319,6 +362,43 @@ object AppUtil {
         val secureRandom = SecureRandom()
         return secureRandom.nextInt(9000) + 1000 // Ensures a 4-digit number (1000 - 9999)
     }
+    private var isSessionDialogShown = false // Flag to prevent multiple dialogs
+
+    fun showSessionExpiredDialog(navController: NavController, context: Context) {
+        if (isSessionDialogShown) return // Prevent showing multiple dialogs
+
+        isSessionDialogShown = true // Set flag to true when dialog is shown
+
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+        builder.setTitle("Session Expired")
+        builder.setMessage("Your session has expired. Please log in again.")
+        builder.setCancelable(false) // Prevent dismissing on outside touch or back press
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            logoutUser(navController, context)
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.show()
+    }
+
+    fun logoutUser(navController: NavController, context: Context) {
+        // Clear user session data
+        AppUtil.saveLoginStatus(context, false)
+
+        // Navigate to login and reset the flag after navigation
+        navController.navigate(
+            R.id.loginFragment,
+            null,
+            NavOptions.Builder()
+                .setPopUpTo(navController.graph.startDestinationId, true) // Clear everything
+                .build()
+        )
+
+        isSessionDialogShown = false // Reset flag after navigation
+    }
 
 
-}
+    }
+

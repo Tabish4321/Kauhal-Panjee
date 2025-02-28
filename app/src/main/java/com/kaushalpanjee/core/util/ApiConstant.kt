@@ -51,6 +51,8 @@ object ApiConstant {
     const val  API_CHANGE_PASSWORD= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}changePassword"
     const val  Forgot_PASSWORD_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}forgetIdPassword"
     const val  GET_LOGINID_PASS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getLoginIdPassword"
+    const val  GET_TOKEN_GENERATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateToken"
+    const val  API_OTP_VALIDATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}validateOtp"
 
 
 

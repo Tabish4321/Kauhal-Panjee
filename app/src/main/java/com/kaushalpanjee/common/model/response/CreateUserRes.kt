@@ -9,5 +9,5 @@ data class CreateUserRes(
 
 data class User(
     val userId: String,
-    val password: String
+    val appCode: String
 )

@@ -130,11 +130,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
          listeners()
          autoScroll()
-         commonViewModel.getSecctionAndPerAPI(
-             SectionAndPerReq(
-                 BuildConfig.VERSION_NAME,userPreferences.getUseID(),
-                 AppUtil.getAndroidId(requireContext()))
-         )
+         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+
 
          collectSetionAndPerResponse()
          collectTrainingSearchResponse()
@@ -370,6 +367,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                            } else if (getSecctionAndPerAPI.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -402,7 +402,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                 } else if (getTrainingSearchAPI.responseCode == 301) {
                                     showSnackBar("Please Update from PlayStore")
-                                } else {
+                                }   else if (getTrainingSearchAPI.responseCode==401){
+                                    AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                                }else {
                                     showSnackBar("Something went wrong")
                                 }
                             } ?: showSnackBar("Internal Server Error")
@@ -417,7 +419,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     private fun handleTrainingSearchQuery(query: String) {
 
-        commonViewModel.getTrainingSearchAPI(TrainingSearch(BuildConfig.VERSION_NAME,query))
+        commonViewModel.getTrainingSearchAPI(TrainingSearch(BuildConfig.VERSION_NAME,query,userPreferences.getUseID(),
+            AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
 
     }

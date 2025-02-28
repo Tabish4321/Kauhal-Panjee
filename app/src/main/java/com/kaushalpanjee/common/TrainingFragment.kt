@@ -13,7 +13,9 @@ import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.response.DistrictList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.FragmentTrainingBinding
@@ -47,6 +49,8 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPreferences = UserPreferences(requireContext())
+
         init()
         setupObservers()
         fetchInitialData()
@@ -91,7 +95,7 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
         binding.SpinnerDistrictName.setOnItemClickListener { parent, _, position, _ ->
             selectedDistrictItem = parent.getItemAtPosition(position).toString()
             if (position in district.indices) {
-                commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME))
+                commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
                 selectedDistrictCodeItem = districtCode[position]
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
@@ -102,7 +106,8 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
             selectedStateItem = parent.getItemAtPosition(position).toString()
             if (position in state.indices) {
                 selectedStateCodeItem = stateCode[position]
-                commonViewModel.getDistrictListApi(selectedStateCodeItem)
+                commonViewModel.getDistrictListApi(selectedStateCodeItem,
+                    AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
@@ -191,6 +196,9 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
                                     districtLgdCode.add(x.lgdDistrictCode)
                                 }
                                 districtAdapter.notifyDataSetChanged()
+                            }  else if (response.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -222,6 +230,8 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
                                     sectorCode.add(x.sectorId)
                                 }
                                 sectorAdapter.notifyDataSetChanged()
+                            }  else if (response.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             } else {
                                 showSnackBar("Something went wrong")
                             }

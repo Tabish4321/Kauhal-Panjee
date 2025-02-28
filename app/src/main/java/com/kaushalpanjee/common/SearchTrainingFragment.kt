@@ -6,10 +6,13 @@ import android.util.Base64
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.databinding.SearchTrainingFragmentBinding
 import kotlinx.coroutines.launch
 
@@ -21,11 +24,13 @@ class SearchTrainingFragment : BaseFragment<SearchTrainingFragmentBinding>(Searc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPreferences = UserPreferences(requireContext())
+
 
 
         init()
         val centerCode = arguments?.getString("centerCode")
-        commonViewModel.getSelectedTrainingListAPI(GetSearchTraining(BuildConfig.VERSION_NAME,centerCode))
+        commonViewModel.getSelectedTrainingListAPI(GetSearchTraining(BuildConfig.VERSION_NAME,centerCode,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
         collectSelectedTrainingSearchResponse()
     }
 
@@ -79,7 +84,9 @@ class SearchTrainingFragment : BaseFragment<SearchTrainingFragmentBinding>(Searc
 
                             } else if (getSelectedTrainingListAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }   else if (getSelectedTrainingListAPI.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
@@ -38,7 +39,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private var isEmailVerified = false
     private var countDownTimer: CountDownTimer? = null
     private val commonViewModel: CommonViewModel by viewModels()
-    private var otp: String = ""
 
 
 
@@ -81,8 +81,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 )
                 showProgressBar()
                 resendOTPTimer()
-                otp= AppUtil.generateOTP().toString()
-                showSnackBar(otp)
+
 
 
                 if (isEmailVerified) {
@@ -93,12 +92,11 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                     val etMobile = binding.etPhone.text.toString()
 
-                 val encryptedEtMobile =   AESCryptography.encryptIntoBase64String(etMobile,AppConstant.Constants.ENCRYPT_IV_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
 
 
                     commonViewModel.sendMobileOTP(
-                        encryptedEtMobile,
-                        BuildConfig.VERSION_NAME, otp
+                        etMobile,
+                        BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext())
                     )
 
                 } else {
@@ -113,7 +111,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                     commonViewModel.sendEmailOTP(
                         binding.etEmail.text.toString(),
-                        BuildConfig.VERSION_NAME,otp
+                        BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext())
                     )
                 }
             } else showSnackBar("No internet connection")
@@ -125,15 +123,18 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
             if (isEmailVerified) {
 
-                if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
-                        otp
-                    )
+                if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".isNotEmpty()
                 ) {
-                    binding.clOTP.gone()
+                    commonViewModel.getOtpValidateApi(ValidateOtpReq(BuildConfig.VERSION_NAME,"",binding.etPhone.text.toString(),AppUtil.getAndroidId(requireContext())
+                    ,"${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}"))
+                    collectValidateOtpResponse()
+
+
+                   /* binding.clOTP.gone()
                     toastLong("Phone number is verified")
 
-                   /* binding.etEmail.text.clear()
-                    binding.etPhone.text.clear()*/
+                   *//* binding.etEmail.text.clear()
+                    binding.etPhone.text.clear()*//*
                     isEmailVerified = false
                     binding.etPhone.isEnabled = false
                     binding.etPhone.setLeftDrawable(requireContext(), R.drawable.ic_verified)
@@ -145,9 +146,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         userPreferences.setIsRegistered(true)
                         val action = RegisterFragmentDirections.actionRegisterFragmentToEkycFragment(binding.etEmail.text.toString(),binding.etPhone.text.toString())
                         findNavController().navigate(action)
+                        }
+*/
 
 
-                    }
                 } else {
                     toastLong("Invalid OTP")
                     binding.et1.background = ContextCompat.getDrawable(
@@ -172,18 +174,16 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             else {
 
 
-                if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".contentEquals(
-                        otp
-                    )
+                if ("${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}".isNotEmpty()
                 ) {
-                    toastLong("Email is verified")
-                    binding.etEmail.setLeftDrawable(requireContext(), R.drawable.ic_verified)
-                    binding.tvVerify.gone()
-                    binding.etEmail.isEnabled = false
-                    binding.etPhone.visible()
-                    binding.clOTP.gone()
 
-                    isEmailVerified = true
+
+                    commonViewModel.getOtpValidateApi(ValidateOtpReq(BuildConfig.VERSION_NAME,binding.etEmail.text.toString(),"",AppUtil.getAndroidId(requireContext())
+                        ,"${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}"))
+                    collectValidateOtpResponse()
+
+
+
                 } else {
                     toastLong("Invalid OTP")
                     binding.et1.background = ContextCompat.getDrawable(
@@ -213,8 +213,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
 
         binding.tvSendOtpAgain.setOnClickListener {
-            otp= AppUtil.generateOTP().toString()
-            showSnackBar(otp)
+
 
 
             binding.tvSendOtpAgain.isEnabled = false
@@ -227,16 +226,16 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             if (isEmailVerified) {
                 val etMobile = binding.etPhone.text.toString()
 
-                val encryptedEtMobile =   AESCryptography.encryptIntoBase64String(etMobile, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
 
 
                 commonViewModel.sendMobileOTP(
-                    encryptedEtMobile,
-                    BuildConfig.VERSION_NAME,otp
+                    etMobile,
+                    BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext())
                 )
             } else commonViewModel.sendEmailOTP(
                 binding.etEmail.text.toString(),
-                BuildConfig.VERSION_NAME,otp
+                BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext())
             )
 
             resendOTPTimer()
@@ -293,6 +292,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                             if (sendMobileOTPResponse.responseCode == 200) {
                                 toastShort(sendMobileOTPResponse.responseDesc)
                                 binding.clOTP.visible()
+                                AppUtil.saveMobileNoPreference(requireContext(),binding.etPhone.text.toString())
+
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
                             else showSnackBar("Internal Sever Error")
@@ -323,7 +324,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         it.data?.let { sendMobileOTPResponse ->
                             if (sendMobileOTPResponse.responseCode == 200) {
                                 binding.clOTP.visible()
-                               toastShort(sendMobileOTPResponse.responseDesc)
+                                AppUtil.saveEmailPreference(requireContext(),binding.etEmail.text.toString())
+                                toastShort(sendMobileOTPResponse.responseDesc)
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
                             else showSnackBar("Internal Sever Error")
@@ -563,4 +565,86 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
         }
     }
+
+    private fun collectValidateOtpResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getOtpValidateApi) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getOtpValidateApi ->
+                            if (getOtpValidateApi.responseCode == 200) {
+                                toastShort(getOtpValidateApi.responseDesc)
+
+                                if (!isEmailVerified) {
+                                    toastLong("Email is verified")
+                                    binding.etEmail.setLeftDrawable(requireContext(), R.drawable.ic_verified)
+                                    binding.tvVerify.gone()
+                                    binding.etEmail.isEnabled = false
+                                    binding.etPhone.visible()
+                                    binding.clOTP.gone()
+
+                                    isEmailVerified = true
+
+
+
+
+                                }
+                                else{
+
+                                    binding.clOTP.gone()
+                                    toastLong("Phone number is verified")
+
+                                    binding.etEmail.text.clear()
+                                    binding.etPhone.text.clear()
+                                    isEmailVerified = false
+                                    binding.etPhone.isEnabled = false
+                                    binding.etPhone.setLeftDrawable(
+                                        requireContext(),
+                                        R.drawable.ic_verified
+                                    )
+                                        userPreferences.setIsRegistered(true)
+                                        val action =
+                                            RegisterFragmentDirections.actionRegisterFragmentToEkycFragment(
+                                                binding.etEmail.text.toString(),
+                                                binding.etPhone.text.toString()
+                                            )
+
+                                        findNavController().navigate(action)
+                                    }
+
+
+
+
+                            } else if (getOtpValidateApi.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            }
+
+                            else if (getOtpValidateApi.responseCode == 207) {
+                                toastShort(getOtpValidateApi.responseDesc)
+                            }
+                            else if (getOtpValidateApi.responseCode == 210) {
+                                toastShort(getOtpValidateApi.responseDesc)
+                            }
+
+
+
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -36,11 +36,13 @@ import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
+import com.kaushalpanjee.common.model.request.TokenReq
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
+import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
@@ -60,6 +62,7 @@ import com.kaushalpanjee.common.model.response.SectorResponse
 import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
+import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.VillageResponse
@@ -72,6 +75,9 @@ import retrofit2.http.Headers
 
 interface AppLevelApi {
 
+    @POST(ApiConstant.GET_TOKEN_GENERATE)
+    suspend fun getToken(@Body tokenReq: TokenReq):TokenRes
+
     @POST(ApiConstant.API_SMS_OTP)
     suspend fun sendMobileOTP(@Body sendOTPRequest: SendOTPRequest):SendMobileOTPResponse
 
@@ -81,23 +87,30 @@ interface AppLevelApi {
 
 
     @POST(ApiConstant.API_TECH_EDUCATION)
-    suspend fun getTechEducationAPI(@Body techQualification: TechQualification):TechQualificationRes
+    suspend fun getTechEducationAPI(@Header("Authorization") token: String,
+                                    @Body techQualification: TechQualification):TechQualificationRes
 
 
     @POST(ApiConstant.API_TECH_EDUCATION_DOMAIN)
-    suspend fun getTechEducationDomainAPI(@Body techDomainReq: TechDomainReq):TechnicalEduDomain
+    suspend fun getTechEducationDomainAPI(@Header("Authorization") token: String,
+                                          @Body techDomainReq: TechDomainReq):TechnicalEduDomain
 
     @POST(ApiConstant.API_WHERE_HAVE_U_HEARD)
-    suspend fun getWhereHaveYouHeardAPI(@Body stateListReq: StateListReq ):WhereHaveYouHeardRes
+    suspend fun getWhereHaveYouHeardAPI(@Header("Authorization") token: String,
+
+                                        @Body stateListReq: StateListReq ):WhereHaveYouHeardRes
 
     @POST(ApiConstant.API_STATE)
-    suspend fun getStateListAPI(@Body stateListReq: StateListReq):StateDataResponse
+    suspend fun getStateListAPI(
+                                @Body stateListReq: StateListReq):StateDataResponse
 
     @POST(ApiConstant.API_DISTRICT)
-    suspend fun getDistrictListAPI(@Body districtReq: DistrictReq):DistrictResponse
+    suspend fun getDistrictListAPI(@Header("Authorization") token: String,
+                                   @Body districtReq: DistrictReq):DistrictResponse
 
     @POST(ApiConstant.API_DISTRICT)
-    suspend fun getDistrictPreListAPI(@Body districtReq: DistrictReq):DistrictResponse
+    suspend fun getDistrictPreListAPI(@Header("Authorization") token: String,
+                                      @Body districtReq: DistrictReq):DistrictResponse
 
 
     @POST(ApiConstant.API_CREATE_USER)
@@ -106,84 +119,101 @@ interface AppLevelApi {
 
 
     @POST(ApiConstant.API_BLOCK)
-    suspend fun getBlockListAPI(@Body blockReq: BlockReq):BlockResponse
+    suspend fun getBlockListAPI(@Header("Authorization") token: String,
+                                @Body blockReq: BlockReq):BlockResponse
 
     @POST(ApiConstant.API_BLOCK)
-    suspend fun getBlockPerListAPI(@Body blockReq: BlockReq):BlockResponse
+    suspend fun getBlockPerListAPI(@Header("Authorization") token: String,
+                                   @Body blockReq: BlockReq):BlockResponse
 
 
 
 
 
     @POST(ApiConstant.API_GP)
-    suspend fun getGpListAPI(@Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
+    suspend fun getGpListAPI(@Header("Authorization") token: String,
+                             @Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
 
     @POST(ApiConstant.API_GP)
-    suspend fun getGpPerListAPI(@Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
+    suspend fun getGpPerListAPI(@Header("Authorization") token: String,
+                                @Body gramPanchayatReq: GramPanchayatReq):grampanchayatResponse
 
 
 
 
         @POST(ApiConstant.API_VILLAGE)
-        suspend fun getVillageListAPI(@Body villageReq: VillageReq):VillageResponse
+        suspend fun getVillageListAPI(@Header("Authorization") token: String,
+                                      @Body villageReq: VillageReq):VillageResponse
 
 
 
     @POST(ApiConstant.API_VILLAGE)
-    suspend fun getVillagePerListAPI(@Body villageReq: VillageReq):VillageResponse
+    suspend fun getVillagePerListAPI(@Header("Authorization") token: String,
+                                     @Body villageReq: VillageReq):VillageResponse
 
 
     @POST(ApiConstant.API_AADHAAR_DETAILS)
-    suspend fun getAadhaarListAPI(@Body adharDetailsReq: AdharDetailsReq):AadhaarDetailRes
+    suspend fun getAadhaarListAPI(@Header("Authorization") token: String,
+                                  @Body adharDetailsReq: AdharDetailsReq):AadhaarDetailRes
 
 
 
     @POST(ApiConstant.API_SECC_DETAILS)
-    suspend fun getSeccListAPI(@Body seccReq: SeccReq):SeccDetailsRes
+    suspend fun getSeccListAPI(@Header("Authorization") token: String,
+                               @Body seccReq: SeccReq):SeccDetailsRes
 
 
     @POST(ApiConstant.API_SECTION_PERCENTAGE)
-    suspend fun getSecctionAndPerAPI(@Body sectionAndPerReq: SectionAndPerReq):SectionAndPer
+    suspend fun getSecctionAndPerAPI(@Header("Authorization") token: String,
+                                     @Body sectionAndPerReq: SectionAndPerReq):SectionAndPer
 
 
 
     @POST(ApiConstant.BANK_DETAILS)
-    suspend fun getBankDetailsAPI(@Body bankingReq: BankingReq ):BankingRes
+    suspend fun getBankDetailsAPI(@Header("Authorization") token: String,
+                                  @Body bankingReq: BankingReq ):BankingRes
 
 
 
 
     @POST(ApiConstant.API_INSERT)
-    suspend fun insertPersonalDataAPI(@Body personalInsertReq: PersonalInsertReq ):InsertRes
+    suspend fun insertPersonalDataAPI(@Header("Authorization") token: String,
+                                      @Body personalInsertReq: PersonalInsertReq ):InsertRes
 
 
     @POST(ApiConstant.API_INSERT)
-    suspend fun insertAddressAPI(@Body addressInsertReq: AddressInsertReq ):InsertRes
-
-
-
-    @POST(ApiConstant.API_INSERT)
-    suspend fun insertSeccAPI(@Body seccInsertReq: SeccInsertReq ):InsertRes
+    suspend fun insertAddressAPI(@Header("Authorization") token: String,
+                                 @Body addressInsertReq: AddressInsertReq ):InsertRes
 
 
 
     @POST(ApiConstant.API_INSERT)
-    suspend fun insertEducatio0nAPI(@Body educationalInsertReq: EducationalInsertReq ):InsertRes
+    suspend fun insertSeccAPI(@Header("Authorization") token: String,
+                              @Body seccInsertReq: SeccInsertReq ):InsertRes
 
 
 
     @POST(ApiConstant.API_INSERT)
-    suspend fun insertEmploymentAPI(@Body employmentInsertReq: EmploymentInsertReq):InsertRes
+    suspend fun insertEducatio0nAPI(@Header("Authorization") token: String,
+                                    @Body educationalInsertReq: EducationalInsertReq ):InsertRes
 
 
 
     @POST(ApiConstant.API_INSERT)
-    suspend fun insertTrainingAPI(@Body trainingInsertReq: TrainingInsertReq ):InsertRes
+    suspend fun insertEmploymentAPI(@Header("Authorization") token: String,
+                                    @Body employmentInsertReq: EmploymentInsertReq):InsertRes
 
 
 
     @POST(ApiConstant.API_INSERT)
-    suspend fun insertBankingAPI(@Body bankingInsertReq: BankingInsertReq):InsertRes
+    suspend fun insertTrainingAPI(@Header("Authorization") token: String,
+                                  @Body trainingInsertReq: TrainingInsertReq ):InsertRes
+
+
+
+    @POST(ApiConstant.API_INSERT)
+    suspend fun insertBankingAPI(@Header("Authorization") token: String,
+                                 @Body bankingInsertReq: BankingInsertReq):InsertRes
 
 
 
@@ -194,42 +224,50 @@ interface AppLevelApi {
 
 
     @POST(ApiConstant.API_SECTOR)
-    suspend fun getSectorListAPI(@Body techQualification: TechQualification):SectorResponse
+    suspend fun getSectorListAPI(@Header("Authorization") token: String,
+                                 @Body techQualification: TechQualification):SectorResponse
 
 
 
     @POST(ApiConstant.API_TRADE)
-    suspend fun getTradeListAPI(@Body tradeReq: TradeReq):TradeResponse
+    suspend fun getTradeListAPI(@Header("Authorization") token: String,
+                                @Body tradeReq: TradeReq):TradeResponse
 
 
 
     @POST(ApiConstant.API_TRAINING_SEARCH)
-    suspend fun getTrainingSearchAPI(@Body trainingSearch: TrainingSearch):TrainingCenterRes
+    suspend fun getTrainingSearchAPI(@Header("Authorization") token: String,
+                                     @Body trainingSearch: TrainingSearch):TrainingCenterRes
 
 
 
     @POST(ApiConstant.API_TRAINING_LIST)
-    suspend fun getTrainingListAPI(@Body trainingCenterReq: TrainingCenterReq):TrainingCenterRes
+    suspend fun getTrainingListAPI(@Header("Authorization") token: String,
+                                   @Body trainingCenterReq: TrainingCenterReq):TrainingCenterRes
 
     @POST(ApiConstant.API_GET_SEARCH_TRAINING)
-    suspend fun getSelectedTrainingListAPI(@Body getSearchTraining: GetSearchTraining):TrainingCenterRes
+    suspend fun getSelectedTrainingListAPI(@Header("Authorization") token: String,
+                                           @Body getSearchTraining: GetSearchTraining):TrainingCenterRes
 
 
 
 
     @POST(ApiConstant.API_CANDIDATE_DETAILS)
-    suspend fun getCandidateDetailsAPI(@Body candidateReq: CandidateReq):CandidateDetails
+    suspend fun getCandidateDetailsAPI(@Header("Authorization") token: String,
+                                       @Body candidateReq: CandidateReq):CandidateDetails
 
 
 
 
     @POST(ApiConstant.API_CHANGE_IMAGE_CANDIDATE)
-    suspend fun getImageChangeAPI(@Body imageChangeReq: ImageChangeReq):InsertRes
+    suspend fun getImageChangeAPI(@Header("Authorization") token: String,
+                                  @Body imageChangeReq: ImageChangeReq):InsertRes
 
 
 
     @POST(ApiConstant.API_CHANGE_PASSWORD)
-    suspend fun getChangePass(@Body changePassReq: ChangePassReq):InsertRes
+    suspend fun getChangePass(@Header("Authorization") token: String,
+                              @Body changePassReq: ChangePassReq):InsertRes
 
 
     @POST(ApiConstant.Forgot_PASSWORD_OTP)
@@ -244,6 +282,8 @@ interface AppLevelApi {
     @POST(ApiConstant.LANGUAGE_LIST)
     suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
 
+    @POST(ApiConstant.API_OTP_VALIDATE)
+    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq):SendMobileOTPResponse
 
     @POST
     suspend fun postOnAUAFaceAuthNREGA(

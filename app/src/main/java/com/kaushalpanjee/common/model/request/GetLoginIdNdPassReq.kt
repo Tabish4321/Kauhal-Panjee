@@ -5,5 +5,5 @@ data class GetLoginIdNdPassReq(
     val appVersion: String,
     val mobileNo: String,
     val email: String,
-    val otp: String
+    val imeiNo: String
 )

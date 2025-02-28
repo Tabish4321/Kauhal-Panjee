@@ -39,6 +39,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.IntentModel
 import com.kaushalpanjee.common.model.response.IntentResponse
@@ -46,7 +47,7 @@ import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppConstant.Constants.LANGUAGE
-import com.kaushalpanjee.core.util.AppConstant.Constants.PRE_PRODUCTION_CODE
+import com.kaushalpanjee.core.util.AppConstant.Constants.PRODUCTION
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.DownloadHelper
 import com.kaushalpanjee.core.util.Resource
@@ -91,6 +92,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var po = ""
     private var pinCode = ""
     private var street = ""
+    private var tokenGen = ""
+    private var tokenViaCreate = ""
     private var village = ""
     private var photo = ""
     private var selectedStateCode = ""
@@ -150,6 +153,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun init() {
         listener()
+        commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME)
+        collectTokenResponse()
         setUI()
         collectStateResponse()
         collectUserCreationResponse()
@@ -229,11 +234,12 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun listener() {
 
-        if (binding.etAadhaar.text.length == 12) {
+       /* if (binding.etAadhaar.text.length == 12) {
             binding.aadhaarVerifyButton.root.visible()
         }
         binding.aadhaarVerifyButton.root.gone()
 
+*/
 
         binding.aadhaarVerifyButton.centerButton.setOnClickListener {
 
@@ -246,6 +252,17 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             }
 
         }
+        binding.chipAware.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // Show the button when the chip is checked
+                binding.aadhaarVerifyButton.root.visibility = View.VISIBLE
+            } else {
+                // Hide the button when the chip is unchecked
+                binding.aadhaarVerifyButton.root.visibility = View.GONE
+            }
+        }
+
+
         binding.etAadhaar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val aadhaar = s.toString()
@@ -257,6 +274,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     } else {
                         binding.etAadhaar.error = "❌ Invalid Aadhaar Number"  // ❌ Show error
                         aadhaarValidate=false
+                        binding.chipAware.gone()
 
                     }
                 }
@@ -357,8 +375,10 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         binding.etAadhaar.doOnTextChanged { text, _, _, _ ->
 
             if (text?.length == 12) {
-                binding.aadhaarVerifyButton.root.visible()
-            } else binding.aadhaarVerifyButton.root.gone()
+                binding.chipAware.visible()
+              //  binding.aadhaarVerifyButton.root.visible()
+            } else binding.chipAware.gone()
+
 
         }
 
@@ -478,7 +498,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
     private fun createPidOptions(txnId: String, purpose: String): String {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRE_PRODUCTION_CODE}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
 
 
@@ -502,7 +522,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 )
 
                 // Define Pre-Production URL (use a constant or environment configuration in production)
-                val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain"
+              //  val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain" //preProd
+                val authURL = "http://10.247.252.93:8080/NicASAServer/ASAMain"  //Prod
 
                 // Record the start time for elapsed time computation
                 startTime = SystemClock.elapsedRealtime()
@@ -658,8 +679,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                         // Output the result
                                         lifecycleScope.launch {
-                                            val email = arguments?.getString("email")
-                                            val phone = arguments?.getString("phone")
+                                            val email = AppUtil.getSavedEmailPreference(requireContext())
+                                            val phone =AppUtil.getSavedMobileNoPreference(requireContext())
 
                                             userPreferences.updateUserStateLgdCode(null)
                                             userPreferences.updateUserStateLgdCode(
@@ -679,7 +700,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             val encryptedPo =   AESCryptography.encryptIntoBase64String(po, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedVillage =   AESCryptography.encryptIntoBase64String(village, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedPinCode =   AESCryptography.encryptIntoBase64String(pinCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedPhone = phone?.let {
+                                            val encryptedPhone = phone.let {
                                                 AESCryptography.encryptIntoBase64String(
                                                     it, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             }
@@ -687,6 +708,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                 AESCryptography.encryptIntoBase64String(
                                                     it, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             }
+
+                                            toastShort(email + " "+ phone)
                                             val encryptedCareOf =   AESCryptography.encryptIntoBase64String(careOf, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedStreet =   AESCryptography.encryptIntoBase64String(street, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedLdgdCode =   AESCryptography.encryptIntoBase64String(selectedStateLgdCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
@@ -760,83 +783,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         onBackPressedCallback.remove()
     }
 
-   /* private fun showBottomSheet(
-        image: Bitmap,
-        name: String,
-        gender: String,
-        dateOfBirth: String,
-        careOf: String
-    ) {
-        // Initialize the BottomSheetDialog
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-
-        // Inflate the layout
-        val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
-
-        // Set the view to the BottomSheetDialog
-        bottomSheetDialog.setContentView(view)
-
-        // Prevent the BottomSheetDialog from closing when touching outside
-        bottomSheetDialog.setCanceledOnTouchOutside(false)
-
-        // Prevent the BottomSheetDialog from closing on back press
-        bottomSheetDialog.setCancelable(false)
-
-        // Intercept the back press using a key listener on the window of the dialog
-        bottomSheetDialog.setOnShowListener {
-            val dialogWindow = bottomSheetDialog.window
-            dialogWindow?.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-            )
-
-            // Set OnKeyListener to prevent back press dismiss
-            dialogWindow?.decorView?.setOnKeyListener { _, keyCode, event ->
-                keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP
-            }
-        }
-
-        // Find views in the inflated layout
-        val imageView = view.findViewById<ImageView>(R.id.circleImageView)
-        val nameView = view.findViewById<TextView>(R.id.eKYCCandidateName)
-        val genderView = view.findViewById<TextView>(R.id.eKYCGender)
-        val dobView = view.findViewById<TextView>(R.id.eKYCDob)
-        val careOfView = view.findViewById<TextView>(R.id.eKYCCareOf)
-        val okButton = view.findViewById<TextView>(R.id.tvLogin)
-
-        // Set data to views
-        imageView.setImageBitmap(image)
-        nameView.text = name
-        genderView.text = gender
-        dobView.text = dateOfBirth
-        careOfView.text = careOf
-
-        // Handle OK button click
-        okButton.setOnClickListener {
-            // findNavController().navigate(EKYCFragmentDirections.actionEkycFragmentToMainHomePage())
-
-            AppUtil.saveLoginStatus(requireContext(), true)
-
-            val navController = findNavController()
-
-            // Pop `thirdFragment`
-            navController.popBackStack(R.id.loginFragment, true)
-
-
-            // Pop `secondFragment`
-            navController.popBackStack(R.id.registerFragment, true)
-
-            // Pop `firstFragment`
-            navController.popBackStack(R.id.ekycFragment, true)
-
-            // Finally navigate to `targetFragment`
-            navController.navigate(R.id.mainHomePage)
-            bottomSheetDialog.dismiss() // Close the BottomSheetDialog
-        }
-
-        // Show the BottomSheetDialog
-        bottomSheetDialog.show()
-    }*/
    private fun showBottomSheet(
        image: Bitmap,
        name: String,
@@ -870,17 +816,25 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
        // Handle OK button click
        okButton.setOnClickListener {
-           AppUtil.saveLoginStatus(requireContext(), true)
 
-           val navController = findNavController()
+           tokenGen= AppUtil.getSavedTokenPreference(requireContext())
 
-           // Pop previous fragments and navigate to home
-           navController.popBackStack(R.id.loginFragment, true)
-           navController.popBackStack(R.id.registerFragment, true)
-           navController.popBackStack(R.id.ekycFragment, true)
-           navController.navigate(R.id.mainHomePage)
+           if (tokenGen==(tokenViaCreate)){
+               AppUtil.saveLoginStatus(requireContext(), true)
 
-           bottomSheetDialog.dismiss()
+               val navController = findNavController()
+
+               // Pop previous fragments and navigate to home
+               navController.popBackStack(R.id.loginFragment, true)
+               navController.popBackStack(R.id.registerFragment, true)
+               navController.popBackStack(R.id.ekycFragment, true)
+               navController.navigate(R.id.mainHomePage)
+
+               bottomSheetDialog.dismiss()
+
+           }
+           else toastShort("Please Wait")
+
        }
 
        // Handle back button press
@@ -911,23 +865,19 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 when (it) {
                     is Resource.Loading -> {}
                     is Resource.Error -> {
-                        // hideProgressBar()
                         it.error?.let { baseErrorResponse ->
                             showSnackBar(baseErrorResponse.message)
                             toastShort("error in create Api")
-
                         }
                     }
 
                     is Resource.Success -> {
-                        // hideProgressBar()
                         it.data?.let { getUserCreationRes ->
                             if (getUserCreationRes.responseCode == 200) {
                                 for (x in getUserCreationRes.wrappedList) {
                                     userPreferences.updateUserId(null)
                                     userPreferences.updateUserId(x.userId)
-
-                                    toastLong("userId: ${x.userId}" + "password: ${x.password}")
+                                    tokenViaCreate= x.appCode
 
                                 }
                                 toastLong("Your username and password have been sent to your email.")
@@ -975,6 +925,40 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 checksum = multiplicationTable[checksum][permutationTable[index % 8][char - '0']]
             }
             return checksum == 0
+        }
+    }
+    private fun collectTokenResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getToken) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getToken ->
+                            when (getToken.responseCode) {
+                                200 -> {
+
+                                    AppUtil.saveTokenPreference(requireContext(),"Bearer "+getToken.authToken)
+
+
+                                }
+
+
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
         }
     }
 

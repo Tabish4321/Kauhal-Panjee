@@ -50,6 +50,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -446,7 +448,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         listener()
 
                 commonViewModel.getAadhaarListAPI(AdharDetailsReq
-            (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID())
+            (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext())
         )
 
 
@@ -456,12 +458,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
 
-        commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+        commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
         commonViewModel.getStateListApi()
-        commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME))
+        commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
 
 
@@ -872,7 +874,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 isSeccInfoVisible = false
                 binding.expandSecc.visible()
                 binding.viewSeccc.visible()
-                commonViewModel.getDistrictListApi(stateRegCode)
+                commonViewModel.getDistrictListApi(stateRegCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                 block.clear()
                 gp.clear()
                 village.clear()
@@ -914,11 +916,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                             lifecycleScope.launch {
 
-                                commonViewModel.getDistrictListApi(x.seccStateCode)
-                                commonViewModel.getBlockListApi(x.seccDistrictCode)
+                                commonViewModel.getDistrictListApi(x.seccStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                commonViewModel.getBlockListApi(x.seccDistrictCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                                 gpSeccAdapter.notifyDataSetChanged()
-                                commonViewModel.getGpListApi(x.seccBlcokCode)
-                                commonViewModel.getVillageListApi(x.seccGPCode)
+                                commonViewModel.getGpListApi(x.seccBlcokCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                commonViewModel.getVillageListApi(x.seccGPCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
                                 delay(2000)
 
@@ -966,7 +968,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 isAddressVisible = false
                 binding.expandAddress.visible()
                 binding.viewAddress.visible()
-                commonViewModel.getDistrictListApi(stateRegCode)
+                commonViewModel.getDistrictListApi(stateRegCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                 block.clear()
                 gp.clear()
                 village.clear()
@@ -997,13 +999,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 district.clear()
 
                              //   commonViewModel.getDistrictListApi(x.permanentStateCode)
-                                commonViewModel.getBlockListApi(x.permanentDistrictCode)
+                                commonViewModel.getBlockListApi(x.permanentDistrictCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                                 gpAdapter.notifyDataSetChanged()
                                 binding.TvDisName.visible()
                                 binding.spinnerAutoDistrict.gone()
                                 binding.TvDisName.text = x.permanentDistrictName
-                                commonViewModel.getGpListApi(x.permanentBlcokCode)
-                                commonViewModel.getVillageListApi(x.permanentGPCode)
+                                commonViewModel.getGpListApi(x.permanentBlcokCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                commonViewModel.getVillageListApi(x.permanentGPCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
 
                                 delay(1000)
@@ -1024,7 +1026,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 setDropdownValue(binding.spinnerVillage, x.permanentVillageName, village)
 
                                 setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, state)
-                                commonViewModel.getDistrictListApi(x.presentStateCode)
+                                commonViewModel.getDistrictListApi(x.presentStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
 
 
@@ -1118,7 +1120,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopEducational.setOnClickListener {
 
-            commonViewModel.getTechEducation(BuildConfig.VERSION_NAME)
+            commonViewModel.getTechEducation(BuildConfig.VERSION_NAME,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
             if (isEducationalInfoVisible && educationalStatus.contains("0")) {
                 isEducationalInfoVisible = false
@@ -1398,8 +1400,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val encryptedUpperCaseText =   AESCryptography.encryptIntoBase64String(upperCaseText, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
             commonViewModel.getBankDetailsAPI(BankingReq(BuildConfig.VERSION_NAME,
-                encryptedUpperCaseText
-            ))
+                encryptedUpperCaseText,userPreferences.getUseID()
+            ),AppUtil.getSavedTokenPreference(requireContext()))
 
         }
 
@@ -1435,7 +1437,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 commonViewModel.getTechEducationDomainAPI(
                     BuildConfig.VERSION_NAME,
-                    selectedTechEducationItemCode
+                    selectedTechEducationItemCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID()
                 )
             } else toastShort("Wrong Selection")
         }
@@ -1470,7 +1472,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in district.indices) {
                 selectedSeccDistrictCodeItem = districtCode[position]
                 selectedSeccDistrictLgdCodeItem = districtLgdCode[position]
-                commonViewModel.getBlockListApi(selectedSeccDistrictCodeItem)
+                commonViewModel.getBlockListApi(selectedSeccDistrictCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                 gpSeccAdapter.notifyDataSetChanged()
 
 
@@ -1508,7 +1510,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in block.indices) {
                 selectedSeccBlockCodeItem = blockCode[position]
                 selectedSeccBlockLgdCodeItem = blockLgdCode[position]
-                commonViewModel.getGpListApi(selectedSeccBlockCodeItem)
+                commonViewModel.getGpListApi(selectedSeccBlockCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
                 selectedSeccGpCodeItem = ""
                 selectedSeccGpLgdCodeItem = ""
@@ -1536,7 +1538,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in gp.indices) {
                 selectedSeccGpCodeItem = gpCode[position]
                 selectedSeccGpLgdCodeItem = gpLgdCode[position]
-                commonViewModel.getVillageListApi(selectedSeccGpCodeItem)
+                commonViewModel.getVillageListApi(selectedSeccGpCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
 
 
@@ -1648,7 +1650,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in district.indices) {
                 selectedDistrictCodeItem = districtCode[position]
                 selectedDistrictLgdCodeItem = districtLgdCode[position]
-                commonViewModel.getBlockListApi(selectedDistrictCodeItem)
+                commonViewModel.getBlockListApi(selectedDistrictCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                 gpAdapter.notifyDataSetChanged()
 
                 selectedBlockCodeItem = ""
@@ -1717,7 +1719,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in block.indices) {
                 selectedBlockCodeItem = blockCode[position]
                 selectedbBlockLgdCodeItem = blockLgdCode[position]
-                commonViewModel.getGpListApi(selectedBlockCodeItem)
+                commonViewModel.getGpListApi(selectedBlockCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
                 selectedGpCodeItem = ""
                 selectedbGpLgdCodeItem = ""
@@ -1774,7 +1776,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in gp.indices) {
                 selectedGpCodeItem = gpCode[position]
                 selectedbGpLgdCodeItem = gpLgdCode[position]
-                commonViewModel.getVillageListApi(selectedGpCodeItem)
+                commonViewModel.getVillageListApi(selectedGpCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
                 collectVillageResponse()
 
@@ -1875,7 +1877,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in state.indices) {
                 selectedStatePresentCodeItem = stateCode[position]
                 selectedStatePresentLgdCodeItem = stateLgdCode[position]
-                commonViewModel.getDistrictListApi(selectedStatePresentCodeItem)
+                commonViewModel.getDistrictListApi(selectedStatePresentCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
                 lifecycleScope.launch {
                 }
@@ -1919,7 +1921,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictPresentCodeItem = districtCode[position]
 
                 selectedDistrictPresentLgdCodeItem = districtLgdCode[position]
-                commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem)
+                commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                 collectBlockResponse()
                 gpPresentAdapter.notifyDataSetChanged()
                 selectedVillagePresentCodeItem = ""
@@ -1952,7 +1954,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in block.indices) {
                 selectedBlockPresentCodeItem = blockCode[position]
                 selectedbBlockPresentLgdCodeItem = blockLgdCode[position]
-                commonViewModel.getGpListApi(selectedBlockPresentCodeItem)
+                commonViewModel.getGpListApi(selectedBlockPresentCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
@@ -1978,7 +1980,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in gp.indices) {
                 selectedGpPresentCodeItem = gpCode[position]
                 selectedbGpPresentLgdCodeItem = gpLgdCode[position]
-                commonViewModel.getVillageListApi(selectedGpPresentCodeItem)
+                commonViewModel.getVillageListApi(selectedGpPresentCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
 
                 selectedVillagePresentCodeItem = ""
@@ -2217,7 +2219,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionHaveYouHeardNo.setBackgroundResource(R.drawable.card_background)
 
             haveUHeardStatus = "Yes"
-            commonViewModel.getWhereHaveYouHeardAPI()
+            commonViewModel.getWhereHaveYouHeardAPI(AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
             binding.upHeardAboutddugky.visible()
             binding.tvHeardAboutddugky.visible()
 
@@ -2487,17 +2489,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     // Display selected items in the TextView
                     binding.tvSectorItems.text =
-                        "Selected Items: ${indices.joinToString(",") { itemList[it] }}"
+                        "Selected Sectors: ${indices.joinToString(",") { itemList[it] }}"
 
                     // Store the selected sectors as a comma-separated string
                     selectedSector = indices.joinToString(",") { itemList[it] }
 
                     // Store the selected sector codes as a comma-separated string
                     selectedSectorCode = indices.joinToString(",") { sectorCode[it] }
-                    toastLong("Value at index $selectedSectorCode")
 
                     // Call API with selected sector codes
-                    commonViewModel.getTradeListAPI(TradeReq(BuildConfig.VERSION_NAME, selectedSectorCode))
+                    commonViewModel.getTradeListAPI(TradeReq(BuildConfig.VERSION_NAME, selectedSectorCode,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
                     selectedTradeIndices.clear()
                     binding.tvTradeItems.text ="Select Trade"
                     selectedTrade=""
@@ -2524,7 +2525,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     // Display selected items in the TextView
                     binding.tvTradeItems.text =
-                        "Selected Items: ${indices.joinToString(",") { itemList[it] }}"
+                        "Selected Trades: ${indices.joinToString(",") { itemList[it] }}"
 
                     // Store the selected trades as a comma-separated string
                     selectedTrade = indices.joinToString(",") { itemList[it] }
@@ -2596,7 +2597,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                 commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"7",
-                    encryptedBankCode,encryptedBranchCode,encryptedBankAcNo,encryptedIfscCode,encryptedPanNumber))
+                    encryptedBankCode,encryptedBranchCode,encryptedBankAcNo,encryptedIfscCode,encryptedPanNumber),AppUtil.getSavedTokenPreference(requireContext()))
 
                 collectInsertBankingResponse()
 
@@ -2635,7 +2636,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -2651,7 +2652,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -2663,7 +2664,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -2764,7 +2765,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 else{
 
                     commonViewModel.insertEmploymentAPI(EmploymentInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"5",
-                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary,salaryExpectation))
+                        currentlyEmpStatus,natureEmpEmpStatus,selectedInterestedIn,selectedIEmploymentPref,selectedJobLocation,currentSalary,salaryExpectation),AppUtil.getSavedTokenPreference(requireContext()))
 
 
                     collectInsertEmployementResponse()
@@ -2803,7 +2804,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.insertEducationAPI(EducationalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
                     "4",selectedHighestEducationItem,highestEducationDate,
                     result.toString(),technicalEducationStatus,selectedTechEducationItemCode,selectedTechEducationDate,
-                    selectedTechEducationDomainCode ))
+                    selectedTechEducationDomainCode ),AppUtil.getSavedTokenPreference(requireContext()))
 
                 collectInsertEducationalResponse()
 
@@ -2820,7 +2821,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.insertEducationAPI(EducationalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
                     "4",selectedHighestEducationItem,highestEducationDate,
                     result.toString(),technicalEducationStatus,selectedTechEducationItemCode,selectedTechEducationDate,
-                    selectedTechEducationDomainCode ))
+                    selectedTechEducationDomainCode ),AppUtil.getSavedTokenPreference(requireContext()))
 
                 collectInsertEducationalResponse()
 
@@ -2904,7 +2905,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
                     addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
-                    addressPresentLine1,addressPresentLine2,pinCodePresent))
+                    addressPresentLine1,addressPresentLine2,pinCodePresent),AppUtil.getSavedTokenPreference(requireContext()))
 
 
 
@@ -2928,7 +2929,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                         commonViewModel.insertSeccAPI(SeccInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),
                             "3",selectedSeccStateCodeItem,selectedSeccDistrictCodeItem,selectedSeccBlockCodeItem,selectedSeccGpCodeItem,selectedSeccVillageCodeItem,
-                            selectedSeccName,selectedAhlTin))
+                            selectedSeccName,selectedAhlTin),AppUtil.getSavedTokenPreference(requireContext()))
                         collectInsertSeccResponse()
 
                     }
@@ -2956,7 +2957,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 selectedSeccVillageCodeItem,
                                 selectedSeccName,
                                 selectedAhlTin
-                            )
+                            ),AppUtil.getSavedTokenPreference(requireContext())
                         )
 
                         collectInsertSeccResponse()
@@ -2999,7 +3000,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.insertPersonalDataAPI(PersonalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"1" ,
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
-                    rsbyStatus,rsbyImage,pipStatus))
+                    rsbyStatus,rsbyImage,pipStatus),AppUtil.getSavedTokenPreference(requireContext()))
 
 
                 collectInsertPersonalResponse()
@@ -3074,8 +3075,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
                                     if (isPersonalVisible && personalStatus.contains("0")) {
                                         isPersonalVisible = false
@@ -3091,6 +3092,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
+                                }
+                                401->{
+                                        AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                                 }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
@@ -3124,9 +3128,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                     showSnackBar(insertPersResponse.responseMsg)
 
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
                                     if (isAddressVisible && addressStatus.contains("0")) {
                                         isAddressVisible = false
                                         binding.expandAddress.visible()
@@ -3141,7 +3145,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
-                                }
+                                } 401->{
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
                                 }
@@ -3172,8 +3178,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                                     if (isSeccInfoVisible && seccStatus.contains("0")) {
 
@@ -3191,7 +3197,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
-                                }
+                                } 401->{
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
                                 }
@@ -3223,9 +3231,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
                                     if (isEducationalInfoVisible && educationalStatus.contains("0")) {
                                         isEducationalInfoVisible = false
                                         binding.expandEducational.visible()
@@ -3239,7 +3247,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
-                                }
+                                } 401->{
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
                                 }
@@ -3268,8 +3278,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                                     if (isEmploymentInfoVisible && employmentStatus.contains("0")) {
                                         isEmploymentInfoVisible = false
@@ -3284,7 +3294,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
-                                }
+                                } 401->{
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
                                 }
@@ -3317,9 +3329,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
                                     if (isTrainingInfoVisible && trainingStatus.contains("1")) {
                                         isTrainingInfoVisible = false
                                         binding.expandTraining.visible()
@@ -3333,7 +3345,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
-                                }
+                                } 401->{
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
                                 }
@@ -3364,9 +3378,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 200 -> {
 
                                     showSnackBar(insertPersResponse.responseMsg)
-                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                                    commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
-                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+                                    commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
                                     if (isBankingInfoVisible && bankingStatus.contains("0")) {
                                         isBankingInfoVisible = false
                                         binding.expandBanking.visible()
@@ -3380,7 +3394,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                                 301 -> {
                                     showSnackBar("Please Update from PlayStore")
-                                }
+                                } 401->{
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
                                 }
@@ -3472,6 +3488,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 }
                             } else if (getDistrictResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                            }  else if (getDistrictResponse.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -3512,7 +3531,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 blockAdapter.notifyDataSetChanged()
                             } else if (getBlockResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }
+                            else if (getBlockResponse.responseCode == 303) {
+                                showSnackBar(getBlockResponse.responseMsg)
+                            } else if (getBlockResponse.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3552,7 +3577,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 blockAdapter.notifyDataSetChanged()
                             } else if (getGpResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }   else if (getGpResponse.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3590,6 +3618,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 withContext(Dispatchers.Main) {
                                     villageAdapter.notifyDataSetChanged()
                                 }
+                            }  else if (getVillageResponse.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -3678,13 +3709,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                             binding.TvSpinnerStateName.text = x.regState
                                             binding.stateesecc.text = x.regState
                                             stateRegCode= x.regStateCode
-                                            commonViewModel.getDistrictListApi(x.regStateCode)
+                                            commonViewModel.getDistrictListApi(x.regStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                                         }
                                     }
-                                } else {
+                                }  else {
                                     Log.e("AadhaarDetails", "List is empty!")
                                 }
-                            } else {
+                            }
+                            else if (getAadharDetailsRes.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }
+                            else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3723,7 +3759,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 TechEduAdapter.notifyDataSetChanged()
                             } else if (getTechEduRes.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }
+                            else if (getTechEduRes.responseCode == 401) {
+                              AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }
+                            else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3760,6 +3801,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 TechEduDomaiAdapter.notifyDataSetChanged()
                             } else if (getTechEduRes.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                            }  else if (getTechEduRes.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -3799,7 +3843,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 HeardAdapter.notifyDataSetChanged()
                             } else if (getWhereHeard.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else {
+                            }  else if (getWhereHeard.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
+                            }
+                            else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -3827,16 +3875,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getImageChangeAPI ->
                             if (getImageChangeAPI.responseCode == 200) {
                                 showSnackBar(getImageChangeAPI.responseMsg)
-
-                                commonViewModel.getAadhaarListAPI(
-                                    AdharDetailsReq(
-                                        BuildConfig.VERSION_NAME,
-                                        AppUtil.getAndroidId(requireContext()),
-                                        userPreferences.getUseID()
-                                    )
+                                commonViewModel.getAadhaarListAPI(AdharDetailsReq
+                                    (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext())
                                 )
-
-                            } else if (getImageChangeAPI.responseCode == 301) {
+                            }   else if (getImageChangeAPI.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }else if (getImageChangeAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else {
                                 showSnackBar("Something went wrong")
@@ -3887,7 +3931,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             else if (getSeccList.responseCode == 302) {
                                 showSnackBar(getSeccList.responseMsg)
                             }
+                            else if (getSeccList.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
 
+                            }
                         } ?: showSnackBar("Internal Server Error")
                     }
                 }
@@ -4003,6 +4050,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                            } else if (getSecctionAndPerAPI.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+
                             } else {
                                 showSnackBar("Something went wrong")
                             }
@@ -4159,8 +4209,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                            } else if (getBankList.responseCode == 301) {
+                            }
+                            else if (getBankList.responseCode == 301) {
                                 showSnackBar(getBankList.responseMsg)
+                            }
+                            else if (getBankList.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
                             else if (getBankList.responseCode == 302) {
                                 showSnackBar(getBankList.responseMsg)
@@ -4209,6 +4263,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             }
                             else if (getSectorList.responseCode == 302) {
                                 getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }  else if (getSectorList.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
                             else {
                                 showSnackBar("Something went wrong")
@@ -4251,6 +4307,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             }
                             else if (getTradeList.responseCode == 302) {
                                 getTradeList.responseMsg?.let { it1 -> showSnackBar(it1) }
+                            }
+                            else if (getTradeList.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
                             else {
                                 showSnackBar("Something went wrong")
@@ -4438,7 +4497,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             "PROFILE_PIC" -> {
                 profilePicIdImage = base64Image
                 commonViewModel.getImageChangeAPI(
-                    ImageChangeReq(BuildConfig.VERSION_NAME, profilePicIdImage, userPreferences.getUseID())
+                    ImageChangeReq(BuildConfig.VERSION_NAME, profilePicIdImage, userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext())
                 )
                 collectDpChangeResponse()
             }
@@ -4582,7 +4641,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 query,
                 userPreferences.getUseID(),
                 AppUtil.getAndroidId(requireContext())
-            )
+            ),AppUtil.getSavedTokenPreference(requireContext())
         )
 
 
@@ -4672,12 +4731,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.show()
     }
-    private fun compressAndConvertImageToBase64(bitmap: Bitmap): String {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream) // You can adjust quality as needed
-        val byteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
-    }
 
 
 
@@ -4758,9 +4811,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                         }
 
-                                    } else if (getCandidateDetailsAPI.responseCode == 301) {
+                                    }
+                                    else if (getCandidateDetailsAPI.responseCode==401){
+                                        AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                                    }
+                                    else if (getCandidateDetailsAPI.responseCode == 301) {
                                         showSnackBar("Please Update from PlayStore")
-                                    } else {
+                                    }
+                                    else {
                                         showSnackBar("Something went wrong")
                                     }
                                 } ?: showSnackBar("Internal Server Error")

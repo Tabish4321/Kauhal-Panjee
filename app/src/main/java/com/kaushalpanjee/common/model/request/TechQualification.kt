@@ -1,3 +1,3 @@
 package com.kaushalpanjee.common.model.request
 
-data class TechQualification(var appVersion:String)
+data class TechQualification(var appVersion:String,var loginId :String)

@@ -13,7 +13,9 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.response.Center
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
@@ -28,6 +30,8 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userPreferences = UserPreferences(requireContext())
+
         init()
         handleBackPress()
     }
@@ -39,7 +43,7 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
 
         // Fetch data from ViewModel
         commonViewModel.getTrainingListAPI(
-            TrainingCenterReq(BuildConfig.VERSION_NAME, sectorCode, districtCode)
+            TrainingCenterReq(BuildConfig.VERSION_NAME, sectorCode, districtCode,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext())
         )
         setupRecyclerView()
         collectTrainingCenterResponse()
@@ -75,7 +79,10 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
                                 updateCenterList(response.centerList)
                             } else if (response.responseCode == 301) {
                                 showSnackBar("Please update from PlayStore")
-                            }else {
+                            }  else if (response.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }
+                            else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")
