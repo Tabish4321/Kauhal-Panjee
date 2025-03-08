@@ -98,26 +98,6 @@ abstract class BaseActivity<VB : ViewBinding>(
         snackBar.show()
     }
 
-/*    fun showAlertDialogToOpenSetting(listen: BaseFragment.PermissionActionLister) {
-        android.app.AlertDialog.Builder(this)
-            .setTitle(getString(R.string.permission_required))
-            .setMessage(getString(R.string.please_allow_required_permissions_from_setting))
-            .setPositiveButton(
-                getString(R.string.okay)
-            ) { dialog, _ ->
-                dialog?.dismiss()
-                listen.openSetting()
-            }
-            .setNegativeButton(
-                getString(R.string.cancel)
-            ) { dialog, _ ->
-                dialog?.dismiss()
-                listen.cancel()
-            }
-            .setCancelable(false)
-            .create()
-            .show()
-    }*/
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {

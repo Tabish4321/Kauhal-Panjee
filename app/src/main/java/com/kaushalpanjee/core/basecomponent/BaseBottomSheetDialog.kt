@@ -1,4 +1,4 @@
-package com.utilize.core.basecomponent
+package com.kaushalpanjee.core.basecomponent
 
 import android.os.Bundle
 import android.view.LayoutInflater
