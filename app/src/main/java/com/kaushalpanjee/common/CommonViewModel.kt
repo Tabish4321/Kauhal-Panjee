@@ -526,6 +526,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getSelectedTrainingListAPI(getSearchTraining,header).collectLatest {
                 _getSelectedTrainingListAPI.emit(it)
+
             }
         }
 
@@ -625,6 +626,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.shgValidateAPI("https://nrlm.gov.in/nrlmwebservice/services/ddugky/dataVerify", shgValidateReq).collectLatest {
                 _shgValidate.emit(it)
+
             }
         }
     }

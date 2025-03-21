@@ -1,6 +1,7 @@
 package com.kaushalpanjee.common
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -66,10 +67,8 @@ import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods.respDecodedXmlToPojoAuth
 import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
-import kotlin.random.Random
 
 const val CAMERA_REQUEST = 101
 
@@ -783,6 +782,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         onBackPressedCallback.remove()
     }
 
+   @SuppressLint("SuspiciousIndentation")
    private fun showBottomSheet(
        image: Bitmap,
        name: String,
@@ -849,7 +849,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                    }
                    .setNegativeButton("No", null)
                    .show()
-               return@setOnKeyListener true  // Consume the event
+               return@setOnKeyListener true
            }
            false
        }
@@ -883,7 +883,10 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 toastLong("Your username and password have been sent to your email.")
 
                             }
+                            else if (getUserCreationRes.responseCode == 301) {
 
+                                showSnackBar("Please Update from PlayStore")
+                            }
                         } ?: showSnackBar("Internal Sever Error")
                     }
                 }
@@ -951,6 +954,10 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 }
 
 
+                                301-> {
+                                    showSnackBar("Please Update from PlayStore")
+
+                                }
                                 else -> {
                                     showSnackBar("Something went wrong")
                                 }
