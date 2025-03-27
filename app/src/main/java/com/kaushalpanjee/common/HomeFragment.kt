@@ -2693,7 +2693,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
