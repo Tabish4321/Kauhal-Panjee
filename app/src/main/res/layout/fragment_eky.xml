@@ -82,7 +82,7 @@
         <EditText
             android:id="@+id/etAadhaar"
             style="@style/EditText"
-            android:layout_marginTop="@dimen/dp_135"
+            android:layout_marginTop="@dimen/dp_50"
             android:drawableLeft="@drawable/icon_aadhaar"
             android:drawableEnd="@drawable/close_eye"
             android:drawablePadding="@dimen/dp_10"
@@ -99,7 +99,6 @@
             android:id="@+id/chipAware"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/consent"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/dp_40"
@@ -108,10 +107,10 @@
             app:layout_constraintStart_toStartOf="parent"
             android:checkable="true"
             android:buttonTint="@color/color_green"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+           android:paddingStart="16dp"
+           android:paddingEnd="16dp"
+           android:paddingTop="8dp"
+           android:paddingBottom="8dp"
         />
 
 
@@ -124,13 +123,13 @@
             layout="@layout/circular_button_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_10"
             android:elevation="@dimen/dp_10"
             android:enabled="false"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/chipAware"
+            app:layout_constraintTop_toBottomOf="@+id/etAadhaar"
             />
 
 

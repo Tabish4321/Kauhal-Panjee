@@ -99,11 +99,13 @@ data class Secc(
 data class Educational(
     val passingTechYear: String,
     val techDomain: String,
+    val techDomainId: String,
     val isTechEducate: String,
     val highesteducation: String,
     val language: String,
     val monthYearOfPassing: String,
-    val techQualification: String
+    val techQualification: String,
+    val techQualificationId: String
 )
 
 data class Employment(

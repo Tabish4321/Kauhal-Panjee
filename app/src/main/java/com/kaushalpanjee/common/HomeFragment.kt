@@ -1152,6 +1152,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         binding.tvClickYearOfPassingTech.visible()
 
                         for (x in userCandidateEducationalDetailsList ){
+
+                            commonViewModel.getTechEducationDomainAPI(
+                                BuildConfig.VERSION_NAME,
+                                x.techQualificationId,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+
                             setDropdownValue(binding.spinnerHighestEducation, x.highesteducation, highestEducationList)
                             setDropdownValue(binding.spinnerTechnicalEducation, x.techQualification, courseesName)
                             setDropdownValue(binding.spinnerDomainOfTech, x.techDomain, courseesDomainName)
@@ -1167,9 +1172,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             result= StringBuilder(x.language)
 
                             technicalEducationStatus =x.isTechEducate
-                            selectedTechEducationItemCode = x.techQualification
+                            selectedTechEducationItemCode = x.techQualificationId
                             selectedTechEducationDate = x.passingTechYear
-                            selectedTechEducationDomainCode= x.techDomain
+                            selectedTechEducationDomainCode= x.techDomainId
 
 
                         }
@@ -2676,7 +2681,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSector,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -3029,8 +3034,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 collectInsertPersonalResponse()
 
-
-
             }
             else toastShort("Kindly complete Personal detail Mandatory Fields")
 
@@ -3075,7 +3078,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.uploadResidenceImage.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("RSBY_CERTIFICATE")
+            checkAndRequestPermissionsForEveryPurpose("RESIDENCE_CERTIFICATE")
         }
     }
 
@@ -4515,7 +4518,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
             "RESIDENCE_CERTIFICATE" -> {
                 binding.residentalimageText.text = fileName
-                toastShort("Upload Success")
                 residenceImage = base64Image
             }
             "PROFILE_PIC" -> {
@@ -4572,7 +4574,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 profilePicIdImage = base64Pdf
             }
             "NREGA_ID" -> {
-                binding.tvNregaJob.text = fileName
+                binding.nrehaJobimageText.text = fileName
                 nregaImageJobCard = base64Pdf
             }
         }

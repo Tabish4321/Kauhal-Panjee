@@ -8,14 +8,21 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.text.Editable
+import android.text.Html
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.StyleSpan
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -205,7 +212,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         )
     }
 
-
     /* private fun startAppDownload(){
          progressBar = binding.progressBar
 
@@ -233,12 +239,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun listener() {
 
-       /* if (binding.etAadhaar.text.length == 12) {
-            binding.aadhaarVerifyButton.root.visible()
-        }
-        binding.aadhaarVerifyButton.root.gone()
+        formatCheckBoxText(binding.chipAware)
 
-*/
 
         binding.aadhaarVerifyButton.centerButton.setOnClickListener {
 
@@ -708,7 +710,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                     it, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             }
 
-                                            toastShort(email + " "+ phone)
                                             val encryptedCareOf =   AESCryptography.encryptIntoBase64String(careOf, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedStreet =   AESCryptography.encryptIntoBase64String(street, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedLdgdCode =   AESCryptography.encryptIntoBase64String(selectedStateLgdCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
@@ -753,6 +754,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                 XstreamCommonMethods.getAuthErrorDescription(authRes.info)
                                             log("EKYCDATA", errorDesc)
 
+                                            binding.recyclerView.gone()
                                             toastShort("EKYCDATA: Failed")
                                         } ?: toastShort("Getting Error")
                                     }
@@ -761,6 +763,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                     e.printStackTrace()
                                     log("EKYCDATA", "Error processing KYC response: ${e.message}")
                                     toastShort("Error processing KYC response")
+                                    binding.recyclerView.gone()
+
                                 }
                             }
                                 ?: toastShort(getString(R.string.something_went_wrong_at_uidai_site))
@@ -772,6 +776,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 hideProgressBar()
                 log("EKYCDATA", "Unhandled error: ${e.message}")
                 toastShort("An unexpected error occurred. Please try again.")
+                binding.recyclerView.gone()
+
             }
         }
     }
@@ -969,5 +975,30 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
     }
 
+    private fun formatCheckBoxText(checkBox: CheckBox) {
+        val text = "I hereby state that I have no objection in authenticating myself with Aadhaar-based " +
+                "authentication system and consent to providing my Aadhaar number, Biometric and/or One " +
+                "Time Pin (OTP) data for Aadhaar-based authentication for the purposes of availing of the " +
+                "Unified IT Platform for DDUGKY and RSETI from National Informatics Centre.\n\n" +
+                "I understand that the Biometrics and/or OTP I provide for authentication shall be used only for " +
+                "authenticating my identity through the Aadhaar Authentication system for that specific " +
+                "transaction and for no other purposes.\n\n" +
+                "I understand that National Informatics Centre shall ensure security and " +
+                "confidentiality of my personal identity data provided for the purpose of Aadhaar-based authentication."
+
+        val spannable = SpannableString(text)
+
+        // Bold specific words
+        val boldWords = listOf("Unified IT Platform for DDUGKY and RSETI", "National Informatics Centre")
+
+        for (word in boldWords) {
+            val startIndex = text.indexOf(word)
+            if (startIndex != -1) {
+                spannable.setSpan(StyleSpan(Typeface.BOLD), startIndex, startIndex + word.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
+
+        checkBox.text = spannable
+    }
 
 }
