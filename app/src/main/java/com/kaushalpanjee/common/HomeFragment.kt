@@ -1163,6 +1163,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             binding.tvClickYearOfPassing.setText(x.monthYearOfPassing)
                             binding.tvLanguages.setText(x.language)
                             handleStatus(binding.optionTechnicalEducationYesSelect, binding.optionTechnicalEducationNoSelect, x.isTechEducate)
+
+
+                            if (x.isTechEducate=="Yes"){
+
+                                binding.spinnerTechnicalEducation.visible()
+                                binding.spinnerDomainOfTech.visible()
+                                binding.tvLanguages.visible()
+
+                            }
+
                             binding.tvClickYearOfPassingTech.setText(x.passingTechYear)
 
 
@@ -1346,8 +1356,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             binding.tvClickPreviouslycompletedduring.text = x.compTrainingDuration
                             binding.tvSectorItems.text = x.sectorName
                             binding.tvTradeItems.text = x.trade
-
-
                             traingBeforeStatus = x.isPreTraining
                             selectedPrevCompleteTraining= x.preCompTraining
                             previousTrainingDuration= x.compTrainingDuration
