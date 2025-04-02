@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -68,7 +69,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
 
         binding.progressButton.centerButton.setOnClickListener {
-            log("setOnClickListener", "setOnClickListener")
 
             if (AppUtil.isNetworkAvailable(requireContext())) {
                 binding.progressButton.root.gone()
@@ -91,9 +91,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     }
 
                     val etMobile = binding.etPhone.text.toString()
-
-
-
                     commonViewModel.sendMobileOTP(
                         etMobile,
                         BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext())
@@ -104,10 +101,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         binding.tvEnterCodeMsg.text = it
 
                     }
-
-                   /* val etEmail = binding.etPhone.text.toString()
-
-                    val encryptedEtEmail =   AESCryptography.encryptIntoHexString(etEmail, BuildConfig.ENCRYPT_KEY, BuildConfig.ENCRYPT_IV_KEY)*/
 
                     commonViewModel.sendEmailOTP(
                         binding.etEmail.text.toString(),
@@ -129,25 +122,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     ,"${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}"))
                     collectValidateOtpResponse()
 
-
-                   /* binding.clOTP.gone()
-                    toastLong("Phone number is verified")
-
-                   *//* binding.etEmail.text.clear()
-                    binding.etPhone.text.clear()*//*
-                    isEmailVerified = false
-                    binding.etPhone.isEnabled = false
-                    binding.etPhone.setLeftDrawable(requireContext(), R.drawable.ic_verified)
-                    lifecycleScope.launch {
-
-
-                        delay(500)
-
-                        userPreferences.setIsRegistered(true)
-                        val action = RegisterFragmentDirections.actionRegisterFragmentToEkycFragment(binding.etEmail.text.toString(),binding.etPhone.text.toString())
-                        findNavController().navigate(action)
-                        }
-*/
 
 
                 } else {
@@ -266,13 +240,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
 
         binding.et4.onDone {
-            validateAndNavigate()
         }
     }
 
-    private fun validateAndNavigate() {
 
-    }
 
     private fun collectSendMobileOTPResponse() {
         lifecycleScope.launch {
@@ -584,24 +555,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                             if (getOtpValidateApi.responseCode == 200) {
                                 toastShort(getOtpValidateApi.responseDesc)
 
-                                if (!isEmailVerified) {
-                                    toastLong("Email is verified")
-                                    binding.etEmail.setLeftDrawable(requireContext(), R.drawable.ic_verified)
-                                    binding.tvVerify.gone()
-                                    binding.etEmail.isEnabled = false
-                                    binding.etPhone.visible()
-                                    binding.clOTP.gone()
-
-                                    isEmailVerified = true
-
-
-
-
-                                }
-                                else{
+                                if (getOtpValidateApi.responseFlag=="M") {
 
                                     binding.clOTP.gone()
-                                    toastLong("Phone number is verified")
+                                    //toastLong("Phone number is verified")
 
                                     binding.etEmail.text.clear()
                                     binding.etPhone.text.clear()
@@ -611,14 +568,33 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                         requireContext(),
                                         R.drawable.ic_verified
                                     )
-                                        userPreferences.setIsRegistered(true)
-                                        val action =
-                                            RegisterFragmentDirections.actionRegisterFragmentToEkycFragment(
-                                                binding.etEmail.text.toString(),
-                                                binding.etPhone.text.toString()
-                                            )
+                                    userPreferences.setIsRegistered(true)
 
+
+                                    if (findNavController().currentDestination?.id == R.id.registerFragment) {
+                                        val action = RegisterFragmentDirections.actionRegisterFragmentToEkycFragment(
+                                            binding.etEmail.text.toString(),
+                                            binding.etPhone.text.toString()
+                                        )
                                         findNavController().navigate(action)
+                                    } else {
+                                        Log.e("NavigationError", "Attempted to navigate from the wrong fragment!")
+                                    }
+
+
+
+                                }
+                                 if (getOtpValidateApi.responseFlag=="E"){
+
+                                //    toastLong("Email is verified")
+                                    binding.etEmail.setLeftDrawable(requireContext(), R.drawable.ic_verified)
+                                    binding.tvVerify.gone()
+                                    binding.etEmail.isEnabled = false
+                                    binding.etPhone.visible()
+                                    binding.clOTP.gone()
+                                    isEmailVerified = true
+
+
                                     }
 
 
@@ -629,6 +605,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                             }
 
                             else if (getOtpValidateApi.responseCode == 207) {
+
                                 toastShort(getOtpValidateApi.responseDesc)
                             }
                             else if (getOtpValidateApi.responseCode == 210) {

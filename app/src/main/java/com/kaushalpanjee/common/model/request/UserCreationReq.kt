@@ -19,6 +19,7 @@ val street: String,
 val appVersion: String,
 val aadharImage: String,
 val imeiNo: String,
-val stateLgdCode: String
+val stateLgdCode: String,
+val userConsent: Boolean
 )
 

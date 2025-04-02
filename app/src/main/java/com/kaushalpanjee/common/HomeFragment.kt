@@ -814,6 +814,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  setDropdownValue(binding.SpinnerCategory, x.castCategory, categoryList)
                                  setDropdownValue(binding.SpinnerMarital, x.maritalStatus, maritalList)
 
+
                                //  binding.SpinnerMarital.setText(x.maritalStatus)
                                  binding.etShgValidate.setText(x.shgNo)
 
@@ -833,6 +834,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  handleStatus(binding.optionAntyodayaYesSelect, binding.optionAntyodayaNoSelect, antyodayaStatusn)
                                  handleStatus(binding.optionllRsbyYesSelect, binding.optionllRsbyNoSelect, rsbyStatusm)
                                  handleStatus(binding.optionPipYesSelect, binding.optionPipNoSelect, pipStatusn)
+
+                                 if (shgStatusn=="No"){
+
+                                     binding.etShgValidate.gone()
+                                     binding.btnShgValidate.gone()
+                                 }
 
                                  guardianName =x.guardianName
                                  motherName= x.motherName
@@ -2975,7 +2982,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 }
 
                 else {
-                  //  selectedSeccName=""
                     selectedSeccName = binding.etATINName.text.toString()
 
                     if ( selectedSeccName.isNotEmpty()){
@@ -3034,6 +3040,54 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 pwdStatus.isNotEmpty()){
 
                 //Hit Insert API
+
+                if (voterIdImage.isNull){
+
+                    voterIdImage= "N/A"
+
+                }
+
+                if (drivingLicenceImage.isNull){
+
+                    drivingLicenceImage= "N/A"
+
+                }
+                 if (categoryCertiImage.isNull){
+
+                    categoryCertiImage= "N/A"
+
+                }
+
+
+                 if (minorityImage.isNull){
+
+                    minorityImage= "N/A"
+
+                }
+                 if (pwdImage.isNull){
+
+                    pwdImage= "N/A"
+
+                }
+
+                 if (nregaImageJobCard.isNull){
+
+                    nregaImageJobCard= "N/A"
+
+                }
+                 if (antoyadaImage.isNull){
+
+                    antoyadaImage= "N/A"
+
+                }
+
+                 if (rsbyImage.isNull){
+
+                    rsbyImage= "N/A"
+
+                }
+
+
                 commonViewModel.insertPersonalDataAPI(PersonalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"1" ,
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
@@ -4382,7 +4436,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -4390,39 +4443,51 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // ✅ Show dialog after permission is granted
-            showFileSelectionDialog(currentRequestPurpose ?: "")
-        } else {
-            Toast.makeText(requireContext(), "Permission denied for $currentRequestPurpose", Toast.LENGTH_SHORT).show()
+        if (requestCode == PERMISSION_READ_MEDIA_IMAGES) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                // ✅ All permissions granted, proceed with file selection
+                showFileSelectionDialog(currentRequestPurpose ?: "")
+            } else {
+                // ❌ Permission denied, show a message
+                Toast.makeText(requireContext(), "Permission denied. Please enable it in Settings.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
 
 
     private fun checkAndRequestPermissionsForEveryPurpose(purpose: String) {
         currentRequestPurpose = purpose
 
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(arrayOf(Manifest.permission.READ_MEDIA_IMAGES), PERMISSION_READ_MEDIA_IMAGES)
-                } else {
-                    showFileSelectionDialog(purpose)
-                }
-            }
+        val permissions = mutableListOf<String>()
 
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_READ_MEDIA_IMAGES)
-                } else {
-                    showFileSelectionDialog(purpose)
-                }
-            }
+        // Check and add necessary permissions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
 
-            else -> {
-                showFileSelectionDialog(purpose)
-            }
+        // 🔴 Add CAMERA permission
+        permissions.add(Manifest.permission.CAMERA)
+
+        // Add WRITE_EXTERNAL_STORAGE for Android < 10 (API 29)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        // Get the permissions that are NOT granted
+        val notGrantedPermissions = permissions.filter {
+            ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
+        }.toTypedArray()
+
+        if (notGrantedPermissions.isNotEmpty()) {
+            // 🔴 Request all required permissions at once
+            requestPermissions(notGrantedPermissions, PERMISSION_READ_MEDIA_IMAGES)
+        } else {
+            // 🔵 All permissions are granted, proceed
+            showFileSelectionDialog(purpose)
         }
     }
 
@@ -4446,12 +4511,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         builder.show()
     }
 
-    // Capture Image from Camera
     private fun openCameraForDocument(purpose: String) {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_CAPTURE_IMAGE)
+        val context = requireContext()
+
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_image.jpg")
+        cameraImageUri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri) // Store image in file
+        }
+
         currentRequestPurpose = purpose
+
+
+        // Check if there's a camera app available
+
+        if (intent.resolveActivity(context.packageManager) != null) {
+            startActivityForResult(intent, REQUEST_CAPTURE_IMAGE)
+        } else {
+            Toast.makeText(context, "No Camera App Found", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
     // Select Image from Gallery
     private fun openGalleryForDocument(purpose: String) {
@@ -4475,13 +4556,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         if (resultCode == AppCompatActivity.RESULT_OK) {
             var selectedUri: Uri? = data?.data
-            var fileName: String? = selectedUri?.let { getFileName(requireContext(), it) } ?: "Unknown File"
 
-            // If image is captured from Camera (REQUEST_CAPTURE_IMAGE), save it as a file first
             if (requestCode == REQUEST_CAPTURE_IMAGE) {
-                selectedUri = cameraImageUri // Use the stored file URI
-                fileName = selectedUri?.let { getFileName(requireContext(), it) } ?: "Captured_Image.jpg"
+                selectedUri = cameraImageUri // Use the stored URI
             }
+
+            val fileName: String? = selectedUri?.let { getFileName(requireContext(), it) } ?: "Captured_Image.jpg"
 
             when (requestCode) {
                 REQUEST_CAPTURE_IMAGE -> handleImageSelection(selectedUri, fileName)
@@ -4490,6 +4570,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
 
 
     private fun handleImageSelection(uri: Uri?, fileName: String?) {
@@ -4835,6 +4916,87 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         userCandidateTrainingDetailsList = getCandidateDetailsAPI.trainingList
                                         userCandidateBankDetailsList = getCandidateDetailsAPI.bankList
 
+
+                                        for (x in userCandidatePersonalDetailsList) {
+                                            userCandidatePersonalDetailsList2 = x.personaldetails
+
+                                            try {
+                                                // Decode and display images
+                                                categoryCertiImage = x.categoryCertPath
+                                                if (categoryCertiImage==""){
+
+                                                    binding.categoryCertimageText.setText("")
+                                                }
+                                                else
+                                                    binding.categoryCertimageText.setText("Capture_Image")
+
+
+
+
+                                                minorityImage = x.minorityCertPath
+                                                if (minorityImage==""){
+
+                                                    binding.minorityimageText.setText("")
+                                                }
+                                                else
+                                                    binding.minorityimageText.setText("Capture_Image")
+
+                                                pwdImage = x.disablityCertPath
+                                                if (pwdImage==""){
+
+                                                    binding.pwdImageText.setText("")
+                                                }
+                                                else
+                                                    binding.pwdImageText.setText("Capture_Image")
+
+                                                drivingLicenceImage = x.dlImagePath
+                                                if (drivingLicenceImage==""){
+
+                                                    binding.drivingLicenceimageText.setText("")
+                                                }
+                                                else
+                                                    binding.drivingLicenceimageText.setText("Capture_Image")
+
+                                                nregaImageJobCard = x.naregaCardPath
+                                                if (nregaImageJobCard==""){
+
+                                                    binding.tvNregaJob.setText("")
+                                                }
+                                                else
+                                                    binding.nrehaJobimageText.setText("Capture_Image")
+
+                                                rsbyImage = x.rsbyCardPath
+                                                if (rsbyImage==""){
+
+                                                    binding.rsbyimageText.setText("")
+                                                }
+                                                else
+                                                    binding.rsbyimageText.setText("Capture_Image")
+
+                                                voterIdImage = x.VoterImagePath
+
+                                                if (voterIdImage==""){
+
+                                                    binding.voterimageText.setText("")
+                                                }
+                                                else
+                                                    binding.voterimageText.setText("Capture_Image")
+
+                                                antoyadaImage = x.rationCardPath
+                                                if (antoyadaImage==""){
+
+                                                    binding.antyodayamageText.setText("")
+                                                }
+                                                else
+                                                    binding.antyodayamageText.setText("Capture_Image")
+
+
+                                            } catch (e: Exception) {
+                                                showSnackBar("Error decoding image: ${e.message}")
+                                            }
+                                        }
+
+
                                         for (x in userCandidatePersonalDetailsList) {
                                             userCandidatePersonalDetailsList2 = x.personaldetails
 
@@ -4842,6 +5004,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         for (x in userCandidateAddressDetailsList ){
 
                                             userCandidateAddressDetailsList2=   x.addressDetails
+                                            categoryCertiImage= x.residenceCertPath
 
                                         }
 

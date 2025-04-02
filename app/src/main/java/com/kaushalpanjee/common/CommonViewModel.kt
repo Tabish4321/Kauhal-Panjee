@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -47,6 +48,7 @@ import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -451,6 +453,21 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getOtpValidateApi(validateOtpReq).collectLatest {
                 _getOtpValidateApi.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private  var _getAadhaarCheck =  MutableStateFlow<Resource<out AadhaarCheckRes>>(Resource.Loading())
+    val getAadhaarCheck = _getAadhaarCheck.asSharedFlow()
+
+
+    fun getAadhaarCheck(aadhaarCheckReq: AadhaarCheckReq){
+        viewModelScope.launch {
+            commonRepository.getAadhaarCheck(aadhaarCheckReq).collectLatest {
+                _getAadhaarCheck.emit(it)
             }
         }
 

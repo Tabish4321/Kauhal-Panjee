@@ -24,6 +24,7 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -50,6 +51,7 @@ import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -290,6 +292,14 @@ class CommonRepository @Inject constructor(
             appLevelApi.getOtpValidateApi(validateOtpReq)
         }
     }
+
+    suspend fun getAadhaarCheck(aadhaarCheckReq: AadhaarCheckReq): Flow<Resource<out AadhaarCheckRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getAadhaarCheck(aadhaarCheckReq)
+        }
+    }
+
 
 
     suspend fun getSectorListAPI(techQualification: TechQualification,header :String): Flow<Resource<out SectorResponse>>{

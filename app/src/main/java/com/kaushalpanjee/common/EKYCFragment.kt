@@ -47,6 +47,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.IntentModel
@@ -241,14 +242,20 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         formatCheckBoxText(binding.chipAware)
 
-
         binding.aadhaarVerifyButton.centerButton.setOnClickListener {
 
             if (aadhaarValidate) {
-                invokeCaptureIntent()
 
+
+                val encryptedAadhaarString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(),
+                    AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                commonViewModel.getAadhaarCheck(AadhaarCheckReq(BuildConfig.VERSION_NAME,encryptedAadhaarString))
+
+
+                collectAadharResponse()
             } else {
-                //  showSnackBar("success")
+
                 showSnackBar("Please enter valid aadhaar number")
             }
 
@@ -665,6 +672,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         state = kycResp.uidData.poa.state ?: "N/A"
                                         dist = kycResp.uidData.poa.dist ?: "N/A"
                                         block = kycResp.uidData.poa.subdist ?: "N/A"
+
                                         village = kycResp.uidData.poa.vtc ?: "N/A"
                                         street = kycResp.uidData.poa.loc ?: "N/A"
                                         po = kycResp.uidData.poa.po ?: "N/A"
@@ -732,7 +740,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                 encryptedStreet,
                                                 BuildConfig.VERSION_NAME,
                                                 photo,
-                                                AppUtil.getAndroidId(requireContext()),encryptedLdgdCode
+                                                AppUtil.getAndroidId(requireContext()),encryptedLdgdCode,true
                                             )
                                             )
 
@@ -863,7 +871,41 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
        // Show the BottomSheetDialog
        bottomSheetDialog.show()
    }
+    private fun collectAadharResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getAadhaarCheck) {
+                when (it) {
+                    is Resource.Loading -> {}
+                    is Resource.Error -> {
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                            toastShort("error in create Api")
+                        }
+                    }
 
+                    is Resource.Success -> {
+                        it.data?.let { getAadhaarCheck ->
+                            if (getAadhaarCheck.responseCode == 200) {
+                                showSnackBar(getAadhaarCheck.responseDesc)
+
+                              invokeCaptureIntent()
+
+                            }
+                            else if (getAadhaarCheck.responseCode == 301) {
+
+                                showSnackBar("Please Update from PlayStore")
+                            }
+
+                            else if (getAadhaarCheck.responseCode == 333) {
+
+                                showSnackBar(getAadhaarCheck.responseDesc)
+                            }
+                        } ?: showSnackBar("Internal Sever Error")
+                    }
+                }
+            }
+        }
+    }
 
     private fun collectUserCreationResponse() {
         lifecycleScope.launch {
@@ -892,6 +934,11 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             else if (getUserCreationRes.responseCode == 301) {
 
                                 showSnackBar("Please Update from PlayStore")
+                            }
+
+                            else if (getUserCreationRes.responseCode == 333) {
+
+                                showSnackBar(getUserCreationRes.responseDesc)
                             }
                         } ?: showSnackBar("Internal Sever Error")
                     }
