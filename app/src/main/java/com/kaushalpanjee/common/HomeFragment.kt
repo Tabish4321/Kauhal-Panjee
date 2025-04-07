@@ -45,6 +45,7 @@ import android.util.Base64
 import android.util.Log
 import android.widget.Button
 import android.widget.NumberPicker
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat // For permission checks
@@ -444,6 +445,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTradeResponse()
         collectSectorResponse()
         collectCandidateDetailsResponse()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Custom behavior when back is pressed
+
+                // Example: Navigate to HomeFragment and clear back stack
+                findNavController().navigate(
+                    R.id.mainHomePage,
+                    null,
+                    NavOptions.Builder().setPopUpTo(R.id.homeFragment, true).build()
+                )
+            }
+        })
 
     }
 
@@ -2607,7 +2621,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.profileView.viewDetails.setOnClickListener {
 
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToViewDetailsFragment())
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToViewDetailsFragment(),
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.homeFragment, true) // Removes all previous fragments including HomeFragment
+                    .build()
+            )
         }
 
         binding.btnBnakingSubmit.setOnClickListener {
@@ -5042,6 +5061,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             viewNo.setBackgroundResource(R.drawable.card_background_selected)
         }
     }
+
 
 }
 

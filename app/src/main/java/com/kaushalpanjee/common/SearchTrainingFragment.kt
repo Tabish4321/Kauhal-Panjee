@@ -43,7 +43,10 @@ class SearchTrainingFragment : BaseFragment<SearchTrainingFragmentBinding>(Searc
     private fun listener(){
 
 
+binding.backButton.setOnClickListener {
 
+    findNavController().navigateUp()
+}
 
 
 

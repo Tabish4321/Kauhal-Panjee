@@ -21,7 +21,7 @@
 
         <include
             android:id="@+id/profileView"
-            layout="@layout/aadhaar_profile_layout"
+            layout="@layout/aadhar_layout_view"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

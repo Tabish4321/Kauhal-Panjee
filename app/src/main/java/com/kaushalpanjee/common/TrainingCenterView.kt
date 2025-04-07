@@ -34,6 +34,12 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
 
         init()
         handleBackPress()
+
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+
+        }
+
     }
 
     private fun init() {
@@ -48,6 +54,8 @@ class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCente
         setupRecyclerView()
         collectTrainingCenterResponse()
     }
+
+
 
     private fun setupRecyclerView() {
         // Initialize adapter and RecyclerView

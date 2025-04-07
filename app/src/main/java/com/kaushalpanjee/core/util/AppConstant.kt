@@ -40,8 +40,6 @@ object AppConstant {
         const val PRE_PRODUCTION_CODE: String = "PP"
         const val CURRENT_ENVIRONMENT_CODE = PRE_PRODUCTION_CODE;
 
-
-
         const val PRODUCTION_CODE: String = "P"
 
         const val CRYPT_ID = "8080808080808080"

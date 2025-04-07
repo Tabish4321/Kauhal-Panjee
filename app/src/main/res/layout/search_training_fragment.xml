@@ -5,7 +5,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
-
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_40"
+        android:elevation="@dimen/dp_10"
+        android:src="@drawable/ic_arrow_back_ios_new"
+        android:visibility="visible"/>
     <ImageView
         android:id="@+id/centerImage"
         android:layout_width="match_parent"

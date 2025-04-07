@@ -6,6 +6,8 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+
     <ImageView
         android:id="@+id/centerImage"
         android:layout_width="match_parent"

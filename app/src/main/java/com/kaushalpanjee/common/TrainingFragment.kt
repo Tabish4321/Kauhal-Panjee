@@ -92,6 +92,11 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
             }
         }
 
+        binding.backButton.setOnClickListener {
+
+            findNavController().navigateUp()
+
+        }
         binding.SpinnerDistrictName.setOnItemClickListener { parent, _, position, _ ->
             selectedDistrictItem = parent.getItemAtPosition(position).toString()
             if (position in district.indices) {

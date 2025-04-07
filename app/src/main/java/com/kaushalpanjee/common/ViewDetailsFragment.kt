@@ -20,11 +20,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
@@ -113,6 +115,18 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         collectSetionAndPerResponse()
         collectCandidateDetailsResponse()
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // Custom behavior when back is pressed
+
+                // Example: Navigate to HomeFragment and clear back stack
+                findNavController().navigate(
+                    R.id.homeFragment,
+                    null,
+                    NavOptions.Builder().setPopUpTo(R.id.viewDetailsFragment, true).build()
+                )
+            }
+        })
 
     }
 
@@ -175,7 +189,12 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         }
         binding.profileView.viewDetails.setOnClickListener {
 
-            findNavController().navigate(ViewDetailsFragmentDirections.actionViewDetailsFragmentToHomeFragment())
+            findNavController().navigate(
+                ViewDetailsFragmentDirections.actionViewDetailsFragmentToHomeFragment(),
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.homeFragment, true) // Pops all fragments up to HomeFragment
+                    .build()
+            )
         }
 
 
@@ -563,6 +582,23 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 handleStatus(binding.optionAntyodayaYesSelect, binding.optionAntyodayaNoSelect, antyodayaStatus)
                                                 handleStatus(binding.optionllRsbyYesSelect, binding.optionllRsbyNoSelect, rsbyStatus)
                                                 handleStatus(binding.optionPipYesSelect, binding.optionPipNoSelect, pipStatus)
+
+
+                                                if (nregaJobCardStatus=="No"){
+
+                                                    binding.nregaJobCardView.gone()
+                                                    binding.nregaCardUpload.gone()
+
+
+                                                }
+                                                if (shgStatus=="No"){
+
+                                                    binding.etShgValidate.gone()
+
+                                                }
+
+
+
                                             } catch (e: Exception) {
                                                 showSnackBar("Error setting data: ${e.message}")
                                             }
@@ -679,6 +715,23 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                             binding.etWhereHaveHeard.setText(x.hearedFrom)
                                             binding.etSector.setText(x.sectorName)
                                             binding.etTrade.setText(x.trade)
+
+
+                                            if (heardStatus=="No"){
+
+
+                                                binding.etWhereHaveHeard.gone()
+
+                                            }
+
+
+                                            if (recievedTrainingBeforeStatus=="No"){
+
+
+                                                binding.etPrevComTra.gone()
+
+                                            }
+
                                         }
 
 
