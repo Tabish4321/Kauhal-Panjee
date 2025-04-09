@@ -16,7 +16,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -130,9 +129,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         binding.tvLogin.setOnClickListener {
             lifecycleScope.launch {
-                if (AppUtil.getSavedLanguagePreference(requireContext()).contains("eng")) {
+                if (AppUtil.getSavedLanguagePreference(requireContext()).contains("en")) {
 
-                    AppUtil.saveLanguagePreference(requireContext(), "eng")
+                    AppUtil.saveLanguagePreference(requireContext(), "en")
 
 
                 } else

@@ -213,29 +213,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         )
     }
 
-    /* private fun startAppDownload(){
-         progressBar = binding.progressBar
-
-         downloadHelper = DownloadHelper(requireContext())
-
-         val url = "https://play.google.com/store/apps/details?id=in.gov.uidai.facerd"
-         downloadHelper.startDownload(url, progressBar, object  : DownloadHelper.DownloadListener{
-             override fun onDownloadComplete() {
-                 binding.progressBar.gone()
-                 toastShort(getString(R.string.download_complete))
-             }
-
-             override fun onProgress(progress: Int) {
-                 binding.progressBar.visible()
-                 binding.progressBar.progress = progress
-             }
-
-             override fun onDownloadFailed() {
-                 binding.progressBar.gone()
-                 toastShort(getString(R.string.download_failed))
-             }
-         })
-     }*/
 
 
     private fun listener() {
@@ -254,6 +231,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
                 collectAadharResponse()
+
             } else {
 
                 showSnackBar("Please enter valid aadhaar number")
@@ -309,6 +287,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
 
+            binding.chipAware.gone()
             binding.tvWelcomeMsg.text = selectedState
             binding.etAadhaar.gone()
             binding.progressButton.root.visible()
@@ -1023,15 +1002,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
     private fun formatCheckBoxText(checkBox: CheckBox) {
-        val text = "I hereby state that I have no objection in authenticating myself with Aadhaar-based " +
-                "authentication system and consent to providing my Aadhaar number, Biometric and/or One " +
-                "Time Pin (OTP) data for Aadhaar-based authentication for the purposes of availing of the " +
-                "Unified IT Platform for DDUGKY and RSETI from National Informatics Centre.\n\n" +
-                "I understand that the Biometrics and/or OTP I provide for authentication shall be used only for " +
-                "authenticating my identity through the Aadhaar Authentication system for that specific " +
-                "transaction and for no other purposes.\n\n" +
-                "I understand that National Informatics Centre shall ensure security and " +
-                "confidentiality of my personal identity data provided for the purpose of Aadhaar-based authentication."
+        val text = getString(R.string.consent)
+
 
         val spannable = SpannableString(text)
 
