@@ -3740,7 +3740,7 @@
                     <TextView
                         android:id="@+id/btnBnakingSubmit"
                         style="@style/Button"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/dp_15"
                         android:drawablePadding="@dimen/dp_20"
                         android:text="@string/submit"
