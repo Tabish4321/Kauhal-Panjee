@@ -444,6 +444,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectNregaValidateResponse()
         collectTradeResponse()
         collectSectorResponse()
+        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
         collectCandidateDetailsResponse()
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -476,7 +477,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-        commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
 
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
@@ -2604,12 +2604,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 if (s.toString().matches(panRegex)) {
                     binding.etPanNumber.error = null  // ✅ Valid PAN
                     isValidPan = true
-                    binding.btnBnakingSubmit.visible()
+                  //  binding.btnBnakingSubmit.visible()
 
                 } else {
                     binding.etPanNumber.error = "Invalid PAN Format"
                     isValidPan = false
-                    binding.btnBnakingSubmit.gone()
+                  //  binding.btnBnakingSubmit.gone()
 
                 }
             }
@@ -2631,16 +2631,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnBnakingSubmit.setOnClickListener {
 
+            PanNumber = binding.etPanNumber.text.toString()
             IfscCode = binding.etIfscCode.text.toString()
             BankName = binding.etBankName.text.toString()
             BranchName = binding.etBranchName.text.toString()
             BankAcNo =  binding.etBankAcNo.text.toString()
 
-            if (isValidPan){
-
-                PanNumber = binding.etPanNumber.text.toString()
-
-            }
 
 
             if (IfscCode.isNotEmpty() && BankName.isNotEmpty() &&
@@ -2656,13 +2652,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 val encryptedBranchCode =   AESCryptography.encryptIntoBase64String(branchCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                 val encryptedBankAcNo =   AESCryptography.encryptIntoBase64String(BankAcNo, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                 val encryptedIfscCode =   AESCryptography.encryptIntoBase64String(IfscCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                var encryptedPanNumber =""
-                    if (PanNumber.isNotEmpty()){
-                     encryptedPanNumber =   AESCryptography.encryptIntoBase64String(PanNumber, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                }
-
-
+                val encryptedPanNumber =   AESCryptography.encryptIntoBase64String(PanNumber, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                 commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"7",
                     encryptedBankCode,encryptedBranchCode,encryptedBankAcNo,encryptedIfscCode,encryptedPanNumber),AppUtil.getSavedTokenPreference(requireContext()))
 
@@ -3560,7 +3550,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-    @SuppressLint("SuspiciousIndentation")
     private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
@@ -4305,6 +4294,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                             s?.let {
                                                 if (it.length in lengths || it.isEmpty()) {
                                                     binding.etBankAcNo.error = null
+                                                    binding.btnBnakingSubmit.visible()
 
 
                                                 } else {
@@ -4343,7 +4333,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-    @SuppressLint("SuspiciousIndentation")
     private fun collectSectorResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
@@ -4377,7 +4366,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             }
                             else if (getSectorList.responseCode == 302) {
                                 getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
-
                             }  else if (getSectorList.responseCode==401){
                                 AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
@@ -4948,13 +4936,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                             try {
                                                 // Decode and display images
-                                                categoryCertiImage = x.categoryCertPath
+                                                 categoryCertiImage = x.categoryCertPath
                                                 if (categoryCertiImage==""){
 
                                                     binding.categoryCertimageText.setText("")
                                                 }
                                                 else
-                                                    binding.categoryCertimageText.setText("Capture Image")
+                                                    binding.categoryCertimageText.setText("Capture_Image")
 
 
 
