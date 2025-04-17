@@ -2645,7 +2645,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             if (IfscCode.isNotEmpty() && BankName.isNotEmpty() &&
                 BranchName.isNotEmpty() && BankAcNo.isNotEmpty()
-                && PanNumber.isNotEmpty()){
+               /* && PanNumber.isNotEmpty()*/){
 
 
 
@@ -2656,7 +2656,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 val encryptedBranchCode =   AESCryptography.encryptIntoBase64String(branchCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                 val encryptedBankAcNo =   AESCryptography.encryptIntoBase64String(BankAcNo, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                 val encryptedIfscCode =   AESCryptography.encryptIntoBase64String(IfscCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                val encryptedPanNumber =   AESCryptography.encryptIntoBase64String(PanNumber, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                var encryptedPanNumber =""
+                    if (PanNumber.isNotEmpty()){
+                     encryptedPanNumber =   AESCryptography.encryptIntoBase64String(PanNumber, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                }
 
 
                 commonViewModel.insertBankingAPI(BankingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"7",
@@ -3556,6 +3560,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+    @SuppressLint("SuspiciousIndentation")
     private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
@@ -4338,6 +4343,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     private fun collectSectorResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
@@ -4371,6 +4377,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             }
                             else if (getSectorList.responseCode == 302) {
                                 getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
+
                             }  else if (getSectorList.responseCode==401){
                                 AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
@@ -4947,7 +4954,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.categoryCertimageText.setText("")
                                                 }
                                                 else
-                                                    binding.categoryCertimageText.setText("Capture_Image")
+                                                    binding.categoryCertimageText.setText("Capture Image")
 
 
 

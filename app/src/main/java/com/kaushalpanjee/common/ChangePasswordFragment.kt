@@ -47,10 +47,10 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
 
             if (oldPassword.isNotEmpty()&& newPassword.isNotEmpty()&& confirmNewPassword.isNotEmpty()){
 
-                if (newPassword.equals(confirmNewPassword)){
+                if (newPassword == confirmNewPassword){
 
-                    var shaOldPassword= AppUtil.sha512Hash(oldPassword)
-                    var shaNewPassword= AppUtil.sha512Hash(newPassword)
+                    val shaOldPassword= AppUtil.sha512Hash(oldPassword)
+                    val shaNewPassword= AppUtil.sha512Hash(newPassword)
 
                     commonViewModel.getChangePass(ChangePassReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         shaOldPassword,shaNewPassword),AppUtil.getSavedTokenPreference(requireContext()))

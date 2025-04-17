@@ -248,18 +248,19 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 }
 
                                 203 -> {
-                                    toastShort(getLoginResponse.responseMsg)
+                                    toastShort(getLoginResponse.responseDesc)
                                     commonViewModel.getToken(AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME)
 
                                 }
 
                                 301 -> {
-                                    showSnackBar(getLoginResponse.responseMsg)
+                                    showSnackBar(getLoginResponse.responseDesc)
                                     //Update app
                                 }
 
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(getLoginResponse.responseDesc)
+
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")
@@ -317,7 +318,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
                                 else -> {
-                                    showSnackBar("Something went wrong")
+                                    showSnackBar(getToken.responseDesc)
+
                                 }
                             }
                         } ?: showSnackBar("Internal Server Error")

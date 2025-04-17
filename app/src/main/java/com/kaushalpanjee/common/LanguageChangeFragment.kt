@@ -105,6 +105,64 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
         }
 
 
+        binding.languageTamil.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Coming soon",
+                onYesClicked = {
+                    /*    // Action for Yes button
+                        lifecycleScope.launch{
+
+                            AppUtil.changeAppLanguage(requireContext(),"hi")
+                            binding.checkIconHindi.visible()
+                            binding.checkEnglishIcon.gone()
+                            AppUtil.saveLanguagePreference(requireContext(),"hi")
+
+                            findNavController().navigateUp()
+
+
+                        }*/
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageAssamese.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Coming soon",
+                onYesClicked = {
+                    /*    // Action for Yes button
+                        lifecycleScope.launch{
+
+                            AppUtil.changeAppLanguage(requireContext(),"hi")
+                            binding.checkIconHindi.visible()
+                            binding.checkEnglishIcon.gone()
+                            AppUtil.saveLanguagePreference(requireContext(),"hi")
+
+                            findNavController().navigateUp()
+
+
+                        }*/
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
     }
 
     fun showYesNoDialog(context: Context, title: String, message: String, onYesClicked: () -> Unit, onNoClicked: () -> Unit) {
