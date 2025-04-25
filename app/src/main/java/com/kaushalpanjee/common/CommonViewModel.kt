@@ -27,6 +27,7 @@ import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
@@ -51,6 +52,7 @@ import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
+import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
@@ -58,6 +60,7 @@ import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -445,7 +448,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
-    private  var _getOtpValidateApi =  MutableStateFlow<Resource<out SendMobileOTPResponse>>(Resource.Loading())
+    private  var _getOtpValidateApi =  MutableStateFlow<Resource<out OtpValidateResponse>>(Resource.Loading())
     val getOtpValidateApi = _getOtpValidateApi.asSharedFlow()
 
 
@@ -489,6 +492,21 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+    private  var _getBannerAPI =  MutableStateFlow<Resource<out BannerResponse>>(Resource.Loading())
+    val getBannerAPI = _getBannerAPI.asSharedFlow()
+
+
+    fun getBannerAPI(token:String,bannerReq: BannerReq){
+        viewModelScope.launch {
+            commonRepository.getBannerAPI(token,bannerReq).collectLatest {
+                _getBannerAPI.emit(it)
+            }
+        }
+
+
+    }
+
 
     private  var _getTradeListAPI =  MutableStateFlow<Resource<out TradeResponse>>(Resource.Loading())
     val getTradeListAPI = _getTradeListAPI.asSharedFlow()

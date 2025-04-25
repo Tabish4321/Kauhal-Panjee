@@ -1,0 +1,214 @@
+<resources>
+    <string name="app_name">ایپ _ نام</string>
+    <string name="login_id">لاگ ان _ آئی ڈی</string>
+    <string name="login">لاگ ان کریں</string>
+    <string name="password">پاس ورڈ</string>
+    <string name="welcome_back">ارے، آج چمکتے ہیں!</string>
+    <string name="welcome_msg">ہیلو وہاں، آپ کو یاد کیا گیا ہے۔</string>
+    <string name="register">رجسٹر کریں</string>
+    <string name="forgot_password">پاس ورڈ بھول گئے</string>
+    <string name="forgot_id">بھول گیا _ آئی ڈی</string>
+    <string name="create_an_account">ایک اکاؤنٹ بنائیں</string>
+    <string name="create_an_account_msg">بس شامل ہوں اور نئے مواقع تلاش کریں</string>
+    <string name="email">ای میل درج کریں</string>
+    <string name="enter_phone">فون نمبر درج کریں</string>
+    <string name="entrt_otp">او ٹی پی درج کریں</string>
+    <string name="enter_code">او ٹی پی درج کریں</string>
+    <string name="not_receive_code">کیا کوئی کوڈ موصول نہیں ہوا!</string>
+    <string name="send_again">دوبارہ بھیجیں</string>
+    <string name="verify">تصدیق کریں</string>
+    <string name="enter_code_msg">براہ کرم اپنے فون نمبر پر بھیجا گیا 4 ہندسوں کا او ٹی پی درج کریں</string>
+    <string name="enter_code_email_msg">براہ کرم اپنے ای میل ایڈریس پر بھیجا گیا 4 ہندسوں کا او ٹی پی درج کریں</string>
+    <string name="state_name">ریاست کا نام</string>
+    <string name="select_state">ریاست منتخب کریں</string>
+    <string name="slected_state">سلیکٹڈ اسٹیٹ</string>
+    <string name="blank">خالی</string>
+    <string name="aadhaar">آدھار نمبر درج کریں</string>
+    <string name="login_to_your_account">اپنے اکاؤنٹ میں لاگ ان کریں</string>
+    <string name="aadhaar_number">آدھار درج کریں</string>
+    <string name="secc_information">ایس ای سی سی انفارمیشن</string>
+    <string name="address_information">ایڈریس کی معلومات</string>
+    <string name="personal_information">ذاتی معلومات</string>
+    <string name="educational_information">تعلیمی معلومات</string>
+    <string name="employment_information">روزگار کی معلومات</string>
+    <string name="training_information">ٹریننگ انفارمیشن</string>
+    <string name="state">ریاست</string>
+    <string name="district">ضلع</string>
+    <string name="select_district">ضلع منتخب کریں</string>
+    <string name="select_gp">گرام پنچایت منتخب کریں</string>
+    <string name="g_name">سرپرست کا نام</string>
+    <string name="guardian_name">سرپرست کا نام</string>
+    <string name="mother_name">ماں کا نام</string>
+    <string name="guardian_alternative_number">سرپرست/متبادل نمبر<font color='#FF0000'>*</font></string>
+    <string name="consent_text_short">میں رضاکارانہ طور پر اپنی شناخت کی معلومات ای-کیک ایپ کے ساتھ شیئر کرنے پر رضامند ہوں۔ مزید پڑھیں</string>
+    <string name="consent_text">میں رضاکارانہ طور پر اپنی شناخت کی معلومات ای-کیک ایپ کے ساتھ شیئر کرنے پر رضامند ہوں۔</string>
+    <string name="candidate_name">امیدوار کا نام</string>
+    <string name="father_name">سرپرست کا نام<font color='#FF0000'>*</font></string>
+    <string name="category">زمرہ<font color='#FF0000'>*</font></string>
+    <string name="marital">ازدواجی حیثیت<font color='#FF0000'>*</font></string>
+    <string name="minority">اقلیت<font color='#FF0000'>*</font></string>
+    <string name="pwd">پی ڈبلیو ڈی<font color='#FF0000'>*</font></string>
+    <string name="nrega_job">نریگا جاب کارڈ</string>
+    <string name="whether_shg_belong">کیا گھر کا کوئی فرد ایس ایچ جی سے تعلق رکھتا ہے</string>
+    <string name="do_you_Antyodaya">کیا آپ کے پاس انتیودیا کارڈ ہے؟</string>
+    <string name="do_you_llRsby">کیا آپ کے پاس آر ایس بی وائی/پی ایم-جے اے وائی کارڈ ہے؟</string>
+    <string name="do_you_Pip">کیا پی آئی پی (غریبوں کی شراکت دار شناخت) ہے</string>
+    <string name="father_incomer">خاندان کی سالانہ آمدنی (روپے)</string>
+    <string name="voter_id">ووٹر آئی ڈی</string>
+    <string name="driving_id">ڈرائیونگ لائسنس</string>
+    <string name="submit">جمع کروائیں</string>
+    <string name="areIsecc">ایس ای سی سی</string>
+    <string name="Gp">گرام پنچایت<font color='#FF0000'>*</font></string>
+    <string name="Village">گاؤں<font color='#FF0000'>*</font></string>
+    <string name="select_Village">گاؤں منتخب کریں</string>
+    <string name="Block">بلاک کریں<font color='#FF0000'>*</font></string>
+    <string name="select_Block">منتخب کریں بلاک</string>
+    <string name="AdressLine">اسٹریٹ 1<font color='#FF0000'>*</font></string>
+    <string name="AdressLine1">اسٹریٹ 1</string>
+    <string name="AdressLine2">اسٹریٹ 2</string>
+    <string name="PresenrAddress">موجودہ ایڈریس</string>
+    <string name="PresenrAddressSame">کیا آپ کا موجودہ پتہ آپ کے مستقل پتے جیسا ہے؟</string>
+    <string name="Educational_information">تعلیمی معلومات</string>
+    <string name="Employment_information">روزگار کی معلومات</string>
+    <string name="Training_information">ٹریننگ انفارمیشن</string>
+    <string name="Banking_information">بینکنگ کی معلومات</string>
+    <string name="select_HighestEducation">اعلی تعلیم<font color='#FF0000'>*</font></string>
+    <string name="select_HighestEducation1">اعلی ترین تعلیم</string>
+    <string name="select_YearOfPassing">سب سے زیادہ قابلیت حاصل کرنے کا سال</string>
+    <string name="select_YearOfPassingTech">تکنیکی اہلیت کے پاس ہونے کا سال</string>
+    <string name="anyTechnicalEducation">تکنیکی تعلیم؟<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation1">تکنیکی تعلیم<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation2">تکنیکی تعلیم<font color='#FF0000'>*</font></string>
+    <string name="DomainOfTech">تکنیکی تعلیم کا ڈومین<font color='#FF0000'>*</font></string>
+    <string name="curentlyEmployed">کیا آپ فی الحال ملازم ہیں؟<font color='#FF0000'>*</font></string>
+    <string name="natureOfEmpl">روزگار کی نوعیت کیا ہے؟</string>
+    <string name="IntrestedIn">دلچسپی ہے؟<font color='#FF0000'>*</font></string>
+    <string name="EmploymentPreference">روزگار کی ترجیح<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">ملازمت کے مقام کی ترجیح<font color='#FF0000'>*</font></string>
+    <string name="CurrentEarning">روپے میں ذاتی موجودہ ماہانہ آمدنی کیا ہے؟</string>
+    <string name="CurrentEarningHint">موجودہ تنخواہ</string>
+    <string name="ExpectationSalary">متوقع کم از کم ماہانہ تنخواہ (روپے)</string>
+    <string name="recievedAnyTrainingBefore">کیا آپ نے پہلے کوئی تربیت حاصل کی ہے؟<font color='#FF0000'>*</font></string>
+    <string name="PreviousComTraining">میں پہلے سے مکمل تربیت</string>
+    <string name="selectScheme">سلیکٹ اسکیم</string>
+    <string name="select_PreviouscompTrainingMOnth">اس دوران پہلے مکمل کیا گیا</string>
+    <string name="HeardAboutddugky">آپ نے اس سے پہلے DDUGKY/RSETI کے بارے میں کہاں سنا ہے؟</string>
+    <string name="date_of_birth">تاریخ پیدائش</string>
+    <string name="PermanentAddress">مستقل پتہ</string>
+    <string name="s_o_name_siwan_841226_bihar_india">C/O: سرپرست کا نام، پورانی قلعہ سیون,\n سیون، سیون، بہار 841226، بھارت</string>
+    <string name="gender">جنس</string>
+    <string name="which_sector_are_you_interested_in">آپ کس شعبے میں دلچسپی رکھتے ہیں؟<font color='#FF0000'>*</font></string>
+    <string name="design">ڈیزائن</string>
+    <string name="mechanical">مکینیکل</string>
+    <string name="which_trade_are_you_interested_in">آپ کس تجارت میں دلچسپی رکھتے ہیں؟<font color='#FF0000'>*</font></string>
+    <string name="bank_name">بینک کا نام</string>
+    <string name="bank_account_number">بینک اکاؤنٹ نمبر</string>
+    <string name="enter_ifsc_code">آئی ایف ایس سی کوڈ درج کریں</string>
+    <string name="ifsc_code">آئی ایف ایس سی کوڈ</string>
+    <string name="pan_no">پین نمبر</string>
+    <string name="enter_pan_no">پین نمبر درج کریں</string>
+    <string name="image">تصویر</string>
+    <string name="search">تربیتی مرکز کا نام درج کریں</string>
+    <string name="services_for_you">آپ کے لیے خدمات</string>
+    <string name="unableto_find_yourself_in_secc_drop_down">کیا آپ خود کو SECC ڈراپ ڈاؤن میں تلاش کرنے میں ناکام ہیں؟</string>
+    <string name="ahl_tin">اے ایچ ایل-ٹن</string>
+    <string name="pin_code">پن کوڈ<font color='#FF0000'>*</font></string>
+    <string name="pin_code1">پن کوڈ</string>
+    <string name="yes">ہاں</string>
+    <string name="no">نہیں</string>
+    <string name="name">نام</string>
+    <string name="upload_voter_id">ووٹر آئی ڈی اپ لوڈ کریں</string>
+    <string name="upload_driving_licence">ڈرائیونگ لائسنس اپ لوڈ کریں</string>
+    <string name="download_failed">آدھار تصدیق ایپ ڈاؤن لوڈ کرنا ناکام ہو گیا ہے، براہ کرم دوبارہ کوشش کریں۔</string>
+    <string name="download_complete">آدھار تصدیق ایپ ڈاؤن لوڈ ہو گئی ہے۔</string>
+    <string name="complete_details"><![CDATA[اپنا پروفائل مکمل کریں اور ابھی تربیت شروع کریں]]></string>
+    <string name="complete_now">ابھی مکمل کریں</string>
+    <string name="personal_details">ذاتی تفصیلات</string>
+    <string name="address_details">پتہ کی تفصیلات</string>
+    <string name="secc_details">ایس ای سی سی تفصیلات</string>
+    <string name="education_details">تعلیم کی تفصیلات</string>
+    <string name="banking_details">بینکنگ کی تفصیلات</string>
+    <string name="your_aadhaar_ekyc_is_completed">آپ کا آدھار ای کے وائی سی مکمل ہو گیا ہے</string>
+    <string name="select_category">زمرہ منتخب کریں</string>
+    <string name="name1">لازمی فیلڈ 1<font color='#FF0000'>*</font></string>
+    <string name="validate">تصدیق کریں</string>
+    <string name="upload_category_certificate">زمرہ سرٹیفکیٹ اپ لوڈ کریں</string>
+    <string name="upload_antyodaya_card">انتیودیا کارڈ اپ لوڈ کریں</string>
+    <string name="upload_rsby_pm_jay_card">آر ایس بی وائی/پی ایم-جے اے وائی کارڈ اپ لوڈ کریں</string>
+    <string name="upload_residence_certificate">رہائش کا سرٹیفکیٹ اپ لوڈ کریں</string>
+    <string name="guardian_alternative_numbern">سرپرست/متبادل نمبر</string>
+    <string name="mother_namer">ماں کا نام</string>
+    <string name="something_went_wrong_at_uidai_site">یو آئی ڈی اے آئی کی طرف سے کچھ غلط ہوا۔</string>
+    <string name="ok">ٹھیک ہے</string>
+    <string name="self_employed">سیلف ایمپلائڈ</string>
+    <string name="salary">تنخواہ</string>
+    <string name="ekyc_completed">ای کے وائی سی مکمل ہوا</string>
+    <string name="job">نوکری</string>
+    <string name="training">تربیت</string>
+    <string name="both">دونوں</string>
+    <string name="salaried">تنخواہ دار</string>
+    <string name="within_district">ضلع کے اندر</string>
+    <string name="within_state">ریاست کے اندر</string>
+    <string name="outside_side">آؤٹ سائیڈ اسٹیٹ</string>
+    <string name="outside_country">ملک سے باہر</string>
+    <string name="ddugky">ڈی ڈی یو جی کے وائی</string>
+    <string name="rseti">آر ایس ای ٹی آئی</string>
+    <string name="pmkvy">پی ایم کے وی وائی</string>
+    <string name="others">دیگر</string>
+    <string name="mention_others_training">اگر دوسرے تربیت کر رہے ہیں تو اس کا ذکر کریں</string>
+    <string name="select_sector">سیکٹر منتخب کریں</string>
+    <string name="select_trade">تجارت منتخب کریں</string>
+    <string name="have_you_heard_about_ddugky_rseti">کیا آپ نے ڈی ڈی یو جی کے وائی/آر ایس ای ٹی آئی کے بارے میں سنا ہے؟</string>
+    <string name="father_name_f">باپ کا نام</string>
+    <string name="a_tin_no">اے-ٹن نمبر</string>
+    <string name="search_">سرچ کریں۔</string>
+    <string name="languages">زبانیں<font color='#FF0000'>*</font></string>
+    <string name="hindi">हिंदी</string>
+    <string name="english">انگریزی</string>
+    <string name="mrathi">ಕನ್ನಡ</string>
+    <string name="read">پڑھیں\n</string>
+    <string name="write">لکھیں</string>
+    <string name="select_languages">زبانیں منتخب کریں</string>
+    <string name="branch_name">شاخ کا نام</string>
+    <string name="view_profile"><u>تفصیلات دیکھیں</u></string>
+    <string name="edit"><u>تفصیلات میں ترمیم کریں</u></string>
+    <string name="as_per_aadhaar">آدھار کا پتہ</string>
+    <string name="forgot_id_and_password">آئی ڈی اور پاس ورڈ بھول گیا</string>
+    <string name="sector">سیکٹر<font color='#FF0000'>*</font></string>
+    <string name="find_a_training_center">ٹریننگ سینٹر تلاش کریں</string>
+    <string name="enter_jobcardno">جاب کارڈ نمبر درج کریں</string>
+    <string name="enter_shg_code">ایس ایچ جی کوڈ درج کریں</string>
+    <string name="upload_nrega_jobcard">نریگا کی تصویر اپ لوڈ کریں</string>
+    <string name="training_name">ٹریننگ کا نام</string>
+    <string name="contact_no">رابطہ نمبر</string>
+    <string name="center_name">مرکز کا نام</string>
+    <string name="address">پتہ</string>
+    <string name="contact_number">رابطہ نمبر</string>
+    <string name="logout">لاگ آؤٹ</string>
+    <string name="changePass">پاس ورڈ تبدیل کریں</string>
+    <string name="change_password">پاس ورڈ تبدیل کریں</string>
+    <string name="oldPass">پرانا پاس ورڈ</string>
+    <string name="newPass">نیا پاس ورڈ</string>
+    <string name="confirmPass">پاس ورڈ کی تصدیق کریں</string>
+    <string name="view"><u>نظارہ کریں</u></string>
+    <string name="close">بند کریں</string>
+    <string name="no_training_center_found">کوئی ٹریننگ سینٹر نہیں ملا</string>
+    <string name="street">اسٹریٹ 1</string>
+    <string name="kyc_failed_msg">KYC عمل ناکام ہو گیا ہے، براہ کرم دوبارہ کوشش کریں۔</string>
+    <string name="candidate_details">امیدوار\n    کی تفصیلات</string>
+    <string name="training_details">ٹریننگ\n    کی تفصیلات</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">
+	براہ کرم اپنی ریاست کو احتیاط سے منتخب کریں۔ یہ انتخاب آپ کا اکاؤنٹ بننے کے بعد تبدیل نہیں کیا جا سکتا۔
+	</string>
+    <string name="consent">
+	میں یہاں یہ کہتا ہوں کہ مجھے آدھار پر مبنی تصدیق کے نظام کے ساتھ اپنے آپ کی تصدیق کرنے اور نیشنل انفارمیٹکس سینٹر سے ڈی ڈی یو جی کے وائی اور آر ایس ای ٹی آئی کے لیے یونیفائیڈ آئی ٹی پلیٹ فارم حاصل کرنے کے مقاصد کے لیے آدھار پر مبنی تصدیق کے لیے اپنا آدھار نمبر، بائیو میٹرک اور/یا ون ٹائم پن (او ٹی پی) ڈیٹا فراہم کرنے پر کوئی اعتراض نہیں ہے۔&#10;&#10;میں سمجھتا ہوں کہ تصدیق کے لیے میں جو بائیو میٹرکس اور/یا او ٹی پی فراہم کرتا ہوں وہ صرف اس مخصوص لین دین کے لیے آدھار تصدیق کے نظام کے ذریعے میری شناخت کی تصدیق کے لیے استعمال کیا جائے گا اور کسی دوسرے مقصد کے لیے نہیں۔&#10;&#10;میں سمجھتا ہوں کہ نیشنل انفارمیٹکس سینٹر آدھار پر مبنی تصدیق کے مقصد سے فراہم کردہ میرے ذاتی شناختی ڈیٹا کی حفاظت اور رازداری کو یقینی بنائے گا۔
+	</string>
+
+    <string name="enter_pmay_regno">PMAY/رجسٹریشن نمبر درج کریں</string>
+    <string name="pmay_regno">PMAY/رجسٹریشن نمبر</string>
+    <string name="other_poverty_eradiction_central_government_programmes">دیگر غربت کے خاتمے یا مرکزی حکومت کے پروگرام</string>
+    <string name="enter_other_scheme">دیگر سکیم درج کریں</string>
+    <string name="upload_document">دستاویز اپ لوڈ کریں</string>
+    <string name="select_userid">صارف آئی ڈی منتخب کریں</string>
+
+</resources>

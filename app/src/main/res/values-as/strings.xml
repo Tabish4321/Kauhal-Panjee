@@ -1,0 +1,213 @@
+<resources>
+
+    <string name="app_name">এপ _ নাম> কৌশল পাঞ্জী</string>
+    <string name="login_id">লগিন আইডি\ी</string>
+    <string name="login">লগিন</string>
+    <string name="password">পাছৱৰ্ড</string>
+    <string name="welcome_back">হেই, আজি উজ্জ্বল হওঁ!</string>
+    <string name="welcome_msg">হাই, আপোনাক হেৰুৱাইছো।.</string>
+    <string name="register"><u>পঞ্জীয়ন কৰক</u></string>
+    <string name="forgot_password"><u>পাছৱৰ্ড পাহৰি গ\" ল?</u></string>
+    <string name="forgot_id"><u>আইডি আৰু পাছৱৰ্ড পাহৰি গৈছে নেকি?</u></string>
+    <string name="create_an_account">এটা একাউণ্ট সৃষ্টি কৰক</string>
+    <string name="create_an_account_msg">কেৱল যোগদান কৰক আৰু নতুন সুযোগসমূহ অন্বেষণ কৰক</string>
+    <string name="email">ইমেইল প্ৰবিষ্ট কৰক</string>
+    <string name="enter_phone">ফোন নম্বৰ এণ্টাৰ কৰক</string>
+    <string name="entrt_otp">অ \'টিপি প্ৰবিষ্ট কৰক</string>
+    <string name="enter_code">অ\'. টি. পি. প্ৰবিষ্ট কৰক</string>
+    <string name="not_receive_code">Did\'t receive a code!</string>
+    <string name="send_again"><u>পুনৰ পঠিওৱা</u></string>
+    <string name="verify">পৰীক্ষা কৰক</string>
+    <string name="enter_code_msg">অনুগ্ৰহ কৰি আপোনাৰ ফোন নম্বৰলৈ প্ৰেৰণ কৰা 4টা অংকৰ অ\'. টি. পি. প্ৰবিষ্ট কৰক</string>
+    <string name="enter_code_email_msg">অনুগ্ৰহ কৰি আপোনাৰ ইমেইল ঠিকনালৈ প্ৰেৰণ কৰা 4টা অংকৰ অ\'. টি. পি. প্ৰবিষ্ট কৰক</string>
+    <string name="state_name">ৰাজ্যৰ নাম</string>
+    <string name="select_state">ৰাজ্য নিৰ্বাচন কৰক</string>
+    <string name="slected_state">নিৰ্বাচিত ৰাজ্য</string>
+    <string name="blank">খালী<u></u></string>
+    <string name="aadhaar">আধাৰ নম্বৰ প্ৰবিষ্ট কৰক</string>
+    <string name="login_to_your_account"> আপোনাৰ একাউণ্টত লগইন কৰক</string>
+    <string name="aadhaar_number">আধাৰ প্ৰবিষ্ট কৰক</string>
+    <string name="secc_information">এছ. ই. চি. চি তথ্য</string>
+    <string name="address_information">ঠিকনাৰ তথ্য</string>
+    <string name="personal_information">ব্যক্তিগত তথ্য</string>
+    <string name="educational_information">শিক্ষামূলক তথ্য</string>
+    <string name="employment_information">নিয়োগৰ তথ্য</string>
+    <string name="training_information">প্ৰশিক্ষণ তথ্য</string>
+    <string name="state">State<font color='#FF0000'>*</font>ৰাজ্য</string>
+    <string name="district">District<font color='#FF0000'>*</font>জিলা</string>
+    <string name="select_district">জিলা নিৰ্বাচন কৰক</string>
+    <string name="select_gp">গ্ৰাম পঞ্চায়ত নিৰ্বাচন কৰক</string>
+    <string name="g_name">অভিভাৱকৰ নাম</string>
+    <string name="guardian_name">অভিভাৱকৰ নাম</string>
+    <string name="mother_name">মাতৃৰ নাম<font color='#FF0000'>*</font></string>
+    <string name="guardian_alternative_number">অভিভাৱক/বিকল্প সংখ্যা<font color='#FF0000'>*</font></string>
+    <string name="consent_text_short">মই স্বেচ্ছামূলকভাৱে মোৰ পৰিচয়ৰ তথ্য ই-কাইচি এপৰ সৈতে ভাগ বতৰা কৰিবলৈ সন্মত হৈছো। অধিক পঢ়ক</string>
+    <string name="consent_text">মই স্বেচ্ছামূলকভাৱে মোৰ পৰিচয়ৰ তথ্য ই-কাইচি এপৰ সৈতে ভাগ বতৰা কৰিবলৈ সন্মত হৈছো।</string>
+    <string name="candidate_name">প্ৰাৰ্থীৰ নাম</string>
+    <string name="father_name">অভিভাৱকৰ নাম<font color='#FF0000'>*</font></string>
+    <string name="category">শ্ৰেণী<font color='#FF0000'>*</font></string>
+    <string name="marital">বৈবাহিক স্থিতি<font color='#FF0000'>*</font></string>
+    <string name="minority">সংখ্যালঘু<font color='#FF0000'>*</font></string>
+    <string name="pwd">পিডব্লিউডি<font color='#FF0000'>*</font></string>
+    <string name="nrega_job">এনৰেগা জব কাৰ্ড</string>
+    <string name="whether_shg_belong">এছ. এইচ. জি.-ৰ সদস্য হয় নে নহয়</string>
+    <string name="do_you_Antyodaya">আপোনাৰ অন্ত্যোদয় কাৰ্ড আছে নেকি?</string>
+    <string name="do_you_llRsby"> আপোনাৰ ওচৰত আৰ. এছ. বি. ৱাই/পি. এম-জে. এ. ৱাই. কাৰ্ড আছে নেকি?</string>
+    <string name="do_you_Pip">হৈছে পি. আই. পি. (দৰিদ্ৰসকলৰ অংশগ্ৰহণমূলক চিনাক্তকৰণ)</string>
+    <string name="father_incomer">পৰিয়ালৰ বাৰ্ষিক আয় (50 টকা)</string>
+    <string name="voter_id"> ভোটৰ আইডি</string>
+    <string name="driving_id">Driving License</string>
+    <string name="submit">দাখিল কৰক</string>
+    <string name="areIsecc">এছইচিচি</string>
+    <string name="Gp">গ্ৰাম পঞ্চায়ত<font color='#FF0000'>*</font></string>
+    <string name="Village">গাঁও<font color='#FF0000'>*</font></string>
+    <string name="select_Village">গাঁও নিৰ্বাচন কৰক</string>
+    <string name="Block">Block<font color='#FF0000'>*</font></string>
+    <string name="select_Block">Select Block</string>
+    <string name="AdressLine">পথ 1<font color='#FF0000'>*</font></string>
+    <string name="AdressLine1">পথ 1</string>
+    <string name="AdressLine2">পথ 2</string>
+    <string name="PresenrAddress"> বৰ্তমান ঠিকনা</string>
+    <string name="PresenrAddressSame">আপোনাৰ বৰ্তমানৰ ঠিকনা আপোনাৰ স্থায়ী ঠিকনাৰ দৰে একেই নেকি?</string>
+    <string name="Educational_information">শৈক্ষিক তথ্য</string>
+    <string name="Employment_information">নিয়োগৰ তথ্য</string>
+    <string name="Training_information">প্ৰশিক্ষণ তথ্য</string>
+    <string name="Banking_information">বেংকিং তথ্য</string>
+    <string name="select_HighestEducation">সৰ্বোচ্চ শিক্ষা<font color='#FF0000'>*</font></string>
+    <string name="select_HighestEducation1">সৰ্বোচ্চ শিক্ষা</string>
+    <string name="select_YearOfPassing">সৰ্বোচ্চ অৰ্হতা লাভ কৰাৰ বছৰ</string>
+    <string name="select_YearOfPassingTech">কাৰিকৰী অৰ্হতা উত্তীৰ্ণ হোৱাৰ বছৰ</string>
+    <string name="anyTechnicalEducation">কাৰিকৰী শিক্ষা??<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation1">কাৰিকৰী শিক্ষা<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation2">কাৰিকৰী শিক্ষা<font color='#FF0000'>*</font></string>
+    <string name="DomainOfTech">কাৰিকৰী শিক্ষাৰ ডমেইন<font color='#FF0000'>*</font></string>
+    <string name="curentlyEmployed">আপুনি বৰ্তমান কৰ্মৰত নেকি?<font color='#FF0000'>*</font></string>
+    <string name="natureOfEmpl">নিয়োগৰ প্ৰকৃতি কি?</string>
+    <string name="IntrestedIn">আগ্ৰহী নেকি??<font color='#FF0000'>*</font></string>
+    <string name="EmploymentPreference">নিযুক্তিৰ অগ্ৰাধিকাৰ<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">চাকৰিৰ স্থানৰ অগ্ৰাধিকাৰ<font color='#FF0000'>*</font></string>
+    <string name="CurrentEarning">ব্যক্তিগত বৰ্তমানৰ মাহিলী উপাৰ্জন টকাৰ হিচাপত কিমান</string>
+    <string name="CurrentEarningHint">বৰ্তমানৰ দৰমহা</string>
+    <string name="ExpectationSalary">প্ৰত্যাশিত নূন্যতম মাহিলী দৰমহা (50 টকা)</string>
+    <string name="recievedAnyTrainingBefore">আপুনি আগতে কোনো প্ৰশিক্ষণ লাভ কৰিছে নেকি<font color='#FF0000'>*</font></string>
+    <string name="PreviousComTraining">পূৰ্বতে সম্পূৰ্ণ কৰা প্ৰশিক্ষণ</string>
+    <string name="selectScheme">আঁচনি বাছনি কৰক</string>
+    <string name="select_PreviouscompTrainingMOnth">পূৰ্বতে এই সময়ছোৱাত সম্পূৰ্ণ কৰা হৈছিল</string>
+    <string name="HeardAboutddugky">আপুনি ডিডিইউজিকেৱাই/আৰএছইটিআইৰ বিষয়ে আগতে ক \'ত শুনিছিল?</string>
+    <string name="date_of_birth">জন্মৰ তাৰিখ</string>
+    <string name="PermanentAddress"> স্থায়ী ঠিকনা</string>
+    <string name="s_o_name_siwan_841226_bihar_india">C/O:Guardian Name,purani quila Siwan,\n Siwan,Siwan,Bihar841226,India s _ o _ নেম _ চিৱান _ 841226 _ বিহাৰ _ ইণ্ডিয়া\"> C/O: অভিভাৱকৰ নাম, পুৰাণী কিলা চিৱান, \\n চিৱান, চিৱান, বিহাৰ 841226, ভাৰত</string>
+    <string name="gender">লিংগ</string>
+    <string name="which_sector_are_you_interested_in">আপুনি কোনটো খণ্ডত আগ্ৰহী?<font color='#FF0000'>*</font></string>
+    <string name="design">ডিজাইন</string>
+    <string name="mechanical">যান্ত্ৰিক</string>
+    <string name="which_trade_are_you_interested_in">আপুনি কোনটো বাণিজ্যত আগ্ৰহী?<font color='#FF0000'>*</font></string>
+    <string name="bank_name">বেংকৰ নাম</string>
+    <string name="bank_account_number">বেংক একাউণ্ট নম্বৰ</string>
+    <string name="enter_ifsc_code">আই. এফ. এছ. চি. কোড এণ্টাৰ কৰক</string>
+    <string name="ifsc_code">আই. এফ. এছ. চি. কোড এণ্টাৰ কৰক</string>
+    <string name="pan_no">পেন নম্বৰ প্ৰৱেশ কৰক</string>
+    <string name="enter_pan_no">পেন নম্বৰ প্ৰৱেশ কৰক</string>
+    <string name="image">ছবি</string>
+    <string name="search">প্ৰশিক্ষণ কেন্দ্ৰৰ নাম লিখক</string>
+    <string name="services_for_you">সেৱাসমূহ আপোনাৰ বাবে</string>
+    <string name="unableto_find_yourself_in_secc_drop_down"> নিজকে এছইচিচি ড্ৰপ ডাউনত বিচাৰি পোৱাত অক্ষম?</string>
+    <string name="ahl_tin">এএইচএল-টিআইএন</string>
+    <string name="pin_code">পিন কোড<font color='#FF0000'>*</font></string>
+    <string name="pin_code1">পিন কোড</string>
+    <string name="yes">হয়</string>
+    <string name="no">নাই</string>
+    <string name="name">নাম</string>
+    <string name="upload_voter_id">আপলোড ভোটৰ আইডি</string>
+    <string name="upload_driving_licence"> ড্ৰাইভিং অনুজ্ঞাপত্ৰ আপলোড কৰক</string>
+    <string name="download_failed">আধাৰ প্ৰমাণীকৰণ এপ ডাউনল \'ড কৰাত ব্যৰ্থ হৈছে, অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।</string>
+    <string name="download_complete">আধাৰ প্ৰমাণীকৰণ এপ ডাউনলোড কৰা হৈছে।.</string>
+    <string name="complete_details"><![CDATA[Complete your profile & Start training now]]>সম্পূৰ্ণ বিৱৰণ</string>
+    <string name="complete_now">এতিয়া সম্পূৰ্ণ কৰক</string>
+    <string name="personal_details">ব্যক্তিগত বিৱৰণ</string>
+    <string name="address_details">ঠিকনাৰ সবিশেষ</string>
+    <string name="secc_details">এছ. ই. চি. চি বিৱৰণ</string>
+    <string name="education_details">শিক্ষাৰ সবিশেষ</string>
+    <string name="banking_details"> বেংকিং বিৱৰণ</string>
+    <string name="your_aadhaar_ekyc_is_completed"> আপোনাৰ আধাৰ ইকাইক সম্পূৰ্ণ হৈছে।</string>
+    <string name="select_category">শ্ৰেণী নিৰ্বাচন কৰক</string>
+    <string name="name1">বাধ্যতামূলক ক্ষেত্ৰ 1<font color='#FF0000'>*</font></string>
+    <string name="validate">বৈধ কৰক</string>
+    <string name="upload_category_certificate">শ্ৰেণী প্ৰমাণপত্ৰ আপলোড কৰক</string>
+    <string name="upload_antyodaya_card">অন্ত্যোদয় কাৰ্ড আপলোড কৰক</string>
+    <string name="upload_rsby_pm_jay_card">আৰ. এছ. বি. ৱাই./পি. এম-জে. এ. ৱাই. কাৰ্ড আপলোড কৰক</string>
+    <string name="upload_residence_certificate">Upload Residence Certificate</string>
+    <string name="guardian_alternative_numbern">অভিভাৱক/বিকল্প নম্বৰ</string>
+    <string name="mother_namer">মাতৃৰ নাম</string>
+    <string name="something_went_wrong_at_uidai_site"> ইউআইডিএআইৰ ফালৰ পৰা কিবা এটা ভুল হৈছিল।.</string>
+    <string name="ok">ঠিক আছে</string>
+    <string name="self_employed">স্বনিযুক্ত</string>
+    <string name="salary">দৰমহা</string>
+    <string name="ekyc_completed">ইকাইচি সম্পূৰ্ণ কৰা হৈছে</string>
+    <string name="job">কাম</string>
+    <string name="training">প্ৰশিক্ষণ</string>
+    <string name="both">দুয়োটাই</string>
+    <string name="salaried">বেতনভোগী</string>
+    <string name="within_district">জিলাৰ ভিতৰত</string>
+    <string name="within_state">ৰাজ্যৰ ভিতৰত</string>
+    <string name="outside_side">ৰাজ্যৰ বাহিৰত</string>
+    <string name="outside_country">বাহিৰৰ দেশ</string>
+    <string name="ddugky">ডিডিইউজিকেৱাই</string>
+    <string name="rseti">ৰছেটি</string>
+    <string name="pmkvy">পিএমকেভিৱাই</string>
+    <string name="others">আনবোৰ</string>
+    <string name="mention_others_training">যদি আনসকলে প্ৰশিক্ষণ দিয়ে উল্লেখ কৰক</string>
+    <string name="select_sector">নিৰ্বাচন কৰক</string>
+    <string name="select_trade">বাণিজ্য নিৰ্বাচন কৰক</string>
+    <string name="have_you_heard_about_ddugky_rseti">আপুনি ডিডিইউজিকেৱাই/আৰএছইটিআইৰ বিষয়ে শুনিছেনে?</string>
+    <string name="father_name_f">পিতৃৰ নাম</string>
+    <string name="a_tin_no">এ-টিন নম্বৰ</string>
+    <string name="search_">সন্ধান কৰক।...</string>
+    <string name="languages">ভাষাসমূহ<font color='#FF0000'>*</font></string>
+    <string name="hindi">हिंदीी</string>
+    <string name="english">ইংৰাজী</string>
+    <string name="mrathi">ಕನ್ನಡ</string>
+    <string name="read">পঢ়ক\n</string>
+    <string name="write">লিখো</string>
+    <string name="select_languages"> ভাষাসমূহ বাছনি কৰক</string>
+    <string name="branch_name">শাখাৰ নাম</string>
+    <string name="view_profile"><u>প্ৰফাইল চাওক</u></string>
+    <string name="edit"><u>সম্পাদনা কৰক</u></string>
+    <string name="as_per_aadhaar"> আধাৰ ঠিকনা</string>
+    <string name="forgot_id_and_password">আইডি আৰু পাছৱৰ্ড পাহৰি গ \"ল</string>
+    <string name="sector">খণ্ড<font color='#FF0000'>*</font></string>
+    <string name="find_a_training_center">এটা প্ৰশিক্ষণ কেন্দ্ৰ বিচাৰি উলিয়াওক</string>
+    <string name="enter_jobcardno">এণ্টাৰ জবকাৰ্ডনো</string>
+    <string name="enter_shg_code">এছ. এইচ. জি ক\' ড এণ্টাৰ কৰক</string>
+    <string name="upload_nrega_jobcard">এনৰেগা ছবি আপলোড কৰক</string>
+    <string name="training_name"> প্ৰশিক্ষণৰ নাম</string>
+    <string name="contact_no">যোগাযোগ কৰক</string>
+    <string name="center_name">কেন্দ্ৰৰ নাম</string>
+    <string name="address">ঠিকনা</string>
+    <string name="contact_number">যোগাযোগ নম্বৰ</string>
+    <string name="logout">লগআউট</string>
+    <string name="changePass">পাছৱৰ্ড সলনি কৰক</string>
+    <string name="change_password">পাছৱাৰ্ড সলনি কৰক</string>
+    <string name="oldPass">পুৰণি পাছৱাৰ্ড</string>
+    <string name="newPass">নতুন পাছৱৰ্ড</string>
+    <string name="confirmPass">পাছৱৰ্ড নিশ্চিত কৰক</string>
+    <string name="view"><u>চাওক</u></string>
+    <string name="close">বন্ধ কৰক</string>
+    <string name="no_training_center_found">কোনো প্ৰশিক্ষণ কেন্দ্ৰ পোৱা হোৱা নাই</string>
+    <string name="street">ষ্ট্ৰীট 1</string>
+    <string name="kyc_failed_msg"> kyc প্ৰক্ৰিয়া বিফল হৈছে অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।</string>
+    <string name="candidate_details">প্ৰাৰ্থীৰ বিৱৰণ</string>
+    <string name="training_details"> প্ৰশিক্ষণৰ সবিশেষ</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">অনুগ্ৰহ কৰি আপোনাৰ ৰাজ্য সাৱধানে বাছনি কৰক। আপোনাৰ একাউণ্ট সৃষ্টি হোৱাৰ পিছত এই নিৰ্বাচন সলনি কৰিব নোৱাৰি"</string>
+    <string name="consent">
+    I hereby state that I have no objection in authenticating myself with the Aadhaar-based authentication system and consent to providing my Aadhaar number, biometric and/or One Time Pin (OTP) data for Aadhaar-based authentication for the purposes of availing the Unified IT Platform for DDUGKY and RSETI from the National Informatics Centre.&#10;&#10;I understand that the biometrics and/or OTP I provide for authentication shall be used only for authenticating my identity through the Aadhaar authentication system for that specific transaction and for no other purposes.&#10;&#10;I understand that the National Informatics Centre shall ensure the security and confidentiality of my personal identity data provided for the purpose of Aadhaar-based authentication.
+</string>
+
+    <string name="enter_pmay_regno">PMAY/ৰেজিষ্ট্ৰেচন নম্বৰ লিখক</string>
+    <string name="pmay_regno">PMAY/ৰেজিষ্ট্ৰেচন নম্বৰ</string>
+    <string name="other_poverty_eradiction_central_government_programmes">অন্য দাৰিদ্ৰ্য নিৰসন বা কেন্দ্ৰীয় চৰকাৰৰ আঁচনি</string>
+    <string name="enter_other_scheme">অন্যান্য আঁচনি লিখক</string>
+    <string name="upload_document">দস্তাবেজ আপল ড কৰক</string>
+    <string name="select_userid">ব্যৱহাৰকাৰীৰ ID বাছনি কৰক</string>
+
+</resources>

@@ -1,0 +1,216 @@
+<resources>
+    <string name="app_name">కౌశల్ పంజీ</string>
+    <string name="login_id">లాగిన్ ఐడి</string>
+    <string name="login">లాగిన్</string>
+    <string name="password">సంకేతపదం</string>
+    <string name="welcome_back">హే, ఈ రోజు ప్రకాశించుదాం!</string>
+    <string name="welcome_msg">హాయ్, మీరు తప్పిపోయారు.</string>
+    <string name="register"><u>నమోదు చేసుకోండి</u></string>
+    <string name="forgot_password"><u>పాస్ వర్డ్ మర్చిపోయారు?</u></string>
+    <string name="forgot_id"><u>ఐడీ మర్చిపోయారా?</u></string>
+    <string name="create_an_account">ఒక ఖాతాను సృష్టించండి</string>
+    <string name="create_an_account_msg">కేవలం చేరండి మరియు కొత్త అవకాశాలను అన్వేషించండి</string>
+    <string name="email">ఇమెయిల్ను నమోదు చేయండి</string>
+    <string name="enter_phone">ఫోన్ నంబర్ను నమోదు చేయండి</string>
+    <string name="entrt_otp">ఓటిపిని నమోదు చేయండి</string>
+    <string name="enter_code">ఓటిపిని నమోదు చేయండి</string>
+    <string name="not_receive_code">కోడ్ అందుకోలేదు!</string>
+    <string name="send_again"><u>మళ్లీ పంపండి</u></string>
+    <string name="verify">ధృవీకరించండి</string>
+    <string name="enter_code_msg">దయచేసి మీ ఫోన్ నంబర్కు పంపిన 4 అంకెల ఓటిపిని నమోదు చేయండి</string>
+    <string name="enter_code_email_msg">దయచేసి మీ ఇమెయిల్ చిరునామాకు పంపిన 4 అంకెల ఓటిపిని నమోదు చేయండి</string>
+    <string name="state_name">రాష్ట్ర పేరు</string>
+    <string name="select_state">రాష్ట్రం ఎంచుకోండి</string>
+    <string name="slected_state">ఎంచుకున్న రాష్ట్రం</string>
+    <string name="blank"><u></u></string>
+    <string name="aadhaar">ఆధార్ సంఖ్యను నమోదు చేయండి</string>
+    <string name="login_to_your_account">మీ ఖాతాకు లాగిన్ అవ్వండి</string>
+    <string name="aadhaar_number">ఆధార్‌ను నమోదు చేయండి</string>
+    <string name="secc_information">ఎస్ఈసీసీ సమాచారం</string>
+    <string name="address_information">చిరునామా సమాచారం</string>
+    <string name="personal_information">వ్యక్తిగత సమాచారం</string>
+    <string name="educational_information">విద్యా సమాచారం</string>
+    <string name="employment_information">ఉపాధి సమాచారం</string>
+    <string name="training_information">శిక్షణ సమాచారం</string>
+    <string name="state">రాష్ట్రం<font color='#FF0000'>*</font></string>
+    <string name="district">జిల్లా<font color='#FF0000'>*</font></string>
+    <string name="select_district">జిల్లాను ఎంచుకోండి</string>
+    <string name="select_gp">గ్రామ పంచాయతీని ఎంచుకోండి</string>
+    <string name="g_name">సంరక్షకుడి పేరు</string>
+    <string name="guardian_name">సంరక్షకుడి పేరు</string>
+    <string name="mother_name">తల్లి పేరు<font color='#FF0000'>*</font></string>
+    <string name="guardian_alternative_number">సంరక్షకుడు/ప్రత్యామ్నాయ నంబర్<font color='#FF0000'>*</font></string>
+    <string name="consent_text_short">నా గుర్తింపు సమాచారాన్ని e-KYC యాప్‌తో స్వచ్ఛందంగా పంచుకోవడానికి నేను అంగీకరిస్తున్నాను. మరింత చదవండి</string>
+    <string name="consent_text">నా గుర్తింపు సమాచారాన్ని e-KYC యాప్‌తో స్వచ్ఛందంగా పంచుకోవడానికి నేను అంగీకరిస్తున్నాను.</string>
+    <string name="candidate_name">అభ్యర్థి పేరు</string>
+    <string name="father_name">సంరక్షకుడి పేరు<font color='#FF0000'>*</font></string>
+    <string name="category">వర్గం<font color='#FF0000'>*</font></string>
+    <string name="marital">వైవాహిక స్థితి<font color='#FF0000'>*</font></string>
+    <string name="minority">మైనారిటీ<font color='#FF0000'>*</font></string>
+    <string name="pwd">పిడబ్ల్యుడి<font color='#FF0000'>*</font></string>
+    <string name="nrega_job">ఎన్‌ఆర్‌ఈజీఏ ఉద్యోగ కార్డ్</string>
+    <string name="whether_shg_belong">ఇంటి సభ్యుల్లో ఎవరైనా SHGకి చెందారా?</string>
+    <string name="do_you_Antyodaya">మీకు అంత్యోదయ కార్డు ఉందా?</string>
+    <string name="do_you_llRsby">మీకు RSBY/PM-JAY కార్డు ఉందా?</string>
+    <string name="do_you_Pip">PIP (పేదల భాగస్వామ్య గుర్తింపు) ఉందా?</string>
+    <string name="father_incomer">కుటుంబ వార్షిక ఆదాయం (రూ.)</string>
+    <string name="voter_id">ఓటర్ ఐడి</string>
+    <string name="driving_id">డ్రైవింగ్ లైసెన్స్</string>
+    <string name="submit">సమర్పించండి</string>
+    <string name="areIsecc">ఎస్ఈసీసీ</string>
+    <string name="Gp">గ్రామ పంచాయతీ<font color='#FF0000'>*</font></string>
+    <string name="Village">గ్రామం<font color='#FF0000'>*</font></string>
+    <string name="select_Village">గ్రామాన్ని ఎంచుకోండి</string>
+    <string name="Block">బ్లాక్<font color='#FF0000'>*</font></string>
+    <string name="select_Block">బ్లాక్ ఎంచుకోండి</string>
+    <string name="AdressLine">వీధి 1<font color='#FF0000'>*</font></string>
+    <string name="AdressLine1">వీధి 1</string>
+    <string name="AdressLine2">వీధి 2</string>
+    <string name="PresenrAddress">ప్రస్తుత చిరునామా</string>
+    <string name="PresenrAddressSame">మీ ప్రస్తుత చిరునామా మీ శాశ్వత చిరునామాతో సమానంగా ఉందా?</string>
+    <string name="Educational_information">విద్యా సమాచారం</string>
+    <string name="Employment_information">ఉపాధి సమాచారం</string>
+    <string name="Training_information">శిక్షణ సమాచారం</string>
+    <string name="Banking_information">బ్యాంకింగ్ సమాచారం</string>
+    <string name="select_HighestEducation">అత్యధిక విద్య<font color='#FF0000'>*</font></string>
+    <string name="select_HighestEducation1">అత్యధిక విద్య</string>
+    <string name="select_YearOfPassing">అత్యధిక అర్హత ఉత్తీర్ణత సాధించిన సంవత్సరం</string>
+    <string name="select_YearOfPassingTech">సాంకేతిక అర్హత ఉత్తీర్ణత సంవత్సరం</string>
+    <string name="anyTechnicalEducation">సాంకేతిక విద్య?<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation1">సాంకేతిక విద్య1<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation2">సాంకేతిక విద్య2<font color='#FF0000'>*</font></string>
+    <string name="DomainOfTech">సాంకేతిక విద్య యొక్క డొమైన్<font color='#FF0000'>*</font></string>
+    <string name="curentlyEmployed">మీరు ప్రస్తుతం ఉద్యోగం చేస్తున్నారా?<font color='#FF0000'>*</font></string>
+    <string name="natureOfEmpl">ఉపాధి యొక్క స్వభావం ఏమిటి</string>
+    <string name="IntrestedIn">ఆసక్తి ఉందా?<font color='#FF0000'>*</font></string>
+    <string name="EmploymentPreference">ఉపాధి ప్రాధాన్యత<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">జాబ్ లొకేషన్ ప్రిఫరెన్స్<font color='#FF0000'>*</font></string>
+    <string name="CurrentEarning">వ్యక్తిగత ప్రస్తుత నెలవారీ సంపాదన రూపాయలలో ఎంత?</string>
+    <string name="CurrentEarningHint">ప్రస్తుత జీతం</string>
+    <string name="ExpectationSalary">అంచనా వేయబడిన కనీస నెలవారీ జీతం (రూ.)</string>
+    <string name="recievedAnyTrainingBefore">మీరు ఇంతకు ముందు ఏదైనా శిక్షణ పొందారా?<font color='#FF0000'>*</font></string>
+    <string name="PreviousComTraining">గతంలో పూర్తి చేసిన శిక్షణ</string>
+    <string name="selectScheme">సెలెక్ట్ స్కీమ్</string>
+    <string name="select_PreviouscompTrainingMOnth">ఈ సమయంలో గతంలో పూర్తయింది</string>
+    <string name="HeardAboutddugky">మీరు ఇంతకు ముందు DDUGKY/RSETI గురించి ఎక్కడ విన్నారు?</string>
+    <string name="date_of_birth">పుట్టిన తేదీ</string>
+    <string name="PermanentAddress">శాశ్వత చిరునామా</string>
+    <string name="s_o_name_siwan_841226_bihar_india">సి/ఓః గార్డియన్ నేమ్, పురాని కిలా సివాన్,\n సివాన్, సివాన్, బీహార్ 841226, ఇండియా</string>
+    <string name="gender">లింగం</string>
+    <string name="which_sector_are_you_interested_in">మీకు ఏ రంగంలో ఆసక్తి ఉంది?<font color='#FF0000'>*</font></string>
+    <string name="design">డిజైన్</string>
+    <string name="mechanical">యాంత్రికం</string>
+    <string name="which_trade_are_you_interested_in">మీకు ఏ ట్రేడ్ లో ఆసక్తి ఉంది?<font color='#FF0000'>*</font></string>
+    <string name="bank_name">బ్యాంకు పేరు</string>
+    <string name="bank_account_number">బ్యాంకు ఖాతా సంఖ్య</string>
+    <string name="enter_ifsc_code">ఐఎఫ్ఎస్సీ కోడ్ను నమోదు చేయండి</string>
+    <string name="ifsc_code">ఐఎఫ్ఎస్సీ కోడ్</string>
+    <string name="pan_no">పాన్ నెం.</string>
+    <string name="enter_pan_no">పాన సంఖ్యను నమోదు చేయండి</string>
+    <string name="image">చిత్రం</string>
+    <string name="search">శిక్షణ కేంద్రం పేరును నమోదు చేయండి</string>
+    <string name="services_for_you">సర్వీసెస్ ఫర్ యు</string>
+    <string name="unableto_find_yourself_in_secc_drop_down">ఎస్ఈసీసీ డ్రాప్ _ డౌన్ లో మిమ్మల్ని మీరు కనుగొనలేకపోయారా?</string>
+    <string name="ahl_tin">ఏహ్ల్-టిన్</string>
+    <string name="pin_code">పిన్ కోడ్<font color='#FF0000'>*</font></string>
+    <string name="pin_code1">పిన్ కోడ్ 1</string>
+    <string name="yes">అవును</string>
+    <string name="no">లేదు</string>
+    <string name="name">పేరు</string>
+    <string name="upload_voter_id">ఓటర్ ఐడిని అప్‌లోడ్ చేయండి</string>
+    <string name="upload_driving_licence">డ్రైవింగ్ లైసెన్స్‌ను అప్‌లోడ్ చేయండి</string>
+    <string name="download_failed">ఆధార్ వెరిఫికేషన్ యాప్ డౌన్‌లోడ్ విఫలమైంది, దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="download_complete">ఆధార్ వెరిఫికేషన్ యాప్ డౌన్‌లోడ్ పూర్తైంది.</string>
+    <string name="complete_details"><![CDATA[మీ ప్రొఫైల్‌ను పూర్తి చేసి శిక్షణను ఇప్పుడు ప్రారంభించండి]]></string>
+    <string name="complete_now">ఇప్పుడే పూర్తి చేయండి</string>
+    <string name="personal_details">వ్యక్తిగత వివరాలు</string>
+    <string name="address_details">చిరునామా వివరాలు</string>
+    <string name="secc_details">SECC వివరాలు</string>
+    <string name="education_details">విద్యా వివరాలు</string>
+    <string name="banking_details">బ్యాంకింగ్ వివరాలు</string>
+    <string name="your_aadhaar_ekyc_is_completed">మీ ఆధార్ eKYC పూర్తైంది</string>
+    <string name="select_category">వర్గాన్ని ఎంచుకోండి</string>
+    <string name="name1">తప్పనిసరి ఫీల్డ్ 1<font color='#FF0000'>*</font></string>
+    <string name="validate">ధృవీకరించండి</string>
+    <string name="upload_category_certificate">వర్గ ధృవీకరణ పత్రాన్ని అప్‌లోడ్ చేయండి</string>
+    <string name="upload_antyodaya_card">అంత్యోదయ కార్డును అప్‌లోడ్ చేయండి</string>
+    <string name="upload_rsby_pm_jay_card">RSBY/PM-JAY కార్డును అప్‌లోడ్ చేయండి</string>
+    <string name="upload_residence_certificate">నివాస ధృవీకరణ పత్రాన్ని అప్‌లోడ్ చేయండి</string>
+    <string name="guardian_alternative_numbern">సంరక్షకుడు/ప్రత్యామ్నాయ ఫోన్ నంబర్</string>
+    <string name="mother_namer">తల్లి పేరు</string>
+    <string name="something_went_wrong_at_uidai_site">UIDAI సైట్‌లో ఏదో తప్పు జరిగింది.</string>
+    <string name="ok">సరే</string>
+    <string name="self_employed">స్వయం ఉపాధి పొందిన</string>
+    <string name="salary">జీతం</string>
+    <string name="ekyc_completed">eKYC పూర్తైంది</string>
+    <string name="job">ఉద్యోగం</string>
+    <string name="training">శిక్షణ</string>
+    <string name="both">రెండూ</string>
+    <string name="salaried">జీతభత్యాలు పొందే</string>
+    <string name="within_district">జిల్లాలోపల</string>
+    <string name="within_state">రాష్ట్రంలోపల</string>
+    <string name="outside_side">రాష్ట్రానికి వెలుపల</string>
+    <string name="outside_country">దేశానికి వెలుపల</string>
+    <string name="ddugky">DDUGKY</string>
+    <string name="rseti">RSETI</string>
+    <string name="pmkvy">PMKVY</string>
+    <string name="others">ఇతరులు</string>
+    <string name="mention_others_training">ఇతర శిక్షణ వివరాలను పేర్కొనండి</string>
+    <string name="select_sector">రంగాన్ని ఎంచుకోండి</string>
+    <string name="select_trade">ట్రేడ్ను ఎంచుకోండి</string>
+    <string name="have_you_heard_about_ddugky_rseti">మీరు DDUGKY/RSETI గురించి విన్నారా?</string>
+    <string name="father_name_f">తండ్రి పేరు</string>
+    <string name="a_tin_no">A-TIN నం.</string>
+    <string name="search_">శోధించండి...</string>
+    <string name="languages">భాషలు<font color='#FF0000'>*</font></string>
+    <string name="hindi">హిందీ</string>
+    <string name="english">ఆంగ్లం</string>
+    <string name="mrathi">మరాఠీ</string>
+    <string name="read">చదవగలుగుతాను\n</string>
+    <string name="write">రాయగలుగుతాను</string>
+    <string name="select_languages">భాషలను ఎంచుకోండి</string>
+    <string name="branch_name">శాఖ పేరు</string>
+    <string name="view_profile"><u>వివరాలను చూపించు</u></string>
+    <string name="edit"><u>వివరాలను సవరించండి</u></string>
+    <string name="as_per_aadhaar">ఆధార్ చిరునామా</string>
+    <string name="forgot_id_and_password">ID మరియు పాస్వర్డ్ మర్చిపోయారా</string>
+    <string name="sector">రంగం<font color='#FF0000'>*</font></string>
+    <string name="find_a_training_center">శిక్షణ కేంద్రాన్ని కనుగొనండి</string>
+    <string name="enter_jobcardno">జాబ్ కార్డ్ నెంబర్‌ను నమోదు చేయండి</string>
+    <string name="enter_shg_code">SHG కోడ్‌ను నమోదు చేయండి</string>
+    <string name="upload_nrega_jobcard">NREGA చిత్రాన్ని అప్‌లోడ్ చేయండి</string>
+    <string name="training_name">శిక్షణ పేరు</string>
+    <string name="contact_no">సంప్రదింపు నంబర్</string>
+    <string name="center_name">కేంద్రం పేరు</string>
+    <string name="address">చిరునామా</string>
+    <string name="contact_number">సంప్రదింపు నంబర్</string>
+    <string name="logout">లాగ్ అవుట్</string>
+    <string name="changePass">పాస్వర్డ్ మార్చండి</string>
+    <string name="change_password">పాస్వర్డ్ మార్చండి</string>
+    <string name="oldPass">పాత పాస్వర్డ్</string>
+    <string name="newPass">కొత్త పాస్వర్డ్</string>
+    <string name="confirmPass">పాస్వర్డ్ నిర్ధారించండి</string>
+    <string name="view"><u>చూడండి</u></string>
+    <string name="close">మూసివేయి</string>
+    <string name="no_training_center_found">ఎటువంటి శిక్షణ కేంద్రం కనుగొనబడలేదు</string>
+    <string name="street">వీధి 1</string>
+    <string name="kyc_failed_msg">KYC ప్రక్రియ విఫలమైంది, దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="candidate_details">అభ్యర్థి\n    వివరాలు</string>
+    <string name="training_details">శిక్షణ\n    వివరాలు</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">దయచేసి మీ రాష్ట్రాన్ని జాగ్రత్తగా ఎంచుకోండి. ఖాతా సృష్టించిన తరువాత ఈ ఎంపిక మార్చలేరు.</string>
+    <string name="consent">
+    నేను ఆధార్ ఆధారిత ధృవీకరణ వ్యవస్థ ద్వారా నా వ్యక్తిత్వాన్ని ధృవీకరించడానికి ఎలాంటి అభ్యంతరం లేదని మరియు డీడీయూజికేవై (DDUGKY) మరియు ఆర్ఎస్ఈటీఐ (RSETI) కోసం నేషనల్ ఇన్ఫర్మాటిక్స్ సెంటర్ (NIC) అందించే యునిఫైడ్ ఐటీ ప్లాట్‌ఫారమ్‌ సేవలను పొందడానికై నా ఆధార్ నంబర్, బయోమెట్రిక్స్ మరియు/లేదా ఓటీపీ (ఒక్కసారి వినియోగించగల పాస్‌వర్డ్) వివరాలను అందించడానికి నా సమ్మతి ఉందని తెలియజేస్తున్నాను.&#10;&#10;
+
+    నేను అందించే బయోమెట్రిక్స్ మరియు/లేదా ఓటీపీలు ధృవీకరణ కోసం మాత్రమే ఉపయోగించబడతాయని మరియు ఆ నిర్దిష్ట లావాదేవీ కోసం మాత్రమే నా వ్యక్తిత్వాన్ని ధృవీకరించడానికి ఉపయోగించబడతాయని నాకు తెలుసు. ఇతర ప్రయోజనాల కోసం వీటిని ఉపయోగించరాదు.&#10;&#10;
+
+    ఆధార్ ఆధారిత ధృవీకరణ కోసం నేను అందించే వ్యక్తిగత గుర్తింపు సమాచారాన్ని నేషనల్ ఇన్ఫర్మాటిక్స్ సెంటర్ భద్రంగా మరియు గోప్యతగా ఉంచుతుందని నాకు తెలుసు.
+</string>
+
+    <string name="enter_pmay_regno">PMAY/పञ्जికరణ సంఖ్య నమోదు చేయండి</string>
+    <string name="pmay_regno">PMAY/పञ्जికరణ సంఖ్య</string>
+    <string name="other_poverty_eradiction_central_government_programmes">ఇతర దారిద్ర్య నిర్మూలన లేదా కేంద్ర ప్రభుత్వ పథకాలు</string>
+    <string name="enter_other_scheme">ఇతర పథకం నమోదు చేయండి</string>
+    <string name="upload_document">డాక్యుమెంట్ అప్‌లోడ్ చేయండి</string>
+    <string name="select_userid">వాడుకరి ID ఎంచుకోండి</string>
+
+</resources>

@@ -140,6 +140,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var addressLine2 = ""
     private var pinCode = ""
     private var voterIdImage = ""
+    private var otherImage = ""
     private var profilePicIdImage = ""
     private var voterIdNo = ""
     private var guardianName = ""
@@ -154,7 +155,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var pwdStatus = ""
     private var pwdImage = ""
     private var technicalEducationStatus = ""
-    private var antoyadaStatus = ""
+    private var antoyadaStatus = "No"
     private var antoyadaImage = ""
     private var selectedCategoryItem = ""
     private var selectedMaritalItem = ""
@@ -165,11 +166,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var nregaImageJobCard = ""
     private var shgName = ""
     private var shgCode = ""
-    private var shgStatus = ""
-    private var nregaStatus = ""
-    private var rsbyStatus = ""
+    private var shgStatus = "No"
+    private var pmayStatus = "No"
+    private var otherStatus = "No"
+    private var nregaStatus = "No"
+    private var rsbyStatus = "No"
     private var rsbyImage = ""
-    private var pipStatus = ""
+    private var pipStatus = "No"
     private var residenceImage = ""
     private var highestEducationDate = ""
     private var selectedTechEducationItem = ""
@@ -766,7 +769,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.spinnerDomainOfTech.setAdapter(TechEduDomaiAdapter)
 
-
         //Adapter Where Have u heard setting
 
         HeardAdapter = ArrayAdapter(
@@ -782,8 +784,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         // open llTop by 1 change 0
-
-
 
 
         binding.llTopPersonal.setOnClickListener {
@@ -836,6 +836,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  val pwdStatusn = x.isDisablity
                                  val nregaJobCardStatusn = x.isNarega
                                  val shgStatusn = x.isSHG
+                           //      val pmayStatusn = x.isPmay
                                  val antyodayaStatusn = x.antyodaya
                                  val rsbyStatusm = x.isRSBY
                                  val pipStatusn = x.isPIP
@@ -845,6 +846,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  handleStatus(binding.optionPwdYesSelect, binding.optionPwdNoSelect, pwdStatusn)
                                  handleStatus(binding.optionNregaJobYesSelect, binding.optionNregaJobNoSelect, nregaJobCardStatusn)
                                  handleStatus(binding.optionShgYesSelect, binding.optionShgNoSelect, shgStatusn)
+                                 //Changes
+                               //  handleStatus(binding.optionPmayYesSelect, binding.optionPmayNoSelect, pmayStatusn)
                                  handleStatus(binding.optionAntyodayaYesSelect, binding.optionAntyodayaNoSelect, antyodayaStatusn)
                                  handleStatus(binding.optionllRsbyYesSelect, binding.optionllRsbyNoSelect, rsbyStatusm)
                                  handleStatus(binding.optionPipYesSelect, binding.optionPipNoSelect, pipStatusn)
@@ -1610,76 +1613,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //State selection
 
 
-/*
-        binding.SpinnerStateName.setOnItemClickListener { parent, view, position, id ->
-            selectedStateItem = parent.getItemAtPosition(position).toString()
-            if (position in state.indices) {
-                selectedStateCodeItem = stateCode[position]
-                selectedStateLgdCodeItem = stateLgdCode[position]
-
-                //Clearing Data
-                selectedDistrictCodeItem = ""
-                selectedDistrictLgdCodeItem = ""
-                selectedDistrictItem = ""
-                binding.spinnerDistrict.clearFocus()
-                binding.spinnerDistrict.setText("", false)
-
-                selectedDistrictPresentCodeItem = ""
-                selectedDistrictPresentLgdCodeItem = ""
-                selectedDistrictPresentItem = ""
-                binding.spinnerPresentAddressDistrict.clearFocus()
-                binding.spinnerPresentAddressDistrict.setText("", false)
-                binding.SpinnerPresentAddressStateName.clearFocus()
-                binding.SpinnerPresentAddressStateName.setText("", false)
-
-
-                selectedBlockCodeItem = ""
-                selectedbBlockLgdCodeItem = ""
-                selectedBlockItem = ""
-                binding.spinnerBlock.clearFocus()
-                binding.spinnerBlock.setText("", false)
-
-                selectedBlockPresentCodeItem = ""
-                selectedbBlockPresentLgdCodeItem = ""
-                selectedBlockPresentItem = ""
-                binding.spinnerPresentAddressBlock.clearFocus()
-                binding.spinnerPresentAddressBlock.setText("", false)
-
-
-
-                selectedGpCodeItem = ""
-                selectedbGpLgdCodeItem = ""
-                selectedGpItem = ""
-                binding.spinnerGp.clearFocus()
-                binding.spinnerGp.setText("", false)
-
-
-                selectedGpPresentCodeItem = ""
-                selectedbGpPresentLgdCodeItem = ""
-                selectedGpPresentItem = ""
-                binding.spinnerPresentAddressGp.clearFocus()
-                binding.spinnerPresentAddressGp.setText("", false)
-
-
-                selectedVillageCodeItem = ""
-                selectedbVillageLgdCodeItem = ""
-                selectedVillageItem = ""
-                binding.spinnerVillage.clearFocus()
-                binding.spinnerVillage.setText("", false)
-
-
-                selectedVillagePresentCodeItem = ""
-                selectedbVillagePresentLgdCodeItem = ""
-                selectedVillagePresentItem = ""
-                binding.spinnerPresentAddressVillage.clearFocus()
-                binding.spinnerPresentAddressVillage.setText("", false)
-
-
-            } else {
-                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
-            }
-        }
-*/
 
 
         //District selection
@@ -2330,7 +2263,51 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
+        //Pmay Selection If yes
+        binding.optionPmayYesSelect.setOnClickListener {
+            binding.optionPmayYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionPmayNoSelect.setBackgroundResource(R.drawable.card_background)
 
+            pmayStatus = "Yes"
+            binding.etPmayValidate.visible()
+          //  binding.btnPmayValidate.visible()
+
+
+        }
+        //Pmay Selection If No
+        binding.optionPmayNoSelect.setOnClickListener {
+            binding.optionPmayYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionPmayNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            pmayStatus = "No"
+            binding.etPmayValidate.gone()
+        //    binding.btnPmayValidate.gone()
+
+
+        }
+
+        //Other Scheme Selection If yes
+        binding.optionOtherYesSelect.setOnClickListener {
+            binding.optionOtherYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+            binding.optionOtherNoSelect.setBackgroundResource(R.drawable.card_background)
+
+            otherStatus = "Yes"
+            binding.etOthersValidate.visible()
+            binding.otherCardUpload.visible()
+
+
+        }
+        //Other Scheme Selection If No
+        binding.optionOtherNoSelect.setOnClickListener {
+            binding.optionOtherYesSelect.setBackgroundResource(R.drawable.card_background)
+            binding.optionOtherNoSelect.setBackgroundResource(R.drawable.card_background_selected)
+
+            otherStatus = "No"
+            binding.etOthersValidate.gone()
+            binding.otherCardUpload.gone()
+
+
+        }
 
         //Nrega Selection If yes
         binding.optionNregaJobYesSelect.setOnClickListener {
@@ -2910,6 +2887,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+      /*  binding.btnPmayValidate.setOnClickListener {
+
+        */
+        /* commonViewModel.shgValidateAPI(
+                ShgValidateReq(
+                    binding.etShgValidate.text.toString(),
+                    userPreferences.getUserStateLgdCode()
+                )
+            )  //41358
+
+            lifecycleScope.launch {
+                delay(1000)
+                if (shgValidateStatus == "Y") {
+
+                    binding.tvShgValidate.visible()
+                    binding.btnShgValidate.gone()
+                    shgCode = binding.etShgValidate.text.toString()
+                    binding.tvShgValidate.text = "Validate Successfully: $shgName"
+                } else toastLong("Validation Failed please check your SHG Code")
+            }*//*
+        }*/
+
+
 
         binding.btnjobcardnoValidate.setOnClickListener {
 
@@ -3060,6 +3060,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 }
 
+                if (otherImage.isNull){
+
+                    otherImage= "N/A"
+
+                }
+
                 if (drivingLicenceImage.isNull){
 
                     drivingLicenceImage= "N/A"
@@ -3106,10 +3112,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
                     rsbyStatus,rsbyImage,pipStatus),AppUtil.getSavedTokenPreference(requireContext()))
 
-
                 collectInsertPersonalResponse()
 
             }
+
             else toastShort("Kindly complete Personal detail Mandatory Fields")
 
 
@@ -3127,6 +3133,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.nregaJobUpload.setOnClickListener {
 
             checkAndRequestPermissionsForEveryPurpose("NREGA_ID")
+
+        }
+
+        binding.otherCardUpload.setOnClickListener {
+
+            checkAndRequestPermissionsForEveryPurpose("OTHER_ID")
 
         }
 
@@ -3799,9 +3811,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                             binding.profileView.tvEmailMobile.text = decryptedEmail
 
                                             // Set Profile Image
-                                            val bytes: ByteArray = Base64.decode(x.imagePath, Base64.DEFAULT)
-                                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                            binding.profileView.circleImageView.setImageBitmap(bitmap)
+
+                                            if (x.imagePath!=null){
+
+                                                val bytes: ByteArray = Base64.decode(x.imagePath, Base64.DEFAULT)
+                                                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                                binding.profileView.circleImageView.setImageBitmap(bitmap)
+                                            }
+
 
                                             // Set State & District
                                             selectedStateItem = x.regState
@@ -4333,6 +4350,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     private fun collectSectorResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
@@ -4595,6 +4613,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.voterimageText.text = fileName
                 voterIdImage = base64Image
             }
+
+            "OTHER_ID" -> {
+                binding.otherImageText.text = fileName
+                otherImage = base64Image
+            }
+
             "DRIVING_LICENSE" -> {
                 binding.drivingLicenceimageText.text = fileName
                 drivingLicenceImage = base64Image
@@ -4644,6 +4668,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             "VOTER_ID" -> {
                 binding.voterimageText.text = fileName
                 voterIdImage = base64Pdf
+            }
+            "OTHER_ID" -> {
+                binding.otherImageText.text = fileName
+                otherImage = base64Pdf
             }
             "DRIVING_LICENSE" -> {
                 binding.drivingLicenceimageText.text = fileName

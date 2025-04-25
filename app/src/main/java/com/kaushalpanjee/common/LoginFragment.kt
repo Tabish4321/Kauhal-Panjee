@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -249,6 +250,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                 203 -> {
                                     toastShort(getLoginResponse.responseDesc)
+                                    toastShort(getLoginResponse.responseMsg)
                                     commonViewModel.getToken(AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME)
 
                                 }
@@ -313,6 +315,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                    token= AESCryptography.decryptIntoString(getToken.authToken,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
                                    saltPassword= AESCryptography.decryptIntoString(getToken.passString,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                            //        Log.d("saltPass", "saltPass:  "+ saltPassword)
 
                                 }
 

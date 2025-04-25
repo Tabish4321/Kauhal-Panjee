@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/personalExpand"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -724,7 +724,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/llNregaJob">
 
                     <TextView
-                        android:id="@+id/tvsg"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/whether_shg_belong"
@@ -775,7 +775,7 @@
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:layout_marginTop="@dimen/dp_8"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
                     <TextView
@@ -790,7 +790,7 @@
                         style="@style/Button"
                         android:drawableEnd="@drawable/ic_right_arrow"
                         android:drawablePadding="@dimen/dp_20"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_15"
                         android:text="@string/validate" />
 
@@ -802,10 +802,182 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llAntyodaya"
+                    android:id="@+id/llPmayg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llShg">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pmay_regno"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="@string/yes"
+                            android:gravity="center"
+                            android:id="@+id/optionPmayYesSelect"
+                            android:textColor="@color/black"
+                            android:elevation="4dp"
+                            android:textSize="@dimen/sp_16"
+                            android:background="@drawable/card_background"
+                            android:layout_margin="8dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="@string/no"
+                            android:gravity="center"
+                            android:id="@+id/optionPmayNoSelect"
+                            android:elevation="4dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_16"
+                            android:background="@drawable/card_background"
+                            android:layout_margin="8dp" />
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:id="@+id/etPmayValidate"
+                        style="@style/EditText"
+                        android:hint="@string/enter_pmay_regno"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:visibility="gone"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                  <!--  <TextView
+                        android:id="@+id/btnPmayValidate"
+                        style="@style/Button"
+                        android:drawableEnd="@drawable/ic_right_arrow"
+                        android:drawablePadding="@dimen/dp_20"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:text="@string/validate" />-->
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:id="@+id/llOther"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llPmayg">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/other_poverty_eradiction_central_government_programmes"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="@string/yes"
+                            android:gravity="center"
+                            android:id="@+id/optionOtherYesSelect"
+                            android:textColor="@color/black"
+                            android:elevation="4dp"
+                            android:textSize="@dimen/sp_16"
+                            android:background="@drawable/card_background"
+                            android:layout_margin="8dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:text="@string/no"
+                            android:gravity="center"
+                            android:id="@+id/optionOtherNoSelect"
+                            android:elevation="4dp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/sp_16"
+                            android:background="@drawable/card_background"
+                            android:layout_margin="8dp" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/etOthersValidate"
+                        style="@style/EditText"
+                        android:hint="@string/enter_other_scheme"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:visibility="gone"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/otherCardUpload"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_mage_search"
+                            android:id="@+id/otherImageText"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_document"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:id="@+id/llAntyodaya"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llOther">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -858,8 +1030,7 @@
                         android:layout_gravity="right"
                         android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_15"
-                        android:layout_marginEnd="@dimen/dp_12"
-                        >
+                        android:layout_marginEnd="@dimen/dp_12">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -890,7 +1061,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/llAntyodaya">
 
                     <TextView
-                        android:id="@+id/tvllRsby"
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/do_you_llRsby"
@@ -975,7 +1146,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/llRsby">
 
                     <TextView
-                        android:id="@+id/tvPip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/do_you_Pip"

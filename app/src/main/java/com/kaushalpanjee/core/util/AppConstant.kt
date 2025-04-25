@@ -30,8 +30,8 @@ object AppConstant {
         const val WADH_KEY = "sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
-         var ENCRYPT_IV_KEY = "$10A80$10A80$10A";
-        var ENCRYPT_KEY = "$10A80$10A80$10A";
+        var ENCRYPT_IV_KEY = "$10A80$10A80$10A"
+        var ENCRYPT_KEY = "$10A80$10A80$10A$10A80$10A80$10A"
 
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"

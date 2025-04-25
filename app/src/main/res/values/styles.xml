@@ -6,6 +6,12 @@
         <item name="cornerSize">50%</item>
     </style>
 
+
+    <style name="CustomBannerShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dp_12</item>
+    </style>
+
     <style name="CustomRectangleShape">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12%</item>

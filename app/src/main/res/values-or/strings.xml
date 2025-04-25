@@ -32,7 +32,7 @@
     <string name="educational_information">Educational Information</string>
     <string name="employment_information">Employment Information</string>
     <string name="training_information">Training Information</string>
-    <string name="state">State<font color='#FF0000'>*</font></string>
+    <string name="state">Stateor<font color='#FF0000'>*</font></string>
     <string name="district">District<font color='#FF0000'>*</font></string>
     <string name="select_district">Select district</string>
     <string name="select_gp">Select Gram panchayat</string>
@@ -201,12 +201,11 @@
     <string name="consent">
     I hereby state that I have no objection in authenticating myself with the Aadhaar-based authentication system and consent to providing my Aadhaar number, biometric and/or One Time Pin (OTP) data for Aadhaar-based authentication for the purposes of availing the Unified IT Platform for DDUGKY and RSETI from the National Informatics Centre.&#10;&#10;I understand that the biometrics and/or OTP I provide for authentication shall be used only for authenticating my identity through the Aadhaar authentication system for that specific transaction and for no other purposes.&#10;&#10;I understand that the National Informatics Centre shall ensure the security and confidentiality of my personal identity data provided for the purpose of Aadhaar-based authentication.
 </string>
-    <string name="enter_pmay_regno">Enter PMAY/RegNo</string>
-    <string name="pmay_regno">PMAY/REGNO</string>
-    <string name="other_poverty_eradiction_central_government_programmes">Other Poverty Eradication or Central Government Programmes</string>
-    <string name="enter_other_scheme">Enter Other Scheme</string>
-    <string name="upload_document">Upload Document</string>
-    <string name="select_userid">Select UserId</string>
-
+    <string name="enter_pmay_regno">PMAY/ନୋନ୍ଦଣୀ ସଂଖ୍ୟା ଦିଅନ୍ତୁ</string>
+    <string name="pmay_regno">PMAY/ନୋନ୍ଦଣୀ ସଂଖ୍ୟା</string>
+    <string name="other_poverty_eradiction_central_government_programmes">ଅନ୍ୟାନ୍ୟ ଦରିଦ୍ରତା ଦୂରିକରଣ କିମ୍ବା କେନ୍ଦ୍ର ସରକାରୀ ଯୋଜନା</string>
+    <string name="enter_other_scheme">ଅନ୍ୟାନ୍ୟ ଯୋଜନା ଦିଅନ୍ତୁ</string>
+    <string name="upload_document">ଦଲିଲ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="select_userid">ବ୍ୟବହାରକାରୀ ID ଚୟନ କରନ୍ତୁ</string>
 
 </resources>

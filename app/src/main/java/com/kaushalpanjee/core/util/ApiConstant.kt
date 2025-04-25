@@ -54,6 +54,7 @@ object ApiConstant {
     const val  GET_TOKEN_GENERATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateToken"
     const val  API_OTP_VALIDATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}validateOtp"
     const val  API_OTP_checkUserExistance= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}checkUserExistance"
+    const val  API_OTP_getBanner= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getBanner"
 
 
 

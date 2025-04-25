@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -14,6 +16,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.response.UserIdName
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
@@ -38,6 +41,12 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
     private var countDownTimer: CountDownTimer? = null
     private var email = ""
     private var mobileNo = ""
+    private var selectedUserIdItem = ""
+    private var userIdList = ArrayList<String>()
+    private var userIdNameList = ArrayList<UserIdName>()
+    private lateinit var userIdAdapter: ArrayAdapter<String>
+
+
 
 
 
@@ -45,6 +54,14 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userPreferences = UserPreferences(requireContext())
+
+        userIdAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            userIdList
+        )
+
+        binding.SpinnerUserSelect.setAdapter(userIdAdapter)
 
 
 
@@ -62,6 +79,27 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
     }
 
     private fun listener(){
+
+
+
+
+        // Secc GP selection
+
+        binding.SpinnerUserSelect.setOnItemClickListener { parent, view, position, id ->
+            selectedUserIdItem = parent.getItemAtPosition(position).toString()
+
+            val input = selectedUserIdItem
+            val index = input.indexOf('(')
+
+            val id = if (index != -1) input.substring(0, index) else input
+
+
+
+
+            commonViewModel.getLoginIdPass(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext()),id))
+            collectGetIdPassResponse()
+
+        }
 
 
         binding.tvVerify.setOnClickListener {
@@ -91,7 +129,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
             if (email.isNotEmpty()&& mobileNo.isNotEmpty()){
 
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext())))
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext()),""))
                 collectForgotOtpResponse()
 
             }
@@ -111,7 +149,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
             if (email.isNotEmpty()&& mobileNo.isNotEmpty()){
 
 
-                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext())))
+                commonViewModel.getChangePassOtp(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext()),""))
                 collectForgotOtpResponse()
 
             }
@@ -235,18 +273,29 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
                             if (getOtpValidateApi.responseCode == 200) {
                                 toastShort(getOtpValidateApi.responseDesc)
                                 binding.clForgotOTP.gone()
-                                commonViewModel.getLoginIdPass(GetLoginIdNdPassReq(BuildConfig.VERSION_NAME,mobileNo,email,AppUtil.getAndroidId(requireContext())))
-                                collectGetIdPassResponse()
+
+                                binding.llUserSelect.visible()
+                                userIdNameList= getOtpValidateApi.wrappedList as ArrayList<UserIdName>
+                                for (x in userIdNameList){
+                                    userIdList.add(x.loginId)
+                                }
+
 
                             } else if (getOtpValidateApi.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                                binding.llUserSelect.gone()
+
                             }
 
                             else if (getOtpValidateApi.responseCode == 207) {
                                 toastShort(getOtpValidateApi.responseDesc)
+                                binding.llUserSelect.gone()
+
                             }
                             else if (getOtpValidateApi.responseCode == 210) {
                                 toastShort(getOtpValidateApi.responseDesc)
+                                binding.llUserSelect.gone()
+
                             }
 
 
@@ -517,7 +566,7 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
             ) {
 
                 // hit api
-                var otp= "${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}"
+                val otp= "${binding.et1.text}${binding.et2.text}${binding.et3.text}${binding.et4.text}"
 
 
 

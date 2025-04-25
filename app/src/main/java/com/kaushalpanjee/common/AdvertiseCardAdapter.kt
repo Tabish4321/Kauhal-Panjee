@@ -1,17 +1,16 @@
 package com.kaushalpanjee.common
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.kaushalpanjee.R
-import dagger.hilt.android.AndroidEntryPoint
 
-
-class AdvertiseCardAdapter(private val images: List<Int>)
-    : RecyclerView.Adapter<AdvertiseCardAdapter.ImageViewHolder>() {
-
+class AdvertiseCardAdapter(
+    private val images: MutableList<Bitmap>
+) : RecyclerView.Adapter<AdvertiseCardAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,11 +19,10 @@ class AdvertiseCardAdapter(private val images: List<Int>)
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.imageView.setImageResource(images[position])
+        holder.imageView.setImageBitmap(images[position]) // ✅ fix here
     }
 
     override fun getItemCount(): Int = images.size
-
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.backgroundImage)

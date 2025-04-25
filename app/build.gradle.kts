@@ -19,12 +19,15 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 26
         targetSdk = 35
-            versionCode = 5
-            versionName = "1.0"
-
+        versionCode = 5
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // ✅ Correct Kotlin DSL syntax for keeping all language resources
+        resourceConfigurations += listOf("en", "hi", "as", "bn", "gu", "kn", "ml", "mr", "or", "pa", "ta", "te", "ur")
     }
+
 
     buildTypes {
         release {

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kaushalpanjee.common.model.MultiLanguage
 import com.kaushalpanjee.core.basecomponent.BaseFragment
@@ -28,19 +29,244 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
         super.onViewCreated(view, savedInstanceState)
 
 
+        binding.progressBackButton.setOnClickListener {
+
+            findNavController().navigateUp()
+        }
 
 
         if (AppUtil.getSavedLanguagePreference(requireContext()).contains("en")){
 
             binding.checkEnglishIcon.visible()
             binding.checkIconHindi.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkGujaratiIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
 
 
 
         }
         else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("hi")){
             binding.checkIconHindi.visible()
+            binding.checkTamilIcon.gone()
             binding.checkEnglishIcon.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkGujaratiIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("ta")){
+            binding.checkTamilIcon.visible()
+            binding.checkIconHindi.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkGujaratiIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("bn")){
+            binding.checkBengaliIcon.visible()
+            binding.checkTamilIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkGujaratiIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("gu")){
+            binding.checkGujaratiIcon.visible()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("kn")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.visible()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("ml")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.visible()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("or")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.visible()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("mr")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.visible()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("pa")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.visible()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("te")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.visible()
+            binding.checkUrduIcon.gone()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("ur")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.gone()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.visible()
+
+
+
+        }
+        else if (AppUtil.getSavedLanguagePreference(requireContext()).contains("as")){
+            binding.checkGujaratiIcon.gone()
+            binding.checkBengaliIcon.gone()
+            binding.checkTamilIcon.gone()
+            binding.checkEnglishIcon.gone()
+            binding.checkIconHindi.gone()
+            binding.checkAssameseIcon.visible()
+            binding.checkKannadaIcon.gone()
+            binding.checkMalayalamIcon.gone()
+            binding.checkOdiaIcon.gone()
+            binding.checkMarathiIcon.gone()
+            binding.checkPunjabiIcon.gone()
+            binding.checkTeluguIcon.gone()
+            binding.checkUrduIcon.gone()
+
+
 
         }
         else
@@ -60,9 +286,18 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
                       AppUtil.saveLanguagePreference(requireContext(),"en")
                         binding.checkEnglishIcon.visible()
                         binding.checkIconHindi.gone()
-
-
-
+                        binding.checkTamilIcon.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        findNavController().navigateUp()
 
                     }
 
@@ -88,8 +323,460 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
                     AppUtil.changeAppLanguage(requireContext(),"hi")
                     binding.checkIconHindi.visible()
                         binding.checkEnglishIcon.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
                         AppUtil.saveLanguagePreference(requireContext(),"hi")
 
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+
+        binding.languageTamil.setOnClickListener {
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"ta")
+                        binding.checkTamilIcon.visible()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"ta")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+
+        binding.languageAssamese.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"as")
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.visible()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"as")
+                        findNavController().navigateUp()
+
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageBengali.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"bn")
+                        binding.checkBengaliIcon.visible()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"bn")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageGujarati.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"gu")
+                        binding.checkGujaratiIcon.visible()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"gu")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageKannada.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"kn")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.visible()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"kn")
+                        findNavController().navigateUp()
+
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageMalayalam.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"ml")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.visible()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"ml")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageOdia.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"or")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.visible()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"or")
+                        findNavController().navigateUp()
+
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageMarathi.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"mr")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.visible()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"mr")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languagePunjabi.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"pa")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.visible()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"pa")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageTelugu.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"te")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.visible()
+                        binding.checkUrduIcon.gone()
+                        AppUtil.saveLanguagePreference(requireContext(),"te")
+
+                        findNavController().navigateUp()
+
+
+                    }
+
+
+
+                },
+                onNoClicked = {
+
+                }
+            )
+
+        }
+        binding.languageUrdu.setOnClickListener {
+
+            showYesNoDialog(
+                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                title = "Confirmation",
+                message = "Do you want to change language?",
+                onYesClicked = {
+                    // Action for Yes button
+                    lifecycleScope.launch{
+
+                        AppUtil.changeAppLanguage(requireContext(),"ur")
+                        binding.checkGujaratiIcon.gone()
+                        binding.checkBengaliIcon.gone()
+                        binding.checkTamilIcon.gone()
+                        binding.checkEnglishIcon.gone()
+                        binding.checkIconHindi.gone()
+                        binding.checkAssameseIcon.gone()
+                        binding.checkKannadaIcon.gone()
+                        binding.checkMalayalamIcon.gone()
+                        binding.checkOdiaIcon.gone()
+                        binding.checkMarathiIcon.gone()
+                        binding.checkPunjabiIcon.gone()
+                        binding.checkTeluguIcon.gone()
+                        binding.checkUrduIcon.visible()
+                        AppUtil.saveLanguagePreference(requireContext(),"ur")
+
+                        findNavController().navigateUp()
 
 
                     }
@@ -105,64 +792,6 @@ class LanguageChangeFragment :BaseFragment<FragmentLanguageChangeBinding> (Fragm
         }
 
 
-        binding.languageTamil.setOnClickListener {
-
-            showYesNoDialog(
-                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
-                title = "Confirmation",
-                message = "Coming soon",
-                onYesClicked = {
-                    /*    // Action for Yes button
-                        lifecycleScope.launch{
-
-                            AppUtil.changeAppLanguage(requireContext(),"hi")
-                            binding.checkIconHindi.visible()
-                            binding.checkEnglishIcon.gone()
-                            AppUtil.saveLanguagePreference(requireContext(),"hi")
-
-                            findNavController().navigateUp()
-
-
-                        }*/
-
-
-
-                },
-                onNoClicked = {
-
-                }
-            )
-
-        }
-        binding.languageAssamese.setOnClickListener {
-
-            showYesNoDialog(
-                context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
-                title = "Confirmation",
-                message = "Coming soon",
-                onYesClicked = {
-                    /*    // Action for Yes button
-                        lifecycleScope.launch{
-
-                            AppUtil.changeAppLanguage(requireContext(),"hi")
-                            binding.checkIconHindi.visible()
-                            binding.checkEnglishIcon.gone()
-                            AppUtil.saveLanguagePreference(requireContext(),"hi")
-
-                            findNavController().navigateUp()
-
-
-                        }*/
-
-
-
-                },
-                onNoClicked = {
-
-                }
-            )
-
-        }
     }
 
     fun showYesNoDialog(context: Context, title: String, message: String, onYesClicked: () -> Unit, onNoClicked: () -> Unit) {

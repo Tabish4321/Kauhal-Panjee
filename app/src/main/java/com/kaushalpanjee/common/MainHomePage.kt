@@ -1,33 +1,26 @@
 package com.kaushalpanjee.common
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.navigation.NavigationView
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
@@ -35,7 +28,6 @@ import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
-import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
@@ -62,20 +54,16 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var bankingStatus = ""
     private var selectedTrainingName = ""
     private var totalPercentange =0.0f
+    private var bannerImageList = ArrayList<String>()
+
     private val searchQuery = MutableLiveData<String>()
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
 
 
 
 
-    private val imageList = listOf(
-        R.drawable.banner,
-        R.drawable.banner,
-        R.drawable.banner,
-        R.drawable.banner,
-        R.drawable.banner,
-        R.drawable.banner
-    )
+    private val bannerImageBitmapList = mutableListOf<Bitmap>()
+
 
 
 
@@ -83,7 +71,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         super.onViewCreated(view, savedInstanceState)
         handleBackPress()
         init()
-
+        commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
+        collectBannerResponse()
 
 
     }
@@ -127,6 +116,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          }
 
          binding.trainingRecyclerView.gone()
+
 
          listeners()
          autoScroll()
@@ -224,7 +214,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      binding.recyclerView.layoutManager = layoutManager
 
      // Set up the adapter with dummy data
-     adapter = AdvertiseCardAdapter(imageList)
+     adapter = AdvertiseCardAdapter(bannerImageBitmapList)
      binding.recyclerView.adapter = adapter
      // Start auto-scrolling
  }
@@ -346,23 +336,28 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                 }
 
 
+                                if (imagePath!=null){
 
-                                val bytes: ByteArray =
-                                    Base64.decode(imagePath, Base64.DEFAULT)
-                                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                binding.circleImageViewMH.setImageBitmap(bitmap)
+                                    val bytes: ByteArray =
+                                        Base64.decode(imagePath, Base64.DEFAULT)
+                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                    binding.circleImageViewMH.setImageBitmap(bitmap)
 
 
-                               // First, get the header view using getHeaderView()
-                                val headerView = binding.navigationView.getHeaderView(0)
+                                    // First, get the header view using getHeaderView()
+                                    val headerView = binding.navigationView.getHeaderView(0)
 
-                             // Now, bind the header layout using the generated ViewBinding for the header
-                                val headerBinding = NavigationHeaderBinding.bind(headerView)
+                                    // Now, bind the header layout using the generated ViewBinding for the header
+                                    val headerBinding = NavigationHeaderBinding.bind(headerView)
 
-                              // Access the ImageView from the header layout
-                                val headerImageView: ImageView = headerBinding.circleImageView
+                                    // Access the ImageView from the header layout
+                                    val headerImageView: ImageView = headerBinding.circleImageView
 
-                                headerImageView.setImageBitmap(bitmap)
+                                    headerImageView.setImageBitmap(bitmap)
+
+
+                                }
+
 
 
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
@@ -413,6 +408,55 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 }
             }
         }
+
+    private fun collectBannerResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getBannerAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar("Not Found")
+                        }
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getBannerAPI ->
+                            if (getBannerAPI.responseCode == 200) {
+                                val bannerResList = getBannerAPI.bannerList
+
+                                bannerImageBitmapList.clear() // clear old data if any
+
+                                for (banner in bannerResList) {
+                                    val bytes: ByteArray =
+                                        Base64.decode(banner.bannerImage, Base64.DEFAULT)
+                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                    if (bitmap != null) {
+                                        bannerImageBitmapList.add(bitmap)
+                                    }
+                                }
+
+                                // Now you have list of Bitmap images
+                                // You can update your adapter or UI here
+
+                                adapter.notifyDataSetChanged()
+
+
+                            } else if (getBannerAPI.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            } else if (getBannerAPI.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(findNavController(), requireContext())
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
 
 
 

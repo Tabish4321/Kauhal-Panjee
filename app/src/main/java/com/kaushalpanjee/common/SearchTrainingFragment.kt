@@ -77,11 +77,18 @@ binding.backButton.setOnClickListener {
                                     binding.centerName.setText(x.centerName)
                                     binding.contactNo.setText(x.contactNo)
 
-                                    val bytes: ByteArray =
-                                        Base64.decode(x.centerImage, Base64.DEFAULT)
-                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                    if (x.centerImage!=null){
 
-                                    binding.centerImage.setImageBitmap(bitmap)
+                                        val bytes: ByteArray =
+                                            Base64.decode(x.centerImage, Base64.DEFAULT)
+                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
+                                        binding.centerImage.setImageBitmap(bitmap)
+                                    }
+
+
+
+
 
                                 }
 

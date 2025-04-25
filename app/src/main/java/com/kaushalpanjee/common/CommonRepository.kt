@@ -29,6 +29,7 @@ import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
@@ -54,6 +55,7 @@ import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
+import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
@@ -61,6 +63,7 @@ import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -286,7 +289,7 @@ class CommonRepository @Inject constructor(
             appLevelApi.getLanguageListAPI(BuildConfig.VERSION_NAME)
         }
     }
-    suspend fun getOtpValidateApi(validateOtpReq: ValidateOtpReq): Flow<Resource<out SendMobileOTPResponse>>{
+    suspend fun getOtpValidateApi(validateOtpReq: ValidateOtpReq): Flow<Resource<out OtpValidateResponse>>{
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getOtpValidateApi(validateOtpReq)
@@ -306,6 +309,12 @@ class CommonRepository @Inject constructor(
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getSectorListAPI(header,techQualification)
+        }
+    }
+    suspend fun getBannerAPI(token:String,bannerReq: BannerReq): Flow<Resource<out BannerResponse>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.getBannerAPI(token,bannerReq)
         }
     }
 

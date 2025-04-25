@@ -12,16 +12,20 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/backgroundImage"
             android:layout_width="@dimen/dp_285"
             android:layout_height="@dimen/dp_135"
             android:contentDescription="@string/image"
-            android:maxLines="1"
+            android:layout_marginEnd="@dimen/dp_20"
+            app:shapeAppearanceOverlay="@style/CustomBannerShape"
+            app:strokeColor="@color/color_dark_green"
             android:scaleType="fitXY"
             android:src="@drawable/banner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

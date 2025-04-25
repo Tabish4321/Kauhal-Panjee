@@ -19,6 +19,7 @@ import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
+import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
@@ -48,6 +49,7 @@ import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.BankingRes
+import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
@@ -58,6 +60,7 @@ import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -285,7 +288,7 @@ interface AppLevelApi {
     suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
 
     @POST(ApiConstant.API_OTP_VALIDATE)
-    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq):SendMobileOTPResponse
+    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq): OtpValidateResponse
 
     @POST(ApiConstant.API_OTP_checkUserExistance)
     suspend fun getAadhaarCheck(@Body aadhaarCheckReq: AadhaarCheckReq):AadhaarCheckRes
@@ -316,6 +319,11 @@ interface AppLevelApi {
         @Header("password") password: String,
         @Field("jobcardno") jobcardNo: String
     ): Response<JobcardResponse>
+
+    @POST(ApiConstant.API_OTP_getBanner)
+    suspend fun getBannerAPI(@Header("Authorization") token: String,
+                             @Body bannerReq: BannerReq): BannerResponse
+
 
 
 

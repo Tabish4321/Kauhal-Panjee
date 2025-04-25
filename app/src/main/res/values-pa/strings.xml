@@ -1,0 +1,211 @@
+<resources>
+    <string name="app_name"> ਕੌਸ਼ਲ ਪੰਜੀ</string>
+    <string name="login_id">ਲਾਗਇਨ ਆਈਡੀ</string>
+    <string name="login">ਲਾਗਇਨ ਕਰੋ</string>
+    <string name="password">ਪਾਸਵਰਡ</string>
+    <string name="welcome_back">ਹੇ, ਆਓ ਅੱਜ ਚਮਕਦੇ ਹਾਂ!</string>
+    <string name="welcome_msg">ਹੈਲੋ, ਤੁਹਾਨੂੰ ਯਾਦ ਕੀਤਾ ਗਿਆ ਹੈ।</string>
+    <string name="register"><u>ਰਜਿਸਟਰ ਕਰੋ</u></string>
+    <string name="forgot_password"><u>ਆਈ. ਡੀ. ਅਤੇ ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ ਹੋ?</u></string>
+    <string name="forgot_id"><u>ਆਈ. ਡੀ ਭੁੱਲ ਗਏ?</u></string>
+    <string name="create_an_account">ਇੱਕ ਖਾਤਾ ਬਣਾਓ</string>
+    <string name="create_an_account_msg">ਸਿਰਫ਼ ਸ਼ਾਮਲ ਹੋਵੋ ਅਤੇ ਨਵੇਂ ਮੌਕਿਆਂ ਦੀ ਪਡ਼ਚੋਲ ਕਰੋ</string>
+    <string name="email">ਈਮੇਲ ਦਰਜ ਕਰੋ</string>
+    <string name="enter_phone">ਫੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
+    <string name="entrt_otp">ਓ. ਟੀ. ਪੀ. ਦਿਓ</string>
+    <string name="enter_code">ਓ. ਟੀ. ਪੀ. ਦਰਜ ਕਰੋ</string>
+    <string name="not_receive_code">ਕੀ ਕੋਈ ਕੋਡ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹੋਇਆ!</string>
+    <string name="send_again"><u>ਦੁਬਾਰਾ ਭੇਜੋ</u></string>
+    <string name="verify">ਤਸਦੀਕ ਕਰੋ</string>
+    <string name="enter_code_msg">ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਫੋਨ ਨੰਬਰ \'ਤੇ ਭੇਜਿਆ ਗਿਆ 4 ਅੰਕਾਂ ਦਾ ਓ. ਟੀ. ਪੀ. ਦਰਜ ਕਰੋ।</string>
+    <string name="enter_code_email_msg">ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਈਮੇਲ ਪਤੇ \'ਤੇ ਭੇਜਿਆ ਗਿਆ 4 ਅੰਕਾਂ ਦਾ ਓ. ਟੀ. ਪੀ. ਦਰਜ ਕਰੋ।</string>
+    <string name="state_name">ਰਾਜ ਦਾ ਨਾਮ</string>
+    <string name="select_state">ਰਾਜ ਚੁਣੋ</string>
+    <string name="slected_state">ਚੁਣਿਆ ਹੋਇਆ ਰਾਜ</string>
+    <string name="blank"><u></u></string>
+    <string name="aadhaar">ਆਧਾਰ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
+    <string name="login_to_your_account">ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰੋ</string>
+    <string name="aadhaar_number">ਆਧਾਰ ਦਰਜ ਕਰੋ</string>
+    <string name="secc_information">ਐੱਸ. ਈ. ਸੀ. ਸੀ. ਜਾਣਕਾਰੀ</string>
+    <string name="address_information">ਪਤਾ ਜਾਣਕਾਰੀ</string>
+    <string name="personal_information">ਨਿੱਜੀ ਜਾਣਕਾਰੀ</string>
+    <string name="educational_information">ਸਿੱਖਿਆ ਜਾਣਕਾਰੀ</string>
+    <string name="employment_information">ਰੋਜ਼ਗਾਰ ਜਾਣਕਾਰੀ</string>
+    <string name="training_information">ਸਿਖਲਾਈ ਜਾਣਕਾਰੀ</string>
+    <string name="state">ਰਾਜ<font color='#FF0000'>*</font></string>
+    <string name="district">ਜ਼ਿਲ੍ਹਾ<font color='#FF0000'>*</font></string>
+    <string name="select_district">ਜ਼ਿਲ੍ਹਾ ਚੁਣੋ</string>
+    <string name="select_gp">ਗ੍ਰਾਮ ਪੰਚਾਇਤ ਚੁਣੋ</string>
+    <string name="g_name">ਸਰਪ੍ਰਸਤ ਦਾ ਨਾਮ</string>
+    <string name="guardian_name">ਸਰਪ੍ਰਸਤ ਦਾ ਨਾਮ</string>
+    <string name="mother_name">ਮਾਤਾ ਦਾ ਨਾਮ<font color='#FF0000'>*</font></string>
+    <string name="guardian_alternative_number">ਸਰਪ੍ਰਸਤ  /ਬਦਲਵਾਂ ਨੰਬਰ<font color='#FF0000'>*</font></string>
+    <string name="consent_text_short">ਮੈਂ ਸਵੈ-ਇੱਛਾ ਨਾਲ ਆਪਣੀ ਪਛਾਣ ਦੀ ਜਾਣਕਾਰੀ ਈ-ਕੇਵਾਈਸੀ ਐਪ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹਾਂ। ਹੋਰ ਪਡ਼੍ਹੋ…</string>
+    <string name="consent_text"> ਮੈਂ ਸਵੈ-ਇੱਛਾ ਨਾਲ ਆਪਣੀ ਪਛਾਣ ਦੀ ਜਾਣਕਾਰੀ ਈ-ਕੇਵਾਈਸੀ ਐਪ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹਾਂ।</string>
+    <string name="candidate_name">ਉਮੀਦਵਾਰ ਦਾ ਨਾਮ</string>
+    <string name="father_name">ਸਰਪ੍ਰਸਤ ਦਾ ਨਾਮ<font color='#FF0000'>*</font></string>
+    <string name="category">ਸ਼੍ਰੇਣੀ<font color='#FF0000'>*</font></string>
+    <string name="marital">ਵਿਆਹੁਤਾ ਸਥਿਤੀ<font color='#FF0000'>*</font></string>
+    <string name="minority">ਘੱਟ ਗਿਣਤੀ<font color='#FF0000'>*</font></string>
+    <string name="pwd">ਪੀਡਬਲਯੂਡੀ<font color='#FF0000'>*</font></string>
+    <string name="nrega_job">Nrega ਜੌਬ ਕਾਰਡ</string>
+    <string name="whether_shg_belong">ਕੀ ਘਰ ਦਾ ਕੋਈ ਮੈਂਬਰ ਐੱਸਐੱਚਜੀ ਨਾਲ ਸਬੰਧਤ ਹੈ</string>
+    <string name="do_you_Antyodaya">ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਅੰਤਯੋਦਯ ਕਾਰਡ ਹੈ?"</string>
+    <string name="do_you_llRsby">ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਆਰਐੱਸਬੀਵਾਈ/ਪੀਐੱਮ-ਜੇਏਵਾਈ ਕਾਰਡ ਹੈ?</string>
+    <string name="do_you_Pip">ਪੀ. ਆਈ. ਪੀ. (ਗਰੀਬਾਂ ਦੀ ਭਾਗੀਦਾਰੀ ਪਛਾਣ) ਹੈ</string>
+    <string name="father_incomer">ਪਰਿਵਾਰ ਦੀ ਸਾਲਾਨਾ ਆਮਦਨ (ਰੁਪਏ)</string>
+    <string name="voter_id">ਵੋਟਰ ਆਈ. ਡੀ.</string>
+    <string name="driving_id">ਡਰਾਈਵਿੰਗ ਲਾਇਸੈਂਸ</string>
+    <string name="submit">ਜਮ੍ਹਾਂ ਕਰੋ</string>
+    <string name="areIsecc">ਐੱਸਈਸੀਸੀ</string>
+    <string name="Gp">ਗ੍ਰਾਮ ਪੰਚਾਇਤ<font color='#FF0000'>*</font></string>
+    <string name="Village">ਪਿੰਡ<font color='#FF0000'>*</font></string>
+    <string name="select_Village">ਪਿੰਡ ਚੁਣੋ</string>
+    <string name="Block">ਬਲਾਕ<font color='#FF0000'>*</font></string>
+    <string name="select_Block">ਚੁਣੋ ਬਲਾਕ</string>
+    <string name="AdressLine">ਸਟ੍ਰੀਟ 1<font color='#FF0000'>*</font></string>
+    <string name="AdressLine1">ਸਟ੍ਰੀਟ 1</string>
+    <string name="AdressLine2">ਸਟ੍ਰੀਟ 2</string>
+    <string name="PresenrAddress">ਮੌਜੂਦਾ ਪਤਾ</string>
+    <string name="PresenrAddressSame">ਕੀ ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਪਤਾ ਤੁਹਾਡੇ ਸਥਾਈ ਪਤੇ ਦੇ ਬਰਾਬਰ ਹੈ?</string>
+    <string name="Educational_information">ਸਿੱਖਿਆ ਜਾਣਕਾਰੀ</string>
+    <string name="Employment_information">ਰੋਜ਼ਗਾਰ ਜਾਣਕਾਰੀ</string>
+    <string name="Training_information">ਸਿਖਲਾਈ ਜਾਣਕਾਰੀ</string>
+    <string name="Banking_information">ਬੈਂਕਿੰਗ ਜਾਣਕਾਰੀ</string>
+    <string name="select_HighestEducation">ਉੱਚ ਸਿੱਖਿਆ<font color='#FF0000'>*</font></string>
+    <string name="select_HighestEducation1">ਉੱਚ ਸਿੱਖਿਆ</string>
+    <string name="select_YearOfPassing">ਸਭ ਤੋਂ ਉੱਚੀ ਯੋਗਤਾ ਪਾਸ ਕਰਨ ਦਾ ਸਾਲ</string>
+    <string name="select_YearOfPassingTech">ਤਕਨੀਕੀ ਯੋਗਤਾ ਪਾਸ ਕਰਨ ਦਾ ਸਾਲ</string>
+    <string name="anyTechnicalEducation">ਤਕਨੀਕੀ ਸਿੱਖਿਆ?<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation1">ਤਕਨੀਕੀ ਸਿੱਖਿਆ<font color='#FF0000'>*</font></string>
+    <string name="TechnicalEducation2">ਤਕਨੀਕੀ ਸਿੱਖਿਆ<font color='#FF0000'>*</font></string>
+    <string name="DomainOfTech">ਤਕਨੀਕੀ ਸਿੱਖਿਆ ਦਾ ਡੋਮੇਨ<font color='#FF0000'>*</font></string>
+    <string name="curentlyEmployed">ਕੀ ਤੁਸੀਂ ਇਸ ਵੇਲੇ ਨੌਕਰੀ ਕਰਦੇ ਹੋ?<font color='#FF0000'>*</font></string>
+    <string name="natureOfEmpl">ਰੋਜ਼ਗਾਰ ਦੀ ਪ੍ਰਕਿਰਤੀ ਕੀ ਹੈ?</string>
+    <string name="IntrestedIn">ਦਿਲਚਸਪੀ ਹੈ?<font color='#FF0000'>*</font></string>
+    <string name="EmploymentPreference">ਰੋਜ਼ਗਾਰ ਤਰਜੀਹ<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">ਨੌਕਰੀ ਸਥਾਨ ਪਸੰਦ<font color='#FF0000'>*</font></string>
+    <string name="CurrentEarning">ਰੁਪਏ ਵਿੱਚ ਨਿੱਜੀ ਮੌਜੂਦਾ ਮਾਸਿਕ ਕਮਾਈ ਕੀ ਹੈ?</string>
+    <string name="CurrentEarningHint">ਮੌਜੂਦਾ ਤਨਖਾਹ</string>
+    <string name="ExpectationSalary">ਉਮੀਦ ਕੀਤੀ ਘੱਟੋ ਘੱਟ ਮਹੀਨਾਵਾਰ ਤਨਖਾਹ (ਰੁਪਏ)</string>
+    <string name="recievedAnyTrainingBefore">ਕੀ ਤੁਸੀਂ ਪਹਿਲਾਂ ਕੋਈ ਸਿਖਲਾਈ ਪ੍ਰਾਪਤ ਕੀਤੀ ਹੈ?<font color='#FF0000'>*</font></string>
+    <string name="PreviousComTraining">ਪਹਿਲਾਂ ਪੂਰੀ ਕੀਤੀ ਸਿਖਲਾਈ</string>
+    <string name="selectScheme">ਯੋਜਨਾ ਚੁਣੋ</string>
+    <string name="select_PreviouscompTrainingMOnth">ਪਹਿਲਾਂ ਦੌਰਾਨ ਪੂਰਾ ਕੀਤਾ ਗਿਆ</string>
+    <string name="HeardAboutddugky">ਤੁਸੀਂ ਇਸ ਤੋਂ ਪਹਿਲਾਂ DDUGKY/RSETI ਬਾਰੇ ਕਿੱਥੇ ਸੁਣਿਆ ਹੈ?</string>
+    <string name="date_of_birth">ਜਨਮ ਮਿਤੀ</string>
+    <string name="PermanentAddress">ਸਥਾਈ ਪਤਾ</string>
+    <string name="s_o_name_siwan_841226_bihar_india"> C/O: ਸਰਪ੍ਰਸਤ ਦਾ ਨਾਮ, ਪੁਰਾਣੀ ਕਿਲਾ ਸਿਵਾਨ, \\n ਸਿਵਾਨ, ਸਿਵਾਨ, ਬਿਹਾਰ 841226, ਭਾਰਤ</string>
+    <string name="gender">ਲਿੰਗ</string>
+    <string name="which_sector_are_you_interested_in">ਤੁਸੀਂ ਕਿਸ ਖੇਤਰ ਵਿੱਚ ਦਿਲਚਸਪੀ ਰੱਖਦੇ ਹੋ?<font color='#FF0000'>*</font></string>
+    <string name="design">ਡਿਜ਼ਾਈਨ</string>
+    <string name="mechanical">ਮਕੈਨੀਕਲ</string>
+    <string name="which_trade_are_you_interested_in">ਤੁਸੀਂ ਕਿਸ ਵਪਾਰ ਵਿੱਚ ਦਿਲਚਸਪੀ ਰੱਖਦੇ ਹੋ?<font color='#FF0000'>*</font></string>
+    <string name="bank_name">ਬੈਂਕ ਦਾ ਨਾਮ</string>
+    <string name="bank_account_number">ਬੈਂਕ ਖਾਤਾ ਨੰਬਰ</string>
+    <string name="enter_ifsc_code">ਆਈਐੱਫਐੱਸਸੀ ਕੋਡ ਦਰਜ ਕਰੋ</string>
+    <string name="ifsc_code">ਆਈਐੱਫਐੱਫਐੱਸਸੀ ਕੋਡ</string>
+    <string name="pan_no">ਪੈਨ ਨੰਬਰ</string>
+    <string name="enter_pan_no">ਪੈਨ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
+    <string name="image">ਤਸਵੀਰ</string>
+    <string name="search">ਸਿਖਲਾਈ ਕੇਂਦਰ ਦਾ ਨਾਮ ਦਰਜ ਕਰੋ</string>
+    <string name="services_for_you">ਤੁਹਾਡੇ ਲਈ ਸੇਵਾਵਾਂ</string>
+    <string name="unableto_find_yourself_in_secc_drop_down">ਆਪਣੇ ਆਪ ਨੂੰ ਐੱਸਈਸੀਸੀ ਡਰਾਪ _ ਡਾਊਨ ਵਿੱਚ ਲੱਭਣ ਵਿੱਚ ਅਸਮਰੱਥ?</string>
+    <string name="ahl_tin">ਏ. ਐੱਚ. ਐੱਲ-ਟੀ. ਆਈ. ਐੱਨ.</string>
+    <string name="pin_code">ਪਿੰਨ ਕੋਡ<font color='#FF0000'>*</font></string>
+    <string name="pin_code1">ਪਿੰਨ ਕੋਡ</string>
+    <string name="yes">ਹਾਂ</string>
+    <string name="no">ਨਹੀਂ</string>
+    <string name="name">ਨਾਮ</string>
+    <string name="upload_voter_id">ਵੋਟਰ ਆਈਡੀ ਅੱਪਲੋਡ ਕਰੋ</string>
+    <string name="upload_driving_licence">ਡਰਾਈਵਿੰਗ ਲਾਇਸੈਂਸ ਅਪਲੋਡ ਕਰੋ</string>
+    <string name="download_failed">ਆਧਾਰ ਵੈਰੀਫਿਕੇਸ਼ਨ ਐਪ ਡਾਊਨਲੋਡ ਕਰਨ ਵਿੱਚ ਅਸਫਲ ਰਿਹਾ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+    <string name="download_complete">ਆਧਾਰ ਵੈਰੀਫਿਕੇਸ਼ਨ ਐਪ ਡਾਊਨਲੋਡ ਕੀਤੀ ਗਈ ਹੈ।</string>
+    <string name="complete_details"><![CDATA[ਆਪਣੀ ਪ੍ਰੋਫਾਈਲ ਪੂਰੀ ਕਰੋ ਅਤੇ ਹੁਣ ਸਿਖਲਾਈ ਸ਼ੁਰੂ ਕਰੋ]]></string>
+    <string name="complete_now">ਹੁਣ ਪੂਰਾ ਕਰੋ</string>
+    <string name="personal_details">ਨਿੱਜੀ ਵੇਰਵੇ</string>
+    <string name="address_details">ਪਤਾ-ਵੇਰਵੇ</string>
+    <string name="secc_details">ਐੱਸਈਸੀਸੀ ਵੇਰਵੇ</string>
+    <string name="education_details">ਸਿੱਖਿਆ ਵੇਰਵੇ</string>
+    <string name="banking_details">ਬੈਂਕਿੰਗ ਵੇਰਵੇ</string>
+    <string name="your_aadhaar_ekyc_is_completed">ਤੁਹਾਡਾ ਆਧਾਰ ਈਕੇਵਾਈਸੀ ਪੂਰਾ ਹੋ ਗਿਆ ਹੈ</string>
+    <string name="select_category">ਸ਼੍ਰੇਣੀ ਚੁਣੋ</string>
+    <string name="name1">ਲਾਜ਼ਮੀ ਖੇਤਰ 1<font color='#FF0000'>*</font></string>
+    <string name="validate">ਪ੍ਰਮਾਣਿਤ ਕਰੋ</string>
+    <string name="upload_category_certificate">ਸ਼੍ਰੇਣੀ ਸਰਟੀਫਿਕੇਟ ਅਪਲੋਡ ਕਰੋ</string>
+    <string name="upload_antyodaya_card">ਅੰਤਯੋਦਯ ਕਾਰਡ ਅੱਪਲੋਡ ਕਰੋ</string>
+    <string name="upload_rsby_pm_jay_card">ਅਪਲੋਡ ਆਰਐੱਸਬੀਵਾਈ/ਪੀਐੱਮ-ਜੇਏਵਾਈ ਕਾਰਡ</string>
+    <string name="upload_residence_certificate">ਰਿਹਾਇਸ਼ੀ ਸਰਟੀਫਿਕੇਟ ਅਪਲੋਡ ਕਰੋ</string>
+    <string name="guardian_alternative_numbern">ਸਰਪ੍ਰਸਤ/ਵਿਕਲਪਿਕ ਨੰਬਰ</string>
+    <string name="mother_namer">ਮਾਤਾ ਦਾ ਨਾਮ</string>
+    <string name="something_went_wrong_at_uidai_site">ਯੂ. ਆਈ. ਡੀ. ਏ. ਆਈ. ਵੱਲੋਂ ਕੁੱਝ ਗਲਤ ਹੋ ਗਿਆ।</string>
+    <string name="ok">ਠੀਕ ਹੈ</string>
+    <string name="self_employed">ਸਵੈ-ਰੁਜ਼ਗਾਰ</string>
+    <string name="salary">ਤਨਖਾਹ</string>
+    <string name="ekyc_completed">ਈ. ਕੇ. ਵਾਈ. ਸੀ.</string>
+    <string name="job">ਨੌਕਰੀ</string>
+    <string name="training">ਸਿਖਲਾਈ</string>
+    <string name="both">ਦੋਵੇਂ</string>
+    <string name="salaried">ਤਨਖਾਹਦਾਰ</string>
+    <string name="within_district">ਜ਼ਿਲ੍ਹੇ ਦੇ ਅੰਦਰ</string>
+    <string name="within_state">ਰਾਜ ਦੇ ਅੰਦਰ</string>
+    <string name="outside_side">ਆਊਟਸਾਈਡ ਸਟੇਟ</string>
+    <string name="outside_country">ਦੇਸ਼ ਤੋਂ ਬਾਹਰ</string>
+    <string name="ddugky">ਡੀਡੀਯੂਜੀਕੇਵਾਈ</string>
+    <string name="rseti">ਆਰਸੈਟੀ</string>
+    <string name="pmkvy">ਪੀ ਐੱਮ ਕੇ ਵੀ ਵਾਈ</string>
+    <string name="others">ਹੋਰ</string>
+    <string name="mention_others_training">ਜ਼ਿਕਰ ਕਰੋ ਜੇ ਹੋਰ ਸਿਖਲਾਈ ਲੈ ਰਹੇ ਹਨ</string>
+    <string name="select_sector">ਸੈਕਟਰ ਚੁਣੋ</string>
+    <string name="select_trade">ਵਪਾਰ ਚੁਣੋ</string>
+    <string name="have_you_heard_about_ddugky_rseti">ਕੀ ਤੁਸੀਂ ਡੀਡੀਯੂਜੀਕੇਵਾਈ/ਆਰਐਸਈਟੀਆਈ ਬਾਰੇ ਸੁਣਿਆ ਹੈ?</string>
+    <string name="father_name_f">ਪਿਤਾ ਦਾ ਨਾਮ</string>
+    <string name="a_tin_no">ਏ-ਟਿਨ ਨੰਬਰ</string>
+    <string name="search_">ਖੋਜ ਕਰੋ।</string>
+    <string name="languages">ਭਾਸ਼ਾਵਾਂ<font color='#FF0000'>*</font></string>
+    <string name="hindi">हिंदी</string>
+    <string name="english">English</string>
+    <string name="mrathi">ಕನ್ನಡ</string>
+    <string name="read">ਰੀਡ\n</string>
+    <string name="write">ਲਿਖੋ</string>
+    <string name="select_languages">ਭਾਸ਼ਾਵਾਂ ਚੁਣੋ</string>
+    <string name="branch_name">ਸ਼ਾਖਾ ਨਾਮ</string>
+    <string name="view_profile"><u>ਵੇਰਵੇ ਵੇਖੋ</u></string>
+    <string name="edit"><u>ਵੇਰਵੇ ਸੰਪਾਦਿਤ ਕਰੋ</u></string>
+    <string name="as_per_aadhaar">ਆਧਾਰ ਪਤਾ</string>
+    <string name="forgot_id_and_password">ਆਈ. ਡੀ. ਅਤੇ ਪਾਸਵਰਡ ਭੁੱਲ ਗਏ</string>
+    <string name="sector">ਸੈਕਟਰ<font color='#FF0000'>*</font></string>
+    <string name="find_a_training_center">ਇੱਕ ਸਿਖਲਾਈ ਕੇਂਦਰ ਲੱਭੋ</string>
+    <string name="enter_jobcardno">ਜੌਬਕਾਰਡਨੋ ਐਂਟਰ ਕਰੋ</string>
+    <string name="enter_shg_code">ਐੱਸਐੱਚਜੀ ਕੋਡ ਦਰਜ ਕਰੋ</string>
+    <string name="upload_nrega_jobcard">Nrega ਚਿੱਤਰ ਅੱਪਲੋਡ ਕਰੋ</string>
+    <string name="training_name">ਸਿਖਲਾਈ ਦਾ ਨਾਮ</string>
+    <string name="contact_no">ਸੰਪਰਕ ਨੰ</string>
+    <string name="center_name">ਕੇਂਦਰ ਨਾਮ</string>
+    <string name="address">ਪਤਾ</string>
+    <string name="contact_number">ਸੰਪਰਕ ਨੰਬਰ</string>
+    <string name="logout">ਲਾਗਆਉਟ</string>
+    <string name="changePass">ਪਾਸਵਰਡ ਬਦਲੋ</string>
+    <string name="change_password">ਪਾਸਵਰਡ ਬਦਲੋ</string>
+    <string name="oldPass">ਪੁਰਾਣਾ ਪਾਸਵਰਡ</string>
+    <string name="newPass">ਨਵਾਂ ਪਾਸਵਰਡ</string>
+    <string name="confirmPass">ਪਾਸਵਰਡ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ</string>
+    <string name="view"><u>ਦ੍ਰਿਸ਼</u></string>
+    <string name="close">ਬੰਦ ਕਰੋ</string>
+    <string name="no_training_center_found">ਕੋਈ ਸਿਖਲਾਈ ਕੇਂਦਰ ਨਹੀਂ ਮਿਲਿਆ</string>
+    <string name="street">ਗਲੀ 1</string>
+    <string name="kyc_failed_msg">ਕੇ. ਆਈ. ਸੀ. ਪ੍ਰਕਿਰਿਆ ਫੇਲ੍ਹ ਹੋ ਗਈ ਹੈ ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।</string>
+    <string name="candidate_details">ਕੈਂਡੀਡੇਟ\\ਨ ਵੇਰਵੇ</string>
+    <string name="training_details">ਸਿਖਲਾਈ\\ਨ ਵੇਰਵੇ</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਰਾਜ ਨੂੰ ਧਿਆਨ ਨਾਲ ਚੁਣੋ। ਤੁਹਾਡਾ ਖਾਤਾ ਬਣਾਉਣ ਤੋਂ ਬਾਅਦ ਇਸ ਚੋਣ ਨੂੰ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ।</string>
+    <string name="consent">
+    ਮੈਂ ਇੱਥੇ ਕਹਿੰਦਾ ਹਾਂ ਕਿ ਮੈਨੂੰ ਆਪਣੇ ਆਪ ਨੂੰ ਆਧਾਰ-ਅਧਾਰਤ ਪ੍ਰਮਾਣਿਕਤਾ ਪ੍ਰਣਾਲੀ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਵਿੱਚ ਕੋਈ ਇਤਰਾਜ਼ ਨਹੀਂ ਹੈ ਅਤੇ ਰਾਸ਼ਟਰੀ ਸੂਚਨਾ ਵਿਗਿਆਨ ਕੇਂਦਰ ਤੋਂ ਡੀਡੀਯੂਜੀਕੇਵਾਈ ਅਤੇ ਆਰਐਸਈਟੀਆਈ ਲਈ ਏਕੀਕ੍ਰਿਤ ਆਈਟੀ ਪਲੇਟਫਾਰਮ ਦਾ ਲਾਭ ਲੈਣ ਦੇ ਉਦੇਸ਼ਾਂ ਲਈ ਆਧਾਰ-ਅਧਾਰਤ ਪ੍ਰਮਾਣਿਕਤਾ ਲਈ ਆਪਣਾ ਆਧਾਰ ਨੰਬਰ, ਬਾਇਓਮੀਟ੍ਰਿਕ ਅਤੇ/ਜਾਂ ਵਨ ਟਾਈਮ ਪਿੰਨ (ਓ. ਟੀ. ਪੀ.) ਡੇਟਾ ਪ੍ਰਦਾਨ ਕਰਨ ਲਈ ਸਹਿਮਤੀ ਹੈ। ਮੈਂ ਸਮਝਦੀ ਹਾਂ ਕਿ ਪ੍ਰਮਾਣਿਕਤਾ ਲਈ ਮੈਂ ਜੋ ਬਾਇਓਮੈਟਰਿਕਸ ਅਤੇ/ਜਾਂ ਓ. ਟੀ. ਪੀ. ਪ੍ਰਦਾਨ ਕਰਦੀ ਹਾਂ, ਉਸ ਦੀ ਵਰਤੋਂ ਸਿਰਫ਼ ਉਸ ਵਿਸ਼ੇਸ਼ ਲੈਣ-ਦੇਣ ਲਈ ਆਧਾਰ ਪ੍ਰਮਾਣਿਕਤਾ ਪ੍ਰਣਾਲੀ ਰਾਹੀਂ ਮੇਰੀ ਪਛਾਣ ਨੂੰ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਲਈ ਕੀਤੀ ਜਾਵੇਗੀ ਅਤੇ ਕਿਸੇ ਹੋਰ ਉਦੇਸ਼ ਲਈ ਨਹੀਂ। ਮੈਂ ਸਮਝਦਾ ਹਾਂ ਕਿ ਰਾਸ਼ਟਰੀ ਸੂਚਨਾ ਵਿਗਿਆਨ ਕੇਂਦਰ ਆਧਾਰ ਅਧਾਰਤ ਪ੍ਰਮਾਣਿਕਤਾ ਦੇ ਉਦੇਸ਼ ਨਾਲ ਪ੍ਰਦਾਨ ਕੀਤੇ ਗਏ ਮੇਰੇ ਨਿੱਜੀ ਪਛਾਣ ਡੇਟਾ ਦੀ ਸੁਰੱਖਿਆ ਅਤੇ ਗੁਪਤਤਾ ਨੂੰ ਯਕੀਨੀ ਬਣਾਏਗਾ।
+</string>
+    <string name="enter_pmay_regno">PMAY/ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
+    <string name="pmay_regno">PMAY/ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਨੰਬਰ</string>
+    <string name="other_poverty_eradiction_central_government_programmes">ਹੋਰ ਗਰੀਬੀ ਉੱਚਾਟਨ ਜਾਂ ਕੇਂਦਰੀ ਸਰਕਾਰ ਦੀਆਂ ਯੋਜਨਾਵਾਂ</string>
+    <string name="enter_other_scheme">ਹੋਰ ਯੋਜਨਾ ਦਰਜ ਕਰੋ</string>
+    <string name="upload_document">ਦਸਤਾਵੇਜ਼ ਅੱਪਲੋਡ ਕਰੋ</string>
+    <string name="select_userid">ਉਪਭੋਗਤਾ ID ਚੁਣੋ</string>
+
+</resources>

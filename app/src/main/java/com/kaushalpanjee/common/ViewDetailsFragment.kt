@@ -356,11 +356,15 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                     binding.profileView.tvEmailMobile.text = decryptedEmail
 
 
+                                    if (x.imagePath!=null){
 
-                                    val bytes: ByteArray =
-                                        Base64.decode(x.imagePath, Base64.DEFAULT)
-                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                    binding.profileView.circleImageView.setImageBitmap(bitmap)
+
+                                        val bytes: ByteArray =
+                                            Base64.decode(x.imagePath, Base64.DEFAULT)
+                                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                        binding.profileView.circleImageView.setImageBitmap(bitmap)
+                                    }
+
 
                                 }
                             }

@@ -1,8 +1,8 @@
 package com.kaushalpanjee.core.util
 
 import android.util.Base64
-
 import java.io.UnsupportedEncodingException
+import java.nio.charset.StandardCharsets
 import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException
 import javax.crypto.BadPaddingException
@@ -10,9 +10,6 @@ import javax.crypto.Cipher
 import javax.crypto.IllegalBlockSizeException
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import java.nio.charset.StandardCharsets;
-
-
 
 object AESCryptography {
 
@@ -25,42 +22,33 @@ object AESCryptography {
         IllegalBlockSizeException::class,
         BadPaddingException::class
     )
-
     fun encryptIntoBase64String(inputText: String, secretKey: String, ivKey: String): String {
         if (enableEncryption) {
-            val keySpec = SecretKeySpec(secretKey.toByteArray(StandardCharsets.UTF_8), "AES")
-            val ivSpec = IvParameterSpec(ivKey.toByteArray(StandardCharsets.UTF_8))
+            val keyBytes = formatKey(secretKey)
+            val ivBytes = formatIV(ivKey)
+
+            val keySpec = SecretKeySpec(keyBytes, "AES")
+            val ivSpec = IvParameterSpec(ivBytes)
             val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
 
-            val encryptedBytes: ByteArray = cipher.doFinal(inputText.toByteArray(StandardCharsets.UTF_8))
+            val encryptedBytes = cipher.doFinal(inputText.toByteArray(StandardCharsets.UTF_8))
 
-            // ✅ Encode as Base64 instead of hex
             return Base64.encodeToString(encryptedBytes, Base64.DEFAULT).trim()
         }
         return inputText
     }
 
-
     fun decryptIntoString(inputText: String, secretKey: String, ivKey: String): String {
         return try {
-            // Ensure key and IV are exactly 16 bytes (AES-128)
-            val keyBytes = secretKey.toByteArray(StandardCharsets.UTF_8)
-            val ivBytes = ivKey.toByteArray(StandardCharsets.UTF_8)
-
-            if (keyBytes.size != 16) {
-                throw IllegalArgumentException("Key must be 16 bytes long (AES-128)")
-            }
-            if (ivBytes.size != 16) {
-                throw IllegalArgumentException("IV must be 16 bytes long")
-            }
+            val keyBytes = formatKey(secretKey)
+            val ivBytes = formatIV(ivKey)
 
             val keySpec = SecretKeySpec(keyBytes, "AES")
             val ivSpec = IvParameterSpec(ivBytes)
             val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
 
-            // ✅ Decode Base64 (check input)
             val decodedBytes = Base64.decode(inputText, Base64.DEFAULT)
             val decryptedBytes = cipher.doFinal(decodedBytes)
 
@@ -72,6 +60,24 @@ object AESCryptography {
         }
     }
 
+    fun aesDecrypt(encryptedText: String, secretKey: String, ivKey: String): String {
+        return try {
+            val keyBytes = formatKey(secretKey)
+            val ivBytes = formatIV(ivKey)
+
+            val keySpec = SecretKeySpec(keyBytes, "AES")
+            val ivSpec = IvParameterSpec(ivBytes)
+            val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
+
+            val encryptedBytes = hexStringToByteArray(encryptedText)
+            val decryptedBytes = cipher.doFinal(encryptedBytes)
+
+            String(decryptedBytes, Charsets.UTF_8)
+        } catch (e: Exception) {
+            ""
+        }
+    }
 
     private fun convertByteArrayToHexString(byteArray: ByteArray): String {
         val sb = StringBuffer()
@@ -82,27 +88,6 @@ object AESCryptography {
         return sb.toString()
     }
 
-    fun aesDecrypt(encryptedText: String, secretKey: String, ivKey: String): String {
-        return try {
-            // Define AES settings
-            val keySpec = SecretKeySpec(secretKey.toByteArray(Charsets.UTF_8), "AES")
-            val ivSpec = IvParameterSpec(ivKey.toByteArray(Charsets.UTF_8))
-
-            // Create AES cipher instance
-            val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
-            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
-            // Decode hex string to byte array
-            val encryptedBytes = hexStringToByteArray(encryptedText)
-
-            // Perform decryption
-            val decryptedBytes = cipher.doFinal(encryptedBytes)
-            String(decryptedBytes, Charsets.UTF_8)
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    // Helper function to convert hex string to byte array
     fun hexStringToByteArray(s: String): ByteArray {
         val len = s.length
         val data = ByteArray(len / 2)
@@ -112,4 +97,28 @@ object AESCryptography {
         return data
     }
 
+    // ✅ Proper Key Formatter for AES-256
+    private fun formatKey(key: String): ByteArray {
+        val keyBytes = key.toByteArray(StandardCharsets.UTF_8)
+        return when {
+            keyBytes.size == 32 -> keyBytes // already 256 bits
+            keyBytes.size < 32 -> keyBytes.copyOf(32) // pad with zeros
+            else -> keyBytes.copyOf(32) // truncate
+        }
+    }
+
+    // ✅ IV must be exactly 16 bytes
+    private fun formatIV(iv: String): ByteArray {
+        val ivBytes = iv.toByteArray(StandardCharsets.UTF_8)
+        return when {
+            ivBytes.size == 16 -> ivBytes
+            ivBytes.size < 16 -> ivBytes.copyOf(16)
+            else -> ivBytes.copyOf(16)
+        }
+    }
+
+    private fun log(tag: String, message: String) {
+        println("$tag: $message")
+        // Or use Log.e(tag, message) in Android
+    }
 }
