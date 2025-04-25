@@ -14,6 +14,19 @@
         android:layout_height="match_parent"
         android:paddingBottom="@dimen/dp_100">
 
+        <ImageView
+            android:id="@+id/progressBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_60"
+            android:elevation="@dimen/dp_10"
+            android:src="@drawable/ic_arrow_back_ios_new"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <include
             android:id="@+id/profileView"
             layout="@layout/aadhaar_profile_layout"
@@ -88,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/personalExpand"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/dp_12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

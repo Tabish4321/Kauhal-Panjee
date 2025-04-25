@@ -144,6 +144,13 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
     private fun listeners() {
 
+
+        binding.progressBackButton.setOnClickListener {
+
+            findNavController().navigateUp()
+        }
+
+
         binding.profileView.viewDetails.setText(R.string.edit)
 
 

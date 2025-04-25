@@ -33,9 +33,10 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
-        AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
+       // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
+        AppUtil.changeAppLanguage(this, AppUtil.getSavedLanguagePreference(this))
 
-        lifecycleScope.launch {
+                lifecycleScope.launch {
             delay(2000)
 
             /*if (isDeviceRooted() || isRunningOnEmulator()) {

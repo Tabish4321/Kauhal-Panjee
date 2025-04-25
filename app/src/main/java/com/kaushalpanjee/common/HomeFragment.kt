@@ -522,6 +522,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+
+
+        binding.progressBackButton.setOnClickListener {
+
+            findNavController().navigateUp()
+        }
+
+
         // Add TextWatcher to EditText
         binding.searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
