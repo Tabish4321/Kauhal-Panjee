@@ -13,7 +13,7 @@ object AppConstant {
         const val BUCKET_CATEGORY= "category/"
        // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
         const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/netnrega/stateServices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
-        const val localUrl= "http://10.197.183.177:5050/"
+       const val localUrl= "http://10.197.183.177:5050/"
         const val baseUrl= "https://kaushal.rural.gov.in/backend/"
 
 
@@ -31,7 +31,7 @@ object AppConstant {
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
         var ENCRYPT_IV_KEY = "$10A80$10A80$10A"
-        var ENCRYPT_KEY = "$10A80$10A80$10A$10A80$10A80$10A"
+        var ENCRYPT_KEY = "$10A80$10A80$10A"
 
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"

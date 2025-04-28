@@ -2271,7 +2271,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-        //Pmay Selection If yes
+    /*    //Pmay Selection If yes
         binding.optionPmayYesSelect.setOnClickListener {
             binding.optionPmayYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionPmayNoSelect.setBackgroundResource(R.drawable.card_background)
@@ -2315,7 +2315,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.otherCardUpload.gone()
 
 
-        }
+        }*/
 
         //Nrega Selection If yes
         binding.optionNregaJobYesSelect.setOnClickListener {
@@ -3143,12 +3143,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             checkAndRequestPermissionsForEveryPurpose("NREGA_ID")
 
         }
-
+/*
         binding.otherCardUpload.setOnClickListener {
 
             checkAndRequestPermissionsForEveryPurpose("OTHER_ID")
 
-        }
+        }*/
 
         binding.drivingLicenceUpload.setOnClickListener {
             checkAndRequestPermissionsForEveryPurpose("DRIVING_LICENSE")
@@ -4622,10 +4622,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 voterIdImage = base64Image
             }
 
-            "OTHER_ID" -> {
+         /*   "OTHER_ID" -> {
                 binding.otherImageText.text = fileName
                 otherImage = base64Image
-            }
+            }*/
 
             "DRIVING_LICENSE" -> {
                 binding.drivingLicenceimageText.text = fileName
@@ -4677,10 +4677,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.voterimageText.text = fileName
                 voterIdImage = base64Pdf
             }
-            "OTHER_ID" -> {
+           /* "OTHER_ID" -> {
                 binding.otherImageText.text = fileName
                 otherImage = base64Pdf
-            }
+            }*/
             "DRIVING_LICENSE" -> {
                 binding.drivingLicenceimageText.text = fileName
                 drivingLicenceImage = base64Pdf

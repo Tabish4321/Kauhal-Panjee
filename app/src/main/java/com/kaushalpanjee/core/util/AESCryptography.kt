@@ -101,9 +101,9 @@ object AESCryptography {
     private fun formatKey(key: String): ByteArray {
         val keyBytes = key.toByteArray(StandardCharsets.UTF_8)
         return when {
-            keyBytes.size == 32 -> keyBytes // already 256 bits
-            keyBytes.size < 32 -> keyBytes.copyOf(32) // pad with zeros
-            else -> keyBytes.copyOf(32) // truncate
+            keyBytes.size == 16 -> keyBytes // already 256 bits
+            keyBytes.size < 16 -> keyBytes.copyOf(16) // pad with zeros
+            else -> keyBytes.copyOf(16) // truncate
         }
     }
 

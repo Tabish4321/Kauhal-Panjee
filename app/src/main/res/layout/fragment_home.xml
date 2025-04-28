@@ -810,7 +810,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -876,14 +876,14 @@
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
-                  <!--  <TextView
+                  &lt;!&ndash;  <TextView
                         android:id="@+id/btnPmayValidate"
                         style="@style/Button"
                         android:drawableEnd="@drawable/ic_right_arrow"
                         android:drawablePadding="@dimen/dp_20"
                         android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_15"
-                        android:text="@string/validate" />-->
+                        android:text="@string/validate" />&ndash;&gt;
 
 
                 </LinearLayout>
@@ -978,7 +978,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                </LinearLayout>
+                </LinearLayout>-->
 
 
 
@@ -990,7 +990,7 @@
                     android:id="@+id/llAntyodaya"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llOther">
+                    app:layout_constraintTop_toBottomOf="@+id/llShg">
 
                     <TextView
                         android:layout_width="match_parent"

@@ -4,6 +4,11 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
@@ -30,6 +35,7 @@ import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setRightDrawablePassword
+import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentLoginBinding
@@ -146,7 +152,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     userName = binding.etEmail.text.toString()
                     password = binding.etPassword.text.toString()
                     val shaPass = AppUtil.sha512Hash(password)
-
+                 //   toastLong("saltPass $saltPassword")
                     val saltPass = shaPass+saltPassword
                     val finalPass = AppUtil.sha512Hash(saltPass)
 
@@ -258,6 +264,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 301 -> {
                                     showSnackBar(getLoginResponse.responseDesc)
                                     //Update app
+                                    showUpdateDialog()
+
                                 }
 
                                 else -> {
@@ -318,6 +326,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                             //        Log.d("saltPass", "saltPass:  "+ saltPassword)
 
+
                                 }
 
 
@@ -334,5 +343,30 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     }
 
 
+    private fun showUpdateDialog() {
+        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        builder.setTitle("Update Available")
+        builder.setMessage("A new version of the app is available. Please update to continue.")
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+            val appPackageName = "com.kaushalpanjee"
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+                intent.setPackage("com.android.vending")
+                startActivity(intent)
+            } catch (e: Exception) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"))
+                startActivity(intent)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+        builder.create().show()
+    }
 }
 
