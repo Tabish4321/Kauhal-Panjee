@@ -1,7 +1,10 @@
 package com.kaushalpanjee.common
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -9,6 +12,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -352,8 +356,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     // Access the ImageView from the header layout
                                     val headerImageView: ImageView = headerBinding.circleImageView
+                                    val headerIdView: TextView = headerBinding.kpId
 
                                     headerImageView.setImageBitmap(bitmap)
+                                    headerIdView.text = userPreferences.getUseID()
 
 
                                 }
@@ -361,7 +367,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
-                                showSnackBar("Please Update from PlayStore")
+                                showUpdateDialog()
+
                             } else if (getSecctionAndPerAPI.responseCode == 401) {
                                 AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
 
@@ -444,7 +451,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
                             } else if (getBannerAPI.responseCode == 301) {
-                                showSnackBar("Please Update from PlayStore")
+
+                                showUpdateDialog()
                             } else if (getBannerAPI.responseCode == 401) {
                                 AppUtil.showSessionExpiredDialog(findNavController(), requireContext())
                             } else {
@@ -489,5 +497,33 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 }
             })
     }
+
+    private fun showUpdateDialog() {
+        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        builder.setTitle("Update Available")
+        builder.setMessage("A new version of the app is available. Please update to continue.")
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+            val appPackageName = "com.kaushalpanjee"
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+                intent.setPackage("com.android.vending")
+                startActivity(intent)
+            } catch (e: Exception) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"))
+                startActivity(intent)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+        builder.create().show()
+    }
+
+
 
 }

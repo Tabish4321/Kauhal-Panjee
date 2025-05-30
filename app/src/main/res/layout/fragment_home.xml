@@ -2301,7 +2301,7 @@
                     <EditText
                         android:id="@+id/etATINName"
                         style="@style/EditText"
-                        android:hint="@string/search_"
+                        android:hint="Enter SECC Name"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:visibility="gone"
@@ -3788,7 +3788,38 @@
                         android:elevation="@dimen/dp_10"
                         android:layout_gravity="end"
                         tools:visibility="visible" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:visibility="gone"
+                        android:hint="Select Branch Name"
+                        android:id="@+id/branchNameSelectUp"
+                        android:padding="1dp"
+                        android:textColorHint="@color/color_dark_green"
+                        app:boxStrokeColor="@color/color_dark_green">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerBranchName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            android:focusable="false"
+                            tools:ignore="LabelFor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                 </LinearLayout>
+
+
+
+
+
 
 
                 <LinearLayout

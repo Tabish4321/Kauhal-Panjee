@@ -11,5 +11,6 @@ data class TrainingInsertReq(
     val hearedAboutScheme: String,
     val hearedFrom: String,
     val intrestedSector: String,
-    val intrestedTrade: String
+    val intrestedTrade: String,
+    val tradeCode: String
 )

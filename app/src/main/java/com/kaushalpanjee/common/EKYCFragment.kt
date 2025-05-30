@@ -4,11 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -168,6 +170,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         addTextWatchers()
         commonViewModel.getStateListApi()
         initEKYC()
+
         //  startAppDownload()
 
 
@@ -227,10 +230,19 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 val encryptedAadhaarString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(),
                     AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
-                commonViewModel.getAadhaarCheck(AadhaarCheckReq(BuildConfig.VERSION_NAME,encryptedAadhaarString))
+                if (selectedStateCode!=""){
 
 
-                collectAadharResponse()
+                    commonViewModel.getAadhaarCheck(AadhaarCheckReq(BuildConfig.VERSION_NAME,encryptedAadhaarString))
+
+                    collectAadharResponse()
+
+                }
+                else
+                    showSnackBar("Please Select State first")
+
+
+
 
             } else {
 
@@ -485,7 +497,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
     private fun createPidOptions(txnId: String, purpose: String): String {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.
+        WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
 
 
@@ -701,29 +714,36 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             val encryptedStreet =   AESCryptography.encryptIntoBase64String(street, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedLdgdCode =   AESCryptography.encryptIntoBase64String(selectedStateLgdCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
-                                            commonViewModel.getCreateUserAPI(UserCreationReq(
-                                                encryptedAadhaarString,
-                                                encryptedName,
-                                                encryptedGender,
-                                                encryptedDob,
-                                                encryptedState,
-                                                encryptedSelectedStateCode,
-                                                encryptedDist,
-                                                encryptedBlock,
-                                                encryptedPo,
-                                                encryptedVillage,
-                                                encryptedPinCode,
-                                                encryptedPhone,
-                                                encryptedEmail,
-                                                encryptedCareOf,
-                                                encryptedStreet,
-                                                BuildConfig.VERSION_NAME,
-                                                photo,
-                                                AppUtil.getAndroidId(requireContext()),encryptedLdgdCode,true
-                                            )
-                                            )
+
+                                            if (selectedStateCode!=""){
+
+                                                commonViewModel.getCreateUserAPI(UserCreationReq(
+                                                    encryptedAadhaarString,
+                                                    encryptedName,
+                                                    encryptedGender,
+                                                    encryptedDob,
+                                                    encryptedState,
+                                                    encryptedSelectedStateCode,
+                                                    encryptedDist,
+                                                    encryptedBlock,
+                                                    encryptedPo,
+                                                    encryptedVillage,
+                                                    encryptedPinCode,
+                                                    encryptedPhone,
+                                                    encryptedEmail,
+                                                    encryptedCareOf,
+                                                    encryptedStreet,
+                                                    BuildConfig.VERSION_NAME,
+                                                    photo,
+                                                    AppUtil.getAndroidId(requireContext()),encryptedLdgdCode,true
+                                                )
+                                                )
 
 
+                                            }
+
+                                          else
+                                              toastLong("Please select state")
 
 
                                         }
@@ -867,12 +887,18 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             if (getAadhaarCheck.responseCode == 200) {
                                 showSnackBar(getAadhaarCheck.responseDesc)
 
-                              invokeCaptureIntent()
+
+
+                                invokeCaptureIntent()
+                              //  checkAndRedirectToPlayStore()
 
                             }
                             else if (getAadhaarCheck.responseCode == 301) {
 
-                                showSnackBar("Please Update from PlayStore")
+
+                                //Update app
+                                showUpdateDialog()
+
                             }
 
                             else if (getAadhaarCheck.responseCode == 333) {
@@ -885,6 +911,32 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             }
         }
     }
+    private fun showUpdateDialog() {
+        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        builder.setTitle("Update Available")
+        builder.setMessage("A new version of the app is available. Please update to continue.")
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+            val appPackageName = "com.kaushalpanjee"
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+                intent.setPackage("com.android.vending")
+                startActivity(intent)
+            } catch (e: Exception) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"))
+                startActivity(intent)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+        builder.create().show()
+    }
+
 
     private fun collectUserCreationResponse() {
         lifecycleScope.launch {
@@ -912,13 +964,16 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             }
                             else if (getUserCreationRes.responseCode == 301) {
 
-                                showSnackBar("Please Update from PlayStore")
+                                showUpdateDialog()
                             }
 
                             else if (getUserCreationRes.responseCode == 333) {
 
                                 showSnackBar(getUserCreationRes.responseDesc)
                             }
+                            else
+                                showSnackBar(getUserCreationRes.responseDesc)
+
                         } ?: showSnackBar("Internal Sever Error")
                     }
                 }
@@ -1019,5 +1074,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         checkBox.text = spannable
     }
+
 
 }

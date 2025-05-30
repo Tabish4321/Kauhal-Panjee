@@ -127,7 +127,8 @@
 <string name="secc_details">ଏସ୍. ଇ. ସି. ସି. ବିବରଣୀ</string>
 <string name="education_details">ଶିକ୍ଷା ବିବରଣୀ</string>
 <string name="banking_details">ବ୍ୟାଙ୍କିଙ୍ଗ ବିବରଣୀ</string>
-<string name="select_category">ଶ୍ରେଣୀ ଚୟନ କରନ୍ତୁ</string>
+    <string name="your_aadhaar_ekyc_is_completed">Your Aadhaar eKYC is completed</string>
+    <string name="select_category">ଶ୍ରେଣୀ ଚୟନ କରନ୍ତୁ</string>
 <string name="name1">ବାଧ୍ୟତାମୂଳକ କ୍ଷେତ୍ର 1*</string>
 <string name="validate">ବୈଧ କରନ୍ତୁ</string>
 <string name="upload_category_certificate">ଶ୍ରେଣୀ ପ୍ରମାଣପତ୍ର ଅପଲୋଡ କରନ୍ତୁ</string>

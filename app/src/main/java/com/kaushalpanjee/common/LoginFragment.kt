@@ -25,19 +25,15 @@ import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.LoginReq
-import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
-import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setRightDrawablePassword
-import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.toastShort
-import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -328,7 +324,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
                                 }
+                                301 -> {
+                                    //Update app
+                                    showUpdateDialog()
 
+                                }
 
                                 else -> {
                                     showSnackBar(getToken.responseDesc)

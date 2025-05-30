@@ -22,7 +22,7 @@
     <string name="state_name">রাজ্যের নাম</string>
     <string name="select_state">রাজ্য নির্বাচন করুন</string>
     <string name="slected_state">নির্বাচিত রাজ্য</string>
-    <string name="blank">ফাঁকা<u></u></string>
+    <string name="blank"><u /></string>
     <string name="aadhaar">আধার নম্বর লিখুন</string>
     <string name="login_to_your_account">আপনার অ্যাকাউন্টে লগইন করুন</string>
     <string name="aadhaar_number">আধার লিখুন</string>

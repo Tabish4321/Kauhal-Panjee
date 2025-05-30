@@ -52,8 +52,10 @@
     #VALUE!
     <string name="do_you_Antyodaya">உங்களிடம் அந்தியோதயா அட்டை இருக்கிறதா?</string>
     #VALUE!
+    <string name="do_you_llRsby">Do you have RSBY/PM-JAY Card</string>
     <string name="do_you_Pip">என்பது பிஐபி (ஏழைகளின் பங்கேற்பு அடையாளம்)</string>
     #VALUE!
+    <string name="father_incomer">Yearly income of the family (Rs.)</string>
     <string name="voter_id">வாக்காளர் ஐடி</string>
     <string name="driving_id">ஓட்டுநர் உரிமம்</string>
     <string name="submit">சமர்ப்பிக்கவும்</string>
@@ -68,6 +70,7 @@
     <string name="AdressLine2">தெரு 2</string>
     <string name="PresenrAddress">தற்போதைய முகவரி</string>
     #VALUE!
+    <string name="PresenrAddressSame">Is your present address the same as your permanent address?</string>
     <string name="Educational_information">கல்வி தகவல்</string>
     <string name="Employment_information">வேலைவாய்ப்பு தகவல்</string>
     <string name="Training_information">பயிற்சி தகவல்</string>
@@ -81,6 +84,7 @@
     <string name="TechnicalEducation2">தொழில்நுட்ப கல்வி*<font color='#FF0000'>*</font></string>
     <string name="DomainOfTech">தொழில்நுட்பக் கல்வியின் களம்*<font color='#FF0000'>*</font></string>
     #VALUE!
+    <string name="curentlyEmployed">Are you currently employed?<font color="#FF0000">*</font></string>
     <string name="natureOfEmpl">வேலைவாய்ப்பின் தன்மை என்ன?</string>
     <string name="IntrestedIn">ஆர்வம் உள்ளதா?*?<font color='#FF0000'>*</font></string>
     <string name="EmploymentPreference">வேலைவாய்ப்பு முன்னுரிமை*<font color='#FF0000'>*</font></string>
@@ -88,6 +92,7 @@
     <string name="CurrentEarning">தனிப்பட்ட நடப்பு மாத வருமானம் ரூபாயில் என்ன?</string>
     <string name="CurrentEarningHint">நடப்பு சம்பளம்</string>
     <string name="ExpectationSalary">எதிர்பார்க்கப்படும் குறைந்தபட்ச மாதாந்திர சம்பளம் (ரூ.))</string>
+    <string name="recievedAnyTrainingBefore">Have you received any training before?<font color="#FF0000">*</font></string>
     <string name="PreviousComTraining">முன்பு பயிற்சி நிறைவு செய்யப்பட்டது</string>
     <string name="selectScheme">திட்டத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="select_PreviouscompTrainingMOnth">முன்பு இந்த நேரத்தில் முடிக்கப்பட்டது?</string>
@@ -169,6 +174,7 @@
 <string name="write">எழுதுங்கள்</string>
     <string name="select_languages">மொழிகளைத் தேர்ந்தெடுக்கவும்</string>
     <string name="branch_name">கிளை பெயர்</string>
+    <string name="whether_shg_belong">வீட்டிலுள்ள எந்தவொரு உறுப்பினரும் சுய உதவி குழுவைச் சேர்ந்தவரா?</string>
     <string name="view_profile">விவரங்களைக் காண்க</string>
     <string name="edit">விவரங்களைத் திருத்து</string>
     <string name="as_per_aadhaar">ஆதார் முகவரி</string>

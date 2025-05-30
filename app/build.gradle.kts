@@ -1,11 +1,13 @@
+import java.io.File
 import java.util.Properties
-
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.navigationSafeargsKotlin)
-    id("kotlin-kapt")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize") // Add this line
+
 }
 
 android {
@@ -19,8 +21,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.0"
+        versionCode = 13
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -28,6 +30,12 @@ android {
         resourceConfigurations += listOf("en", "hi", "as", "bn", "gu", "kn", "ml", "mr", "or", "pa", "ta", "te", "ur")
     }
 
+    // ✅ Prevent Google Play from splitting languages (needed for in-app switching)
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 
     buildTypes {
         release {

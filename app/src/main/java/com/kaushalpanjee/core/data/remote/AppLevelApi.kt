@@ -306,10 +306,6 @@ interface AppLevelApi {
         @Body request: ShgValidateReq
     ): Response<ShgValidateRes>
 
-
-
-
-
     @FormUrlEncoded
     @POST
     @Headers("Content-Type: application/x-www-form-urlencoded")

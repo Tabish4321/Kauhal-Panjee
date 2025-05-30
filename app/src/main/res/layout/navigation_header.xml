@@ -22,8 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Welcome"
+        android:id="@+id/kpId"
         android:layout_marginStart="@dimen/dp_30"
         android:textColor="@color/color_dark_green"
         android:fontFamily="@font/avenir_next_semi_bold"
         android:textSize="18sp" />
+
 </LinearLayout>

@@ -23,7 +23,7 @@
     <string name="state_name">ৰাজ্যৰ নাম</string>
     <string name="select_state">ৰাজ্য নিৰ্বাচন কৰক</string>
     <string name="slected_state">নিৰ্বাচিত ৰাজ্য</string>
-    <string name="blank">খালী<u></u></string>
+    <string name="blank"><u /></string>
     <string name="aadhaar">আধাৰ নম্বৰ প্ৰবিষ্ট কৰক</string>
     <string name="login_to_your_account"> আপোনাৰ একাউণ্টত লগইন কৰক</string>
     <string name="aadhaar_number">আধাৰ প্ৰবিষ্ট কৰক</string>
@@ -198,7 +198,6 @@
     <string name="kyc_failed_msg"> kyc প্ৰক্ৰিয়া বিফল হৈছে অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।</string>
     <string name="candidate_details">প্ৰাৰ্থীৰ বিৱৰণ</string>
     <string name="training_details"> প্ৰশিক্ষণৰ সবিশেষ</string>
-    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">অনুগ্ৰহ কৰি আপোনাৰ ৰাজ্য সাৱধানে বাছনি কৰক। আপোনাৰ একাউণ্ট সৃষ্টি হোৱাৰ পিছত এই নিৰ্বাচন সলনি কৰিব নোৱাৰি"</string>
     <string name="consent">
     I hereby state that I have no objection in authenticating myself with the Aadhaar-based authentication system and consent to providing my Aadhaar number, biometric and/or One Time Pin (OTP) data for Aadhaar-based authentication for the purposes of availing the Unified IT Platform for DDUGKY and RSETI from the National Informatics Centre.&#10;&#10;I understand that the biometrics and/or OTP I provide for authentication shall be used only for authenticating my identity through the Aadhaar authentication system for that specific transaction and for no other purposes.&#10;&#10;I understand that the National Informatics Centre shall ensure the security and confidentiality of my personal identity data provided for the purpose of Aadhaar-based authentication.
 </string>
@@ -209,5 +208,6 @@
     <string name="enter_other_scheme">অন্যান্য আঁচনি লিখক</string>
     <string name="upload_document">দস্তাবেজ আপল ড কৰক</string>
     <string name="select_userid">ব্যৱহাৰকাৰীৰ ID বাছনি কৰক</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">Please select your state carefully. This selection cannot be changed once your account created</string>
 
 </resources>

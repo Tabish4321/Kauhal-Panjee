@@ -83,7 +83,7 @@ object AppModule {
     ): Retrofit {
         return Retrofit.Builder()
            .baseUrl(AppConstant.StaticURL.baseUrl)
-         //  .baseUrl(AppConstant.StaticURL.localUrl)
+          // .baseUrl(AppConstant.StaticURL.localUrl)
             .client(getRetrofitClient(null, userPreferences = userPreferences, context = context))
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
@@ -112,7 +112,7 @@ object AppModule {
                     val logging = HttpLoggingInterceptor()
                     logging.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logging)
-                   // client.addInterceptor(ChuckerInterceptor(context))
+                    // client.addInterceptor(ChuckerInterceptor(context))
                 }
             }.build()
     }

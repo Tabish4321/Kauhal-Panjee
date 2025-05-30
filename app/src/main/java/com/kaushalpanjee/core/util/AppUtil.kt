@@ -1,7 +1,10 @@
 package com.kaushalpanjee.core.util
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
@@ -28,6 +31,7 @@ import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
 import android.provider.Settings
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController

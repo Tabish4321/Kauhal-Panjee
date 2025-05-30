@@ -10,6 +10,8 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
@@ -50,10 +52,13 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                 if (newPassword == confirmNewPassword){
 
                     val shaOldPassword= AppUtil.sha512Hash(oldPassword)
-                    val shaNewPassword= AppUtil.sha512Hash(newPassword)
+                   // val shaNewPassword= AppUtil.sha512Hash(newPassword)
+
+                    val encryptedNewPass=   AESCryptography.encryptIntoBase64String(newPassword, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
 
                     commonViewModel.getChangePass(ChangePassReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
-                        shaOldPassword,shaNewPassword),AppUtil.getSavedTokenPreference(requireContext()))
+                        shaOldPassword,encryptedNewPass),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectChangePassResponse()
 

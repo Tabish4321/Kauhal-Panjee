@@ -23,7 +23,8 @@ import java.io.File
 @AndroidEntryPoint
 class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
     ActivityWelcomeBinding::inflate
-) {
+)
+{
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

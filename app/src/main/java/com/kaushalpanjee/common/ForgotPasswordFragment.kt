@@ -80,9 +80,6 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
 
     private fun listener(){
 
-
-
-
         // Secc GP selection
 
         binding.SpinnerUserSelect.setOnItemClickListener { parent, view, position, id ->
@@ -105,7 +102,6 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
         binding.tvVerify.setOnClickListener {
 
             validateAndNavigate()
-
 
             binding.et1.text.clear()
             binding.et2.text.clear()
@@ -273,10 +269,12 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
                             if (getOtpValidateApi.responseCode == 200) {
                                 toastShort(getOtpValidateApi.responseDesc)
                                 binding.clForgotOTP.gone()
-
+                                binding.tvVerify.gone()
                                 binding.llUserSelect.visible()
                                 userIdNameList= getOtpValidateApi.wrappedList as ArrayList<UserIdName>
+                                userIdList.clear()
                                 for (x in userIdNameList){
+
                                     userIdList.add(x.loginId)
                                 }
 

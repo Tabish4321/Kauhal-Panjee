@@ -1,6 +1,9 @@
 package com.kaushalpanjee.common
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
@@ -267,6 +270,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
+
+                            else if (sendMobileOTPResponse.responseCode==301){
+                                showUpdateDialog()
+                            }
                             else showSnackBar("Internal Sever Error")
 
 
@@ -277,6 +284,31 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
     }
 
+    private fun showUpdateDialog() {
+        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        builder.setTitle("Update Available")
+        builder.setMessage("A new version of the app is available. Please update to continue.")
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+            val appPackageName = "com.kaushalpanjee"
+            try {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+                intent.setPackage("com.android.vending")
+                startActivity(intent)
+            } catch (e: Exception) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"))
+                startActivity(intent)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+        builder.create().show()
+    }
 
     private fun collectSendEmailOTPResponse() {
         lifecycleScope.launch {
@@ -299,8 +331,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                 toastShort(sendMobileOTPResponse.responseDesc)
                             } else if (sendMobileOTPResponse.responseCode == 201)
                                 showSnackBar("Incorrect mobile number")
-                            else showSnackBar("Internal Sever Error")
-
+                            else if (sendMobileOTPResponse.responseCode==301)
+                                showUpdateDialog()
 
                         } ?: showSnackBar("Internal Sever Error")
                     }

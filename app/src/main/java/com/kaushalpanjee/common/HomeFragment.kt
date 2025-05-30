@@ -191,6 +191,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var traingBeforeStatus = ""
     private var selectedSector = ""
     private var selectedSectorCode = ""
+    private var selectedTradeCode = ""
     private var selectedTrade = ""
     private var haveUHeardStatus = ""
     private var totalPercentange = 0.0f
@@ -243,6 +244,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     // State var
     private lateinit var stateSeccAdapter: ArrayAdapter<String>
+    private lateinit var selectBranchAdapter: ArrayAdapter<String>
     private var selectedSeccStateCodeItem = ""
     private var selectedSeccStateLgdCodeItem = ""
     private var selectedSeccStateItem = ""
@@ -308,6 +310,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var district = ArrayList<String>()
     private var districtCode = ArrayList<String>()
     private var districtLgdCode = ArrayList<String>()
+    private var branchListValue = ArrayList<String>()
+    private var bankListValue = ArrayList<String>()
+    private var bankAccountLenghth = ArrayList<String>()
+    private var branchCodeList = ArrayList<String>()
+    private var bankCodeList = ArrayList<String>()
     private var selectedDistrictCodeItem = ""
     private var selectedDistrictLgdCodeItem = ""
     private var selectedDistrictItem = ""
@@ -419,6 +426,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var sectorList = ArrayList<String>()
     private var sectorCode = ArrayList<String>()
     private var tradeName = ArrayList<String>()
+    private var tradeCode = ArrayList<String>()
 
     private var selectedSectorIndices: MutableList<Int> = mutableListOf()
     private var selectedTradeIndices: MutableList<Int> = mutableListOf()
@@ -443,7 +451,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTechEducationResponse()
         collectSeccListResponse()
         collectSetionAndPerResponse()
-        collectBankResponse()
+        //collectBankResponse()
         collectNregaValidateResponse()
         collectTradeResponse()
         collectSectorResponse()
@@ -560,6 +568,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             categoryList
         )
         binding.SpinnerCategory.setAdapter(categoryAdapter)
+
+
+        //Adapter Multiple Branch
+
+        selectBranchAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            branchListValue
+        )
+        binding.spinnerBranchName.setAdapter(selectBranchAdapter)
 
 
         //Adapter Marital
@@ -1451,7 +1469,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             commonViewModel.getBankDetailsAPI(BankingReq(BuildConfig.VERSION_NAME,
                 encryptedUpperCaseText,userPreferences.getUseID()
             ),AppUtil.getSavedTokenPreference(requireContext()))
-
+            collectBankResponse()
         }
 
         //Category Selection
@@ -1981,6 +1999,64 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             if (position in village.indices) {
                 selectedVillagePresentCodeItem = villageCode[position]
                 selectedbVillagePresentLgdCodeItem = villageLgdCode[position]
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+        //Branch Spinner
+        binding.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
+            branchName = parent.getItemAtPosition(position).toString()
+            if (position in branchListValue.indices) {
+                branchCode = branchCodeList[position]
+                bankCode = bankCodeList[position]
+                bankName1= bankListValue[position]
+                accLenghth= bankAccountLenghth[position]
+
+
+
+                binding.etBankName.setText(bankName1)
+                binding.etBranchName.setText(branchName)
+
+                if (accLenghth.isNotBlank()) {
+                    val lengths = accLenghth.split(",")
+                        .mapNotNull { it.toIntOrNull() }
+                        .sorted()
+
+                    val maxLength = lengths.maxOrNull() ?: 0
+
+                    if (lengths.size == 1) {
+                        binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
+                    } else if (lengths.isNotEmpty()) {
+                        binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
+
+                        // Add text change listener for validation
+                        binding.etBankAcNo.addTextChangedListener(object : TextWatcher {
+                            override fun afterTextChanged(s: Editable?) {
+                                s?.let {
+                                    if (it.length in lengths || it.isEmpty()) {
+                                        binding.etBankAcNo.error = null
+                                        binding.btnBnakingSubmit.visible()
+                                    } else {
+                                        binding.etBankAcNo.error =
+                                            "Account number must be ${lengths.joinToString(", ")} digits"
+                                    }
+                                }
+                            }
+
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                        })
+                    }
+                } else {
+                    // accLenghth is blank: remove filters if needed
+                    binding.etBankAcNo.filters = arrayOf()
+                }
+
+
 
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
@@ -2572,6 +2648,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     // Store the selected trades as a comma-separated string
                     selectedTrade = indices.joinToString(",") { itemList[it] }
+
+                    // Store the selected sector codes as a comma-separated string
+                    selectedTradeCode = indices.joinToString(",") { tradeCode[it] }
                 }
 
                 positiveButton(text = "OK")
@@ -2669,7 +2748,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             previousTrainingDuration= binding.tvClickPreviouslycompletedduring.text.toString()
 
 
-            if (traingBeforeStatus.isNotEmpty() && selectedSector.isNotEmpty() && selectedTrade.isNotEmpty()) {
+            if (traingBeforeStatus.isNotEmpty() && selectedSector.isNotEmpty() && selectedTradeCode.isNotEmpty()) {
 
 
                 if (traingBeforeStatus.contains("Yes") &&  selectedPrevCompleteTraining.isNotEmpty())
@@ -2678,7 +2757,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade,selectedTradeCode),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -2694,7 +2773,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade,selectedTradeCode),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -2706,7 +2785,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     commonViewModel.insertTrainingAPI(TrainingInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),"6",traingBeforeStatus,selectedPrevCompleteTraining,
-                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade),AppUtil.getSavedTokenPreference(requireContext()))
+                        previousTrainingDuration,haveUHeardStatus, selectedHeardABoutItem,selectedSectorCode,selectedTrade,selectedTradeCode),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectInsertTrainingResponse()
 
@@ -4266,7 +4345,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         hideProgressBar()
                         it.data?.let { getBankList ->
                             if (getBankList.responseCode == 200) {
+
+
+                                binding.etBankAcNo.setText("")
+                                BankAcNo= ""
                                 val bankList = getBankList.bankDetailsList
+
+                                branchCodeList.clear()
+                                branchListValue.clear()
+                                bankCodeList.clear()
+                                bankListValue.clear()
+                                bankAccountLenghth.clear()
+
 
                                 for (x in bankList) {
 
@@ -4292,47 +4382,80 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         AppConstant.Constants.ENCRYPT_KEY,
                                         AppConstant.Constants.ENCRYPT_IV_KEY)
 
-                                    bankCode=  encryptedbankCode
-                                    bankName1=    encryptedbankName
-                                    branchCode=  encryptedbranchCode
-                                    branchName=   encryptedbranchName
-                                    accLenghth=  encryptedaccLength
+                                    branchCodeList.add(encryptedbranchCode)
+                                    branchListValue.add(encryptedbranchName)
+                                    bankCodeList.add(encryptedbankCode)
+                                    bankListValue.add(encryptedbankName)
+                                    bankAccountLenghth.add(encryptedaccLength)
+
+                                    if (branchListValue.size == 1) {
+
+                                        binding.branchNameSelectUp.gone()
+
+
+                                        bankCode=  encryptedbankCode
+                                        bankName1=    encryptedbankName
+                                        branchCode=  encryptedbranchCode
+                                        branchName=   encryptedbranchName
+                                        accLenghth=  encryptedaccLength
+
+                                        binding.etBankName.setText(bankName1)
+                                        binding.etBranchName.setText(branchName)
+
+                                        if (accLenghth.isNotBlank()) {
+                                            val lengths = accLenghth.split(",")
+                                                .mapNotNull { it.toIntOrNull() }
+                                                .sorted()
+
+                                            val maxLength = lengths.maxOrNull() ?: 0
+
+                                            if (lengths.size == 1) {
+                                                binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
+                                            } else if (lengths.isNotEmpty()) {
+                                                binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
+
+                                                // Add text change listener for validation
+                                                binding.etBankAcNo.addTextChangedListener(object : TextWatcher {
+                                                    override fun afterTextChanged(s: Editable?) {
+                                                        s?.let {
+                                                            if (it.length in lengths || it.isEmpty()) {
+                                                                binding.etBankAcNo.error = null
+                                                                binding.btnBnakingSubmit.visible()
+                                                            } else {
+                                                                binding.etBankAcNo.error =
+                                                                    "Account number must be ${lengths.joinToString(", ")} digits"
+                                                            }
+                                                        }
+                                                    }
+
+                                                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                                                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                                                })
+                                            }
+                                        } else {
+                                            // accLenghth is blank: remove filters if needed
+                                            binding.etBankAcNo.filters = arrayOf()
+                                        }
+
+
+
+                                    }
+                                    else if (branchListValue.size > 1) {
+
+                                        binding.branchNameSelectUp.visible()
+
+                                    }
+                                    else {
+                                        println("No bank codes available.")
+                                    }
+
+
+
 
                                 }
 
                              //   binding.btnBnakingSubmit.visible()
 
-                                binding.etBankName.setText(bankName1)
-                                binding.etBranchName.setText(branchName)
-
-                                val lengths = accLenghth.split(",").mapNotNull { it.toIntOrNull() }.sorted()
-                                val maxLength = lengths.maxOrNull() ?: 0
-
-                                if (lengths.size == 1) {
-                                    binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
-                                } else {
-                                    binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
-
-                                    // Add text change listener for validation
-                                    binding.etBankAcNo.addTextChangedListener(object : TextWatcher {
-                                        override fun afterTextChanged(s: Editable?) {
-                                            s?.let {
-                                                if (it.length in lengths || it.isEmpty()) {
-                                                    binding.etBankAcNo.error = null
-                                                    binding.btnBnakingSubmit.visible()
-
-
-                                                } else {
-                                                    binding.etBankAcNo.error = "Account number must be ${lengths.joinToString(", ")} digits"
-
-                                                }
-                                            }
-                                        }
-
-                                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                                    })
-                                }
 
 
 
@@ -4424,8 +4547,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 val   sectorList1 = getTradeList.wrappedList
 
                                 tradeName.clear()
+                                tradeCode.clear()
                                 for (x in sectorList1) {
                                     tradeName.add(x.trade)
+                                    tradeCode.add(x.tradeCode)
 
                                 }
 
@@ -4440,8 +4565,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             else if (getTradeList.responseCode==401){
                                 AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
                             }
+                            else if (getTradeList.responseCode==204){
+                                getTradeList.responseDesc?.let { it1 -> showSnackBar(it1) }
+                            }
                             else {
-                                showSnackBar("Something went wrong")
+                                getTradeList.responseDesc?.let { it1 -> showSnackBar(it1) }
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }

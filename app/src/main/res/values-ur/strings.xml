@@ -22,7 +22,7 @@
     <string name="state_name">ریاست کا نام</string>
     <string name="select_state">ریاست منتخب کریں</string>
     <string name="slected_state">سلیکٹڈ اسٹیٹ</string>
-    <string name="blank">خالی</string>
+    <string name="blank"><u /></string>
     <string name="aadhaar">آدھار نمبر درج کریں</string>
     <string name="login_to_your_account">اپنے اکاؤنٹ میں لاگ ان کریں</string>
     <string name="aadhaar_number">آدھار درج کریں</string>
@@ -197,9 +197,7 @@
     <string name="kyc_failed_msg">KYC عمل ناکام ہو گیا ہے، براہ کرم دوبارہ کوشش کریں۔</string>
     <string name="candidate_details">امیدوار\n    کی تفصیلات</string>
     <string name="training_details">ٹریننگ\n    کی تفصیلات</string>
-    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">
-	براہ کرم اپنی ریاست کو احتیاط سے منتخب کریں۔ یہ انتخاب آپ کا اکاؤنٹ بننے کے بعد تبدیل نہیں کیا جا سکتا۔
-	</string>
+    <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">Please select your state carefully. This selection cannot be changed once your account created</string>
     <string name="consent">
 	میں یہاں یہ کہتا ہوں کہ مجھے آدھار پر مبنی تصدیق کے نظام کے ساتھ اپنے آپ کی تصدیق کرنے اور نیشنل انفارمیٹکس سینٹر سے ڈی ڈی یو جی کے وائی اور آر ایس ای ٹی آئی کے لیے یونیفائیڈ آئی ٹی پلیٹ فارم حاصل کرنے کے مقاصد کے لیے آدھار پر مبنی تصدیق کے لیے اپنا آدھار نمبر، بائیو میٹرک اور/یا ون ٹائم پن (او ٹی پی) ڈیٹا فراہم کرنے پر کوئی اعتراض نہیں ہے۔&#10;&#10;میں سمجھتا ہوں کہ تصدیق کے لیے میں جو بائیو میٹرکس اور/یا او ٹی پی فراہم کرتا ہوں وہ صرف اس مخصوص لین دین کے لیے آدھار تصدیق کے نظام کے ذریعے میری شناخت کی تصدیق کے لیے استعمال کیا جائے گا اور کسی دوسرے مقصد کے لیے نہیں۔&#10;&#10;میں سمجھتا ہوں کہ نیشنل انفارمیٹکس سینٹر آدھار پر مبنی تصدیق کے مقصد سے فراہم کردہ میرے ذاتی شناختی ڈیٹا کی حفاظت اور رازداری کو یقینی بنائے گا۔
 	</string>

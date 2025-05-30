@@ -8,5 +8,6 @@ data class TradeResponse(
 )
 
 data class Trade(
-    val trade: String
+    val trade: String,
+    val tradeCode: String
 )
