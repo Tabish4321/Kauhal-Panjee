@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.kaushalpanjee.R
+import com.kaushalpanjee.core.util.isNull
 
 class AdvertiseCardAdapter(
     private val images: MutableList<Bitmap>
@@ -19,6 +20,11 @@ class AdvertiseCardAdapter(
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+
+        if (images.isNull){
+            holder.imageView.setImageResource(R.drawable.person)
+        }
+        else
         holder.imageView.setImageBitmap(images[position]) // ✅ fix here
     }
 

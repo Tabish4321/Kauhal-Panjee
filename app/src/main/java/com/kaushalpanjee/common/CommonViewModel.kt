@@ -32,6 +32,7 @@ import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
@@ -55,6 +56,7 @@ import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
@@ -471,6 +473,17 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getAadhaarCheck(aadhaarCheckReq).collectLatest {
                 _getAadhaarCheck.emit(it)
+            }
+        }
+    }
+
+    private  var _updateFaceApi =  MutableStateFlow<Resource<out FaceResponse>>(Resource.Loading())
+    val updateFaceApi = _updateFaceApi.asSharedFlow()
+
+    fun updateFaceApi(faceCheckReq: FaceCheckReq){
+        viewModelScope.launch {
+            commonRepository.updateFaceApi(faceCheckReq).collectLatest {
+                _updateFaceApi.emit(it)
             }
         }
 

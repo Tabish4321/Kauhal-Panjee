@@ -1,23 +1,15 @@
 package com.kaushalpanjee.common
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
@@ -52,6 +44,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private var password = ""
     private var token = ""
     private var saltPassword = ""
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -234,7 +228,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                         userPreferences.updateUserId(userName)
                                         AppUtil.saveLoginStatus(requireContext(), true)  // true means user is logged in
 
-
                                         findNavController().navigate(
                                             R.id.mainHomePage,
                                             null,
@@ -242,11 +235,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                                 .setPopUpTo(R.id.loginFragment, true)
                                                 .build()
                                         )
+
                                     }
                                     else toastShort("Session expired")
-
-
-
 
                                 }
 
@@ -368,5 +359,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         builder.setCancelable(false)
         builder.create().show()
     }
+
+
+
 }
 

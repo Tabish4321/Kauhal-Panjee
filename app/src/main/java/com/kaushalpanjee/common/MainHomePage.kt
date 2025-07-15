@@ -1,6 +1,8 @@
 package com.kaushalpanjee.common
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,6 +16,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
@@ -25,16 +29,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.BannerReq
+import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
+import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
+import com.pehchaan.backend.service.AuthenticationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,6 +65,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var employmentStatus = ""
     private var bankingStatus = ""
     private var selectedTrainingName = ""
+    private var isFaceReg = ""
+    private var candidateName = ""
     private var totalPercentange =0.0f
     private var bannerImageList = ArrayList<String>()
 
@@ -64,6 +74,27 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
 
 
+    private val startForAuthentication =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data = result.data
+                val status = data?.getStringExtra(AppConstant.Constants.RESULT_STATUS) ?: "failure"
+                val message = data?.getStringExtra(AppConstant.Constants.RESULT_MESSAGE) ?: "Unknown error"
+
+                if (status == "success") {
+
+                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+
+                    collectFaceUpdateResponse()
+
+
+                } else {
+                    showFaceRegDialog(requireContext(),"Alert","❌ Failure: $message")
+                }
+            } else {
+                showFaceRegDialog(requireContext(),"Alert","❌ Try Again")
+            }
+        }
 
 
     private val bannerImageBitmapList = mutableListOf<Bitmap>()
@@ -78,17 +109,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
 
-
     }
      private fun init(){
-
-
-
-
          val drawerLayout = binding.drawerLayout
-
-
-
          binding.navigationView.setNavigationItemSelectedListener { menuItem ->
              when (menuItem.itemId) {
 
@@ -130,15 +153,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          collectSetionAndPerResponse()
          collectTrainingSearchResponse()
 
-
-
-
      }
 
  private fun  listeners(){
-
-
-
 
     //Training Adapter Setting
 
@@ -178,11 +195,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
          override fun afterTextChanged(s: Editable?) {}
      })
-
-
-
-
-
 
      binding.trainingImageLogo.setOnClickListener {
 
@@ -283,7 +295,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     bankingStatus= x.bankingStatus.toString()
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
+                                    candidateName=x.candidateName
+                                    isFaceReg= x.isFaceRegistred
 
+                                }
+                                if (isFaceReg=="N"){
+                                    val userId = userPreferences.getUseID()
+                                    val userName = candidateName
+                                    startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId,userName)
                                 }
 
                                 binding.ivMeter.setImageBitmap(createHalfCircleProgressBitmap(300,300,totalPercentange,
@@ -416,6 +435,40 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             }
         }
 
+    private fun collectFaceUpdateResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.updateFaceApi) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar("Not Found")
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { updateFaceApi ->
+                            if (updateFaceApi.responseCode == 200) {
+
+                                showSnackBar(updateFaceApi.responseDesc)
+
+                            } else if (updateFaceApi.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            }   else if (updateFaceApi.responseCode==401){
+                                AppUtil.showSessionExpiredDialog(findNavController(),requireContext())
+                            }else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun collectBannerResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBannerAPI) {
@@ -435,12 +488,15 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                 bannerImageBitmapList.clear() // clear old data if any
 
+
                                 for (banner in bannerResList) {
-                                    val bytes: ByteArray =
-                                        Base64.decode(banner.bannerImage, Base64.DEFAULT)
-                                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                                    if (bitmap != null) {
-                                        bannerImageBitmapList.add(bitmap)
+                                   if (banner.bannerImage!=null){
+                                       val bytes: ByteArray =
+                                           Base64.decode(banner.bannerImage, Base64.DEFAULT)
+                                       val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                                       if (bitmap != null) {
+                                           bannerImageBitmapList.add(bitmap)
+                                       }
                                     }
                                 }
 
@@ -522,6 +578,38 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
         builder.setCancelable(false)
         builder.create().show()
+    }
+
+    private fun startAuthentication(callType: String, userId: String,userName: String) {
+        val intent = Intent(requireContext(), AuthenticationActivity::class.java)
+        intent.putExtra(AppConstant.Constants.EXTRA_CLIENT_ID, AppConstant.Constants. YOUR_CLIENT_ID)
+        intent.putExtra(AppConstant.Constants.EXTRA_CALL_TYPE, callType)
+        intent.putExtra(AppConstant.Constants.EXTRA_USER_ID, userId)
+        if (callType == AppConstant.Constants.CALL_TYPE_REGISTRATION) {
+            intent.putExtra(AppConstant.Constants.EXTRA_USER_NAME, userName)
+        }
+        startForAuthentication.launch(intent)
+    }
+
+    private fun showFaceRegDialog(context: Context, title: String, message: String) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        builder.setPositiveButton("Retry") { dialog, _ ->
+            val userId = userPreferences.getUseID()
+            val userName = candidateName
+            startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId, userName)
+        }
+
+        /*  builder.setNegativeButton("Cancel") { dialog, _ ->
+              dialog.dismiss()
+          }*/
+
+        val dialog = builder.create()
+        dialog.setCancelable(false)  // Prevent outside touch dismissal
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
 

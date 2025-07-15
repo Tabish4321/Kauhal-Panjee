@@ -26,6 +26,7 @@ import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
@@ -54,6 +55,7 @@ import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
+import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.InsertRes
@@ -292,6 +294,11 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_OTP_checkUserExistance)
     suspend fun getAadhaarCheck(@Body aadhaarCheckReq: AadhaarCheckReq):AadhaarCheckRes
+
+
+    @POST(ApiConstant.API_UPDATE_FACE)
+    suspend fun updateFaceApi(@Body faceCheckReq: FaceCheckReq):FaceResponse
+
 
     @POST
     suspend fun postOnAUAFaceAuthNREGA(

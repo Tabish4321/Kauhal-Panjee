@@ -34,6 +34,7 @@ import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
@@ -58,6 +59,7 @@ import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
+import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
@@ -300,6 +302,13 @@ class CommonRepository @Inject constructor(
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getAadhaarCheck(aadhaarCheckReq)
+        }
+    }
+
+    suspend fun updateFaceApi(faceCheckReq: FaceCheckReq): Flow<Resource<out FaceResponse>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.updateFaceApi(faceCheckReq)
         }
     }
 

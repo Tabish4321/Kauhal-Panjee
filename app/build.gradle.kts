@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId = "com.kaushalpanjee"
-        minSdk = 26
+        minSdk = 28
         targetSdk = 35
         versionCode = 13
         versionName = "1.1"
@@ -106,6 +106,8 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 }
 
 dependencies {
+    // Local AAR Library
+    implementation(files("libs/pehchaanlib.aar"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -169,6 +171,55 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     implementation (libs.simple.xml)
+
+    // Jetpack Compose
+    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // CardView
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
+    // Transport runtime
+    implementation("com.google.android.datatransport:transport-runtime:2.2.6")
+
+    // ML Kit (Vision)
+    implementation("com.google.mlkit:face-detection:16.1.7")
+    implementation("com.google.mlkit:vision-common:16.1.7")
+
+    // CameraX
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-lifecycle:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
+
+    // SweetAlert Dialog
+    implementation("com.github.f0ris.sweetalert:library:1.5.6")
+
+    // SDP & SSP for responsive UI
+    implementation("com.intuit.sdp:sdp-android:1.1.0")
+    implementation("com.intuit.ssp:ssp-android:1.1.0")
+
+    // Kotlin Coroutines with Play Services
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0-RC")
+
+    // TensorFlow Lite
+    implementation("com.google.ai.edge.litert:litert:1.1.2")
+    implementation("com.google.ai.edge.litert:litert-gpu:1.1.2")
+    implementation("com.google.ai.edge.litert:litert-gpu-api:1.1.2")
+    implementation("com.google.ai.edge.litert:litert-support:1.2.0")
+
+    // MediaPipe Tasks Vision
+    implementation("com.google.mediapipe:tasks-vision:0.10.14")
+
 
 
 

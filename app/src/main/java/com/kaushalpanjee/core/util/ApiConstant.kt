@@ -55,6 +55,7 @@ object ApiConstant {
     const val  API_OTP_VALIDATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}validateOtp"
     const val  API_OTP_checkUserExistance= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}checkUserExistance"
     const val  API_OTP_getBanner= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getBanner"
+    const val  API_UPDATE_FACE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}updateFaceRegistred"
 
 
 
