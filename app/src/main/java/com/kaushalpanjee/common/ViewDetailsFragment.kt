@@ -95,6 +95,8 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var bankingStatus = ""
     private var totalPercentange = 0.0f
     private var voterImage=  ""
+    private var pmaygImage=  ""
+    private var pipImage=  ""
     private var dlImage=  ""
     private var categoryImage=  ""
     private var minorityImage =  ""
@@ -159,6 +161,17 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         binding.voterIdUpload.setOnClickListener {
             showDocumentDialog(voterImage)
         }
+
+        binding.pmaygUpload.setOnClickListener {
+            showDocumentDialog(pmaygImage)
+        }
+
+
+        binding.pipUpload.setOnClickListener {
+            showDocumentDialog(pipImage)
+        }
+
+
 
         binding.dlIdUpload.setOnClickListener {
             showDocumentDialog(dlImage)
@@ -558,6 +571,11 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                                 voterImage = x.VoterImagePath
 
+                                                pmaygImage = x.pmaygAttachment
+
+                                                pipImage = x.pipCert
+
+
                                                 antyodyaImage = x.rationCardPath
                                             } catch (e: Exception) {
                                                 showSnackBar("Error decoding image: ${e.message}")
@@ -584,6 +602,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 val antyodayaStatus = x.antyodaya
                                                 val rsbyStatus = x.isRSBY
                                                 val pipStatus = x.isPIP
+                                                val pmaygStatus = x.isPmayg
 
                                                 // Set the UI based on conditions
                                                 handleStatus(binding.optionMinorityYesSelect, binding.optionMinorityNoSelect, minorityStatus)
@@ -593,6 +612,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 handleStatus(binding.optionAntyodayaYesSelect, binding.optionAntyodayaNoSelect, antyodayaStatus)
                                                 handleStatus(binding.optionllRsbyYesSelect, binding.optionllRsbyNoSelect, rsbyStatus)
                                                 handleStatus(binding.optionPipYesSelect, binding.optionPipNoSelect, pipStatus)
+                                                handleStatus(binding.optionPmayYesSelect, binding.optionPmayNoSelect, pmaygStatus)
 
 
                                                 if (nregaJobCardStatus=="No"){
@@ -608,7 +628,17 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                                 }
 
+                                                if (pmaygStatus=="No"){
 
+                                                    binding.pmaygUpload.gone()
+
+                                                }
+
+                                                if (pipStatus=="No"){
+
+                                                    binding.pipUpload.gone()
+
+                                                }
 
                                             } catch (e: Exception) {
                                                 showSnackBar("Error setting data: ${e.message}")

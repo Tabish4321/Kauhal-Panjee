@@ -17,7 +17,6 @@ object AppConstant {
         //const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
         const val baseUrl= "https://kaushal.rural.gov.in/demobackend/"             //demo
 
-
     }
 
     object Constants{

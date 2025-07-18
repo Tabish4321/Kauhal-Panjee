@@ -15,6 +15,7 @@ import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
+import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -49,6 +50,7 @@ import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.AadhaarEkycRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.BlockResponse
@@ -298,6 +300,10 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_UPDATE_FACE)
     suspend fun updateFaceApi(@Body faceCheckReq: FaceCheckReq):FaceResponse
+
+    @POST(ApiConstant.API_UPDATE_Aadhaar)
+    suspend fun aadhaarRekycApi(@Header("Authorization") token: String,
+                                @Body aadhaarRekycReq: AadhaarRekycReq):AadhaarEkycRes
 
 
     @POST

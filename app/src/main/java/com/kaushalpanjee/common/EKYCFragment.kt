@@ -260,7 +260,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             }
         }
 
-
         binding.etAadhaar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val aadhaar = s.toString()
@@ -280,25 +279,17 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-
+        }
+        )
 
         binding.progressButton.centerButton.setOnClickListener {
-            binding.recyclerView.gone()
-            binding.progressButton.root.gone()
-            binding.etAadhaar.visible()
-            if (binding.etAadhaar.text.isNotEmpty()) {
-                binding.etAadhaar.setText("")
-            }
 
-            isStateSelected = true
+            showStateDialog()
 
         }
 
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
-
             binding.chipAware.gone()
             binding.tvWelcomeMsg.text = selectedState
             binding.etAadhaar.gone()
@@ -462,7 +453,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
 
 
-   // private fun getTransactionID() = Random(System.currentTimeMillis()).nextInt(9999).toString()
 
     private fun getTransactionID(): String {
         val secureRandom = SecureRandom()
@@ -652,8 +642,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         userPhotoUIADI = bitmap
                                         ekycImage = kycResp.uidData.pht ?: ""
 
-                                        log("EKYCDATA", userPhotoUIADI.toString())
-                                        log("EKYCDATA", ekycImage)
+
 
 
                                         name = kycResp.uidData.poi.name ?: "N/A"
@@ -749,7 +738,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         }
 
                                         hideProgressBar()
-                                        showBottomSheet(bitmap, name, gender, dob, careOf)
 
                                         // toastShort("Ekyc Completed")
                                     } else {
@@ -887,8 +875,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             if (getAadhaarCheck.responseCode == 200) {
                                 showSnackBar(getAadhaarCheck.responseDesc)
 
-
-
                                 invokeCaptureIntent()
                               //  checkAndRedirectToPlayStore()
 
@@ -938,6 +924,32 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     }
 
 
+    private fun showStateDialog() {
+        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        builder.setTitle("Alert")
+        builder.setMessage(R.string.please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created)
+
+        builder.setPositiveButton("ok") { dialog, _ ->
+            binding.recyclerView.gone()
+            binding.progressButton.root.gone()
+            binding.etAadhaar.visible()
+            if (binding.etAadhaar.text.isNotEmpty()) {
+                binding.etAadhaar.setText("")
+            }
+            isStateSelected = true
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+        builder.create().show()
+    }
+
+
+
     private fun collectUserCreationResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getuserCreation) {
@@ -959,6 +971,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                     tokenViaCreate= x.appCode
 
                                 }
+                                userPhotoUIADI?.let { it1 -> showBottomSheet(it1, name, gender, dob, careOf) }
+
                                 toastLong("Your username and password have been sent to your email.")
 
                             }

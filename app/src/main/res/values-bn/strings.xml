@@ -20,6 +20,8 @@
     <string name="enter_code_msg">দয়া করে আপনার ফোন নম্বরে পাঠানো 4 অঙ্কের ওটিপি লিখুন।</string>
     <string name="enter_code_email_msg">দয়া করে আপনার ইমেল ঠিকানায় পাঠানো 4 অঙ্কের ওটিপি লিখুন।</string>
     <string name="state_name">রাজ্যের নাম</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="select_state">রাজ্য নির্বাচন করুন</string>
     <string name="slected_state">নির্বাচিত রাজ্য</string>
     <string name="blank"><u /></string>
@@ -207,10 +209,12 @@
     আমি বুঝতে পারছি যে, ন্যাশনাল ইনফরমেটিক্স সেন্টার আমার আধার ভিত্তিক প্রমাণীকরণের জন্য প্রদানকৃত ব্যক্তিগত পরিচয় তথ্যের নিরাপত্তা ও গোপনীয়তা বজায় রাখবে।
 </string>
 
-    <string name="pmay_regno">PMAY/রেজিস্ট্রেশন নম্বর</string>
+    <string name="pmay_regno">PMAYG/রেজিস্ট্রেশন নম্বর</string>
     <string name="other_poverty_eradiction_central_government_programmes">অন্যান্য দারিদ্র্য দূরীকরণ বা কেন্দ্রীয় সরকারের প্রকল্প</string>
     <string name="enter_other_scheme">অন্যান্য প্রকল্প লিখুন</string>
     <string name="upload_document">নথি আপলোড করুন</string>
     <string name="select_userid">ব্যবহারকারীর আইডি নির্বাচন করুন</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

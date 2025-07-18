@@ -21,9 +21,12 @@ data class Personal(
     val minorityCertPath: String,
     val rationCardPath: String,
     val naregaCardPath: String,
+    val pmaygAttachment: String,
+    val pipCert: String,
     val VoterImagePath: String,
     val disablityCertPath: String
 )
+
 
 data class PersonalDetail(
     val isNarega: String,
@@ -37,6 +40,7 @@ data class PersonalDetail(
     val isPIP: String,
     val guardianName: String,
     val isSHG: String,
+    val isPmayg: String,
     val annualFamilyIncome: String,
     val shgNo: String,
     val voterId: String,

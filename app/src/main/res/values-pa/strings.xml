@@ -14,6 +14,8 @@
     <string name="enter_phone">ਫੋਨ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
     <string name="entrt_otp">ਓ. ਟੀ. ਪੀ. ਦਿਓ</string>
     <string name="enter_code">ਓ. ਟੀ. ਪੀ. ਦਰਜ ਕਰੋ</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="not_receive_code">ਕੀ ਕੋਈ ਕੋਡ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹੋਇਆ!</string>
     <string name="send_again"><u>ਦੁਬਾਰਾ ਭੇਜੋ</u></string>
     <string name="verify">ਤਸਦੀਕ ਕਰੋ</string>
@@ -202,10 +204,12 @@
     ਮੈਂ ਇੱਥੇ ਕਹਿੰਦਾ ਹਾਂ ਕਿ ਮੈਨੂੰ ਆਪਣੇ ਆਪ ਨੂੰ ਆਧਾਰ-ਅਧਾਰਤ ਪ੍ਰਮਾਣਿਕਤਾ ਪ੍ਰਣਾਲੀ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਵਿੱਚ ਕੋਈ ਇਤਰਾਜ਼ ਨਹੀਂ ਹੈ ਅਤੇ ਰਾਸ਼ਟਰੀ ਸੂਚਨਾ ਵਿਗਿਆਨ ਕੇਂਦਰ ਤੋਂ ਡੀਡੀਯੂਜੀਕੇਵਾਈ ਅਤੇ ਆਰਐਸਈਟੀਆਈ ਲਈ ਏਕੀਕ੍ਰਿਤ ਆਈਟੀ ਪਲੇਟਫਾਰਮ ਦਾ ਲਾਭ ਲੈਣ ਦੇ ਉਦੇਸ਼ਾਂ ਲਈ ਆਧਾਰ-ਅਧਾਰਤ ਪ੍ਰਮਾਣਿਕਤਾ ਲਈ ਆਪਣਾ ਆਧਾਰ ਨੰਬਰ, ਬਾਇਓਮੀਟ੍ਰਿਕ ਅਤੇ/ਜਾਂ ਵਨ ਟਾਈਮ ਪਿੰਨ (ਓ. ਟੀ. ਪੀ.) ਡੇਟਾ ਪ੍ਰਦਾਨ ਕਰਨ ਲਈ ਸਹਿਮਤੀ ਹੈ। ਮੈਂ ਸਮਝਦੀ ਹਾਂ ਕਿ ਪ੍ਰਮਾਣਿਕਤਾ ਲਈ ਮੈਂ ਜੋ ਬਾਇਓਮੈਟਰਿਕਸ ਅਤੇ/ਜਾਂ ਓ. ਟੀ. ਪੀ. ਪ੍ਰਦਾਨ ਕਰਦੀ ਹਾਂ, ਉਸ ਦੀ ਵਰਤੋਂ ਸਿਰਫ਼ ਉਸ ਵਿਸ਼ੇਸ਼ ਲੈਣ-ਦੇਣ ਲਈ ਆਧਾਰ ਪ੍ਰਮਾਣਿਕਤਾ ਪ੍ਰਣਾਲੀ ਰਾਹੀਂ ਮੇਰੀ ਪਛਾਣ ਨੂੰ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਲਈ ਕੀਤੀ ਜਾਵੇਗੀ ਅਤੇ ਕਿਸੇ ਹੋਰ ਉਦੇਸ਼ ਲਈ ਨਹੀਂ। ਮੈਂ ਸਮਝਦਾ ਹਾਂ ਕਿ ਰਾਸ਼ਟਰੀ ਸੂਚਨਾ ਵਿਗਿਆਨ ਕੇਂਦਰ ਆਧਾਰ ਅਧਾਰਤ ਪ੍ਰਮਾਣਿਕਤਾ ਦੇ ਉਦੇਸ਼ ਨਾਲ ਪ੍ਰਦਾਨ ਕੀਤੇ ਗਏ ਮੇਰੇ ਨਿੱਜੀ ਪਛਾਣ ਡੇਟਾ ਦੀ ਸੁਰੱਖਿਆ ਅਤੇ ਗੁਪਤਤਾ ਨੂੰ ਯਕੀਨੀ ਬਣਾਏਗਾ।
 </string>
     <string name="enter_pmay_regno">PMAY/ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਨੰਬਰ ਦਰਜ ਕਰੋ</string>
-    <string name="pmay_regno">PMAY/ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਨੰਬਰ</string>
+    <string name="pmay_regno">PMAYG/ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਨੰਬਰ</string>
     <string name="other_poverty_eradiction_central_government_programmes">ਹੋਰ ਗਰੀਬੀ ਉੱਚਾਟਨ ਜਾਂ ਕੇਂਦਰੀ ਸਰਕਾਰ ਦੀਆਂ ਯੋਜਨਾਵਾਂ</string>
     <string name="enter_other_scheme">ਹੋਰ ਯੋਜਨਾ ਦਰਜ ਕਰੋ</string>
     <string name="upload_document">ਦਸਤਾਵੇਜ਼ ਅੱਪਲੋਡ ਕਰੋ</string>
     <string name="select_userid">ਉਪਭੋਗਤਾ ID ਚੁਣੋ</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

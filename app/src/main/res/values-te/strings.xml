@@ -17,6 +17,8 @@
     <string name="not_receive_code">కోడ్ అందుకోలేదు!</string>
     <string name="send_again"><u>మళ్లీ పంపండి</u></string>
     <string name="verify">ధృవీకరించండి</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="enter_code_msg">దయచేసి మీ ఫోన్ నంబర్కు పంపిన 4 అంకెల ఓటిపిని నమోదు చేయండి</string>
     <string name="enter_code_email_msg">దయచేసి మీ ఇమెయిల్ చిరునామాకు పంపిన 4 అంకెల ఓటిపిని నమోదు చేయండి</string>
     <string name="state_name">రాష్ట్ర పేరు</string>
@@ -207,10 +209,12 @@
 </string>
 
     <string name="enter_pmay_regno">PMAY/పञ्जికరణ సంఖ్య నమోదు చేయండి</string>
-    <string name="pmay_regno">PMAY/పञ्जికరణ సంఖ్య</string>
+    <string name="pmay_regno">PMAYG/పञ्जికరణ సంఖ్య</string>
     <string name="other_poverty_eradiction_central_government_programmes">ఇతర దారిద్ర్య నిర్మూలన లేదా కేంద్ర ప్రభుత్వ పథకాలు</string>
     <string name="enter_other_scheme">ఇతర పథకం నమోదు చేయండి</string>
     <string name="upload_document">డాక్యుమెంట్ అప్‌లోడ్ చేయండి</string>
     <string name="select_userid">వాడుకరి ID ఎంచుకోండి</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
+import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -55,6 +56,7 @@ import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.AadhaarEkycRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -388,6 +390,15 @@ class CommonRepository @Inject constructor(
         }
     }
 
+
+
+
+    suspend fun aadhaarRekycApi(aadhaarRekycReq: AadhaarRekycReq,header :String): Flow<Resource<out AadhaarEkycRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.aadhaarRekycApi(header,aadhaarRekycReq)
+        }
+    }
     suspend fun getChangePassOtp(loginIdNdPassReq: GetLoginIdNdPassReq): Flow<Resource<out ForgotIdOtpRes>>{
         return networkBoundResourceWithoutDb {
 

@@ -2,6 +2,7 @@ package com.kaushalpanjee.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
@@ -112,7 +113,7 @@ object AppModule {
                     val logging = HttpLoggingInterceptor()
                     logging.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logging)
-                    // client.addInterceptor(ChuckerInterceptor(context))
+                     client.addInterceptor(ChuckerInterceptor(context))
                 }
             }.build()
     }

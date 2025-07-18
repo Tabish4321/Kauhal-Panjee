@@ -18,6 +18,8 @@
     <string name="send_again"><u>மீண்டும் அனுப்புங்கள்</u></string>
     <string name="verify">சரிபார்க்கவும்</string>
     <string name="enter_code_msg">உங்கள் தொலைபேசி எண்ணுக்கு அனுப்பப்பட்ட 4 இலக்க ஓடிபியை உள்ளிடவும்</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="enter_code_email_msg">உங்கள் மின்னஞ்சல் முகவரிக்கு அனுப்பப்பட்ட 4 இலக்க ஓடிபியை உள்ளிடவும்</string>
     <string name="state_name">மாநிலத்தின் பெயர்</string>
     <string name="select_state">மாநிலத்தைத் தேர்ந்தெடுக்கவும்</string>
@@ -207,10 +209,12 @@
 
 
     <string name="enter_pmay_regno">PMAY/பதிவு எண்களை பதிவு செய்யவும்</string>
-    <string name="pmay_regno">PMAY/பதிவு எண்</string>
+    <string name="pmay_regno">PMAYG/பதிவு எண்</string>
     <string name="other_poverty_eradiction_central_government_programmes">மற்ற ஃபரிதி நீக்கம் அல்லது மத்திய அரசு திட்டங்கள்</string>
     <string name="enter_other_scheme">மற்ற திட்டம் பதிவு செய்யவும்</string>
     <string name="upload_document">பத்திரங்களை பதிவேற்றுக</string>
     <string name="select_userid">பயனரின் ID தேர்ந்தெடுக்கவும்</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

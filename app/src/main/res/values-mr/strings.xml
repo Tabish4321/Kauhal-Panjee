@@ -16,6 +16,8 @@
     <string name="enter_code">ओ. टी. पी. प्रविष्ट करा</string>
     <string name="not_receive_code">कोड मिळाला नाही का!</string>
     <string name="send_again"><u>पुन्हा पाठवा</u></string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="verify">सत्यापित करा</string>
     <string name="enter_code_msg">कृपया तुमच्या दूरध्वनी क्रमांकावर पाठवलेला 4 अंकी ओ. टी. पी. प्रविष्ट करा</string>
     <string name="enter_code_email_msg">कृपया तुमच्या ईमेल पत्त्यावर पाठवलेला 4 अंकी ओ. टी. पी. प्रविष्ट करा</string>
@@ -202,10 +204,12 @@
     मी याद्वारे सांगतो की राष्ट्रीय माहितीशास्त्र केंद्राकडून डीडीयूजीकेवाय आणि आर. एस. ई. टी. आय. साठीच्या एकीकृत माहिती तंत्रज्ञान मंचाचा लाभ घेण्याच्या उद्देशाने आधार-आधारित प्रमाणीकरणासाठी माझा आधार क्रमांक, बायोमेट्रिक आणि/किंवा वन टाइम पिन (ओ. टी. पी.) डेटा प्रदान करण्यास मला कोणतीही हरकत नाही. मला समजते की प्रमाणीकरणासाठी मी प्रदान केलेले बायोमेट्रिक्स आणि/किंवा ओ. टी. पी. केवळ त्या विशिष्ट व्यवहारासाठी आधार प्रमाणीकरण प्रणालीद्वारे माझी ओळख प्रमाणित करण्यासाठी वापरले जातील आणि इतर कोणत्याही हेतूसाठी वापरले जाणार नाहीत. मला समजते की राष्ट्रीय माहितीशास्त्र केंद्र आधार-आधारित प्रमाणीकरणासाठी प्रदान केलेल्या माझ्या वैयक्तिक ओळख माहितीची सुरक्षा आणि गोपनीयता सुनिश्चित करेल.
 </string>
     <string name="enter_pmay_regno">PMAY/नोंदणी क्रमांक टाका</string>
-    <string name="pmay_regno">PMAY/नोंदणी क्रमांक</string>
+    <string name="pmay_regno">PMAYG/नोंदणी क्रमांक</string>
     <string name="other_poverty_eradiction_central_government_programmes">इतर गरिबी निर्मूलन किंवा केंद्र सरकारच्या योजना</string>
     <string name="enter_other_scheme">इतर योजना टाका</string>
     <string name="upload_document">दस्तऐवज अपलोड करा</string>
     <string name="select_userid">वापरकर्त्याचा आयडी निवडा</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

@@ -20,6 +20,8 @@
     <string name="enter_code_msg">Please enter 4 digit OTP sent to your phone number</string>
     <string name="enter_code_email_msg">Please enter 4 digit OTP sent to your email address</string>
     <string name="state_name">State Name</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="select_state">Select State</string>
     <string name="slected_state">Selected State</string>
     <string name="blank"><u></u></string>
@@ -202,10 +204,12 @@
     I hereby state that I have no objection in authenticating myself with the Aadhaar-based authentication system and consent to providing my Aadhaar number, biometric and/or One Time Pin (OTP) data for Aadhaar-based authentication for the purposes of availing the Unified IT Platform for DDUGKY and RSETI from the National Informatics Centre.&#10;&#10;I understand that the biometrics and/or OTP I provide for authentication shall be used only for authenticating my identity through the Aadhaar authentication system for that specific transaction and for no other purposes.&#10;&#10;I understand that the National Informatics Centre shall ensure the security and confidentiality of my personal identity data provided for the purpose of Aadhaar-based authentication.
 </string>
     <string name="enter_pmay_regno">Enter PMAY/RegNo</string>
-    <string name="pmay_regno">PMAY/REGNO</string>
+    <string name="pmay_regno">PMAYG/REGNO</string>
     <string name="other_poverty_eradiction_central_government_programmes">Other Poverty Eradication or Central Government Programmes</string>
     <string name="enter_other_scheme">Enter Other Scheme</string>
     <string name="upload_document">Upload Document</string>
     <string name="select_userid">Select UserId</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

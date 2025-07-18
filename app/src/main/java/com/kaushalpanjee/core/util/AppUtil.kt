@@ -326,6 +326,19 @@ object AppUtil {
 
 
 
+    fun saveAadhaarPreference(context: Context, tokenCode: String) {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("aadhaar_code", tokenCode)
+        editor.apply()
+    }
+
+    fun getSavedAadhaarPreference(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("aadhaar_code", "") ?: "" // Default to English
+    }
+
+
     fun saveMobileNoPreference(context: Context, mobileNo: String) {
         val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

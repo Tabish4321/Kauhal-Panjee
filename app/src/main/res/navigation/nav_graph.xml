@@ -106,6 +106,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_viewDetailsFragment"
             app:destination="@id/viewDetailsFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_reKycFragment"
+            app:destination="@id/reKycFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -167,4 +170,9 @@
         android:name="com.kaushalpanjee.common.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/change_pass_fragment"/>
+    <fragment
+        android:id="@+id/reKycFragment"
+        android:name="com.kaushalpanjee.common.ReKycFragment"
+        android:label="ReKycFragment"
+        tools:layout="@layout/fragment_rekyc_layout"/>
 </navigation>

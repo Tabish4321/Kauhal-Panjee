@@ -140,7 +140,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var addressLine2 = ""
     private var pinCode = ""
     private var voterIdImage = ""
-    private var otherImage = ""
+    private var pmaygImage = ""
     private var profilePicIdImage = ""
     private var voterIdNo = ""
     private var guardianName = ""
@@ -154,6 +154,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var minorityImage = ""
     private var pwdStatus = ""
     private var pwdImage = ""
+    private var pipImage = ""
     private var technicalEducationStatus = ""
     private var antoyadaStatus = "No"
     private var antoyadaImage = ""
@@ -168,7 +169,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var shgCode = ""
     private var shgStatus = "No"
     private var pmayStatus = "No"
-    private var otherStatus = "No"
     private var nregaStatus = "No"
     private var rsbyStatus = "No"
     private var rsbyImage = ""
@@ -508,11 +508,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
             checkAndRequestPermissionsForEveryPurpose("PROFILE_PIC")
-
-
-
-
-
 
 
         }
@@ -862,7 +857,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  val pwdStatusn = x.isDisablity
                                  val nregaJobCardStatusn = x.isNarega
                                  val shgStatusn = x.isSHG
-                           //      val pmayStatusn = x.isPmay
+                                 val pmayStatusn = x.isPmayg
                                  val antyodayaStatusn = x.antyodaya
                                  val rsbyStatusm = x.isRSBY
                                  val pipStatusn = x.isPIP
@@ -873,7 +868,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  handleStatus(binding.optionNregaJobYesSelect, binding.optionNregaJobNoSelect, nregaJobCardStatusn)
                                  handleStatus(binding.optionShgYesSelect, binding.optionShgNoSelect, shgStatusn)
                                  //Changes
-                               //  handleStatus(binding.optionPmayYesSelect, binding.optionPmayNoSelect, pmayStatusn)
+                                 handleStatus(binding.optionPmayYesSelect, binding.optionPmayNoSelect, pmayStatusn)
                                  handleStatus(binding.optionAntyodayaYesSelect, binding.optionAntyodayaNoSelect, antyodayaStatusn)
                                  handleStatus(binding.optionllRsbyYesSelect, binding.optionllRsbyNoSelect, rsbyStatusm)
                                  handleStatus(binding.optionPipYesSelect, binding.optionPipNoSelect, pipStatusn)
@@ -883,6 +878,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                      binding.etShgValidate.gone()
                                      binding.btnShgValidate.gone()
                                  }
+
+                                 if (pmayStatusn=="No"){
+
+                                     binding.pmaygUpload.gone()
+                                 }
+                                 else
+                                     binding.pmaygUpload.visible()
 
                                  guardianName =x.guardianName
                                  motherName= x.motherName
@@ -895,6 +897,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                  minorityStatus=  x.isMinority
                                  pwdStatus =x.isDisablity
                                  nregaStatus = x.isNarega
+                                 pmayStatus = x.isPmayg
                                  nregaJobCard=x.naregaJobCard
                                  shgStatus= x.isSHG
                                  shgCode=x.shgNo
@@ -2347,51 +2350,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-    /*    //Pmay Selection If yes
+        //Pmay Selection If yes
         binding.optionPmayYesSelect.setOnClickListener {
             binding.optionPmayYesSelect.setBackgroundResource(R.drawable.card_background_selected)
             binding.optionPmayNoSelect.setBackgroundResource(R.drawable.card_background)
 
             pmayStatus = "Yes"
-            binding.etPmayValidate.visible()
-          //  binding.btnPmayValidate.visible()
-
+            binding.pmaygUpload.visible()
 
         }
         //Pmay Selection If No
         binding.optionPmayNoSelect.setOnClickListener {
             binding.optionPmayYesSelect.setBackgroundResource(R.drawable.card_background)
             binding.optionPmayNoSelect.setBackgroundResource(R.drawable.card_background_selected)
-
             pmayStatus = "No"
-            binding.etPmayValidate.gone()
-        //    binding.btnPmayValidate.gone()
-
+            binding.pmaygUpload.gone()
 
         }
 
-        //Other Scheme Selection If yes
-        binding.optionOtherYesSelect.setOnClickListener {
-            binding.optionOtherYesSelect.setBackgroundResource(R.drawable.card_background_selected)
-            binding.optionOtherNoSelect.setBackgroundResource(R.drawable.card_background)
 
-            otherStatus = "Yes"
-            binding.etOthersValidate.visible()
-            binding.otherCardUpload.visible()
-
-
-        }
-        //Other Scheme Selection If No
-        binding.optionOtherNoSelect.setOnClickListener {
-            binding.optionOtherYesSelect.setBackgroundResource(R.drawable.card_background)
-            binding.optionOtherNoSelect.setBackgroundResource(R.drawable.card_background_selected)
-
-            otherStatus = "No"
-            binding.etOthersValidate.gone()
-            binding.otherCardUpload.gone()
-
-
-        }*/
 
         //Nrega Selection If yes
         binding.optionNregaJobYesSelect.setOnClickListener {
@@ -2470,6 +2447,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionPipNoSelect.setBackgroundResource(R.drawable.card_background)
 
             pipStatus = "Yes"
+            binding.pipdUpload.visible()
 
 
         }
@@ -2479,6 +2457,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.optionPipNoSelect.setBackgroundResource(R.drawable.card_background_selected)
 
             pipStatus = "No"
+            binding.pipdUpload.gone()
+
 
         }
 
@@ -3147,9 +3127,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 }
 
-                if (otherImage.isNull){
+                if (pmaygImage.isNull){
 
-                    otherImage= "N/A"
+                    pmaygImage= "N/A"
 
                 }
 
@@ -3175,6 +3155,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     pwdImage= "N/A"
 
                 }
+                if (pipImage.isNull){
+
+                    pipImage= "N/A"
+
+                }
+
+
+
 
                  if (nregaImageJobCard.isNull){
 
@@ -3197,7 +3185,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.insertPersonalDataAPI(PersonalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"1" ,
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
-                    rsbyStatus,rsbyImage,pipStatus),AppUtil.getSavedTokenPreference(requireContext()))
+                    rsbyStatus,rsbyImage,pipStatus,pipImage,pmayStatus,pmaygImage),AppUtil.getSavedTokenPreference(requireContext()))
 
                 collectInsertPersonalResponse()
 
@@ -3222,12 +3210,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             checkAndRequestPermissionsForEveryPurpose("NREGA_ID")
 
         }
-/*
-        binding.otherCardUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("OTHER_ID")
+        binding.pipdUpload.setOnClickListener {
 
-        }*/
+            checkAndRequestPermissionsForEveryPurpose("PIP_ID")
+
+        }
+
+        binding.pmaygUpload.setOnClickListener {
+
+            checkAndRequestPermissionsForEveryPurpose("Pmayg_ID")
+
+        }
 
         binding.drivingLicenceUpload.setOnClickListener {
             checkAndRequestPermissionsForEveryPurpose("DRIVING_LICENSE")
@@ -4750,10 +4744,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 voterIdImage = base64Image
             }
 
-         /*   "OTHER_ID" -> {
-                binding.otherImageText.text = fileName
-                otherImage = base64Image
-            }*/
+            "Pmayg_ID" -> {
+                binding.pmaygimageText.text = fileName
+                pmaygImage = base64Image
+            }
+            "PIP_ID" -> {
+                binding.pipimageText.text = fileName
+                pipImage = base64Image
+            }
+
 
             "DRIVING_LICENSE" -> {
                 binding.drivingLicenceimageText.text = fileName
@@ -4805,10 +4804,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.voterimageText.text = fileName
                 voterIdImage = base64Pdf
             }
-           /* "OTHER_ID" -> {
-                binding.otherImageText.text = fileName
-                otherImage = base64Pdf
-            }*/
+            "OTHER_ID" -> {
+                binding.pmaygimageText.text = fileName
+                pmaygImage = base64Pdf
+            }
+
+            "PIP_ID" -> {
+                binding.pipimageText.text = fileName
+                pipImage = base64Pdf
+            }
+
+
             "DRIVING_LICENSE" -> {
                 binding.drivingLicenceimageText.text = fileName
                 drivingLicenceImage = base64Pdf
@@ -5106,7 +5112,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.categoryCertimageText.setText("")
                                                 }
                                                 else
-                                                    binding.categoryCertimageText.setText("Capture_Image")
+                                                    binding.categoryCertimageText.setText("Category_CertiImage")
 
 
 
@@ -5117,15 +5123,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.minorityimageText.setText("")
                                                 }
                                                 else
-                                                    binding.minorityimageText.setText("Capture_Image")
+                                                    binding.minorityimageText.setText("Minority_Image")
 
                                                 pwdImage = x.disablityCertPath
+
                                                 if (pwdImage==""){
 
                                                     binding.pwdImageText.setText("")
                                                 }
                                                 else
-                                                    binding.pwdImageText.setText("Capture_Image")
+                                                    binding.pwdImageText.setText("PWD_Image")
 
                                                 drivingLicenceImage = x.dlImagePath
                                                 if (drivingLicenceImage==""){
@@ -5133,7 +5140,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.drivingLicenceimageText.setText("")
                                                 }
                                                 else
-                                                    binding.drivingLicenceimageText.setText("Capture_Image")
+                                                    binding.drivingLicenceimageText.setText("DL_Image")
 
                                                 nregaImageJobCard = x.naregaCardPath
                                                 if (nregaImageJobCard==""){
@@ -5141,7 +5148,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.tvNregaJob.setText("")
                                                 }
                                                 else
-                                                    binding.nrehaJobimageText.setText("Capture_Image")
+                                                    binding.nrehaJobimageText.setText("Nrega_Image_JobCard")
 
                                                 rsbyImage = x.rsbyCardPath
                                                 if (rsbyImage==""){
@@ -5149,7 +5156,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.rsbyimageText.setText("")
                                                 }
                                                 else
-                                                    binding.rsbyimageText.setText("Capture_Image")
+                                                    binding.rsbyimageText.setText("rsby_Image")
 
                                                 voterIdImage = x.VoterImagePath
 
@@ -5158,7 +5165,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.voterimageText.setText("")
                                                 }
                                                 else
-                                                    binding.voterimageText.setText("Capture_Image")
+                                                    binding.voterimageText.setText("voterId_Image")
+
+
+                                                pipImage = x.pipCert
+
+                                                if (pipImage==""){
+
+                                                    binding.pipimageText.setText("")
+                                                }
+                                                else
+                                                    binding.pipimageText.setText("pip_Image")
+
+                                                pmaygImage = x.pmaygAttachment
+
+                                                if (pmaygImage==""){
+
+                                                    binding.pmaygimageText.setText("")
+                                                }
+                                                else
+                                                    binding.pmaygimageText.setText("PMAYG_Image")
+
+
 
                                                 antoyadaImage = x.rationCardPath
                                                 if (antoyadaImage==""){
@@ -5166,7 +5194,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     binding.antyodayamageText.setText("")
                                                 }
                                                 else
-                                                    binding.antyodayamageText.setText("Capture_Image")
+                                                    binding.antyodayamageText.setText("antoyada_Image")
 
 
                                             } catch (e: Exception) {
@@ -5182,7 +5210,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         for (x in userCandidateAddressDetailsList ){
 
                                             userCandidateAddressDetailsList2=   x.addressDetails
-                                            categoryCertiImage= x.residenceCertPath
+                                            residenceImage= x.residenceCertPath
 
                                         }
 

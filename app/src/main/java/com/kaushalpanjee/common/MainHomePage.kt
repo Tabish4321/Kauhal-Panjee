@@ -33,6 +33,7 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
@@ -83,7 +84,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                 if (status == "success") {
 
-                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()))
+                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()))
 
                     collectFaceUpdateResponse()
 
@@ -134,6 +135,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                      //For change password
 
                      findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
+
+                 }
+                 R.id.rekyc -> {
+
+                     //For Re-KYC
+
+                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToReKycFragment())
+
 
                  }
 
@@ -297,6 +306,16 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     imagePath= x.imagePath
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
+
+                                    val decryptedAadhaar = AESCryptography.decryptIntoString(
+                                        x.aadhaarEnc,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY
+                                    ) ?: "N/A"
+
+                                    AppUtil.saveAadhaarPreference(requireContext(),decryptedAadhaar
+                                    )
+
 
                                 }
                                 if (isFaceReg=="N"){
@@ -602,9 +621,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId, userName)
         }
 
-        /*  builder.setNegativeButton("Cancel") { dialog, _ ->
+          builder.setNegativeButton("Try later") { dialog, _ ->
               dialog.dismiss()
-          }*/
+          }
 
         val dialog = builder.create()
         dialog.setCancelable(false)  // Prevent outside touch dismissal

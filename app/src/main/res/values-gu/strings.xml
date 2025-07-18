@@ -24,6 +24,8 @@
     <string name="slected_state">પસંદ કરેલ રાજ્ય</string>
     <string name="blank"><u /></string>
     <string name="aadhaar">આધાર નંબર દાખલ કરો</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="login_to_your_account">તમારા ખાતામાં લોગ ઇન કરો</string>
     <string name="aadhaar_number">આધાર દાખલ કરો</string>
     <string name="secc_information">એસ. ઇ. સી. સી માહિતી</string>
@@ -202,11 +204,13 @@
     <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">કૃપા કરીને તમારું રાજ્ય કાળજીપૂર્વક પસંદ કરો. એકવાર તમારું ખાતું બની જાય પછી આ પસંદગી બદલી શકાતી નથી.</string>
     <string name="consent">હું આથી જણાવું છું કે મને આધાર-આધારિત પ્રમાણીકરણ પ્રણાલી સાથે મારી જાતને પ્રમાણિત કરવામાં કોઈ વાંધો નથી અને રાષ્ટ્રીય સૂચના વિજ્ઞાન કેન્દ્રમાંથી ડીડીયુજીકેવાય અને આરએસઈટીઆઈ માટે એકીકૃત આઇટી પ્લેટફોર્મનો લાભ લેવાના હેતુઓ માટે આધાર-આધારિત પ્રમાણીકરણ માટે મારો આધાર નંબર, બાયોમેટ્રિક અને/અથવા વન ટાઇમ પિન (ઓ. ટી. પી.) ડેટા પ્રદાન કરવા માટે સંમતિ છે. હું સમજું છું કે પ્રમાણીકરણ માટે હું જે બાયોમેટ્રિક્સ અને/અથવા ઓ. ટી. પી. પ્રદાન કરું છું તેનો ઉપયોગ માત્ર તે ચોક્કસ વ્યવહાર માટે આધાર પ્રમાણીકરણ પ્રણાલી દ્વારા મારી ઓળખને પ્રમાણિત કરવા માટે કરવામાં આવશે અને અન્ય કોઈ હેતુઓ માટે નહીં. હું સમજું છું કે નેશનલ ઇન્ફોર્મેટિક્સ સેન્ટર આધાર આધારિત પ્રમાણીકરણના હેતુ માટે પ્રદાન કરવામાં આવેલા મારા વ્યક્તિગત ઓળખ ડેટાની સુરક્ષા અને ગુપ્તતાની ખાતરી કરશે.</string>
     <string name="enter_pmay_regno">PMAY/નોંધણી નંબર દાખલ કરો</string>
-    <string name="pmay_regno">PMAY/નોંધણી નંબર</string>
+    <string name="pmay_regno">PMAYG/નોંધણી નંબર</string>
     <string name="other_poverty_eradiction_central_government_programmes">અન્ય ગરીબી નિવારણ કે કેન્દ્રીય સરકારની યોજનાઓ</string>
     <string name="enter_other_scheme">અન્ય યોજના દાખલ કરો</string>
     <string name="upload_document">દસ્તાવેજ અપલોડ કરો</string>
     <string name="select_userid">વપરાશકર્તા ID પસંદ કરો</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 
 </resources>

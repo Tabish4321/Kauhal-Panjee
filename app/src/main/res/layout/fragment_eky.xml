@@ -83,7 +83,6 @@
             android:id="@+id/etAadhaar"
             style="@style/EditText"
             android:layout_marginTop="@dimen/dp_50"
-            android:drawableLeft="@drawable/icon_aadhaar"
             android:drawableEnd="@drawable/close_eye"
             android:drawablePadding="@dimen/dp_10"
             android:hint="@string/aadhaar_number"

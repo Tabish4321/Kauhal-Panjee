@@ -13,6 +13,8 @@
     <string name="create_an_account_msg">କେବଳ ଯୋଗ ଦିଅନ୍ତୁ ଏବଂ ନୂତନ ସୁଯୋଗ ଅନ୍ୱେଷଣ କରନ୍ତୁ</string>
     <string name="email">ଇମେଲ୍ ଭରଣ କରନ୍ତୁ</string>
     <string name="enter_phone">ଫୋନ ନମ୍ବର ଭରଣ କରନ୍ତୁ</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="entrt_otp">ଓଟିପି ଭରଣ କରନ୍ତୁ</string>
     <string name="enter_code">ଓଟିପି ଭରଣ କରନ୍ତୁ</string>
     <string name="not_receive_code">କ "ଣ ଏକ କୋଡ୍ ପାଇନାହିଁ!</string>
@@ -198,10 +200,12 @@
     <string name="consent">ମୁଁ ଏତଦ୍ବାରା କହୁଛି ଯେ ଜାତୀୟ ସୂଚନା ବିଜ୍ଞାନ କେନ୍ଦ୍ରରୁ ଡି. ଡି. ୟୁ. ଜି. କେ. ୱାଇ. ଏବଂ ଆର. ଏସ. ଇ. ଟି. ଆଇ. ପାଇଁ ୟୁନିଫାଏଡ୍ ଆଇ. ଟି. ପ୍ଲାଟଫର୍ମର ଲାଭ ଉଠାଇବା ଉଦ୍ଦେଶ୍ୟରେ ଆଧାର ଆଧାରିତ ପ୍ରମାଣୀକରଣ ପାଇଁ ଆଧାର ନମ୍ବର, ବାୟୋମେଟ୍ରିକ୍ ଏବଂ/କିମ୍ବା ୱାନ୍ ଟାଇମ୍ ପିନ୍ (ଓ. ଟି. ପି.) ତଥ୍ୟ ପ୍ରଦାନ କରିବାରେ ମୋର କୌଣସି ଆପତ୍ତି ନାହିଁ। ମୁଁ ବୁଝିପାରୁଛି ଯେ ପ୍ରମାଣୀକରଣ ପାଇଁ ମୁଁ ପ୍ରଦାନ କରୁଥିବା ବାୟୋମେଟ୍ରିକ୍ସ ଏବଂ/କିମ୍ବା ଓଟିପି କେବଳ ସେହି ନିର୍ଦ୍ଦିଷ୍ଟ କାରବାର ପାଇଁ ଆଧାର ପ୍ରମାଣୀକରଣ ପ୍ରଣାଳୀ ମାଧ୍ୟମରେ ମୋର ପରିଚୟ ପ୍ରମାଣୀକରଣ ପାଇଁ ବ୍ୟବହୃତ ହେବ ଏବଂ ଅନ୍ୟ କୌଣସି ଉଦ୍ଦେଶ୍ୟରେ ନୁହେଁ। ମୁଁ ବୁଝିପାରୁଛି ଯେ ଜାତୀୟ ସୂଚନା ବିଜ୍ଞାନ କେନ୍ଦ୍ର ଆଧାର ଆଧାରିତ ପ୍ରମାଣୀକରଣ ଉଦ୍ଦେଶ୍ୟରେ ପ୍ରଦାନ କରାଯାଇଥିବା ମୋର ବ୍ୟକ୍ତିଗତ ପରିଚୟ ତଥ୍ୟର ସୁରକ୍ଷା ଏବଂ ଗୋପନୀୟତାକୁ ସୁନିଶ୍ଚିତ କରିବ।</string>
 
     <string name="enter_pmay_regno">PMAY/ନୋନ୍ଦଣୀ ସଂଖ୍ୟା ଦିଅନ୍ତୁ</string>
-    <string name="pmay_regno">PMAY/ନୋନ୍ଦଣୀ ସଂଖ୍ୟା</string>
+    <string name="pmay_regno">PMAYG/ନୋନ୍ଦଣୀ ସଂଖ୍ୟା</string>
     <string name="other_poverty_eradiction_central_government_programmes">ଅନ୍ୟାନ୍ୟ ଦରିଦ୍ରତା ଦୂରିକରଣ କିମ୍ବା କେନ୍ଦ୍ର ସରକାରୀ ଯୋଜନା</string>
     <string name="enter_other_scheme">ଅନ୍ୟାନ୍ୟ ଯୋଜନା ଦିଅନ୍ତୁ</string>
     <string name="upload_document">ଦଲିଲ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
     <string name="select_userid">ବ୍ୟବହାରକାରୀ ID ଚୟନ କରନ୍ତୁ</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

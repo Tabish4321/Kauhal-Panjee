@@ -10,6 +10,8 @@
     <string name="forgot_id"><u>ಐಡಿ ಮರೆತಿದ್ದೀರಾ?</u></string>
     <string name="create_an_account"> ರಚಿಸಿ  ಒಂದು ಖಾತೆಯನ್ನು ರಚಿಸಿ</string>
     <string name="create_an_account_msg"> ಹೊಸ ಅವಕಾಶಗಳನ್ನು ಸೇರಿಕೊಳ್ಳಿ ಮತ್ತು ಅನ್ವೇಷಿಸಿ</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="email"> ಇಮೇಲ್ ನಮೂದಿಸಿ</string>
     <string name="enter_phone">ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
     <string name="entrt_otp">ಒಟಿಪಿಯನ್ನು ನಮೂದಿಸಿ</string>
@@ -202,10 +204,12 @@
      ರಾಷ್ಟ್ರೀಯ ಮಾಹಿತಿ ಕೇಂದ್ರದಿಂದ ಡಿ. ಡಿ. ಯು. ಜಿ. ಕೆ. ವೈ. ಮತ್ತು ಆರ್. ಎಸ್. ಇ. ಟಿ. ಐ. ಗಾಗಿ ಏಕೀಕೃತ ಐ. ಟಿ. ವೇದಿಕೆಯನ್ನು ಪಡೆಯುವ ಉದ್ದೇಶಕ್ಕಾಗಿ, ಆಧಾರ ಆಧಾರಿತ ದೃಢೀಕರಣಕ್ಕಾಗಿ ನನ್ನ ಆಧಾರ ಸಂಖ್ಯೆ, ಬಯೋಮೆಟ್ರಿಕ್ ಮತ್ತು/ಅಥವಾ ಒನ್ ಟೈಮ್ ಪಿನ್ (ಒ. ಟಿ. ಪಿ.) ದತ್ತಾಂಶವನ್ನು ಒದಗಿಸಲು ನನಗೆ ಯಾವುದೇ ಆಕ್ಷೇಪವಿಲ್ಲ ಎಂದು ನಾನು ಈ ಮೂಲಕ ಹೇಳುತ್ತೇನೆ. ದೃಢೀಕರಣಕ್ಕಾಗಿ ನಾನು ಒದಗಿಸುವ ಬಯೋಮೆಟ್ರಿಕ್ಸ್ ಮತ್ತು/ಅಥವಾ ಒಟಿಪಿಯನ್ನು ಆ ನಿರ್ದಿಷ್ಟ ವಹಿವಾಟುಗಾಗಿ ಆಧಾರ್ನ ದೃಢೀಕರಣ ವ್ಯವಸ್ಥೆಯ ಮೂಲಕ ನನ್ನ ಗುರುತನ್ನು ದೃಢೀಕರಿಸಲು ಮಾತ್ರ ಬಳಸಲಾಗುತ್ತದೆ ಮತ್ತು ಬೇರೆ ಯಾವುದೇ ಉದ್ದೇಶಗಳಿಲ್ಲ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ರಾಷ್ಟ್ರೀಯ ಮಾಹಿತಿ ಕೇಂದ್ರವು ಆಧಾರ ಆಧಾರಿತ ದೃಢೀಕರಣದ ಉದ್ದೇಶಕ್ಕಾಗಿ ಒದಗಿಸಲಾದ ನನ್ನ ವೈಯಕ್ತಿಕ ಗುರುತಿನ ದತ್ತಾಂಶದ ಭದ್ರತೆ ಮತ್ತು ಗೌಪ್ಯತೆಯನ್ನು ಖಚಿತಪಡಿಸುತ್ತದೆ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ.
 </string>
     <string name="enter_pmay_regno">PMAY/ನೋಂದಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
-    <string name="pmay_regno">PMAY/ನೋಂದಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="pmay_regno">PMAYG/ನೋಂದಣಿ ಸಂಖ್ಯೆ</string>
     <string name="other_poverty_eradiction_central_government_programmes">ಇತರ ಬಡತನ ನಿರ್ಮೂಲನೆ ಅಥವಾ ಕೇಂದ್ರ ಸರ್ಕಾರದ ಯೋಜನೆಗಳು</string>
     <string name="enter_other_scheme">ಇತರೆ ಯೋಜನೆಯನ್ನು ನಮೂದಿಸಿ</string>
     <string name="upload_document">ಡಾಕ್ಯುಮೆಂಟ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</string>
     <string name="select_userid">ಬಳಕೆದಾರರ ಐಡಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

@@ -15,6 +15,8 @@
     <string name="entrt_otp">ഒടിപി നൽകുക</string>
     <string name="enter_code">ഒടിപി എൻ്റർ ചെയ്യുക</string>
     <string name="not_receive_code">ഒരു കോഡ് ലഭിച്ചില്ല!</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="send_again"><u>വീണ്ടും അയയ്ക്കുക</u></string>
     <string name="verify">പരിശോധിക്കുക</string>
     <string name="enter_code_msg">നിങ്ങളുടെ ഫോൺ നമ്പറിലേക്ക് അയച്ച 4 അക്ക ഒടിപി നൽകുക</string>
@@ -207,5 +209,7 @@
     <string name="enter_other_scheme">മറ്റൊരു പദ്ധതി നൽകുക</string>
     <string name="upload_document">ഡോക്യുമെന്റ് അപ്‌ലോഡ് ചെയ്യുക</string>
     <string name="select_userid">ഉപയോക്തൃ ഐഡി തിരഞ്ഞെടുക്കുക</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

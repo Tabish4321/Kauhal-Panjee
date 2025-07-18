@@ -8,6 +8,8 @@
     <string name="register">رجسٹر کریں</string>
     <string name="forgot_password">پاس ورڈ بھول گئے</string>
     <string name="forgot_id">بھول گیا _ آئی ڈی</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="create_an_account">ایک اکاؤنٹ بنائیں</string>
     <string name="create_an_account_msg">بس شامل ہوں اور نئے مواقع تلاش کریں</string>
     <string name="email">ای میل درج کریں</string>
@@ -203,10 +205,12 @@
 	</string>
 
     <string name="enter_pmay_regno">PMAY/رجسٹریشن نمبر درج کریں</string>
-    <string name="pmay_regno">PMAY/رجسٹریشن نمبر</string>
+    <string name="pmay_regno">PMAYG/رجسٹریشن نمبر</string>
     <string name="other_poverty_eradiction_central_government_programmes">دیگر غربت کے خاتمے یا مرکزی حکومت کے پروگرام</string>
     <string name="enter_other_scheme">دیگر سکیم درج کریں</string>
     <string name="upload_document">دستاویز اپ لوڈ کریں</string>
     <string name="select_userid">صارف آئی ڈی منتخب کریں</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

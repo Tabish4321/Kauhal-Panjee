@@ -193,6 +193,8 @@
     <string name="confirmPass">পাছৱৰ্ড নিশ্চিত কৰক</string>
     <string name="view"><u>চাওক</u></string>
     <string name="close">বন্ধ কৰক</string>
+    <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+
     <string name="no_training_center_found">কোনো প্ৰশিক্ষণ কেন্দ্ৰ পোৱা হোৱা নাই</string>
     <string name="street">ষ্ট্ৰীট 1</string>
     <string name="kyc_failed_msg"> kyc প্ৰক্ৰিয়া বিফল হৈছে অনুগ্ৰহ কৰি পুনৰ চেষ্টা কৰক।</string>
@@ -203,11 +205,13 @@
 </string>
 
     <string name="enter_pmay_regno">PMAY/ৰেজিষ্ট্ৰেচন নম্বৰ লিখক</string>
-    <string name="pmay_regno">PMAY/ৰেজিষ্ট্ৰেচন নম্বৰ</string>
+    <string name="pmay_regno">PMAYG/ৰেজিষ্ট্ৰেচন নম্বৰ</string>
     <string name="other_poverty_eradiction_central_government_programmes">অন্য দাৰিদ্ৰ্য নিৰসন বা কেন্দ্ৰীয় চৰকাৰৰ আঁচনি</string>
     <string name="enter_other_scheme">অন্যান্য আঁচনি লিখক</string>
     <string name="upload_document">দস্তাবেজ আপল ড কৰক</string>
     <string name="select_userid">ব্যৱহাৰকাৰীৰ ID বাছনি কৰক</string>
     <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">Please select your state carefully. This selection cannot be changed once your account created</string>
+    <string name="re_kyc">Re KYC</string>
+    <string name="upload_pip">Upload Pip</string>
 
 </resources>

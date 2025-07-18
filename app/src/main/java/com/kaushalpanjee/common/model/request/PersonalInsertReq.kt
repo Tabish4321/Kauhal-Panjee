@@ -29,6 +29,9 @@ val antyodaya: String,
 val rationCard: String,
 val isRsby: String,
 val rsbyCard: String,
-val isPip: String
+val isPip: String,
+val pipCert: String,
+val isPmayg: String,
+val pmaygAttachment: String
 
 )

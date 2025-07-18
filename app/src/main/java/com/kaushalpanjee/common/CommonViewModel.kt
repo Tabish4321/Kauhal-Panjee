@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
+import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -52,6 +53,7 @@ import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
+import com.kaushalpanjee.common.model.response.AadhaarEkycRes
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -621,6 +623,20 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getChangePass(changePassReq,header).collectLatest {
                 _getChangePass.emit(it)
+            }
+        }
+
+    }
+
+
+    private  var _aadhaarRekycApi =  MutableStateFlow<Resource<out AadhaarEkycRes>>(Resource.Loading())
+    val aadhaarRekycApi = _aadhaarRekycApi.asSharedFlow()
+
+
+    fun aadhaarRekycApi(aadhaarRekycReq: AadhaarRekycReq,header :String){
+        viewModelScope.launch {
+            commonRepository.aadhaarRekycApi(aadhaarRekycReq,header).collectLatest {
+                _aadhaarRekycApi.emit(it)
             }
         }
 
