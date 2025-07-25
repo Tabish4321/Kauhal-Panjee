@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ایپ _ نام</string>
+    <string name="app_name">Outside Country</string>
     <string name="login_id">لاگ ان _ آئی ڈی</string>
     <string name="login">لاگ ان کریں</string>
     <string name="password">پاس ورڈ</string>
@@ -25,6 +25,8 @@
     <string name="select_state">ریاست منتخب کریں</string>
     <string name="slected_state">سلیکٹڈ اسٹیٹ</string>
     <string name="blank"><u /></string>
+    <string name="upload_shg_certificate">Upload SHG Certificate</string>
+
     <string name="aadhaar">آدھار نمبر درج کریں</string>
     <string name="login_to_your_account">اپنے اکاؤنٹ میں لاگ ان کریں</string>
     <string name="aadhaar_number">آدھار درج کریں</string>
@@ -142,21 +144,21 @@
     <string name="mother_namer">ماں کا نام</string>
     <string name="something_went_wrong_at_uidai_site">یو آئی ڈی اے آئی کی طرف سے کچھ غلط ہوا۔</string>
     <string name="ok">ٹھیک ہے</string>
-    <string name="self_employed">سیلف ایمپلائڈ</string>
-    <string name="salary">تنخواہ</string>
+    <string name="self_employed">Self Employed</string>
+    <string name="salary">Salary</string>
     <string name="ekyc_completed">ای کے وائی سی مکمل ہوا</string>
-    <string name="job">نوکری</string>
-    <string name="training">تربیت</string>
-    <string name="both">دونوں</string>
-    <string name="salaried">تنخواہ دار</string>
-    <string name="within_district">ضلع کے اندر</string>
-    <string name="within_state">ریاست کے اندر</string>
-    <string name="outside_side">آؤٹ سائیڈ اسٹیٹ</string>
-    <string name="outside_country">ملک سے باہر</string>
-    <string name="ddugky">ڈی ڈی یو جی کے وائی</string>
-    <string name="rseti">آر ایس ای ٹی آئی</string>
-    <string name="pmkvy">پی ایم کے وی وائی</string>
-    <string name="others">دیگر</string>
+    <string name="job">Job</string>
+    <string name="training">Training</string>
+    <string name="both">Both</string>
+    <string name="salaried">Salaried</string>
+    <string name="within_district">Within District</string>
+    <string name="within_state">Within State</string>
+    <string name="outside_side">Outside State</string>
+    <string name="outside_country">Outside Country</string>
+    <string name="ddugky">DDUGKY</string>
+    <string name="rseti">RSETI</string>
+    <string name="pmkvy">PMKVY</string>
+    <string name="others">Others</string>
     <string name="mention_others_training">اگر دوسرے تربیت کر رہے ہیں تو اس کا ذکر کریں</string>
     <string name="select_sector">سیکٹر منتخب کریں</string>
     <string name="select_trade">تجارت منتخب کریں</string>

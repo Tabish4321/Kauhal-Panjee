@@ -24,7 +24,8 @@ data class Personal(
     val pmaygAttachment: String,
     val pipCert: String,
     val VoterImagePath: String,
-    val disablityCertPath: String
+    val disablityCertPath: String,
+    val shgImage: String
 )
 
 

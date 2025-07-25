@@ -784,6 +784,34 @@
                             android:layout_margin="8dp" />
                     </LinearLayout>
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        style="@style/EditText"
+                        android:id="@+id/shgCertificateUpload"
+                        app:cardCornerRadius="@dimen/dp_25"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llCategory"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableRight="@drawable/ic_mage_search"
+                            android:id="@+id/shgCertimageText"
+                            android:drawablePadding="@dimen/dp_10"
+                            android:textColor="@color/color_dark_green"
+                            android:fontFamily="@font/avenir_next_semi_bold"
+                            android:text="@string/upload_category_certificate"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <EditText
                         android:id="@+id/etShgValidate"
@@ -807,7 +835,7 @@
                         style="@style/Button"
                         android:drawableEnd="@drawable/ic_right_arrow"
                         android:drawablePadding="@dimen/dp_20"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginTop="@dimen/dp_15"
                         android:text="@string/validate" />
 

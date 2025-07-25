@@ -330,7 +330,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                 AppUtil.saveEmailPreference(requireContext(),binding.etEmail.text.toString())
                                 toastShort(sendMobileOTPResponse.responseDesc)
                             } else if (sendMobileOTPResponse.responseCode == 201)
-                                showSnackBar("Incorrect mobile number")
+                                showSnackBar("Incorrect email Id")
                             else if (sendMobileOTPResponse.responseCode==301)
                                 showUpdateDialog()
 

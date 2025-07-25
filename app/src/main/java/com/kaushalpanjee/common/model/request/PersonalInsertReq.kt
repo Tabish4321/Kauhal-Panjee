@@ -32,6 +32,7 @@ val rsbyCard: String,
 val isPip: String,
 val pipCert: String,
 val isPmayg: String,
-val pmaygAttachment: String
+val pmaygAttachment: String,
+val shgImage: String
 
 )

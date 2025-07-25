@@ -135,6 +135,7 @@
     <string name="name1">Mandatory field 1<font color='#FF0000'>*</font></string>
     <string name="validate">Validate</string>
     <string name="upload_category_certificate">Upload Category Certificate</string>
+    <string name="upload_shg_certificate">Upload SHG Certificate</string>
     <string name="upload_antyodaya_card">Upload Antyodaya Card</string>
     <string name="upload_rsby_pm_jay_card">Upload RSBY/PM-JAY CARD</string>
     <string name="upload_residence_certificate">Upload Residence Certificate</string>

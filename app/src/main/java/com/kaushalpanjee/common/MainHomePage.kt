@@ -97,11 +97,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             }
         }
 
-
     private val bannerImageBitmapList = mutableListOf<Bitmap>()
-
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -243,7 +239,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      binding.recyclerView.adapter = adapter
      // Start auto-scrolling
  }
-
 
     private fun autoScroll(){
         val scrollRunnable = Runnable {
@@ -487,7 +482,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
     }
 
-
     private fun collectBannerResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBannerAPI) {
@@ -539,10 +533,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             }
         }
     }
-
-
-
-
 
     private fun handleTrainingSearchQuery(query: String) {
 

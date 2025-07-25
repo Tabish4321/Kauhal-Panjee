@@ -141,6 +141,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var pinCode = ""
     private var voterIdImage = ""
     private var pmaygImage = ""
+    private var shgImage = ""
     private var profilePicIdImage = ""
     private var voterIdNo = ""
     private var guardianName = ""
@@ -2334,6 +2335,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             shgStatus = "Yes"
             binding.etShgValidate.visible()
             binding.btnShgValidate.visible()
+            binding.shgCertificateUpload.visible()
+
 
 
         }
@@ -2346,6 +2349,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.etShgValidate.gone()
             binding.btnShgValidate.gone()
             binding.tvShgValidate.gone()
+            binding.shgCertificateUpload.gone()
 
 
         }
@@ -2947,6 +2951,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 if (shgValidateStatus == "Y") {
 
                     binding.tvShgValidate.visible()
+                    binding.shgCertificateUpload.visible()
                     binding.btnShgValidate.gone()
                     shgCode = binding.etShgValidate.text.toString()
                     binding.tvShgValidate.text = "Validate Successfully: $shgName"
@@ -3133,6 +3138,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 }
 
+
+                if (shgImage.isNull){
+
+                    shgImage= "N/A"
+
+                }
+
                 if (drivingLicenceImage.isNull){
 
                     drivingLicenceImage= "N/A"
@@ -3185,7 +3197,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.insertPersonalDataAPI(PersonalInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"1" ,
                     guardianName,motherName,guardianMobileNumber,yearlyIncomeFamily,voterIdNo,voterIdImage,drivingLicenceNumber,drivingLicenceImage,selectedCategoryItem,categoryCertiImage,
                     selectedMaritalItem,minorityStatus,minorityImage,pwdStatus,pwdImage,nregaStatus,nregaImageJobCard,nregaJobCard,shgStatus,shgCode,antoyadaStatus,antoyadaImage,
-                    rsbyStatus,rsbyImage,pipStatus,pipImage,pmayStatus,pmaygImage),AppUtil.getSavedTokenPreference(requireContext()))
+                    rsbyStatus,rsbyImage,pipStatus,pipImage,pmayStatus,pmaygImage,shgImage),AppUtil.getSavedTokenPreference(requireContext()))
 
                 collectInsertPersonalResponse()
 
@@ -3232,6 +3244,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
         binding.categoryCertificateUpload.setOnClickListener {
             checkAndRequestPermissionsForEveryPurpose("CATEGORY_CERTIFICATE")
+        }
+
+        binding.shgCertificateUpload.setOnClickListener {
+            checkAndRequestPermissionsForEveryPurpose("SHG_CERTIFICATE")
         }
 
         binding.pwdImageUpload.setOnClickListener {
@@ -3643,6 +3659,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+    @SuppressLint("SuspiciousIndentation")
     private fun collectDistrictResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getDistrictList) {
@@ -4744,6 +4761,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 voterIdImage = base64Image
             }
 
+            "SHG_CERTIFICATE" -> {
+                binding.shgCertimageText.text = fileName
+                shgImage = base64Image
+            }
+
             "Pmayg_ID" -> {
                 binding.pmaygimageText.text = fileName
                 pmaygImage = base64Image
@@ -4808,6 +4830,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.pmaygimageText.text = fileName
                 pmaygImage = base64Pdf
             }
+
+            "SHG_CERTIFICATE" -> {
+                binding.shgCertimageText.text = fileName
+                shgImage = base64Pdf
+            }
+
 
             "PIP_ID" -> {
                 binding.pipimageText.text = fileName

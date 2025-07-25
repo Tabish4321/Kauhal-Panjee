@@ -102,6 +102,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var minorityImage =  ""
     private var pwdImage =  ""
     private var nregaImage =  ""
+    private var shgImage =  ""
     private var antyodyaImage=  ""
     private var rsbyImage =  ""
     private var residenceImage=  ""
@@ -192,6 +193,10 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
         binding.nregaCardUpload.setOnClickListener {
             showDocumentDialog(nregaImage)
+        }
+
+        binding.shgIdUpload.setOnClickListener {
+            showDocumentDialog(shgImage)
         }
 
         binding.antyodayaCardUpload.setOnClickListener {
@@ -566,6 +571,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                  dlImage = x.dlImagePath
 
                                                  nregaImage = x.naregaCardPath
+                                                 shgImage = x.shgImage
 
                                                  rsbyImage = x.rsbyCardPath
 

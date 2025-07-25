@@ -21,6 +21,7 @@
     <string name="enter_code_email_msg">Please enter 4 digit OTP sent to your email address</string>
     <string name="state_name">State Name</string>
     <string name="upload_pmayg_doc">Upload PMAYG Document</string>
+    <string name="upload_shg_certificate">Upload SHG Certificate</string>
 
     <string name="select_state">Select State</string>
     <string name="slected_state">Selected State</string>

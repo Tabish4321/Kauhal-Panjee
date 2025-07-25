@@ -19,6 +19,8 @@
     <string name="verify">যাচাই করুন</string>
     <string name="enter_code_msg">দয়া করে আপনার ফোন নম্বরে পাঠানো 4 অঙ্কের ওটিপি লিখুন।</string>
     <string name="enter_code_email_msg">দয়া করে আপনার ইমেল ঠিকানায় পাঠানো 4 অঙ্কের ওটিপি লিখুন।</string>
+    <string name="upload_shg_certificate">Upload SHG Certificate</string>
+
     <string name="state_name">রাজ্যের নাম</string>
     <string name="upload_pmayg_doc">Upload PMAYG Document</string>
 
@@ -142,22 +144,22 @@
     <string name="mother_namer">মায়ের নাম</string>
     <string name="something_went_wrong_at_uidai_site">ইউআইডিএআই-এর পক্ষ থেকে কিছু ভুল হয়েছে।.</string>
     <string name="ok">ওকে</string>
-    <string name="self_employed">স্ব-নিযুক্ত</string>
-    <string name="salary">বেতন</string>
+    <string name="self_employed">Self Employed</string>
+    <string name="salary">Salary</string>
     <string name="ekyc_completed">ই. কে. ওয়াই. সি সম্পন্ন হয়েছে</string>
-    <string name="job">কাজ</string>
-    <string name="training">প্রশিক্ষণ</string>
-    <string name="both">উভয়</string>
+    <string name="job">Job</string>
+    <string name="training">Training</string>
+    <string name="both">Both</string>
     <string name="address">ঠিকানা</string>
-    <string name="salaried">বেতনভোগী</string>
-    <string name="within_district">জেলায়</string>
-    <string name="within_state">রাজ্যের ভিতরে</string>
-    <string name="outside_side">রাজ্যের বাইরে</string>
-    <string name="outside_country">দেশের বাইরে</string>
-    <string name="ddugky">ডিডিইউজিকেওয়াই</string>
-    <string name="rseti">আরএসইটিআই</string>
-    <string name="pmkvy">পিএমকেভিওয়াই</string>
-    <string name="others">অন্যান্য</string>
+    <string name="salaried">Salaried</string>
+    <string name="within_district">Within District</string>
+    <string name="within_state">Within State</string>
+    <string name="outside_side">Outside State</string>
+    <string name="outside_country">Outside Country</string>
+    <string name="ddugky">DDUGKY</string>
+    <string name="rseti">RSETI</string>
+    <string name="pmkvy">PMKVY</string>
+    <string name="others">Others</string>
     <string name="mention_others_training">যদি অন্য কোনো প্রশিক্ষণ থাকে, উল্লেখ করুন</string>
     <string name="select_sector">সেক্টর নির্বাচন করুন</string>
     <string name="select_trade">ট্রেড নির্বাচন করুন</string>
