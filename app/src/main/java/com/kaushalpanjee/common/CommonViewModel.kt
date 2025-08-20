@@ -49,8 +49,10 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
@@ -74,6 +76,7 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
 import javax.inject.Inject
@@ -91,6 +94,35 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getToken(imeiNo,appVersion).collectLatest {
                 _getToken.emit(it)
+            }
+        }
+
+
+    }
+
+    private var _checkAadhaarFor = MutableSharedFlow<Resource<out AadhaarCheckForRes>>()
+    val checkAadhaarFor = _checkAadhaarFor.asSharedFlow()
+
+
+    fun checkAadhaarFor(aadhaarNumber:String , appVersion:String){
+        viewModelScope.launch {
+            commonRepository.checkAadhaarFor(aadhaarNumber,appVersion).collectLatest {
+                _checkAadhaarFor.emit(it)
+            }
+        }
+
+
+    }
+
+
+    private var _updatePasswordForget = MutableSharedFlow<Resource<out UpdatePasswordForRes>>()
+    val updatePasswordForget = _updatePasswordForget.asSharedFlow()
+
+
+    fun updatePasswordForget(updatePasswordForReq: UpdatePasswordForReq){
+        viewModelScope.launch {
+            commonRepository.updatePasswordForget(updatePasswordForReq).collectLatest {
+                _updatePasswordForget.emit(it)
             }
         }
 

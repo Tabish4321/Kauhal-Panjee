@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/dp_10">
+
+        <EditText
+            android:id="@+id/etAadhaar"
+            style="@style/EditText"
+            android:layout_marginTop="@dimen/dp_50"
+            android:drawableEnd="@drawable/close_eye"
+            android:drawablePadding="@dimen/dp_10"
+            android:hint="@string/aadhaar_number"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="12"
+            android:paddingHorizontal="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvWelcomeMsg" />
+
+
+
+        <include
+            android:id="@+id/progressButton"
+            layout="@layout/circular_button_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:elevation="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvWelcome"
+            tools:visibility="visible"
+
+            />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

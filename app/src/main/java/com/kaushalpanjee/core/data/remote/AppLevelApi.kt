@@ -14,6 +14,7 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AadhaarCheckForgot
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
@@ -45,9 +46,11 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.VillageReq
+import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
@@ -74,6 +77,7 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
@@ -86,6 +90,13 @@ interface AppLevelApi {
 
     @POST(ApiConstant.GET_TOKEN_GENERATE)
     suspend fun getToken(@Body tokenReq: TokenReq):TokenRes
+
+    @POST(ApiConstant.API_Aadhaar_FORGOT)
+    suspend fun checkAadhaarFor(@Body aadhaarCheckForgot: AadhaarCheckForgot):AadhaarCheckForRes
+
+    @POST(ApiConstant.API_Aadhaar_FORGOT_Update)
+    suspend fun updatePasswordForget(@Body updatePasswordForReq: UpdatePasswordForReq):UpdatePasswordForRes
+
 
     @POST(ApiConstant.API_SMS_OTP)
     suspend fun sendMobileOTP(@Body sendOTPRequest: SendOTPRequest):SendMobileOTPResponse

@@ -184,9 +184,6 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
                                 binding.progressButton.root.gone()
 
 
-
-
-
                             } else if (getChangePassOtp.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             }  else if (getChangePassOtp.responseCode==401){

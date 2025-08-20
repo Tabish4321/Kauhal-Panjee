@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
+            app:destination="@id/forgotPassViaAadhaarFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -175,4 +178,9 @@
         android:name="com.kaushalpanjee.common.ReKycFragment"
         android:label="ReKycFragment"
         tools:layout="@layout/fragment_rekyc_layout"/>
+    <fragment
+        android:id="@+id/forgotPassViaAadhaarFragment"
+        android:name="com.kaushalpanjee.common.ForgotPassViaAadhaarFragment"
+        android:label="ForgotPassViaAadhaarFragment"
+        tools:layout="@layout/fragment_forgot_via_aadhaar"/>
 </navigation>

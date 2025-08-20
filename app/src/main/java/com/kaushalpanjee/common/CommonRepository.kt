@@ -24,6 +24,7 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.request.AadhaarCheckForgot
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
@@ -52,8 +53,10 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
@@ -77,6 +80,7 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppUtil
 import javax.inject.Inject
@@ -91,6 +95,20 @@ class CommonRepository @Inject constructor(
             appLevelApi.getToken(TokenReq(appVersion,imeiNo))
         }
     }
+
+    suspend fun checkAadhaarFor(aadhaarNumber : String, appVersion :String): Flow<Resource<out AadhaarCheckForRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.checkAadhaarFor(AadhaarCheckForgot(appVersion,aadhaarNumber))
+        }
+    }
+
+    suspend fun updatePasswordForget(updatePasswordForReq: UpdatePasswordForReq): Flow<Resource<out UpdatePasswordForRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.updatePasswordForget(updatePasswordForReq)
+        }
+    }
+
+
     suspend fun sendMobileOTP(mobileNumber : String, appVersion :String, imeiNo :String): Flow<Resource<out SendMobileOTPResponse>> {
        return networkBoundResourceWithoutDb {
             appLevelApi.sendMobileOTP(SendOTPRequest(imeiNo,mobileNumber,appVersion))
