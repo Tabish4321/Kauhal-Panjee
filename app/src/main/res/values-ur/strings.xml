@@ -214,5 +214,6 @@
     <string name="select_userid">صارف آئی ڈی منتخب کریں</string>
     <string name="re_kyc">Re KYC</string>
     <string name="upload_pip">Upload Pip</string>
+    <string name="skip">Skip</string>
 
 </resources>

@@ -762,7 +762,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                 }
                             }
-                                ?: toastShort(getString(R.string.something_went_wrong_at_uidai_site))
+
                         }
                     }
                 }
@@ -925,7 +925,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     private fun showStateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Alert")
         builder.setMessage(R.string.please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created)
 

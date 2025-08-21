@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_bottom_sheet"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/dp_15"
+        >
+
+    <EditText
+        android:id="@+id/emailEditText"
+        style="@style/EditText"
+        android:layout_marginTop="@dimen/dp_10"
+        android:drawableEnd="@drawable/ic_email"
+        android:hint="@string/email"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
+        android:maxLength="50"
+        android:paddingHorizontal="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvWelcomeMsg" />
+
+
+
+    <include
+        android:id="@+id/aadhaarVerifyButton"
+        layout="@layout/circular_button_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:elevation="@dimen/dp_10"
+        android:enabled="false"
+        android:visibility="visible"
+        android:layout_gravity="end"
+
+        />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clOTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/shape_rectangle_light_green"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressButton"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvEnterCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:fontFamily="@font/avenir_next_bold"
+            android:text="@string/enter_code"
+            android:textColor="@color/color_dark_green"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvEnterCodeMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:fontFamily="@font/avenir_next_bold"
+            android:text="@string/enter_code_msg"
+            android:textColor="@color/color_sub_text"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tvEnterCode"
+            app:layout_constraintTop_toBottomOf="@+id/tvEnterCode" />
+
+
+        <EditText
+            android:id="@+id/et1"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_12"
+            android:background="@drawable/ic_otp_grey_rectangle"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:singleLine="true"
+            android:text=""
+            app:layout_constraintEnd_toStartOf="@+id/et2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvEnterCodeMsg" />
+
+        <EditText
+            android:id="@+id/et2"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_12"
+            android:background="@drawable/ic_otp_grey_rectangle"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:singleLine="true"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/et1"
+            app:layout_constraintEnd_toStartOf="@+id/et3"
+            app:layout_constraintStart_toEndOf="@+id/et1"
+            app:layout_constraintTop_toTopOf="@+id/et1"/>
+
+        <EditText
+            android:id="@+id/et3"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_12"
+            android:background="@drawable/ic_otp_grey_rectangle"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:singleLine="true"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/et1"
+            app:layout_constraintEnd_toStartOf="@+id/et4"
+            app:layout_constraintStart_toEndOf="@+id/et2"
+            app:layout_constraintTop_toTopOf="@+id/et1" />
+
+        <EditText
+            android:id="@+id/et4"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_12"
+            android:layout_marginEnd="@dimen/dp_40"
+            android:background="@drawable/ic_otp_grey_rectangle"
+            android:gravity="center"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:maxLength="1"
+            android:singleLine="true"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="@+id/et1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/et3"
+            app:layout_constraintTop_toTopOf="@+id/et1" />
+
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:fontFamily="@font/avenir_next_bold"
+            android:gravity="center"
+            android:text="00:00"
+            android:textColor="@color/color_green"
+            android:textSize="@dimen/sp_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et4"
+
+            />
+
+        <TextView
+            android:id="@+id/tvReceiveCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_12"
+            android:fontFamily="@font/avenir_next_bold"
+            android:gravity="center"
+            android:text="@string/not_receive_code"
+            android:textColor="@color/color_sub_text"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTimer" />
+
+
+        <TextView
+            android:id="@+id/tvSendOtpAgain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:fontFamily="@font/avenir_next_bold"
+            android:gravity="center"
+            android:text="@string/send_again"
+            android:textColor="@color/color_dark_green"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvReceiveCode" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/saveEmailButton"
+        style="@style/Button"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:drawablePadding="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/submit"
+        android:visibility="gone"
+        app:drawableEndCompat="@drawable/ic_right_arrow"
+        app:layout_constraintBottom_toTopOf="@+id/tvRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

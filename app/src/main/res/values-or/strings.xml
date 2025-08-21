@@ -209,5 +209,6 @@
     <string name="select_userid">ବ୍ୟବହାରକାରୀ ID ଚୟନ କରନ୍ତୁ</string>
     <string name="re_kyc">Re KYC</string>
     <string name="upload_pip">Upload Pip</string>
+    <string name="skip">Skip</string>
 
 </resources>

@@ -65,6 +65,20 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     @SuppressLint("SuspiciousIndentation")
     private fun listeners() {
 
+
+
+        binding.tvSkip.setOnClickListener {
+
+
+            binding.etEmail.setLeftDrawable(requireContext(), R.drawable.ic_verified)
+            binding.tvVerify.gone()
+            binding.etEmail.isEnabled = false
+            binding.etPhone.visible()
+            binding.clOTP.gone()
+            isEmailVerified = true
+
+        }
+
         binding.etEmail.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO)
 
         binding.progressBackButton.setOnClickListener {
@@ -84,6 +98,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 )
                 showProgressBar()
                 resendOTPTimer()
+
+
 
 
 
@@ -341,46 +357,46 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
     }
 
-    private fun resendOTPTimer() {
+            private fun resendOTPTimer() {
 
 
-        countDownTimer?.let {
-            it.cancel()
-        }
+                countDownTimer?.let {
+                    it.cancel()
+                }
 
-        countDownTimer = object : CountDownTimer(60000.toLong(), 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
-                val seconds: Long =
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - (minutes * 60)
-                var minutesInString = minutes.toString()
-                var secondsInString = seconds.toString()
-                if (minutes.toString().length == 1) {
-                    minutesInString = "0$minutes"
-                } else if (minutes.toString().isEmpty()) {
-                    minutesInString = "00"
-                }
-                if (seconds.toString().length == 1) {
-                    secondsInString = "0$seconds"
-                } else if (seconds.toString().isEmpty()) {
-                    secondsInString = "00"
-                }
-                ("$minutesInString:$secondsInString").also {
-                    binding.tvTimer.text = it
-                }
+                countDownTimer = object : CountDownTimer(60000.toLong(), 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
+                        val seconds: Long =
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - (minutes * 60)
+                        var minutesInString = minutes.toString()
+                        var secondsInString = seconds.toString()
+                        if (minutes.toString().length == 1) {
+                            minutesInString = "0$minutes"
+                        } else if (minutes.toString().isEmpty()) {
+                            minutesInString = "00"
+                        }
+                        if (seconds.toString().length == 1) {
+                            secondsInString = "0$seconds"
+                        } else if (seconds.toString().isEmpty()) {
+                            secondsInString = "00"
+                        }
+                        ("$minutesInString:$secondsInString").also {
+                            binding.tvTimer.text = it
+                        }
+                    }
+
+                    override fun onFinish() {
+                        binding.tvSendOtpAgain.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.color_dark_green
+                            )
+                        )
+                        binding.tvSendOtpAgain.isEnabled = true
+                    }
+                }.start()
             }
-
-            override fun onFinish() {
-                binding.tvSendOtpAgain.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.color_dark_green
-                    )
-                )
-                binding.tvSendOtpAgain.isEnabled = true
-            }
-        }.start()
-    }
 
     private fun addTextWatchers() {
 

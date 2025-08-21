@@ -110,6 +110,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvWelcomeMsg" />
 
+        <TextView
+            android:id="@+id/tvSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_50"
+            android:layout_marginTop="@dimen/dp_30"
+            android:fontFamily="@font/avenir_next_bold"
+            android:text="@string/skip"
+            android:drawableEnd="@drawable/ic_right_arrow"
+            android:textColor="@color/color_dark_green"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etEmail"
+            />
+
         <EditText
             android:id="@+id/etPhone"
             style="@style/EditText"

@@ -53,6 +53,7 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
@@ -80,6 +81,7 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppUtil
@@ -124,6 +126,14 @@ class CommonRepository @Inject constructor(
     suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String): Flow<Resource<out TechQualificationRes>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId))
+        }
+
+    }
+
+
+    suspend fun getUpdateEmailAPI(header :String,appVersion: String,loginId :String,imeiNo: String,email: String): Flow<Resource<out UpdateEmailRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getUpdateEmailAPI(header, UpdateEmailReq(appVersion,loginId, imeiNo,email))
         }
 
     }

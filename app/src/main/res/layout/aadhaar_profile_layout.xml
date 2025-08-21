@@ -147,6 +147,16 @@
             app:layout_constraintBottom_toBottomOf="@+id/tvEmailMobile"
             />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/editEmailButton"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            app:shapeAppearanceOverlay="@style/CustomCircleShape"
+            android:src="@drawable/edit"
+            app:layout_constraintStart_toEndOf="@+id/ivEmailVerified"
+            app:layout_constraintTop_toTopOf="@+id/ivEmailVerified"
+            app:layout_constraintBottom_toBottomOf="@+id/ivEmailVerified"/>
+
 
 
         <ImageView

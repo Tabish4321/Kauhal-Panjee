@@ -215,5 +215,6 @@
     <string name="please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created">Please select your state carefully. This selection cannot be changed once your account created</string>
     <string name="re_kyc">Re KYC</string>
     <string name="upload_pip">Upload Pip</string>
+    <string name="skip">Skip</string>
 
 </resources>

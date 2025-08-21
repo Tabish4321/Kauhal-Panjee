@@ -218,5 +218,6 @@
     <string name="select_userid">ব্যবহারকারীর আইডি নির্বাচন করুন</string>
     <string name="re_kyc">Re KYC</string>
     <string name="upload_pip">Upload Pip</string>
+    <string name="skip">Skip</string>
 
 </resources>

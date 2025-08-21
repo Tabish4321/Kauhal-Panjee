@@ -211,6 +211,8 @@
     <string name="upload_document">Upload Document</string>
     <string name="select_userid">Select UserId</string>
     <string name="re_kyc">Re KYC</string>
+    <string name="skip"><u>Skip</u></string>
+
 
 
 </resources>

@@ -113,7 +113,7 @@ object AppModule {
                     val logging = HttpLoggingInterceptor()
                     logging.setLevel(HttpLoggingInterceptor.Level.BODY)
                     client.addInterceptor(logging)
-                     client.addInterceptor(ChuckerInterceptor(context))
+               //     client.addInterceptor(ChuckerInterceptor(context))
                 }
             }.build()
     }

@@ -46,6 +46,7 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
@@ -77,6 +78,7 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
@@ -111,6 +113,11 @@ interface AppLevelApi {
                                     @Body techQualification: TechQualification):TechQualificationRes
 
 
+
+
+    @POST(ApiConstant.API_Update_CANDIDATE_EMAIL)
+    suspend fun getUpdateEmailAPI(@Header("Authorization") token: String,
+                                    @Body updateEmailReq: UpdateEmailReq):UpdateEmailRes
     @POST(ApiConstant.API_TECH_EDUCATION_DOMAIN)
     suspend fun getTechEducationDomainAPI(@Header("Authorization") token: String,
                                           @Body techDomainReq: TechDomainReq):TechnicalEduDomain

@@ -76,6 +76,7 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
@@ -100,19 +101,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
-    private var _checkAadhaarFor = MutableSharedFlow<Resource<out AadhaarCheckForRes>>()
+
+
+    private val _checkAadhaarFor = MutableSharedFlow<Resource<out AadhaarCheckForRes>>()
     val checkAadhaarFor = _checkAadhaarFor.asSharedFlow()
 
-
-    fun checkAadhaarFor(aadhaarNumber:String , appVersion:String){
+    fun checkAadhaarFor(aadhaarNumber: String, appVersion: String) {
         viewModelScope.launch {
-            commonRepository.checkAadhaarFor(aadhaarNumber,appVersion).collectLatest {
+            commonRepository.checkAadhaarFor(aadhaarNumber, appVersion).collectLatest {
                 _checkAadhaarFor.emit(it)
             }
         }
-
-
     }
+
 
 
     private var _updatePasswordForget = MutableSharedFlow<Resource<out UpdatePasswordForRes>>()
@@ -166,6 +167,19 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
 
     }
+
+    private var _getUpdateEmailAPI = MutableSharedFlow<Resource<out UpdateEmailRes>>()
+    val getUpdateEmailAPI = _getUpdateEmailAPI.asSharedFlow()
+
+    fun getUpdateEmailAPI(header :String,appVersion: String,loginId :String,imeiNo: String,email: String){
+        viewModelScope.launch {
+            commonRepository.getUpdateEmailAPI(header,appVersion,loginId, imeiNo,email).collectLatest {
+                _getUpdateEmailAPI.emit(it)
+            }
+        }
+
+    }
+
 
 
     private var _techEducationDomain = MutableSharedFlow<Resource<out TechnicalEduDomain>>()

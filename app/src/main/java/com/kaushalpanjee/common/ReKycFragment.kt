@@ -266,7 +266,6 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                             log("EKYCDATA", errorDesc)
 
                                             toastShort("EKYCDATA: Failed")
-                                            toastShort("going back1")
                                             findNavController().navigateUp()
                                         } ?: toastShort("Getting Error")
                                     }
@@ -280,7 +279,6 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
 
                                 }
                             }
-                                ?: toastShort(getString(R.string.something_went_wrong_at_uidai_site))
 
                         }
                     }

@@ -36,6 +36,7 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.CountDownTimer
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
@@ -43,11 +44,17 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log
+import android.util.Patterns
+import android.view.KeyEvent
 import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.NumberPicker
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
@@ -58,6 +65,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 
 import com.kaushalpanjee.BuildConfig
@@ -68,6 +76,7 @@ import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
+import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
@@ -77,6 +86,7 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.response.Address
 import com.kaushalpanjee.common.model.response.AddressDetail
 import com.kaushalpanjee.common.model.response.Bank
@@ -87,15 +97,18 @@ import com.kaushalpanjee.common.model.response.PersonalDetail
 import com.kaushalpanjee.common.model.response.Secc
 import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
+import com.kaushalpanjee.common.model.response.UserIdName
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.isNull
 import com.kaushalpanjee.core.util.log
+import com.kaushalpanjee.core.util.onDone
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.setRightDrawablePassword
+import com.kaushalpanjee.core.util.showKeyboard
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
@@ -110,6 +123,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.security.MessageDigest
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -120,6 +134,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val PERMISSION_READ_MEDIA_IMAGES = 201
     private val REQUEST_PICK_IMAGE = 201
     private  val REQUEST_PICK_PDF = 202
+    private var countDownTimer: CountDownTimer? = null
+
     private  val REQUEST_CAPTURE_IMAGE = 203
     private var cameraImageUri: Uri? = null
 
@@ -304,6 +320,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedStateLgdCodeItem = ""
     private var selectedStateItem = ""
     private var stateRegCode = ""
+    private var bottomSheetDialog: BottomSheetDialog? = null
+
 
     // district var
     private var districtList: MutableList<DistrictList> = mutableListOf()
@@ -375,6 +393,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var villageLgdCode = ArrayList<String>()
     private var selectedVillageCodeItem = ""
     private var selectedbVillageLgdCodeItem = ""
+    private var newEmail = ""
     private var selectedVillageItem = ""
 
     //  Present Address Variables
@@ -455,6 +474,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //collectBankResponse()
         collectNregaValidateResponse()
         collectTradeResponse()
+        collectSendEmailOTPResponse()
         collectSectorResponse()
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
         collectCandidateDetailsResponse()
@@ -504,6 +524,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     @SuppressLint("SetTextI18n", "CheckResult", "SuspiciousIndentation")
     private fun listener() {
+
+
+
+
+        binding.profileView.editEmailButton.setOnClickListener {
+
+            showEditEmailBottomSheet()
+
+
+
+        }
+
+
+
 
         binding.profileView.editImageButton.setOnClickListener {
 
@@ -5274,6 +5308,340 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         } else if (status.contains("No", ignoreCase = true)) {
             viewYes.setBackgroundResource(R.drawable.card_background)
             viewNo.setBackgroundResource(R.drawable.card_background_selected)
+        }
+    }
+
+    private fun showEditEmailBottomSheet() {
+        bottomSheetDialog = BottomSheetDialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_edit_email, null)
+        bottomSheetDialog?.setContentView(view)
+
+        val emailEditText = view.findViewById<EditText>(R.id.emailEditText)
+        val updateButton = view.findViewById<TextView>(R.id.saveEmailButton)
+        val tvTimer = view.findViewById<TextView>(R.id.tvTimer)
+        val tvSendOtpAgain = view.findViewById<TextView>(R.id.tvSendOtpAgain)
+        val saveButton = view.findViewById<ImageButton>(R.id.centerButton)
+        val clOTP = view.findViewById<ConstraintLayout>(R.id.clOTP)
+        val et1 = view.findViewById<EditText>(R.id.et1)
+        val et2 = view.findViewById<EditText>(R.id.et2)
+        val et3 = view.findViewById<EditText>(R.id.et3)
+        val et4 = view.findViewById<EditText>(R.id.et4)
+
+        saveButton.setOnClickListener {
+             newEmail = emailEditText.text.toString().trim()
+            if (Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+
+                commonViewModel.sendEmailOTP(
+                    newEmail,
+                    BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext())
+                )
+
+                tvSendOtpAgain.isEnabled = false
+                tvSendOtpAgain.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_grey
+                    )
+                )
+                clOTP.visible()
+                updateButton.visible()
+                saveButton.gone()
+                countDownTimer?.let {
+                    it.cancel()
+                }
+
+                countDownTimer = object : CountDownTimer(60000.toLong(), 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
+                        val seconds: Long =
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - (minutes * 60)
+                        var minutesInString = minutes.toString()
+                        var secondsInString = seconds.toString()
+                        if (minutes.toString().length == 1) {
+                            minutesInString = "0$minutes"
+                        } else if (minutes.toString().isEmpty()) {
+                            minutesInString = "00"
+                        }
+                        if (seconds.toString().length == 1) {
+                            secondsInString = "0$seconds"
+                        } else if (seconds.toString().isEmpty()) {
+                            secondsInString = "00"
+                        }
+                        ("$minutesInString:$secondsInString").also {
+                            tvTimer.text = it
+                        }
+                    }
+
+                    override fun onFinish() {
+                        tvSendOtpAgain.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.color_dark_green
+                            )
+                        )
+                        tvSendOtpAgain.isEnabled = true
+                    }
+                }.start()
+
+
+                /* Toast.makeText(requireContext(), "Email updated to: $newEmail", Toast.LENGTH_SHORT).show()
+                 bottomSheetDialog.dismiss()*/
+            } else {
+                emailEditText.error = "Enter a valid email"
+            }
+        }
+
+
+
+        updateButton.setOnClickListener {
+
+          //  validateAndNavigate()
+
+            et1.text.clear()
+            et2.text.clear()
+            et3.text.clear()
+            et4.text.clear()
+        }
+
+        setupOtpEditTexts(et1, et2, et3, et4) { otp ->
+
+
+            commonViewModel.getOtpValidateApi(ValidateOtpReq(BuildConfig.VERSION_NAME, newEmail,"",AppUtil.getAndroidId(requireContext()),otp))
+            collectValidateOtpResponse()
+
+            Toast.makeText(requireContext(), "OTP = $otp", Toast.LENGTH_SHORT).show()
+        }
+
+        tvSendOtpAgain.setOnClickListener {
+            tvSendOtpAgain.isEnabled = false
+            tvSendOtpAgain.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.color_grey
+                )
+            )
+
+
+
+            if (newEmail.isNotEmpty()) {
+
+                commonViewModel.sendEmailOTP(
+                    newEmail,
+                    BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext())
+                )
+
+            } else toastShort("please Enter Email")
+
+
+
+
+
+            countDownTimer?.let {
+                it.cancel()
+            }
+
+            countDownTimer = object : CountDownTimer(60000.toLong(), 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    val minutes: Long = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
+                    val seconds: Long =
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - (minutes * 60)
+                    var minutesInString = minutes.toString()
+                    var secondsInString = seconds.toString()
+                    if (minutes.toString().length == 1) {
+                        minutesInString = "0$minutes"
+                    } else if (minutes.toString().isEmpty()) {
+                        minutesInString = "00"
+                    }
+                    if (seconds.toString().length == 1) {
+                        secondsInString = "0$seconds"
+                    } else if (seconds.toString().isEmpty()) {
+                        secondsInString = "00"
+                    }
+                    ("$minutesInString:$secondsInString").also {
+                        tvTimer.text = it
+                    }
+                }
+
+                override fun onFinish() {
+                    tvSendOtpAgain.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.color_dark_green
+                        )
+                    )
+                    tvSendOtpAgain.isEnabled = true
+                }
+            }.start()
+
+        }
+
+        bottomSheetDialog?.show()
+    }
+
+
+    private fun collectSendEmailOTPResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.sendEmailOTP) {
+                when (it) {
+                    is Resource.Loading -> {}
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { sendMobileOTPResponse ->
+                            if (sendMobileOTPResponse.responseCode == 200) {
+                                toastShort(sendMobileOTPResponse.responseDesc)
+                            } else if (sendMobileOTPResponse.responseCode == 201)
+                                showSnackBar("Incorrect email Id")
+                            else if (sendMobileOTPResponse.responseCode==301)
+                                showSnackBar("Kindly update from play store")
+
+                        } ?: showSnackBar("Internal Sever Error")
+                    }
+                }
+            }
+        }
+    }
+
+    fun setupOtpEditTexts(
+        vararg editTexts: EditText,
+        onOtpComplete: (String) -> Unit
+    ) {
+        for (i in editTexts.indices) {
+            val editText = editTexts[i]
+
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    if (s?.length == 1) {
+                        if (i < editTexts.size - 1) {
+                            editTexts[i + 1].requestFocus()
+                        } else {
+                            editText.clearFocus()
+                        }
+                    }
+
+                    // Check if all fields are filled
+                    val otp = editTexts.joinToString(separator = "") { it.text.toString() }
+                    if (otp.length == editTexts.size) {
+                        onOtpComplete(otp)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
+
+            editText.setOnKeyListener { _, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.action == KeyEvent.ACTION_DOWN) {
+                    if (editText.text.isEmpty() && i > 0) {
+                        editTexts[i - 1].requestFocus()
+                        // Optionally clear previous field:
+                        // editTexts[i - 1].text = null
+                        return@setOnKeyListener true
+                    }
+                }
+                false
+            }
+        }
+    }
+
+    private fun collectValidateOtpResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getOtpValidateApi) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getOtpValidateApi ->
+                            if (getOtpValidateApi.responseCode == 200) {
+
+                                commonViewModel.getUpdateEmailAPI(AppUtil.getSavedTokenPreference(requireContext()),BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),newEmail)
+                                collectUpdateEmailResponse()
+
+                            } else if (getOtpValidateApi.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+
+                            }
+
+                            else if (getOtpValidateApi.responseCode == 207) {
+                                toastShort(getOtpValidateApi.responseDesc)
+
+                            }
+                            else if (getOtpValidateApi.responseCode == 210) {
+                                toastShort(getOtpValidateApi.responseDesc)
+
+                            }
+
+
+
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun collectUpdateEmailResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getUpdateEmailAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+                            bottomSheetDialog?.dismiss()
+
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getOtpValidateApi ->
+                            if (getOtpValidateApi.responseCode == 200) {
+
+
+                                toastShort(getOtpValidateApi.responseDesc)
+
+                            } else if (getOtpValidateApi.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+
+                            }
+
+                            else if (getOtpValidateApi.responseCode == 207) {
+                                toastShort(getOtpValidateApi.responseDesc)
+
+                            }
+                            else if (getOtpValidateApi.responseCode == 210) {
+                                toastShort(getOtpValidateApi.responseDesc)
+
+                            }
+
+
+
+                            else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
         }
     }
 
