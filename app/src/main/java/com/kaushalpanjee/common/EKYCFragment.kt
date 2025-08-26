@@ -761,7 +761,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                     binding.recyclerView.gone()
 
                                 }
-                            }
+                            } ?: toastShort("Server error from uidai. Please try again.")
 
                         }
                     }

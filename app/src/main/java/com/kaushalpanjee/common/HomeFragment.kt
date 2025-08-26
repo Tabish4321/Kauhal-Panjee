@@ -607,7 +607,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             android.R.layout.simple_spinner_dropdown_item,
             branchListValue
         )
-        binding.spinnerBranchName.setAdapter(selectBranchAdapter)
+        binding.bankingView.spinnerBranchName.setAdapter(selectBranchAdapter)
 
 
         //Adapter Marital
@@ -1352,17 +1352,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        binding.llTopBanking.setOnClickListener {
+        binding.bankingView.llTopBanking.setOnClickListener {
 
             if (isBankingInfoVisible && bankingStatus.contains("0")) {
                 isBankingInfoVisible = false
-                binding.expandBanking.visible()
-                binding.viewBanking.visible()
+                binding.bankingView.expandBanking.visible()
+                binding.bankingView.viewBanking.visible()
             } else {
 
                 isBankingInfoVisible = true
-                binding.expandBanking.gone()
-                binding.viewBanking.gone()}
+                binding.bankingView.expandBanking.gone()
+                binding.bankingView.viewBanking.gone()}
             if ( bankingStatus.contains("1")){
                 showYesNoDialog(
                     context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
@@ -1370,8 +1370,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     message = "Do you want to edit your Banking info?",
                     onYesClicked = {
                         isBankingInfoVisible = false
-                        binding.expandBanking.visible()
-                        binding.viewBanking.visible()
+                        binding.bankingView.expandBanking.visible()
+                        binding.bankingView.viewBanking.visible()
                         //binding.btnBnakingSubmit.visible()
 
                   for (x in userCandidateBankDetailsList){
@@ -1384,11 +1384,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                    val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
 
 
-                      binding.etIfscCode.setText(DecIfscCode)
-                      binding.etBankName.setText(DecBankName)
-                      binding.etBranchName.setText(DecbankBranchName)
-                      binding.etBankAcNo.setText(DecbankbankAccNumber)
-                      binding.etPanNumber.setText(DecpanNo)
+                      binding.bankingView.etIfscCode.setText(DecIfscCode)
+                      binding.bankingView.etBankName.setText(DecBankName)
+                      binding.bankingView.etBranchName.setText(DecbankBranchName)
+                      binding.bankingView.etBankAcNo.setText(DecbankbankAccNumber)
+                      binding.bankingView.etPanNumber.setText(DecpanNo)
 
                           BankName =DecBankName
                           BankAcNo= DecbankbankAccNumber
@@ -1499,8 +1499,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         //Ifsc Search
 
-        binding.progressButton.centerButton.setOnClickListener {
-            val inputText = binding.etIfscCode.text.toString()
+        binding.bankingView.progressButton.centerButton.setOnClickListener {
+            val inputText = binding.bankingView.etIfscCode.text.toString()
             val upperCaseText = inputText.uppercase()
             val encryptedUpperCaseText =   AESCryptography.encryptIntoBase64String(upperCaseText, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
@@ -2046,7 +2046,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         //Branch Spinner
-        binding.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
+        binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
             branchName = parent.getItemAtPosition(position).toString()
             if (position in branchListValue.indices) {
                 branchCode = branchCodeList[position]
@@ -2056,8 +2056,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                binding.etBankName.setText(bankName1)
-                binding.etBranchName.setText(branchName)
+                binding.bankingView.etBankName.setText(bankName1)
+                binding.bankingView.etBranchName.setText(branchName)
 
                 if (accLenghth.isNotBlank()) {
                     val lengths = accLenghth.split(",")
@@ -2067,19 +2067,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     val maxLength = lengths.maxOrNull() ?: 0
 
                     if (lengths.size == 1) {
-                        binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
+                        binding.bankingView.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
                     } else if (lengths.isNotEmpty()) {
-                        binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
+                        binding.bankingView.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
 
                         // Add text change listener for validation
-                        binding.etBankAcNo.addTextChangedListener(object : TextWatcher {
+                        binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
                             override fun afterTextChanged(s: Editable?) {
                                 s?.let {
                                     if (it.length in lengths || it.isEmpty()) {
-                                        binding.etBankAcNo.error = null
-                                        binding.btnBnakingSubmit.visible()
+                                        binding.bankingView.etBankAcNo.error = null
+                                        binding.bankingView.btnBnakingSubmit.visible()
                                     } else {
-                                        binding.etBankAcNo.error =
+                                        binding.bankingView.etBankAcNo.error =
                                             "Account number must be ${lengths.joinToString(", ")} digits"
                                     }
                                 }
@@ -2091,7 +2091,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     }
                 } else {
                     // accLenghth is blank: remove filters if needed
-                    binding.etBankAcNo.filters = arrayOf()
+                    binding.bankingView.etBankAcNo.filters = arrayOf()
                 }
 
 
@@ -2627,19 +2627,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 negativeButton(text = "Cancel")
             }
         }
-        binding.etBankAcNo.onRightDrawableClicked {
+        binding.bankingView.etBankAcNo.onRightDrawableClicked {
 
             log("onRightDrawableClicked", "onRightDrawableClicked")
             if (showPassword) {
                 showPassword = false
-                binding.etBankAcNo.setRightDrawablePassword(
+                binding.bankingView.etBankAcNo.setRightDrawablePassword(
                     true, null, null,
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
                 )
             } else {
                 showPassword = true
 
-                binding.etBankAcNo.setRightDrawablePassword(
+                binding.bankingView.etBankAcNo.setRightDrawablePassword(
                     false, null, null,
                     ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
                 )
@@ -2679,17 +2679,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-        binding.etPanNumber.addTextChangedListener(object : TextWatcher {
+        binding.bankingView.etPanNumber.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val panRegex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
 
                 if (s.toString().matches(panRegex)) {
-                    binding.etPanNumber.error = null  // ✅ Valid PAN
+                    binding.bankingView.etPanNumber.error = null  // ✅ Valid PAN
                     isValidPan = true
                   //  binding.btnBnakingSubmit.visible()
 
                 } else {
-                    binding.etPanNumber.error = "Invalid PAN Format"
+                    binding.bankingView.etPanNumber.error = "Invalid PAN Format"
                     isValidPan = false
                   //  binding.btnBnakingSubmit.gone()
 
@@ -2711,13 +2711,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             )
         }
 
-        binding.btnBnakingSubmit.setOnClickListener {
+        binding.bankingView.btnBnakingSubmit.setOnClickListener {
 
-            PanNumber = binding.etPanNumber.text.toString()
-            IfscCode = binding.etIfscCode.text.toString()
-            BankName = binding.etBankName.text.toString()
-            BranchName = binding.etBranchName.text.toString()
-            BankAcNo =  binding.etBankAcNo.text.toString()
+            PanNumber = binding.bankingView.etPanNumber.text.toString()
+            IfscCode = binding.bankingView.etIfscCode.text.toString()
+            BankName = binding.bankingView.etBankName.text.toString()
+            BranchName = binding.bankingView.etBranchName.text.toString()
+            BankAcNo =  binding.bankingView.etBankAcNo.text.toString()
 
 
 
@@ -3628,12 +3628,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
                                     if (isBankingInfoVisible && bankingStatus.contains("0")) {
                                         isBankingInfoVisible = false
-                                        binding.expandBanking.visible()
-                                        binding.viewBanking.visible()
+                                        binding.bankingView.expandBanking.visible()
+                                        binding.bankingView.viewBanking.visible()
                                     } else {
                                         isBankingInfoVisible = true
-                                        binding.expandBanking.gone()
-                                        binding.viewBanking.gone()
+                                        binding.bankingView.expandBanking.gone()
+                                        binding.bankingView.viewBanking.gone()
                                     }
 
                                 }
@@ -4291,7 +4291,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 if (bankingStatus.contains("1")){
 
-                                    binding.tvBanking.setDrawable(
+                                    binding.bankingView.tvBanking.setDrawable(
                                         null, null,
                                         AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
                                     )
@@ -4392,7 +4392,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getBankList.responseCode == 200) {
 
 
-                                binding.etBankAcNo.setText("")
+                                binding.bankingView.etBankAcNo.setText("")
                                 BankAcNo= ""
                                 val bankList = getBankList.bankDetailsList
 
@@ -4435,7 +4435,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                     if (branchListValue.size == 1) {
 
-                                        binding.branchNameSelectUp.gone()
+                                        binding.bankingView.branchNameSelectUp.gone()
 
 
                                         bankCode=  encryptedbankCode
@@ -4444,8 +4444,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         branchName=   encryptedbranchName
                                         accLenghth=  encryptedaccLength
 
-                                        binding.etBankName.setText(bankName1)
-                                        binding.etBranchName.setText(branchName)
+                                        binding.bankingView.etBankName.setText(bankName1)
+                                        binding.bankingView.etBranchName.setText(branchName)
 
                                         if (accLenghth.isNotBlank()) {
                                             val lengths = accLenghth.split(",")
@@ -4455,19 +4455,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                             val maxLength = lengths.maxOrNull() ?: 0
 
                                             if (lengths.size == 1) {
-                                                binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
+                                                binding.bankingView.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(lengths.first()))
                                             } else if (lengths.isNotEmpty()) {
-                                                binding.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
+                                                binding.bankingView.etBankAcNo.filters = arrayOf(InputFilter.LengthFilter(maxLength))
 
                                                 // Add text change listener for validation
-                                                binding.etBankAcNo.addTextChangedListener(object : TextWatcher {
+                                                binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
                                                     override fun afterTextChanged(s: Editable?) {
                                                         s?.let {
                                                             if (it.length in lengths || it.isEmpty()) {
-                                                                binding.etBankAcNo.error = null
-                                                                binding.btnBnakingSubmit.visible()
+                                                                binding.bankingView.etBankAcNo.error = null
+                                                                binding.bankingView.btnBnakingSubmit.visible()
                                                             } else {
-                                                                binding.etBankAcNo.error =
+                                                                binding.bankingView.etBankAcNo.error =
                                                                     "Account number must be ${lengths.joinToString(", ")} digits"
                                                             }
                                                         }
@@ -4479,7 +4479,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                             }
                                         } else {
                                             // accLenghth is blank: remove filters if needed
-                                            binding.etBankAcNo.filters = arrayOf()
+                                            binding.bankingView.etBankAcNo.filters = arrayOf()
                                         }
 
 
@@ -4487,7 +4487,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     }
                                     else if (branchListValue.size > 1) {
 
-                                        binding.branchNameSelectUp.visible()
+                                        binding.bankingView.branchNameSelectUp.visible()
 
                                     }
                                     else {
