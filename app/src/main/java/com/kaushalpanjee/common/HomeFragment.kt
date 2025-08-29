@@ -652,9 +652,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedVillagePresentCodeItem = ""
             selectedbVillagePresentLgdCodeItem = ""
             selectedVillagePresentItem = ""
-            selectedDistrictPresentCodeItem = ""
-            selectedDistrictPresentLgdCodeItem = ""
-            selectedDistrictPresentItem = ""
             selectedGpPresentCodeItem = ""
             selectedbGpPresentLgdCodeItem = ""
             selectedGpPresentItem = ""
@@ -686,7 +683,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.llVillage.visibility = View.GONE
                     binding.llWard.visibility = View.VISIBLE
                     binding.llUlb.visibility = View.VISIBLE
+
+                    commonViewModel.getUlbAPI(ULBReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),selectedDistrictLgdCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+                    ulbAdapter.notifyDataSetChanged()
+
                 } else {
+
+                    commonViewModel.getBlockListApi(selectedDistrictCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                    blockAdapter.notifyDataSetChanged()
+
                     binding.llBlock.visibility = View.VISIBLE
                     binding.llGp.visibility = View.VISIBLE
                     binding.llVillage.visibility = View.VISIBLE
@@ -720,6 +725,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 constraintSet.applyTo(binding.expandAddress)
             }
         }
+
 
 
         binding.spinnerPresentAddressType.setOnItemClickListener { parent, view, position, id ->
@@ -756,11 +762,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             binding.spinnerPresentAddressVillage.clearFocus()
             binding.spinnerPresentAddressVillage.setText("", false)
-            binding.SpinnerPresentAddressStateName.clearFocus()
-            binding.SpinnerPresentAddressStateName.setText("", false)
+
             binding.spinnerPresentAddressBlock.clearFocus()
             binding.spinnerPresentAddressBlock.setText("", false)
 
+            binding.spinnerPresentAddressGp.clearFocus()
+            binding.spinnerPresentAddressGp.setText("", false)
 
 
 
@@ -768,6 +775,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 // First update visibility
                 if (selectedPermanentTypeItem == "URBAN") {
+
+
+                    wardPreCode.clear()
+                    wardPreName.clear()
+
+
+
                     binding.llPresentAddressBlock.visibility = View.GONE
                     binding.llPresentAddressGp.visibility = View.GONE
                     binding.llPresentAddressVillage.visibility = View.GONE
@@ -1143,7 +1157,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         ulbAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            ulbName
+            ulbPreName
         )
 
         binding.spinnerUlb.setAdapter(ulbAdapter)
@@ -1419,6 +1433,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 block.clear()
                 gp.clear()
                 village.clear()
+                ulbCode.clear()
+                ulbName.clear()
+                wardName.clear()
+                wardCode.clear()
 
             } else {
                 isAddressVisible = true
@@ -1440,99 +1458,243 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                         for (x in userCandidateAddressDetailsList2){
 
+                            selectedDistrictLgdCodeItem= x.permanentDistrictLgdCode
+                            selectedDistrictCodeItem= x.permanentDistrictCode
+
+                            if (x.permanentLocality=="RURAL"){
 
 
-                            lifecycleScope.launch {
-                                district.clear()
+                                lifecycleScope.launch {
+                                    district.clear()
 
-                             //   commonViewModel.getDistrictListApi(x.permanentStateCode)
-                                commonViewModel.getBlockListApi(x.permanentDistrictCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
-                                gpAdapter.notifyDataSetChanged()
-                                binding.TvDisName.visible()
-                                binding.spinnerAutoDistrict.gone()
-                                binding.TvDisName.text = x.permanentDistrictName
-                                commonViewModel.getGpListApi(x.permanentBlcokCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
-                                commonViewModel.getVillageListApi(x.permanentGPCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                    commonViewModel.getBlockListApi(x.permanentDistrictCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                    gpAdapter.notifyDataSetChanged()
+                                    binding.TvDisName.visible()
+                                    binding.spinnerAutoDistrict.gone()
+                                    binding.TvDisName.text = x.permanentDistrictName
 
-
-                                delay(1000)
+                                    commonViewModel.getGpListApi(x.permanentBlcokCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                    commonViewModel.getVillageListApi(x.permanentGPCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
 
 
-
-
-                                // binding.TvSpinnerStateName.text = x.permanentStateName
-                               // binding.spinnerDistrict.setText(x.permanentDistrictName)
-
+                                    delay(1000)
 
 
 
-                               // setDropdownValue(binding.spinnerDistrict, x.permanentDistrictName, district)
+                                    setDropdownValue(binding.spinnerType, x.permanentLocality, typeList)
 
-                                 setDropdownValue(binding.spinnerBlock, x.permanentBlockName, block)
-                                setDropdownValue(binding.spinnerGp, x.permanentGPName, gp)
-                                setDropdownValue(binding.spinnerVillage, x.permanentVillageName, village)
-
-                                setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, state)
-                                commonViewModel.getDistrictListApi(x.presentStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+                                    setDropdownValue(binding.spinnerBlock, x.permanentBlockName, block)
+                                    setDropdownValue(binding.spinnerGp, x.permanentGPName, gp)
+                                    setDropdownValue(binding.spinnerVillage, x.permanentVillageName, village)
 
 
 
-                                /*  commonViewModel.getDistrictListApi(x.presentStateCode)
-                                  collectDistrictResponse()
-                                  commonViewModel.getBlockListApi(x.presentDistrictCode)
-                                  collectBlockResponse()
-                                  gpPresentAdapter.notifyDataSetChanged()
 
-                                  commonViewModel.getGpListApi(x.presentBlcokCode)
-                                  collectGpResponse()
-                                  commonViewModel.getVillagePerListApi(x.presentGPCode)
+                                }
 
 
-                                  delay(1000)
 
-                                  setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, statePer)
-                                  setDropdownValue(binding.spinnerPresentAddressDistrict, x.presentDistrictName, districtPer)
-                                  setDropdownValue(binding.spinnerPresentAddressBlock, x.presentBlockName, blockPer)
-                                  setDropdownValue(binding.spinnerPresentAddressGp, x.presentGPName, gpPer)
-                                  setDropdownValue(binding.spinnerPresentAddressVillage, x.presentVillageName, villagePer)
 
-  */
+
+
+                                binding.etAdressLine.setText(x.permanentStreet1)
+                                binding.etAdressLine2.setText(x.permanentStreet2)
+                                binding.etPinCode.setText(x.permanentPinCode)
+                                val adreessStatus = x.isPresentAddressSame
+
+                                binding.etPresentAddressAdressLine.setText(x.presentStreet1)
+                                binding.etPresentLine2.setText(x.presentStreet2)
+                                binding.etPresentPinCode.setText(x.presentPinCode)
+
+                                handleStatus(binding.optionllSamePermanentYesSelect, binding.optionSamePermanentNoSelect, adreessStatus)
+
+
+                                selectedStateCodeItem  =  x.permanentStateCode
+                                selectedDistrictCodeItem= x.permanentDistrictCode
+                                selectedDistrictLgdCodeItem= x.permanentDistrictLgdCode
+
+
+                                selectedDistrictPresentLgdCodeItem= x.presentDistrictLgdCode
+
+
+
+                                selectedTypeItem= x.permanentLocality
+                                selectedPermanentTypeItem= x.presentLocality
+                                selectedBlockCodeItem  = x.permanentBlcokCode
+                                selectedGpCodeItem = x.permanentGPCode
+                                selectedVillageCodeItem=  x.permanentVillageCode
+
+                                isPermanentStatus=x.isPresentAddressSame
+
+
+                                selectedStatePresentCodeItem=x.presentStateCode
+                                selectedDistrictPresentCodeItem=x.presentDistrictCode
+                                selectedBlockPresentCodeItem= x.presentBlcokCode
+                                selectedGpPresentCodeItem=x.presentGPCode
+                                selectedVillagePresentCodeItem=x.presentVillageCode
+
+
+
+                                addressPresentLine1=x.presentStreet1
+                                addressPresentLine2=x.presentStreet2
+                                pinCodePresent=x.presentPinCode
+
+                                addressLine1 = x.permanentStreet1
+                                addressLine2= x.permanentStreet2
+                                pinCode=x.permanentPinCode
+
+
+                            }
+
+                            else if (x.permanentLocality=="URBAN"){
+
+                                lifecycleScope.launch {
+                                    district.clear()
+
+                                    val constraintSet1 = ConstraintSet()
+                                    constraintSet1.clone(binding.expandAddress)
+
+                                    // Clear old constraint
+                                    constraintSet1.clear(binding.llAdressLine.id, ConstraintSet.TOP)
+
+
+                                    val targetId1 = if (x.isPresentAddressSame == "No") {
+                                            binding.llWard.id
+
+
+                                        } else {
+                                            binding.llVillage.id
+                                        }
+
+                                    constraintSet1.connect(
+                                            binding.llAdressLine.id,
+                                            ConstraintSet.TOP,
+                                            targetId1,
+                                            ConstraintSet.BOTTOM
+                                        )
+
+                                        // Apply transition and new constraints
+                                        TransitionManager.beginDelayedTransition(binding.expandAddress)
+                                    constraintSet1.applyTo(binding.expandAddress)
+
+
+                                    commonViewModel.getUlbAPI(ULBReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),x.permanentDistrictLgdCode),AppUtil.getSavedTokenPreference(requireContext()))
+                                    gpAdapter.notifyDataSetChanged()
+                                    binding.TvDisName.visible()
+                                    binding.spinnerAutoDistrict.gone()
+                                    binding.llBlock.visibility = View.GONE
+                                    binding.llGp.visibility = View.GONE
+                                    binding.llVillage.visibility = View.GONE
+                                    binding.llWard.visibility = View.VISIBLE
+                                    binding.llUlb.visibility = View.VISIBLE
+                                    binding.TvDisName.text = x.permanentDistrictName
+
+                                    val constraintSet = ConstraintSet()
+                                    constraintSet.clone(binding.expandAddress)
+
+                                    // Clear old constraint
+                                    constraintSet.clear(binding.llAdressLine.id, ConstraintSet.TOP)
+
+                                    // Add new constraint
+                                    val targetId =
+                                        binding.llWard.id
+
+
+                                    constraintSet.connect(
+                                        binding.llAdressLine.id,
+                                        ConstraintSet.TOP,
+                                        targetId,
+                                        ConstraintSet.BOTTOM
+                                    )
+
+                                    // Apply transition and new constraints
+                                    TransitionManager.beginDelayedTransition(binding.expandAddress)
+                                    constraintSet.applyTo(binding.expandAddress)
+
+
+                                   commonViewModel.getWardAPI(WardReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),x.permanentulbCode),AppUtil.getSavedTokenPreference(requireContext()))
+
+
+                                    delay(1000)
+
+
+
+                                    setDropdownValue(binding.spinnerType, x.permanentLocality, typeList)
+
+                                    setDropdownValue(binding.spinnerUlb, x.permanentulbName, ulbName)
+                                    setDropdownValue(binding.spinnerWard, x.permanentWardName, wardName)
+
+                                 /*   setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, state)
+                                    commonViewModel.getDistrictListApi(x.presentStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+
+                                    districtPresentAdapter.notifyDataSetChanged()*/
+
+
+
+                                }
+
+
+
+
+
+                                binding.etAdressLine.setText(x.permanentStreet1)
+                                binding.etAdressLine2.setText(x.permanentStreet2)
+                                binding.etPinCode.setText(x.permanentPinCode)
+                                val adreessStatus = x.isPresentAddressSame
+
+                                binding.etPresentAddressAdressLine.setText(x.presentStreet1)
+                                binding.etPresentLine2.setText(x.presentStreet2)
+                                binding.etPresentPinCode.setText(x.presentPinCode)
+
+                                handleStatus(binding.optionllSamePermanentYesSelect, binding.optionSamePermanentNoSelect, adreessStatus)
+
+
+
+
+                                selectedStateCodeItem  =  x.permanentStateCode
+                                selectedDistrictCodeItem= x.permanentDistrictCode
+                                selectedTypeItem= x.permanentLocality
+                                selectedPermanentTypeItem= x.presentLocality
+
+                                selectedBlockCodeItem  = x.permanentBlcokCode
+                                selectedGpCodeItem = x.permanentGPCode
+                                selectedVillageCodeItem=  x.permanentVillageCode
+
+                                selectedUlbCodeItem=x.permanentulbCode
+                                selectedWardCodeItem=x.permanentWardCode
+
+
+
+
+
+
+                                isPermanentStatus=x.isPresentAddressSame
+
+
+                                selectedStatePresentCodeItem=x.presentStateCode
+                                selectedDistrictPresentCodeItem=x.presentDistrictCode
+                                selectedBlockPresentCodeItem= x.presentBlcokCode
+                                selectedGpPresentCodeItem=x.presentGPCode
+                                selectedVillagePresentCodeItem=x.presentVillageCode
+
+
+                                selectedPreUlbCodeItem=x.presentUlbCode
+                                selectedPreWardCodeItem=x.presentWardCode
+
+
+                                addressPresentLine1=x.presentStreet1
+                                addressPresentLine2=x.presentStreet2
+                                pinCodePresent=x.presentPinCode
+
+                                addressLine1 = x.permanentStreet1
+                                addressLine2= x.permanentStreet2
+                                pinCode=x.permanentPinCode
+
+
+
                             }
 
 
-                            binding.etAdressLine.setText(x.permanentStreet1)
-                            binding.etAdressLine2.setText(x.permanentStreet2)
-                            binding.etPinCode.setText(x.permanentPinCode)
-                            val adreessStatus = x.isPresentAddressSame
-
-                            binding.etPresentAddressAdressLine.setText(x.presentStreet1)
-                            binding.etPresentLine2.setText(x.presentStreet2)
-                            binding.etPresentPinCode.setText(x.presentPinCode)
-
-                            handleStatus(binding.optionllSamePermanentYesSelect, binding.optionSamePermanentNoSelect, adreessStatus)
-
-
-                            selectedStateCodeItem  =  x.permanentStateCode
-                            selectedDistrictCodeItem= x.permanentDistrictCode
-                            selectedBlockCodeItem  = x.permanentBlcokCode
-                            selectedGpCodeItem = x.permanentGPCode
-                            selectedVillageCodeItem=  x.permanentVillageCode
-                            addressLine1 = x.presentStreet1
-                            addressLine2= x.presentStreet2
-                            pinCode=x.presentPinCode
-                            isPermanentStatus=x.isPresentAddressSame
-
-
-                            selectedStatePresentCodeItem=x.presentStateCode
-                            selectedDistrictPresentCodeItem=x.presentDistrictCode
-                            selectedBlockPresentCodeItem= x.presentBlcokCode
-                            selectedGpPresentCodeItem=x.presentGPCode
-                            selectedVillagePresentCodeItem=x.presentVillageCode
-
-
-                            addressPresentLine1=x.permanentStreet1
-                            addressPresentLine2=x.permanentStreet2
-                            pinCodePresent=x.permanentPinCode
 
 
                         }
@@ -2472,6 +2634,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictPresentLgdCodeItem = ""
                 selectedDistrictPresentItem = ""
 
+                selectedPreUlbCodeItem = ""
+                selectedPreUlbNameItem = ""
+
+                selectedPreWardCodeItem = ""
+                selectedPreWardNameItem = ""
+
+
+                wardPreName.clear()
+                wardPreCode.clear()
+                ulbPreName.clear()
+                ulbPreCode.clear()
+
+
+
+                selectedPreWardCodeItem = ""
+                selectedPreUlbCodeItem = ""
+
+                selectedPreWardNameItem = ""
+                selectedPreUlbNameItem = ""
+
+
+
+                binding.spinnerPresentAddressUlb.clearFocus()
+                binding.spinnerPresentAddressUlb.setText("", false)
+
+                binding.spinnerPresentAddressWard.clearFocus()
+                binding.spinnerPresentAddressWard.setText("", false)
+
 
                 binding.spinnerPresentAddressVillage.clearFocus()
                 binding.spinnerPresentAddressVillage.setText("", false)
@@ -2499,6 +2689,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getBlockListApi(selectedDistrictPresentCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
                 collectBlockResponse()
                 gpPresentAdapter.notifyDataSetChanged()
+
+                wardPreName.clear()
+                wardPreCode.clear()
+
+                commonViewModel.getUlbAPI(ULBReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),selectedDistrictPresentLgdCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+
+
                 selectedVillagePresentCodeItem = ""
                 selectedbVillagePresentLgdCodeItem = ""
                 selectedVillagePresentItem = ""
@@ -2508,6 +2705,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedBlockPresentCodeItem = ""
                 selectedbBlockPresentLgdCodeItem = ""
                 selectedBlockPresentItem = ""
+
+                selectedPreWardCodeItem = ""
+                selectedPreUlbCodeItem = ""
+
+                selectedPreWardNameItem = ""
+                selectedPreUlbNameItem = ""
+
+
+
+                binding.spinnerPresentAddressUlb.clearFocus()
+                binding.spinnerPresentAddressUlb.setText("", false)
+
+                binding.spinnerPresentAddressWard.clearFocus()
+                binding.spinnerPresentAddressWard.setText("", false)
+
+
 
 
                 binding.spinnerPresentAddressVillage.clearFocus()
@@ -2650,6 +2863,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             pinCode = binding.etPinCode.text.toString()
 
 
+            binding.llPresentAddressWard.gone()
+            binding.llPresentAddressUlb.gone()
+
             if (selectedTypeItem.isNotEmpty() && selectedTypeItem=="RURAL"){
                 if (selectedStateCodeItem.isNotEmpty() &&
                     selectedDistrictCodeItem.isNotEmpty() &&
@@ -2746,6 +2962,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     binding.llPresentAddressType.gone()
                     binding.llPresentAddressBlock.gone()
                     binding.llPresentAddressGp.gone()
+
                     binding.llPresentAddressVillage.gone()
                     binding.llPresentAddressAdressLine.gone()
                     binding.btnAddressSubmit.visible()
@@ -2812,7 +3029,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
-            toastLong("Clicked")
             addressLine1 = binding.etAdressLine.text.toString()
             addressLine2 = binding.etAdressLine2.text.toString()
             pinCode = binding.etPinCode.text.toString()
@@ -3770,6 +3986,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 addressPresentLine1 = binding.etPresentAddressAdressLine.text.toString()
                 addressPresentLine2 = binding.etPresentLine2.text.toString()
                 pinCodePresent = binding.etPresentPinCode.text.toString()
+
 
 
                 if (selectedPermanentTypeItem.isNotEmpty() && selectedPermanentTypeItem=="RURAL") {

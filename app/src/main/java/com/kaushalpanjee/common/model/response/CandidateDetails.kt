@@ -84,8 +84,15 @@ data class AddressDetail(
     val presentStreet2: String,
     val permanentBlcokCode: String,
 
-    val permanentUlbCode: String,
+    val permanentulbCode: String,
     val presentUlbCode: String,
+
+    val presentUlbName: String,
+    val presentWardName: String,
+
+
+    val permanentulbName: String,
+    val permanentWardName: String,
 
     val permanentWardCode: String,
     val presentWardCode: String,
@@ -93,7 +100,12 @@ data class AddressDetail(
 
     val permanentLocality: String,
     val presentLocality: String,
-)
+
+    val presentDistrictLgdCode: String,
+    val permanentDistrictLgdCode: String
+
+
+    )
 
 data class Secc(
     val seccDistrictCode: String,
