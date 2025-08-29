@@ -46,11 +46,13 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.ULBReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.VillageReq
+import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -78,9 +80,11 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.VillageResponse
+import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import retrofit2.http.Field
@@ -113,6 +117,13 @@ interface AppLevelApi {
                                     @Body techQualification: TechQualification):TechQualificationRes
 
 
+    @POST(ApiConstant.API_ULB)
+    suspend fun getUlbAPI(@Header("Authorization") token: String,
+                                    @Body ulbReq: ULBReq):UlbRes
+
+    @POST(ApiConstant.API_WARD)
+    suspend fun getWardAPI(@Header("Authorization") token: String,
+                          @Body wardReq: WardReq):WardRes
 
 
     @POST(ApiConstant.API_Update_CANDIDATE_EMAIL)

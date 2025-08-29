@@ -1272,7 +1272,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewAddress">
@@ -1379,7 +1379,7 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/select_type"
+                        android:text="@string/select_typen"
                         android:textColor="@color/color_dark_green" />
 
 
@@ -1438,7 +1438,7 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/ulb"
+                        android:text="@string/ulbn"
                         android:textColor="@color/color_dark_green" />
 
 
@@ -1497,7 +1497,7 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/ward"
+                        android:text="@string/wardn"
                         android:textColor="@color/color_dark_green" />
 
 
@@ -1687,7 +1687,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llVillage">
 
-                    <!-- Label -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1959,6 +1958,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llPresentAddressDistrict">
 

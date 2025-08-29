@@ -42,6 +42,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.transition.TransitionManager
 import android.util.Base64
 import android.util.Log
 import android.util.Patterns
@@ -55,6 +56,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
@@ -86,7 +88,9 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
+import com.kaushalpanjee.common.model.request.ULBReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.Address
 import com.kaushalpanjee.common.model.response.AddressDetail
 import com.kaushalpanjee.common.model.response.Bank
@@ -198,6 +202,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedTechEducationDomainCode = ""
     private var selectedTechEducationDate = ""
     private var selectedHeardABoutItem = ""
+    private var selectedUlbCodeItem = ""
+    private var selectedUlbNameItem = ""
+
+    private var selectedPreUlbCodeItem = ""
+    private var selectedPreUlbNameItem = ""
+
+    private var selectedWardCodeItem = ""
+    private var selectedWardNameItem = ""
+
+    private var selectedPreWardCodeItem = ""
+    private var selectedPreWardNameItem = ""
+
+
+
+
     private var selectedHeardABoutCode = ""
     private var selectedInterestedIn = ""
     private var selectedPrevCompleteTraining = ""
@@ -231,6 +250,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var jobCardNo= ""
     private var IfscCode= ""
     private var BankName= ""
+    private var selectedTypeItem= ""
+    private var selectedPermanentTypeItem= ""
     private var BranchName= ""
     private var PanNumber= ""
     private var BankAcNo= ""
@@ -371,7 +392,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesCode = ArrayList<String>()
     private var courseesDomainName = ArrayList<String>()
     private var courseesDomainCode = ArrayList<String>()
-
     private var statePer = ArrayList<String>()
     private var districtPer = ArrayList<String>()
     private var blockPer = ArrayList<String>()
@@ -439,6 +459,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     //Value for dropdown
     private val categoryList = listOf("SC", "ST", "OBC", "OTHER")
+    private val typeList = listOf("URBAN", "RURAL")
+    private lateinit var typeAdapter: ArrayAdapter<String>
+    private lateinit var ulbAdapter: ArrayAdapter<String>
+    private var ulbName = ArrayList<String>()
+    private var ulbCode = ArrayList<String>()
+
+    private lateinit var wardAdapter: ArrayAdapter<String>
+    private var wardName = ArrayList<String>()
+    private var wardCode = ArrayList<String>()
+
+
+
+    private lateinit var ulbPreAdapter: ArrayAdapter<String>
+    private var ulbPreName = ArrayList<String>()
+    private var ulbPreCode = ArrayList<String>()
+
+    private lateinit var wardPreAdapter: ArrayAdapter<String>
+    private var wardPreName = ArrayList<String>()
+    private var wardPreCode = ArrayList<String>()
+
+    private lateinit var typePresentAdapter: ArrayAdapter<String>
+
+
     private val maritalList = listOf("Married", "Unmarried", "Divorce")
     private val highestEducationList =
         listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
@@ -464,6 +507,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectDistrictResponse()
         collectBlockResponse()
         collectGpResponse()
+        collectValidateOtpResponse()
+        collectUpdateEmailResponse()
         collectVillageResponse()
         collectShgValidateResponse()
         collectTechEducationDomainResponse()
@@ -471,7 +516,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTechEducationResponse()
         collectSeccListResponse()
         collectSetionAndPerResponse()
-        //collectBankResponse()
+        collectUlbResponse()
+        collectWardResponse()
         collectNregaValidateResponse()
         collectTradeResponse()
         collectSendEmailOTPResponse()
@@ -524,6 +570,243 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     @SuppressLint("SetTextI18n", "CheckResult", "SuspiciousIndentation")
     private fun listener() {
+
+
+
+
+
+
+
+
+        binding.spinnerType.setOnItemClickListener { parent, view, position, id ->
+            selectedTypeItem = parent.getItemAtPosition(position).toString()
+
+
+            selectedUlbCodeItem = ""
+            selectedUlbNameItem = ""
+            binding.spinnerUlb.clearFocus()
+            binding.spinnerUlb.setText("", false)
+
+
+            selectedWardCodeItem= ""
+            selectedWardNameItem = ""
+            binding.spinnerWard.clearFocus()
+            binding.spinnerWard.setText("", false)
+
+
+
+
+
+
+
+
+
+
+
+            selectedBlockCodeItem = ""
+            selectedbBlockLgdCodeItem = ""
+            selectedBlockItem = ""
+            binding.spinnerBlock.clearFocus()
+            binding.spinnerBlock.setText("", false)
+
+
+
+
+
+            selectedGpCodeItem = ""
+            selectedbGpLgdCodeItem = ""
+            selectedGpItem = ""
+            binding.spinnerGp.clearFocus()
+            binding.spinnerGp.setText("", false)
+
+
+
+            binding.spinnerPresentAddressGp.clearFocus()
+            binding.spinnerPresentAddressGp.setText("", false)
+
+
+            selectedVillageCodeItem = ""
+            selectedbVillageLgdCodeItem = ""
+            selectedVillageItem = ""
+            binding.spinnerVillage.clearFocus()
+            binding.spinnerVillage.setText("", false)
+
+
+
+
+
+            selectedPreUlbCodeItem = ""
+            selectedPreUlbNameItem = ""
+            binding.spinnerPresentAddressUlb.clearFocus()
+            binding.spinnerPresentAddressUlb.setText("", false)
+
+
+            selectedPreWardCodeItem= ""
+            selectedPreWardNameItem = ""
+            binding.spinnerPresentAddressWard.clearFocus()
+            binding.spinnerPresentAddressWard.setText("", false)
+
+
+
+
+            selectedVillagePresentCodeItem = ""
+            selectedbVillagePresentLgdCodeItem = ""
+            selectedVillagePresentItem = ""
+            selectedDistrictPresentCodeItem = ""
+            selectedDistrictPresentLgdCodeItem = ""
+            selectedDistrictPresentItem = ""
+            selectedGpPresentCodeItem = ""
+            selectedbGpPresentLgdCodeItem = ""
+            selectedGpPresentItem = ""
+            selectedBlockPresentCodeItem = ""
+            selectedbBlockPresentLgdCodeItem = ""
+            selectedBlockPresentItem = ""
+            selectedDistrictPresentCodeItem = ""
+            selectedDistrictPresentLgdCodeItem = ""
+            selectedDistrictPresentItem = ""
+
+
+            binding.spinnerPresentAddressVillage.clearFocus()
+            binding.spinnerPresentAddressVillage.setText("", false)
+            binding.spinnerPresentAddressDistrict.clearFocus()
+            binding.spinnerPresentAddressDistrict.setText("", false)
+            binding.SpinnerPresentAddressStateName.clearFocus()
+            binding.SpinnerPresentAddressStateName.setText("", false)
+            binding.spinnerPresentAddressBlock.clearFocus()
+            binding.spinnerPresentAddressBlock.setText("", false)
+
+
+
+            if (selectedTypeItem.isNotEmpty()) {
+
+                // First update visibilities
+                if (selectedTypeItem == "URBAN") {
+                    binding.llBlock.visibility = View.GONE
+                    binding.llGp.visibility = View.GONE
+                    binding.llVillage.visibility = View.GONE
+                    binding.llWard.visibility = View.VISIBLE
+                    binding.llUlb.visibility = View.VISIBLE
+                } else {
+                    binding.llBlock.visibility = View.VISIBLE
+                    binding.llGp.visibility = View.VISIBLE
+                    binding.llVillage.visibility = View.VISIBLE
+                    binding.llWard.visibility = View.GONE
+                    binding.llUlb.visibility = View.GONE
+                }
+
+                // Then update constraints
+                val constraintSet = ConstraintSet()
+                constraintSet.clone(binding.expandAddress)
+
+                // Clear old constraint
+                constraintSet.clear(binding.llAdressLine.id, ConstraintSet.TOP)
+
+                // Add new constraint
+                val targetId = if (selectedTypeItem == "URBAN") {
+                    binding.llWard.id
+                } else {
+                    binding.llVillage.id
+                }
+
+                constraintSet.connect(
+                    binding.llAdressLine.id,
+                    ConstraintSet.TOP,
+                    targetId,
+                    ConstraintSet.BOTTOM
+                )
+
+                // Apply transition and new constraints
+                TransitionManager.beginDelayedTransition(binding.expandAddress)
+                constraintSet.applyTo(binding.expandAddress)
+            }
+        }
+
+
+        binding.spinnerPresentAddressType.setOnItemClickListener { parent, view, position, id ->
+            selectedPermanentTypeItem = parent.getItemAtPosition(position).toString()
+
+
+
+
+            selectedPreUlbCodeItem = ""
+            selectedPreUlbNameItem = ""
+            binding.spinnerPresentAddressUlb.clearFocus()
+            binding.spinnerPresentAddressUlb.setText("", false)
+
+
+            selectedPreWardCodeItem= ""
+            selectedPreWardNameItem = ""
+            binding.spinnerPresentAddressWard.clearFocus()
+            binding.spinnerPresentAddressWard.setText("", false)
+
+
+
+
+            selectedVillagePresentCodeItem = ""
+            selectedbVillagePresentLgdCodeItem = ""
+            selectedVillagePresentItem = ""
+            selectedGpPresentCodeItem = ""
+            selectedbGpPresentLgdCodeItem = ""
+            selectedGpPresentItem = ""
+            selectedBlockPresentCodeItem = ""
+            selectedbBlockPresentLgdCodeItem = ""
+            selectedBlockPresentItem = ""
+
+
+
+            binding.spinnerPresentAddressVillage.clearFocus()
+            binding.spinnerPresentAddressVillage.setText("", false)
+            binding.SpinnerPresentAddressStateName.clearFocus()
+            binding.SpinnerPresentAddressStateName.setText("", false)
+            binding.spinnerPresentAddressBlock.clearFocus()
+            binding.spinnerPresentAddressBlock.setText("", false)
+
+
+
+
+            if (selectedPermanentTypeItem.isNotEmpty()) {
+
+                // First update visibility
+                if (selectedPermanentTypeItem == "URBAN") {
+                    binding.llPresentAddressBlock.visibility = View.GONE
+                    binding.llPresentAddressGp.visibility = View.GONE
+                    binding.llPresentAddressVillage.visibility = View.GONE
+                    binding.llPresentAddressWard.visibility = View.VISIBLE
+                    binding.llPresentAddressUlb.visibility = View.VISIBLE
+                } else {
+                    binding.llPresentAddressBlock.visibility = View.VISIBLE
+                    binding.llPresentAddressGp.visibility = View.VISIBLE
+                    binding.llPresentAddressVillage.visibility = View.VISIBLE
+                    binding.llPresentAddressWard.visibility = View.GONE
+                    binding.llPresentAddressUlb.visibility = View.GONE
+                }
+
+                // Now clone layout and adjust constraints
+                val constraintSet = ConstraintSet()
+                constraintSet.clone(binding.expandAddress)
+
+                // Clear old constraint
+                constraintSet.clear(binding.llPresentAddressAdressLine.id, ConstraintSet.TOP)
+
+                // Set new constraint target
+                val topView = if (selectedPermanentTypeItem == "URBAN") {
+                    binding.llPresentAddressWard.id
+                } else {
+                    binding.llPresentAddressVillage.id
+                }
+
+                constraintSet.connect(
+                    binding.llPresentAddressAdressLine.id,
+                    ConstraintSet.TOP,
+                    topView,
+                    ConstraintSet.BOTTOM
+                )
+
+                // Apply the constraint changes with animation
+                TransitionManager.beginDelayedTransition(binding.expandAddress)
+                constraintSet.applyTo(binding.expandAddress)
+            }
+        }
 
 
 
@@ -584,10 +867,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llPresentAddressState.gone()
         binding.llPresentAddressDistrict.gone()
+        binding.llPresentAddressType.gone()
         binding.llPresentAddressBlock.gone()
         binding.llPresentAddressGp.gone()
         binding.llPresentAddressVillage.gone()
         binding.llPresentAddressAdressLine.gone()
+
+
+
+
+
+
+
+
 
 
         //Adapter Category
@@ -834,6 +1126,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         binding.spinnerHeardAboutddugky.setAdapter(HeardAdapter)
+
+
+
+        typeAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            typeList
+        )
+
+        binding.spinnerType.setAdapter(typeAdapter)
+
+
+
+
+        ulbAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            ulbName
+        )
+
+        binding.spinnerUlb.setAdapter(ulbAdapter)
+
+
+        wardAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            wardName
+        )
+
+        binding.spinnerWard.setAdapter(wardAdapter)
+
+
+
+
+        ulbPreAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            ulbPreName
+        )
+
+        binding.spinnerPresentAddressUlb.setAdapter(ulbPreAdapter)
+
+
+        wardPreAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            wardPreName
+        )
+
+        binding.spinnerPresentAddressWard.setAdapter(wardPreAdapter)
+
+
+
+        typePresentAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            typeList
+        )
+
+        binding.spinnerPresentAddressType.setAdapter(typePresentAdapter)
+
+
+
 
 
         binding.profileView.viewDetails.setText(R.string.view_profile)
@@ -1141,13 +1496,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                   setDropdownValue(binding.spinnerPresentAddressGp, x.presentGPName, gpPer)
                                   setDropdownValue(binding.spinnerPresentAddressVillage, x.presentVillageName, villagePer)
 
-
   */
-
                             }
-
-
-
 
 
                             binding.etAdressLine.setText(x.permanentStreet1)
@@ -1567,6 +1917,177 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             } else toastShort("Wrong Selection")
         }
 
+
+        binding.spinnerUlb.setOnItemClickListener { parent, view, position, id ->
+            binding.spinnerUlb.clearFocus()
+            selectedUlbNameItem = parent.getItemAtPosition(position).toString()
+
+            if (position in ulbName.indices) {
+                selectedUlbCodeItem = ulbCode[position]
+
+                commonViewModel.getWardAPI(WardReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),selectedUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+
+                selectedWardCodeItem= ""
+                selectedWardNameItem = ""
+                binding.spinnerWard.clearFocus()
+                binding.spinnerWard.setText("", false)
+
+
+                selectedBlockCodeItem = ""
+                selectedbBlockLgdCodeItem = ""
+                selectedBlockItem = ""
+                binding.spinnerBlock.clearFocus()
+                binding.spinnerBlock.setText("", false)
+
+
+
+
+
+                selectedGpCodeItem = ""
+                selectedbGpLgdCodeItem = ""
+                selectedGpItem = ""
+                binding.spinnerGp.clearFocus()
+                binding.spinnerGp.setText("", false)
+
+
+
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+
+
+
+            } else toastShort("Wrong Selection")
+        }
+
+
+
+
+        binding.spinnerWard.setOnItemClickListener { parent, view, position, id ->
+            binding.spinnerWard.clearFocus()
+            selectedWardNameItem = parent.getItemAtPosition(position).toString()
+
+            if (position in wardName.indices) {
+                selectedWardCodeItem = wardCode[position]
+
+
+
+
+                selectedBlockCodeItem = ""
+                selectedbBlockLgdCodeItem = ""
+                selectedBlockItem = ""
+                binding.spinnerBlock.clearFocus()
+                binding.spinnerBlock.setText("", false)
+
+
+
+
+
+                selectedGpCodeItem = ""
+                selectedbGpLgdCodeItem = ""
+                selectedGpItem = ""
+                binding.spinnerGp.clearFocus()
+                binding.spinnerGp.setText("", false)
+
+
+
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentItem = ""
+                selectedPreUlbNameItem = ""
+                selectedPreUlbCodeItem = ""
+                selectedPreWardCodeItem = ""
+                selectedPreWardCodeItem = ""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+
+                binding.spinnerPresentAddressUlb.clearFocus()
+                binding.spinnerPresentAddressUlb.setText("", false)
+                binding.spinnerPresentAddressWard.clearFocus()
+                binding.spinnerPresentAddressWard.setText("", false)
+
+
+
+            } else toastShort("Wrong Selection")
+        }
+
+
+
+        binding.spinnerPresentAddressUlb.setOnItemClickListener { parent, view, position, id ->
+            binding.spinnerPresentAddressUlb.clearFocus()
+            selectedPreUlbNameItem = parent.getItemAtPosition(position).toString()
+
+            if (position in ulbPreName.indices) {
+                selectedPreUlbCodeItem = ulbPreCode[position]
+
+                commonViewModel.getWardAPI(WardReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),selectedPreUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+
+            } else toastShort("Wrong Selection")
+        }
+
+
+
         // Secc State selection
 
 
@@ -1686,7 +2207,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedDistrictCodeItem = districtCode[position]
                 selectedDistrictLgdCodeItem = districtLgdCode[position]
                 commonViewModel.getBlockListApi(selectedDistrictCodeItem,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
+
+
+                commonViewModel.getUlbAPI(ULBReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),selectedDistrictLgdCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+
                 gpAdapter.notifyDataSetChanged()
+                ulbAdapter.notifyDataSetChanged()
+
+
+                selectedUlbCodeItem = ""
+                selectedUlbNameItem = ""
+                binding.spinnerUlb.clearFocus()
+                binding.spinnerUlb.setText("", false)
+
+
+
+                selectedWardCodeItem= ""
+                selectedWardNameItem = ""
+                binding.spinnerWard.clearFocus()
+                binding.spinnerWard.setText("", false)
+
 
                 selectedBlockCodeItem = ""
                 selectedbBlockLgdCodeItem = ""
@@ -2110,71 +2650,160 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             pinCode = binding.etPinCode.text.toString()
 
 
-
-            if (selectedStateCodeItem.isNotEmpty() &&
-                selectedDistrictCodeItem.isNotEmpty() &&
-                selectedBlockCodeItem.isNotEmpty() &&
-                selectedGpCodeItem.isNotEmpty() &&
-                selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
-                && pinCode.isNotEmpty()
-            ) {
-
-
-                binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
-                binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
-
-                isClickedPermanentYes = true
-                isClickedPermanentNo = false
-                isPermanentStatus = "Yes"
-
-                binding.llPresentAddressState.gone()
-                binding.llPresentAddressDistrict.gone()
-                binding.llPresentAddressBlock.gone()
-                binding.llPresentAddressGp.gone()
-                binding.llPresentAddressVillage.gone()
-                binding.llPresentAddressAdressLine.gone()
-                binding.btnAddressSubmit.visible()
-
-                addressPresentLine1 = addressLine1
-                addressPresentLine2 = addressLine2
-                pinCodePresent = pinCode
+            if (selectedTypeItem.isNotEmpty() && selectedTypeItem=="RURAL"){
+                if (selectedStateCodeItem.isNotEmpty() &&
+                    selectedDistrictCodeItem.isNotEmpty() &&
+                    selectedBlockCodeItem.isNotEmpty() &&
+                    selectedGpCodeItem.isNotEmpty() &&
+                    selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
+                    && pinCode.isNotEmpty()
+                ) {
 
 
-                //Set State Value
-                selectedStatePresentCodeItem = selectedStateCodeItem
-                selectedStatePresentLgdCodeItem = selectedStateLgdCodeItem
-                selectedStatePresentItem = selectedStateItem
+                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+
+                    isClickedPermanentYes = true
+                    isClickedPermanentNo = false
+                    isPermanentStatus = "Yes"
+
+                    binding.llPresentAddressState.gone()
+                    binding.llPresentAddressDistrict.gone()
+                    binding.llPresentAddressType.gone()
+                    binding.llPresentAddressBlock.gone()
+                    binding.llPresentAddressGp.gone()
+                    binding.llPresentAddressVillage.gone()
+                    binding.llPresentAddressAdressLine.gone()
+                    binding.llPresentAddressWard.gone()
+                    binding.llPresentAddressUlb.gone()
+                    binding.btnAddressSubmit.visible()
+
+                    addressPresentLine1 = addressLine1
+                    addressPresentLine2 = addressLine2
+                    pinCodePresent = pinCode
 
 
-                //Set District Value
-
-                selectedDistrictPresentCodeItem = selectedDistrictCodeItem
-                selectedDistrictPresentLgdCodeItem = selectedDistrictLgdCodeItem
-                selectedDistrictPresentItem = selectedDistrictItem
-
-                //Set Block Value
-
-                selectedBlockPresentCodeItem = selectedBlockCodeItem
-                selectedbBlockPresentLgdCodeItem = selectedbBlockLgdCodeItem
-                selectedBlockPresentItem = selectedBlockItem
-
-                //Set GP Value
-                selectedGpPresentCodeItem = selectedGpCodeItem
-                selectedbGpPresentLgdCodeItem = selectedbGpLgdCodeItem
-                selectedGpPresentItem = selectedGpItem
+                    //Set State Value
+                    selectedStatePresentCodeItem = selectedStateCodeItem
+                    selectedStatePresentLgdCodeItem = selectedStateLgdCodeItem
+                    selectedStatePresentItem = selectedStateItem
 
 
-                //Set Village Value
-                selectedVillagePresentCodeItem = selectedVillageCodeItem
-                selectedbVillagePresentLgdCodeItem = selectedbVillageLgdCodeItem
-                selectedVillagePresentItem = selectedVillageItem
+                    //Set District Value
 
-                //others
+                    selectedDistrictPresentCodeItem = selectedDistrictCodeItem
+                    selectedDistrictPresentLgdCodeItem = selectedDistrictLgdCodeItem
+                    selectedDistrictPresentItem = selectedDistrictItem
+
+                    //Set Block Value
+
+                    selectedBlockPresentCodeItem = selectedBlockCodeItem
+                    selectedbBlockPresentLgdCodeItem = selectedbBlockLgdCodeItem
+                    selectedBlockPresentItem = selectedBlockItem
+
+                    //Set GP Value
+                    selectedGpPresentCodeItem = selectedGpCodeItem
+                    selectedbGpPresentLgdCodeItem = selectedbGpLgdCodeItem
+                    selectedGpPresentItem = selectedGpItem
 
 
-            } else
+                    //Set Village Value
+                    selectedVillagePresentCodeItem = selectedVillageCodeItem
+                    selectedbVillagePresentLgdCodeItem = selectedbVillageLgdCodeItem
+                    selectedVillagePresentItem = selectedVillageItem
 
-                toastLong("Please Complete Your Permanent Address First")
+                    //others
+
+
+                }
+
+                else
+
+                    toastLong("Please Complete Your Permanent Address First")
+
+            }
+
+            else if (selectedTypeItem.isNotEmpty() && selectedTypeItem=="URBAN"){
+
+                if (selectedStateCodeItem.isNotEmpty() &&
+                    selectedDistrictCodeItem.isNotEmpty() &&
+                    selectedUlbCodeItem.isNotEmpty() &&
+                    selectedWardCodeItem.isNotEmpty()
+                    && addressLine1.isNotEmpty()
+                    && pinCode.isNotEmpty()
+                ) {
+
+
+                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+
+                    isClickedPermanentYes = true
+                    isClickedPermanentNo = false
+                    isPermanentStatus = "Yes"
+
+                    binding.llPresentAddressState.gone()
+                    binding.llPresentAddressDistrict.gone()
+                    binding.llPresentAddressType.gone()
+                    binding.llPresentAddressBlock.gone()
+                    binding.llPresentAddressGp.gone()
+                    binding.llPresentAddressVillage.gone()
+                    binding.llPresentAddressAdressLine.gone()
+                    binding.btnAddressSubmit.visible()
+
+                    addressPresentLine1 = addressLine1
+                    addressPresentLine2 = addressLine2
+                    pinCodePresent = pinCode
+
+
+                    //Set State Value
+                    selectedStatePresentCodeItem = selectedStateCodeItem
+                    selectedStatePresentLgdCodeItem = selectedStateLgdCodeItem
+                    selectedStatePresentItem = selectedStateItem
+
+
+                    //Set District Value
+
+                    selectedDistrictPresentCodeItem = selectedDistrictCodeItem
+                    selectedDistrictPresentLgdCodeItem = selectedDistrictLgdCodeItem
+                    selectedDistrictPresentItem = selectedDistrictItem
+
+                   /* //Set Block Value
+
+                    selectedBlockPresentCodeItem = selectedBlockCodeItem
+                    selectedbBlockPresentLgdCodeItem = selectedbBlockLgdCodeItem
+                    selectedBlockPresentItem = selectedBlockItem
+
+                    //Set GP Value
+                    selectedGpPresentCodeItem = selectedGpCodeItem
+                    selectedbGpPresentLgdCodeItem = selectedbGpLgdCodeItem
+                    selectedGpPresentItem = selectedGpItem
+
+
+                    //Set Village Value
+                    selectedVillagePresentCodeItem = selectedVillageCodeItem
+                    selectedbVillagePresentLgdCodeItem = selectedbVillageLgdCodeItem
+                    selectedVillagePresentItem = selectedVillageItem
+*/
+
+                    //Set Urban Value
+                    selectedPreUlbCodeItem = selectedUlbCodeItem
+                    selectedPreUlbNameItem= selectedUlbNameItem
+
+
+                    //Set ward Value
+                    selectedPreWardCodeItem = selectedWardCodeItem
+                    selectedPreWardNameItem= selectedWardNameItem
+                   selectedPermanentTypeItem = selectedTypeItem
+
+
+
+                }
+
+                else
+
+                    toastLong("Please Complete Your Permanent Address First")
+            }
+
 
 
         }
@@ -2183,79 +2812,170 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
-
+            toastLong("Clicked")
             addressLine1 = binding.etAdressLine.text.toString()
             addressLine2 = binding.etAdressLine2.text.toString()
             pinCode = binding.etPinCode.text.toString()
 
-            if (selectedStateCodeItem.isNotEmpty() &&
-                selectedDistrictCodeItem.isNotEmpty() &&
-                selectedBlockCodeItem.isNotEmpty() &&
-                selectedGpCodeItem.isNotEmpty() &&
-                selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
-              && pinCode.isNotEmpty()
-            ) {
+            if (selectedTypeItem.isNotEmpty() && selectedTypeItem=="RURAL"){
 
 
-                isClickedPermanentNo = true
-                isClickedPermanentYes = false
-                isPermanentStatus = "No"
-
-                binding.btnAddressSubmit.visible()
-
-                district.clear()
-                block.clear()
-                gp.clear()
-                village.clear()
-
-                binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
-                binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+                if (selectedStateCodeItem.isNotEmpty() &&
+                    selectedDistrictCodeItem.isNotEmpty() &&
+                    selectedBlockCodeItem.isNotEmpty() &&
+                    selectedGpCodeItem.isNotEmpty() &&
+                    selectedVillageCodeItem.isNotEmpty() && addressLine1.isNotEmpty()
+                    && pinCode.isNotEmpty()
+                ) {
 
 
-                binding.llPresentAddressState.visible()
-                binding.llPresentAddressDistrict.visible()
-                binding.llPresentAddressBlock.visible()
-                binding.llPresentAddressGp.visible()
-                binding.llPresentAddressVillage.visible()
-                binding.llPresentAddressAdressLine.visible()
+                    isClickedPermanentNo = true
+                    isClickedPermanentYes = false
+                    isPermanentStatus = "No"
 
-                //Set State Value
-                selectedStatePresentCodeItem = ""
-                selectedStatePresentLgdCodeItem = ""
-                selectedStatePresentItem = ""
+                    binding.btnAddressSubmit.visible()
 
+                    district.clear()
+                    block.clear()
+                    gp.clear()
+                    village.clear()
+                    ulbName.clear()
+                    ulbCode.clear()
+                    wardCode.clear()
+                    wardName.clear()
 
-                //Set District Value
-
-                selectedDistrictPresentCodeItem = ""
-                selectedDistrictPresentLgdCodeItem = ""
-                selectedDistrictPresentItem = ""
-
-                //Set Block Value
-
-                selectedBlockPresentCodeItem = ""
-                selectedbBlockPresentLgdCodeItem = ""
-                selectedBlockPresentItem = ""
-
-                //Set GP Value
-                selectedGpPresentCodeItem = ""
-                selectedbGpPresentLgdCodeItem = ""
-                selectedGpPresentItem = ""
+                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
 
 
-                //Set Village Value
-                selectedVillagePresentCodeItem = ""
-                selectedbVillagePresentLgdCodeItem = ""
-                selectedVillagePresentItem = ""
+                    binding.llPresentAddressState.visible()
+                    binding.llPresentAddressDistrict.visible()
+                    binding.llPresentAddressBlock.visible()
+                    binding.llPresentAddressType.visible()
+                    binding.llPresentAddressGp.visible()
+                    binding.llPresentAddressVillage.visible()
+                    binding.llPresentAddressAdressLine.visible()
+
+                    //Set State Value
+                    selectedStatePresentCodeItem = ""
+                    selectedStatePresentLgdCodeItem = ""
+                    selectedStatePresentItem = ""
 
 
-                //others
+                    //Set District Value
 
-                addressPresentLine1 = ""
-                addressPresentLine2 = ""
-                pinCodePresent = ""
-            } else
-                toastLong("Please Complete Your Permanent Address First")
+                    selectedDistrictPresentCodeItem = ""
+                    selectedDistrictPresentLgdCodeItem = ""
+                    selectedDistrictPresentItem = ""
+
+                    //Set Block Value
+
+                    selectedBlockPresentCodeItem = ""
+                    selectedbBlockPresentLgdCodeItem = ""
+                    selectedBlockPresentItem = ""
+
+                    //Set GP Value
+                    selectedGpPresentCodeItem = ""
+                    selectedbGpPresentLgdCodeItem = ""
+                    selectedGpPresentItem = ""
+
+
+                    //Set Village Value
+                    selectedVillagePresentCodeItem = ""
+                    selectedbVillagePresentLgdCodeItem = ""
+                    selectedVillagePresentItem = ""
+
+
+                    //others
+
+                    addressPresentLine1 = ""
+                    addressPresentLine2 = ""
+                    pinCodePresent = ""
+                } else
+                    toastLong("Please Complete Your Permanent Address First")
+            }
+
+
+            else if (selectedTypeItem.isNotEmpty() && selectedTypeItem=="URBAN"){
+
+                if (selectedStateCodeItem.isNotEmpty() &&
+                    selectedDistrictCodeItem.isNotEmpty() &&
+                    selectedUlbCodeItem.isNotEmpty() &&
+                    selectedWardCodeItem.isNotEmpty()
+                    && addressLine1.isNotEmpty()
+                    && pinCode.isNotEmpty()
+                ) {
+
+
+                    isClickedPermanentNo = true
+                    isClickedPermanentYes = false
+                    isPermanentStatus = "No"
+
+                    binding.btnAddressSubmit.visible()
+
+                    district.clear()
+                    block.clear()
+                    gp.clear()
+                    village.clear()
+                    ulbName.clear()
+                    ulbCode.clear()
+                    wardCode.clear()
+                    wardName.clear()
+
+                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
+                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+
+
+                    binding.llPresentAddressState.visible()
+                    binding.llPresentAddressDistrict.visible()
+                    binding.llPresentAddressBlock.visible()
+                    binding.llPresentAddressType.visible()
+                    binding.llPresentAddressGp.visible()
+                    binding.llPresentAddressVillage.visible()
+                    binding.llPresentAddressAdressLine.visible()
+
+                    //Set State Value
+                    selectedStatePresentCodeItem = ""
+                    selectedStatePresentLgdCodeItem = ""
+                    selectedStatePresentItem = ""
+
+
+                    //Set District Value
+
+                    selectedDistrictPresentCodeItem = ""
+                    selectedDistrictPresentLgdCodeItem = ""
+                    selectedDistrictPresentItem = ""
+
+                    //Set Block Value
+
+                    selectedBlockPresentCodeItem = ""
+                    selectedbBlockPresentLgdCodeItem = ""
+                    selectedBlockPresentItem = ""
+
+                    //Set GP Value
+                    selectedGpPresentCodeItem = ""
+                    selectedbGpPresentLgdCodeItem = ""
+                    selectedGpPresentItem = ""
+
+
+                    //Set Village Value
+                    selectedVillagePresentCodeItem = ""
+                    selectedbVillagePresentLgdCodeItem = ""
+                    selectedVillagePresentItem = ""
+
+
+                    //others
+
+                    addressPresentLine1 = ""
+                    addressPresentLine2 = ""
+                    pinCodePresent = ""
+                }
+
+                else
+
+                    toastLong("Please Complete Your Permanent Address First")
+            }
+
 
 
         }
@@ -3035,6 +3755,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnAddressSubmit.setOnClickListener {
 
+            if (residenceImage.isNull){
+
+                residenceImage= "N/A"
+
+            }
+
+
             addressLine1 = binding.etAdressLine.text.toString()
             addressLine2 = binding.etAdressLine2.text.toString()
             pinCode = binding.etPinCode.text.toString()
@@ -3045,37 +3772,96 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 pinCodePresent = binding.etPresentPinCode.text.toString()
 
 
+                if (selectedPermanentTypeItem.isNotEmpty() && selectedPermanentTypeItem=="RURAL") {
+
+                    if (selectedStateCodeItem.isNotEmpty() &&
+                        selectedDistrictCodeItem.isNotEmpty() &&
+                        selectedBlockCodeItem.isNotEmpty() &&
+                        selectedGpCodeItem.isNotEmpty() &&
+                        selectedVillageCodeItem.isNotEmpty() &&
+                        selectedStatePresentCodeItem.isNotEmpty() &&
+                        selectedDistrictPresentCodeItem.isNotEmpty() &&
+                        selectedBlockPresentCodeItem.isNotEmpty() &&
+                        selectedGpPresentCodeItem.isNotEmpty() &&
+                        selectedVillagePresentCodeItem.isNotEmpty() && addressLine1.isNotEmpty() &&
+                        pinCode.isNotEmpty() && addressPresentLine1.isNotEmpty() &&
+                        pinCodePresent.isNotEmpty()
+                    ) {
+
+                        // Hit The Insert API
+
+                        commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
+
+                            selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
+                            addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
+                            addressPresentLine1,addressPresentLine2,pinCodePresent,selectedTypeItem,selectedPermanentTypeItem,selectedUlbCodeItem,selectedWardCodeItem,selectedPreWardCodeItem,selectedPreUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+
+
+
+
+                        collectInsertAddressResponse()
+
+                    }
+
+                    else toastLong("Please complete your address first")
+
+                }
+
+                else if (selectedPermanentTypeItem.isNotEmpty() && selectedPermanentTypeItem=="URBAN")
+                {
+
+
+                    if (selectedStateCodeItem.isNotEmpty() &&
+                        selectedDistrictCodeItem.isNotEmpty() &&
+                        selectedPreUlbCodeItem.isNotEmpty() &&
+                        selectedPreWardCodeItem.isNotEmpty()
+                        && addressLine1.isNotEmpty() &&
+                        pinCode.isNotEmpty() &&
+                        addressPresentLine1.isNotEmpty() &&
+                        pinCodePresent.isNotEmpty()
+                    ) {
+
+                        // Hit The Insert API
+
+                        commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
+
+                            selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
+                            addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
+                            addressPresentLine1,addressPresentLine2,pinCodePresent,selectedTypeItem,selectedPermanentTypeItem,selectedUlbCodeItem,selectedWardCodeItem,selectedPreWardCodeItem,selectedPreUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
+
+
+
+
+
+
+                        collectInsertAddressResponse()
+
+                    }
+
+                    else toastLong("Please complete your address first")
+
+                }
+
+
+
             }
 
 
-            if (selectedStateCodeItem.isNotEmpty() &&
-                selectedDistrictCodeItem.isNotEmpty() &&
-                selectedBlockCodeItem.isNotEmpty() &&
-                selectedGpCodeItem.isNotEmpty() &&
-                selectedVillageCodeItem.isNotEmpty() &&
-                selectedStatePresentCodeItem.isNotEmpty() &&
-                selectedDistrictPresentCodeItem.isNotEmpty() &&
-                selectedBlockPresentCodeItem.isNotEmpty() &&
-                selectedGpPresentCodeItem.isNotEmpty() &&
-                selectedVillagePresentCodeItem.isNotEmpty() && addressLine1.isNotEmpty() &&
-                pinCode.isNotEmpty() && addressPresentLine1.isNotEmpty() &&
-                pinCodePresent.isNotEmpty()
-            ) {
-
-                // Hit The Insert API
+            else{
 
                 commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
 
                     selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
                     addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
-                    addressPresentLine1,addressPresentLine2,pinCodePresent),AppUtil.getSavedTokenPreference(requireContext()))
-
-
-
+                    addressPresentLine1,addressPresentLine2,pinCodePresent,selectedTypeItem,selectedPermanentTypeItem,selectedUlbCodeItem,selectedWardCodeItem,selectedPreWardCodeItem,selectedPreUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
 
                 collectInsertAddressResponse()
+            }
 
-            } else toastLong("Please complete your address first")
+
+
+
+
         }
 
         binding.btnSeccSubmit.setOnClickListener {
@@ -3361,6 +4147,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
+
                             toastShort(baseErrorResponse.message)
                         }
                     }
@@ -5317,7 +6104,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         bottomSheetDialog?.setContentView(view)
 
         val emailEditText = view.findViewById<EditText>(R.id.emailEditText)
-        val updateButton = view.findViewById<TextView>(R.id.saveEmailButton)
         val tvTimer = view.findViewById<TextView>(R.id.tvTimer)
         val tvSendOtpAgain = view.findViewById<TextView>(R.id.tvSendOtpAgain)
         val saveButton = view.findViewById<ImageButton>(R.id.centerButton)
@@ -5344,7 +6130,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     )
                 )
                 clOTP.visible()
-                updateButton.visible()
                 saveButton.gone()
                 countDownTimer?.let {
                     it.cancel()
@@ -5393,23 +6178,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-        updateButton.setOnClickListener {
-
-          //  validateAndNavigate()
-
-            et1.text.clear()
-            et2.text.clear()
-            et3.text.clear()
-            et4.text.clear()
-        }
-
         setupOtpEditTexts(et1, et2, et3, et4) { otp ->
 
 
             commonViewModel.getOtpValidateApi(ValidateOtpReq(BuildConfig.VERSION_NAME, newEmail,"",AppUtil.getAndroidId(requireContext()),otp))
-            collectValidateOtpResponse()
 
-            Toast.makeText(requireContext(), "OTP = $otp", Toast.LENGTH_SHORT).show()
         }
 
         tvSendOtpAgain.setOnClickListener {
@@ -5568,7 +6341,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getOtpValidateApi.responseCode == 200) {
 
                                 commonViewModel.getUpdateEmailAPI(AppUtil.getSavedTokenPreference(requireContext()),BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),newEmail)
-                                collectUpdateEmailResponse()
 
                             } else if (getOtpValidateApi.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
@@ -5617,19 +6389,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             if (getOtpValidateApi.responseCode == 200) {
 
 
-                                toastShort(getOtpValidateApi.responseDesc)
+                                toastShort("Updated successfully")
+                                bottomSheetDialog?.dismiss()
+
 
                             } else if (getOtpValidateApi.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
+                                bottomSheetDialog?.dismiss()
 
                             }
 
                             else if (getOtpValidateApi.responseCode == 207) {
                                 toastShort(getOtpValidateApi.responseDesc)
+                                bottomSheetDialog?.dismiss()
 
                             }
                             else if (getOtpValidateApi.responseCode == 210) {
                                 toastShort(getOtpValidateApi.responseDesc)
+                                bottomSheetDialog?.dismiss()
 
                             }
 
@@ -5637,6 +6414,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                             else {
                                 showSnackBar("Something went wrong")
+                                bottomSheetDialog?.dismiss()
+
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -5644,6 +6423,169 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
+
+
+    @SuppressLint("SuspiciousIndentation")
+    private fun collectUlbResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getUlbAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getUlbAPI ->
+                            if (getUlbAPI.responseCode == 200) {
+
+
+                             val ulbData = getUlbAPI.wrappedList
+
+                                ulbName.clear()
+                                ulbCode.clear()
+                                ulbPreName.clear()
+                                ulbPreCode.clear()
+
+                                for (x in ulbData){
+
+
+                                  ulbCode.add(x.ulbCode)
+                                   ulbName.add(x.ulbName)
+
+                                   ulbPreCode.add(x.ulbCode)
+                                   ulbPreName.add(x.ulbName)
+
+
+                                    ulbAdapter.notifyDataSetChanged()
+                                    ulbPreAdapter.notifyDataSetChanged()
+
+                                }
+
+                            }
+                            else if (getUlbAPI.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                                ulbName.clear()
+                                ulbCode.clear()
+                                ulbPreName.clear()
+                                ulbPreCode.clear()
+                            }
+
+                            else if (getUlbAPI.responseCode == 207) {
+                                toastShort(getUlbAPI.responseMsg)
+                                ulbName.clear()
+                                ulbCode.clear()
+                                ulbPreName.clear()
+                                ulbPreCode.clear()
+                            }
+                            else if (getUlbAPI.responseCode == 210) {
+                                toastShort(getUlbAPI.responseMsg)
+                                ulbName.clear()
+                                ulbCode.clear()
+                                ulbPreName.clear()
+                                ulbPreCode.clear()
+                            }
+
+
+
+                            else {
+                                toastShort(getUlbAPI.responseMsg)
+                                ulbName.clear()
+                                ulbCode.clear()
+                                ulbPreName.clear()
+                                ulbPreCode.clear()
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun collectWardResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getWardAPI) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getWardAPI ->
+                            if (getWardAPI.responseCode == 200) {
+
+
+                                val wardData = getWardAPI.wrappedList
+
+                                wardName.clear()
+                                wardCode.clear()
+                                wardPreCode.clear()
+                                wardPreName.clear()
+
+                                for (x in wardData){
+
+                                    wardCode.add(x.wardCode)
+                                    wardName.add(x.wardName)
+
+                                    wardPreCode.add(x.wardCode)
+                                    wardPreName.add(x.wardName)
+
+                                    wardAdapter.notifyDataSetChanged()
+                                    wardPreAdapter.notifyDataSetChanged()
+
+                                }
+
+                            } else if (getWardAPI.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                                wardName.clear()
+                                wardCode.clear()
+                                wardPreCode.clear()
+                                wardPreName.clear()
+                            }
+
+                            else if (getWardAPI.responseCode == 207) {
+                                toastShort(getWardAPI.responseMsg)
+                                wardName.clear()
+                                wardCode.clear()
+                                wardPreCode.clear()
+                                wardPreName.clear()
+                            }
+                            else if (getWardAPI.responseCode == 210) {
+                                toastShort(getWardAPI.responseMsg)
+                                wardName.clear()
+                                wardCode.clear()
+                                wardPreCode.clear()
+                                wardPreName.clear()
+                            }
+
+
+
+                            else {
+                                toastShort(getWardAPI.responseMsg)
+
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
 
 
 }

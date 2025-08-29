@@ -203,19 +203,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/saveEmailButton"
-        style="@style/Button"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:drawablePadding="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_20"
-        android:text="@string/submit"
-        android:visibility="gone"
-        app:drawableEndCompat="@drawable/ic_right_arrow"
-        app:layout_constraintBottom_toTopOf="@+id/tvRegister"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        />
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

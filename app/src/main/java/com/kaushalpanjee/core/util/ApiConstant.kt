@@ -60,6 +60,8 @@ object ApiConstant {
     const val  API_Aadhaar_FORGOT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}forgetIdPassword"
     const val  API_Aadhaar_FORGOT_Update= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}updatePassword"
     const val  API_Update_CANDIDATE_EMAIL= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}updateCandidateEmailId"
+    const val  API_ULB= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}ulbList"
+    const val  API_WARD= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}wardList"
 
 
 

@@ -22,5 +22,16 @@ data class AddressInsertReq(
     val tempVillageCode: String,
     val tempStreet1: String,
     val tempStreet2: String,
-    val tempPinCode: String
+    val tempPinCode: String,
+
+    val prLocality: String,
+    val tempLocality: String,
+
+    val prUlbCode: String,
+    val prWardCode: String,
+
+    val tempWardCode: String,
+    val tempUlbCode: String
+
+
 )

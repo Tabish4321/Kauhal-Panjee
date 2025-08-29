@@ -49,9 +49,11 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.ULBReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -76,8 +78,10 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
+import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
 import javax.inject.Inject
@@ -167,6 +171,40 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
 
     }
+
+
+
+
+
+    private var _getUlbAPI = MutableSharedFlow<Resource<out UlbRes>>()
+    val getUlbAPI = _getUlbAPI.asSharedFlow()
+
+    fun getUlbAPI(ulbReq: ULBReq,header :String){
+        viewModelScope.launch {
+            commonRepository.getUlbAPI(ulbReq,header).collectLatest {
+                _getUlbAPI.emit(it)
+            }
+        }
+
+    }
+
+
+
+
+    private var _getWardAPI = MutableSharedFlow<Resource<out WardRes>>()
+    val getWardAPI = _getWardAPI.asSharedFlow()
+
+    fun getWardAPI(wardReq: WardReq,header :String){
+        viewModelScope.launch {
+            commonRepository.getWardAPI(wardReq,header).collectLatest {
+                _getWardAPI.emit(it)
+            }
+        }
+
+    }
+
+
+
 
     private var _getUpdateEmailAPI = MutableSharedFlow<Resource<out UpdateEmailRes>>()
     val getUpdateEmailAPI = _getUpdateEmailAPI.asSharedFlow()

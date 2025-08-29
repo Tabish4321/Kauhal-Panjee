@@ -53,10 +53,12 @@ import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
+import com.kaushalpanjee.common.model.request.ULBReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
+import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -81,8 +83,10 @@ import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
+import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
+import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppUtil
 import javax.inject.Inject
@@ -126,6 +130,19 @@ class CommonRepository @Inject constructor(
     suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String): Flow<Resource<out TechQualificationRes>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId))
+        }
+
+    }
+    suspend fun getUlbAPI(ulbReq: ULBReq,header :String): Flow<Resource<out UlbRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getUlbAPI(header,ulbReq)
+        }
+
+    }
+
+    suspend fun getWardAPI(wardReq: WardReq,header :String): Flow<Resource<out WardRes>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getWardAPI(header,wardReq)
         }
 
     }

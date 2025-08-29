@@ -216,5 +216,8 @@
     <string name="select_type">Select Type</string>
     <string name="ulb">ULB</string>
     <string name="ward">Ward</string>
+    <string name="ulbn">ULB<font color="#FF0000">*</font></string>
+    <string name="wardn">Ward<font color="#FF0000">*</font></string>
+    <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
 
 </resources>
