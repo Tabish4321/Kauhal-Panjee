@@ -2248,7 +2248,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             } else toastShort("Wrong Selection")
         }
 
+        binding.spinnerPresentAddressWard.setOnItemClickListener { parent, view, position, id ->
+            binding.spinnerPresentAddressUlb.clearFocus()
+            selectedPreWardNameItem= parent.getItemAtPosition(position).toString()
 
+            if (position in wardPreName.indices) {
+                selectedPreWardCodeItem = wardPreCode[position]
+
+
+            } else toastShort("Wrong Selection")
+        }
 
         // Secc State selection
 
@@ -3989,75 +3998,79 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                if (selectedPermanentTypeItem.isNotEmpty() && selectedPermanentTypeItem=="RURAL") {
 
-                    if (selectedStateCodeItem.isNotEmpty() &&
-                        selectedDistrictCodeItem.isNotEmpty() &&
-                        selectedBlockCodeItem.isNotEmpty() &&
-                        selectedGpCodeItem.isNotEmpty() &&
-                        selectedVillageCodeItem.isNotEmpty() &&
-                        selectedStatePresentCodeItem.isNotEmpty() &&
-                        selectedDistrictPresentCodeItem.isNotEmpty() &&
-                        selectedBlockPresentCodeItem.isNotEmpty() &&
-                        selectedGpPresentCodeItem.isNotEmpty() &&
-                        selectedVillagePresentCodeItem.isNotEmpty() && addressLine1.isNotEmpty() &&
-                        pinCode.isNotEmpty() && addressPresentLine1.isNotEmpty() &&
-                        pinCodePresent.isNotEmpty()
-                    ) {
+                if (selectedTypeItem.isNotEmpty() && selectedPermanentTypeItem.isNotEmpty()) {
 
-                        // Hit The Insert API
+                    val permanentFields = mutableMapOf<String, String>()
+                    val presentFields = mutableMapOf<String, String>()
 
-                        commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
-
-                            selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
-                            addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
-                            addressPresentLine1,addressPresentLine2,pinCodePresent,selectedTypeItem,selectedPermanentTypeItem,selectedUlbCodeItem,selectedWardCodeItem,selectedPreWardCodeItem,selectedPreUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
-
-
-
-
-                        collectInsertAddressResponse()
-
+                    if (selectedTypeItem == "RURAL") {
+                        permanentFields.putAll(
+                            mapOf(
+                                "select State" to selectedStateCodeItem,
+                                "select District" to selectedDistrictCodeItem,
+                                "select Block" to selectedBlockCodeItem,
+                                "select Gp" to selectedGpCodeItem,
+                                "select Village" to selectedVillageCodeItem,
+                                "addressLine1" to addressLine1,
+                                "pinCode" to pinCode
+                            )
+                        )
+                    } else if (selectedTypeItem == "URBAN") {
+                        permanentFields.putAll(
+                            mapOf(
+                                "select State" to selectedStateCodeItem,
+                                "select District" to selectedDistrictCodeItem,
+                                "select Ulb" to selectedUlbCodeItem,
+                                "select Ward " to selectedWardCodeItem,
+                                "addressLine1" to addressLine1,
+                                "pinCode" to pinCode
+                            )
+                        )
                     }
 
-                    else toastLong("Please complete your address first")
-
-                }
-
-                else if (selectedPermanentTypeItem.isNotEmpty() && selectedPermanentTypeItem=="URBAN")
-                {
-
-
-                    if (selectedStateCodeItem.isNotEmpty() &&
-                        selectedDistrictCodeItem.isNotEmpty() &&
-                        selectedPreUlbCodeItem.isNotEmpty() &&
-                        selectedPreWardCodeItem.isNotEmpty()
-                        && addressLine1.isNotEmpty() &&
-                        pinCode.isNotEmpty() &&
-                        addressPresentLine1.isNotEmpty() &&
-                        pinCodePresent.isNotEmpty()
-                    ) {
-
-                        // Hit The Insert API
-
-                        commonViewModel.insertAddressAPI(AddressInsertReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext()),"2",
-
-                            selectedStateCodeItem,selectedDistrictCodeItem,selectedBlockCodeItem,selectedGpCodeItem,selectedVillageCodeItem,addressLine1,
-                            addressLine2,pinCode,residenceImage,isPermanentStatus,  selectedStatePresentCodeItem,selectedDistrictPresentCodeItem,selectedBlockPresentCodeItem,selectedGpPresentCodeItem,selectedVillagePresentCodeItem,
-                            addressPresentLine1,addressPresentLine2,pinCodePresent,selectedTypeItem,selectedPermanentTypeItem,selectedUlbCodeItem,selectedWardCodeItem,selectedPreWardCodeItem,selectedPreUlbCodeItem),AppUtil.getSavedTokenPreference(requireContext()))
-
-
-
-
-
-
-                        collectInsertAddressResponse()
-
+                    if (selectedPermanentTypeItem == "RURAL") {
+                        presentFields.putAll(
+                            mapOf(
+                                "select State " to selectedStatePresentCodeItem,
+                                "select District" to selectedDistrictPresentCodeItem,
+                                "selected Block" to selectedBlockPresentCodeItem,
+                                "select Gp" to selectedGpPresentCodeItem,
+                                "select Village" to selectedVillagePresentCodeItem,
+                                "addressPresentLine1" to addressPresentLine1,
+                                "pinCodePresent" to pinCodePresent
+                            )
+                        )
+                    } else if (selectedPermanentTypeItem == "URBAN") {
+                        presentFields.putAll(
+                            mapOf(
+                                "select State" to selectedStatePresentCodeItem,
+                                "select District" to selectedDistrictPresentCodeItem,
+                                "select Ulb" to selectedPreUlbCodeItem,
+                                "select Ward " to selectedPreWardCodeItem,
+                                "addressPresentLine1" to addressPresentLine1,
+                                "pinCodePresent" to pinCodePresent
+                            )
+                        )
                     }
 
-                    else toastLong("Please complete your address first")
+                    // ✅ Now call the helper
+                    val missingPermanent = getMissingFields(permanentFields)
+                    val missingPresent = getMissingFields(presentFields)
 
+                    if (missingPermanent.isEmpty() && missingPresent.isEmpty()) {
+                        callInsertAddressAPI()
+                    } else {
+                        val missingFields = (missingPermanent + missingPresent).joinToString(", ")
+                        toastLong("Kindly: $missingFields")
+                    }
+
+                } else {
+                    toastLong("Please select types")
                 }
+
+
+
 
 
 
@@ -4080,6 +4093,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         }
+
 
         binding.btnSeccSubmit.setOnClickListener {
 
@@ -4355,6 +4369,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
+
+    private fun callInsertAddressAPI() {
+        commonViewModel.insertAddressAPI(
+            AddressInsertReq(
+                BuildConfig.VERSION_NAME,
+                userPreferences.getUseID(),
+                AppUtil.getAndroidId(requireContext()),
+                "2",
+                selectedStateCodeItem,
+                selectedDistrictCodeItem,
+                selectedBlockCodeItem,
+                selectedGpCodeItem,
+                selectedVillageCodeItem,
+                addressLine1,
+                addressLine2,
+                pinCode,
+                residenceImage,
+                isPermanentStatus,
+                selectedStatePresentCodeItem,
+                selectedDistrictPresentCodeItem,
+                selectedBlockPresentCodeItem,
+                selectedGpPresentCodeItem,
+                selectedVillagePresentCodeItem,
+                addressPresentLine1,
+                addressPresentLine2,
+                pinCodePresent,
+                selectedTypeItem,
+                selectedPermanentTypeItem,
+                selectedUlbCodeItem,
+                selectedWardCodeItem,
+                selectedPreWardCodeItem,
+                selectedPreUlbCodeItem
+            ),
+            AppUtil.getSavedTokenPreference(requireContext())
+        )
+
+        collectInsertAddressResponse()
+    }
+
 
     private fun collectInsertAddressResponse() {
         lifecycleScope.launch {
@@ -6802,7 +6855,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
+    private fun getMissingFields(fields: Map<String, String>): List<String> {
+        return fields.filter { it.value.isBlank() }.map { it.key }
+    }
 
 
 }

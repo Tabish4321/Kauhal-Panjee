@@ -1126,7 +1126,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llBlock"
+                    android:id="@+id/llType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -1139,48 +1139,14 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/Block"
+                        android:text="@string/select_typen"
                         android:textColor="@color/color_dark_green" />
 
 
                     <TextView
-                        android:id="@+id/etBlock"
-                        android:background="@drawable/edittext_background"
                         style="@style/EditText"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
-
-
-
-
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/llGp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llBlock">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/Gp"
-                        android:textColor="@color/color_dark_green" />
-
-
-                    <TextView
-                        android:id="@+id/etGp"
+                        android:id="@+id/etType"
                         android:background="@drawable/edittext_background"
-                        style="@style/EditText"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
@@ -1192,37 +1158,188 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llVillage"
+                    android:id="@+id/llbgv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llGp">
+                    app:layout_constraintTop_toBottomOf="@+id/llType">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/Village"
-                        android:textColor="@color/color_dark_green" />
+                    <LinearLayout
+                        android:id="@+id/llBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+           >
 
-
-                    <TextView
-                        android:id="@+id/etVillage"
-                        android:background="@drawable/edittext_background"
-                        style="@style/EditText"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/Block"
+                            android:textColor="@color/color_dark_green" />
 
 
+                        <TextView
+                            android:id="@+id/etBlock"
+                            android:background="@drawable/edittext_background"
+                            style="@style/EditText"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+
+
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llGp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                      >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/Gp"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            android:id="@+id/etGp"
+                            android:background="@drawable/edittext_background"
+                            style="@style/EditText"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llVillage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/Village"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            android:id="@+id/etVillage"
+                            android:background="@drawable/edittext_background"
+                            style="@style/EditText"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+
+
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lluw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llType">
+
+                    <LinearLayout
+                        android:id="@+id/llUlb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/ulbn"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            android:id="@+id/etUlb"
+                            android:background="@drawable/edittext_background"
+                            style="@style/EditText"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+
+
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llWard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/wardn"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            android:id="@+id/etWard"
+                            android:background="@drawable/edittext_background"
+                            style="@style/EditText"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+
+
+
+                    </LinearLayout>
 
 
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/llAdressLine"
@@ -1232,7 +1349,7 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llVillage">
+                    app:layout_constraintTop_toBottomOf="@+id/llbgv">
 
                     <!-- Label -->
                     <TextView
@@ -1460,8 +1577,10 @@
 
                 </LinearLayout>
 
+
+
                 <LinearLayout
-                    android:id="@+id/llPresentAddressBlock"
+                    android:id="@+id/llPresentAddressType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -1475,82 +1594,199 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/Block"
+                        android:text="@string/select_typen"
                         android:textColor="@color/color_dark_green" />
 
 
                     <TextView
                         style="@style/EditText"
-                        android:id="@+id/etPrBlock"
+                        android:id="@+id/etPrType"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:layout_height="wrap_content"/>
+
 
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:id="@+id/llPresentAddressGp"
+                    android:id="@+id/llPresentAddressbgv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressBlock">
+                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressType">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/Gp"
-                        android:textColor="@color/color_dark_green" />
+                    <LinearLayout
+                        android:id="@+id/llPresentAddressBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llPresentAddressType">
 
 
-                    <TextView
-                        style="@style/EditText"
-                        android:id="@+id/etPrGp"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/Block"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            style="@style/EditText"
+                            android:id="@+id/etPrBlock"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llPresentAddressGp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llPresentAddressBlock">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/Gp"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            style="@style/EditText"
+                            android:id="@+id/etPrGp"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llPresentAddressVillage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/llPresentAddressGp">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/Village"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            style="@style/EditText"
+                            android:id="@+id/etPrVillage"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llPresentAddressVillage"
+                    android:id="@+id/llPresentAddressuw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressGp">
+                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressType">
 
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/Village"
-                        android:textColor="@color/color_dark_green" />
+                    <LinearLayout
+                        android:id="@+id/llPresentAddressUrban"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                       >
 
 
-                    <TextView
-                        style="@style/EditText"
-                        android:id="@+id/etPrVillage"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/ulbn"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            style="@style/EditText"
+                            android:id="@+id/etPrUlb"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llPresentAddressWard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/wardn"
+                            android:textColor="@color/color_dark_green" />
+
+
+                        <TextView
+                            style="@style/EditText"
+                            android:id="@+id/etPrWard"
+                            android:background="@drawable/edittext_background"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
 
 
                 </LinearLayout>
+
+
 
                 <LinearLayout
                     android:id="@+id/llPresentAddressAdressLine"
@@ -1560,7 +1796,7 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressVillage">
+                    app:layout_constraintTop_toBottomOf="@+id/llPresentAddressbgv">
 
                     <!-- Label -->
                     <TextView
@@ -1626,6 +1862,8 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

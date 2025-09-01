@@ -166,6 +166,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         collectTokenResponse()
         setUI()
         collectStateResponse()
+        collectAadharResponse()
         collectUserCreationResponse()
         addTextWatchers()
         commonViewModel.getStateListApi()
@@ -235,7 +236,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                     commonViewModel.getAadhaarCheck(AadhaarCheckReq(BuildConfig.VERSION_NAME,encryptedAadhaarString))
 
-                    collectAadharResponse()
 
                 }
                 else
@@ -876,7 +876,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 showSnackBar(getAadhaarCheck.responseDesc)
 
                                 invokeCaptureIntent()
-                              //  checkAndRedirectToPlayStore()
 
                             }
                             else if (getAadhaarCheck.responseCode == 301) {

@@ -21,8 +21,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 18
-        versionName = "2.1"
+        versionCode = 19
+        versionName = "2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -219,10 +219,6 @@ dependencies {
 
     // MediaPipe Tasks Vision
     implementation("com.google.mediapipe:tasks-vision:0.10.14")
-
-
-
-
 
 }
 

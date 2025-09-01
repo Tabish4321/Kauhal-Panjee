@@ -13,6 +13,7 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.transition.TransitionManager
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -22,6 +23,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
@@ -669,6 +671,107 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                         for (x in userCandidateAddressDetailsList2){
 
+
+
+
+
+                                            // Step 1: Show/Hide views based on permanentLocality
+                                            if (x.permanentLocality == "URBAN") {
+                                                binding.lluw.visibility = View.VISIBLE
+                                                binding.llbgv.visibility = View.GONE
+                                            } else {
+                                                binding.lluw.visibility = View.GONE
+                                                binding.llbgv.visibility = View.VISIBLE
+                                            }
+
+// Step 2: Update constraints dynamically
+                                            val constraintSet1 = ConstraintSet()
+                                            constraintSet1.clone(binding.expandAddress) // Must be the parent ConstraintLayout
+
+                                            constraintSet1.clear(binding.llAdressLine.id, ConstraintSet.TOP)
+
+                                            val targetId1 = if (x.permanentLocality == "URBAN") {
+                                                binding.lluw.id
+                                            } else {
+                                                binding.llbgv.id
+                                            }
+
+                                            constraintSet1.connect(
+                                                binding.llAdressLine.id,
+                                                ConstraintSet.TOP,
+                                                targetId1,
+                                                ConstraintSet.BOTTOM
+                                            )
+
+                                            constraintSet1.connect(
+                                                binding.llAdressLine.id,
+                                                ConstraintSet.START,
+                                                ConstraintSet.PARENT_ID,
+                                                ConstraintSet.START
+                                            )
+                                            constraintSet1.connect(
+                                                binding.llAdressLine.id,
+                                                ConstraintSet.END,
+                                                ConstraintSet.PARENT_ID,
+                                                ConstraintSet.END
+                                            )
+
+                                            TransitionManager.beginDelayedTransition(binding.expandAddress)
+                                            constraintSet1.applyTo(binding.expandAddress)
+
+
+
+
+                                            // 1. Update visibility
+                                            if (x.presentLocality == "URBAN") {
+                                                binding.llPresentAddressuw.visibility = View.VISIBLE
+                                                binding.llPresentAddressbgv.visibility = View.GONE
+                                            }
+                                            else {
+                                                binding.llPresentAddressuw.visibility = View.GONE
+                                                binding.llPresentAddressbgv.visibility = View.VISIBLE
+                                            }
+
+                                            val constraintSet = ConstraintSet()
+                                            constraintSet.clone(binding.expandAddress) // Make sure all involved views are children of expandAddress
+
+                                            constraintSet.clear(binding.llPresentAddressAdressLine.id, ConstraintSet.TOP)
+
+                                            val targetId = if (x.presentLocality == "URBAN") {
+                                                binding.llPresentAddressuw.id
+                                            }
+                                            else {
+                                                binding.llPresentAddressbgv.id
+                                            }
+
+                                            constraintSet.connect(
+                                                binding.llPresentAddressAdressLine.id,
+                                                ConstraintSet.TOP,
+                                                targetId,
+                                                ConstraintSet.BOTTOM
+                                            )
+
+                                            constraintSet.connect(
+                                                binding.llPresentAddressAdressLine.id,
+                                                ConstraintSet.START,
+                                                ConstraintSet.PARENT_ID,
+                                                ConstraintSet.START
+                                            )
+                                            constraintSet.connect(
+                                                binding.llPresentAddressAdressLine.id,
+                                                ConstraintSet.END,
+                                                ConstraintSet.PARENT_ID,
+                                                ConstraintSet.END
+                                            )
+
+                                            TransitionManager.beginDelayedTransition(binding.expandAddress)
+                                            constraintSet.applyTo(binding.expandAddress)
+
+
+
+
+
+
                                             binding.statespinn.setText(x.permanentStateName)
                                             binding.etDist.setText(x.permanentDistrictName)
                                             binding.etBlock.setText(x.permanentBlockName)
@@ -677,6 +780,16 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                             binding.etAdressLine.setText(x.permanentStreet1)
                                             binding.etAdressLine2.setText(x.permanentStreet2)
                                             binding.etPinCode.setText(x.permanentPinCode)
+
+                                            binding.etUlb.setText(x.permanentulbName)
+                                            binding.etWard.setText(x.permanentWardName)
+                                            binding.etType.setText(x.permanentLocality)
+
+                                            binding.etPrUlb.setText(x.presentUlbName)
+                                            binding.etPrWard.setText(x.presentWardName)
+                                            binding.etPrType.setText(x.presentLocality)
+
+
                                             val adreessStatus = x.isPresentAddressSame
 
                                             binding.etPrState.setText(x.presentStateName)
