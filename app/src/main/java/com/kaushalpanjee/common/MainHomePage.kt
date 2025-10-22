@@ -301,6 +301,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     imagePath= x.imagePath
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
+                                    userPreferences.updateUserStateLgdCode(null)
+                                    userPreferences.updateUserStateLgdCode(x.stateLgdCode)
 
                                     val decryptedAadhaar = AESCryptography.decryptIntoString(
                                         x.aadhaarEnc,

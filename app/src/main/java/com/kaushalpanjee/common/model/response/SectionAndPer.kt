@@ -19,5 +19,6 @@ data class StatusItem(
     val totalPercentage: Float,
     val isFaceRegistred: String,
     val candidateName: String,
-    val aadhaarEnc: String
+    val aadhaarEnc: String,
+    val stateLgdCode: String
 )

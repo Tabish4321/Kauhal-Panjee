@@ -507,7 +507,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectDistrictResponse()
         collectBlockResponse()
         collectGpResponse()
-        collectValidateOtpResponse()
         collectUpdateEmailResponse()
         collectVillageResponse()
         collectShgValidateResponse()
@@ -522,6 +521,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTradeResponse()
         collectSendEmailOTPResponse()
         collectSectorResponse()
+        collectDpChangeResponse()
+
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
         collectCandidateDetailsResponse()
 
@@ -3917,7 +3918,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         binding.btnShgValidate.setOnClickListener {
-
             commonViewModel.shgValidateAPI(
                 ShgValidateReq(
                     binding.etShgValidate.text.toString(),
@@ -5900,7 +5900,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getImageChangeAPI(
                     ImageChangeReq(BuildConfig.VERSION_NAME, profilePicIdImage, userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext())
                 )
-                collectDpChangeResponse()
             }
             "NREGA_ID" -> {
                 binding.nrehaJobimageText.text = fileName
@@ -6452,6 +6451,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
             commonViewModel.getOtpValidateApi(ValidateOtpReq(BuildConfig.VERSION_NAME, newEmail,"",AppUtil.getAndroidId(requireContext()),otp))
+            collectValidateOtpResponse()
+
 
         }
 
@@ -6660,6 +6661,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                                 toastShort("Updated successfully")
+
+
+                                toastShort(getOtpValidateApi.responseDesc)
                                 bottomSheetDialog?.dismiss()
 
 

@@ -675,7 +675,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
 
 
-                                            // Step 1: Show/Hide views based on permanentLocality
+
                                             if (x.permanentLocality == "URBAN") {
                                                 binding.lluw.visibility = View.VISIBLE
                                                 binding.llbgv.visibility = View.GONE
@@ -684,7 +684,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 binding.llbgv.visibility = View.VISIBLE
                                             }
 
-// Step 2: Update constraints dynamically
+
                                             val constraintSet1 = ConstraintSet()
                                             constraintSet1.clone(binding.expandAddress) // Must be the parent ConstraintLayout
 

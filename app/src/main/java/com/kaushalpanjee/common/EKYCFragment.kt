@@ -14,6 +14,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.text.Html
 import android.text.SpannableString
@@ -79,6 +80,7 @@ import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
+import java.util.Locale
 
 const val CAMERA_REQUEST = 101
 
@@ -101,12 +103,15 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var po = ""
     private var pinCode = ""
     private var street = ""
+    private var isSpeaking = false
     private var tokenGen = ""
     private var tokenViaCreate = ""
     private var village = ""
     private var photo = ""
     private var selectedStateCode = ""
     private var selectedStateLgdCode = ""
+    private lateinit var tts: TextToSpeech
+
     private lateinit var layoutManager : LinearLayoutManager
 
 
@@ -153,14 +158,37 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::tts.isInitialized) {
+            tts.stop()
+            binding.consentImage.setImageResource(R.drawable.speaker)
+            tts.shutdown()
+        }
+        super.onDestroyView()
+
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressButton.root.gone()
         init()
 
+
     }
 
     private fun init() {
+
+        tts = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                val result = tts.setLanguage(Locale.US)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    println("Language not supported")
+                }
+            }
+        }
+
         listener()
         commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME)
         collectTokenResponse()
@@ -221,6 +249,42 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun listener() {
 
+
+        binding.btnConscentAudio.setOnClickListener {
+            if (!isSpeaking) {
+                val text = getString(R.string.consent)
+                if (text.isNotEmpty()) {
+                    speakOut(text)
+
+                    binding.consentImage.setImageResource(R.drawable.pause)
+
+                    isSpeaking = true
+                }
+            } else {
+                tts.stop()
+                binding.consentImage.setImageResource(R.drawable.speaker)
+
+                isSpeaking = false
+            }
+        }
+
+
+        if (!isSpeaking) {
+            val text = getString(R.string.consent)
+            if (text.isNotEmpty()) {
+                speakOut(text)
+
+                isSpeaking = true
+            }
+        } else {
+            tts.stop()
+            isSpeaking = false
+        }
+
+
+
+
+
         formatCheckBoxText(binding.chipAware)
 
         binding.aadhaarVerifyButton.centerButton.setOnClickListener {
@@ -272,6 +336,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         binding.etAadhaar.error = "❌ Invalid Aadhaar Number"  // ❌ Show error
                         aadhaarValidate=false
                         binding.chipAware.gone()
+                        binding.btnConscentAudio.gone()
 
                     }
                 }
@@ -291,6 +356,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         binding.tvWelcomeMsg.setOnClickListener {
             binding.recyclerView.visible()
             binding.chipAware.gone()
+            binding.btnConscentAudio.gone()
             binding.tvWelcomeMsg.text = selectedState
             binding.etAadhaar.gone()
             binding.progressButton.root.visible()
@@ -324,6 +390,15 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     }
+
+
+
+
+
+    private fun speakOut(text: String) {
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+    }
+
 
     private fun collectStateResponse() {
         lifecycleScope.launch {
@@ -366,8 +441,14 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
             if (text?.length == 12) {
                 binding.chipAware.visible()
+                binding.btnConscentAudio.visible()
+
               //  binding.aadhaarVerifyButton.root.visible()
-            } else binding.chipAware.gone()
+            } else{
+                binding.btnConscentAudio.gone()
+                binding.chipAware.gone()
+            }
+
 
 
         }
@@ -673,9 +754,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                             val phone =AppUtil.getSavedMobileNoPreference(requireContext())
 
                                             userPreferences.updateUserStateLgdCode(null)
-                                            userPreferences.updateUserStateLgdCode(
-                                                selectedStateLgdCode
-                                            )
+                                            userPreferences.updateUserStateLgdCode(selectedStateLgdCode)
+
                                             AppUtil.saveStateCode(requireContext(),selectedStateCode)
 
 

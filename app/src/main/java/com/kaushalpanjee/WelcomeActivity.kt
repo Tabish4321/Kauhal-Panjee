@@ -1,9 +1,6 @@
 package com.kaushalpanjee
 
-import android.animation.Animator
-import android.animation.ObjectAnimator
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle

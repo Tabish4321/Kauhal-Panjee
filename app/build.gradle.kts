@@ -6,7 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-parcelize") // Add this line
+    id("kotlin-parcelize")
 
 }
 
@@ -21,8 +21,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 19
-        versionName = "2.2"
+        versionCode = 20
+        versionName = "2.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

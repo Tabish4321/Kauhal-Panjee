@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,7 +111,25 @@
            android:paddingBottom="8dp"
         />
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/btnConscentAudio"
+            android:visibility="gone"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etAadhaar">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:id="@+id/consentImage"
+                android:layout_gravity="center"
+                android:src="@drawable/speaker"/>
+
+        </androidx.cardview.widget.CardView>
 
 
 
