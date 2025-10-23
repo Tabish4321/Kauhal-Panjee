@@ -278,7 +278,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                     toastShort("Error processing KYC response")
 
                                 }
-                            }
+                            } ?: toastShort("Server error from uidai. Please try again.")
 
                         }
                     }

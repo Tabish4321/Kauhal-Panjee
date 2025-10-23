@@ -521,7 +521,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTradeResponse()
         collectSendEmailOTPResponse()
         collectSectorResponse()
-        collectDpChangeResponse()
 
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
         collectCandidateDetailsResponse()
@@ -5900,6 +5899,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 commonViewModel.getImageChangeAPI(
                     ImageChangeReq(BuildConfig.VERSION_NAME, profilePicIdImage, userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext())
                 )
+                collectDpChangeResponse()
+
             }
             "NREGA_ID" -> {
                 binding.nrehaJobimageText.text = fileName

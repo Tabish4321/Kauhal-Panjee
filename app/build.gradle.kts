@@ -21,7 +21,7 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 20
+        versionCode = 21
         versionName = "2.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

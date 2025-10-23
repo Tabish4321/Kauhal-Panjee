@@ -493,7 +493,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             IntentModel::class.java
         )
 
-        collectFaceAuthResponse()
+     //   collectFaceAuthResponse()
         // setConsentText()
     }
 
@@ -604,6 +604,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     AppConstant.StaticURL.FACE_AUTH_UIADI,
                     UidaiKycRequest(poiType, authURL)
                 )
+
+                collectFaceAuthResponse()
+
                 // Handle Aadhaar authentication or additional processing here if required
             } else {
                 toastLong(getString(R.string.kyc_failed_msg))
