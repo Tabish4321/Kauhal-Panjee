@@ -216,5 +216,7 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
+    <string name="about_unnati"><u>About Unnati</u></string>
+    <string name="unnati_schemes">Unnati Schemes</string>
 
 </resources>

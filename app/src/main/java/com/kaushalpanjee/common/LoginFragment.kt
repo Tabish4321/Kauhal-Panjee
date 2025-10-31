@@ -92,6 +92,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
 
         }
+        binding.tvAboutUnnati.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAboutUnnatiFragment())
+        }
 
 
 
