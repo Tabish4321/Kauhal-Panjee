@@ -180,17 +180,35 @@
 
         <TextView
             android:id="@+id/tvRegister"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_50"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:fontFamily="@font/avenir_next_medium"
             android:gravity="center"
             android:text="@string/register"
             android:textColor="@color/color_dark_green"
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvAboutUnnati"
             app:layout_constraintStart_toStartOf="parent"
+
+            />
+
+        <TextView
+            android:id="@+id/tvAboutUnnati"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_50"
+            android:fontFamily="@font/avenir_next_medium"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:text="@string/about_unnati"
+            android:textColor="@color/color_dark_green"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvRegister"
 
             />
 

@@ -3,4 +3,6 @@
     <string name="skip">Skip</string>
     <string name="ulb">ULB</string>
     <string name="ward">Ward</string>
+    <string name="about_unnati"><u>About Unnati</u></string>
+    <string name="unnati_schemes">Unnati Schemes</string>
 </resources>

@@ -25,6 +25,10 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_aboutUnnatiFragment"
+            app:destination="@id/aboutUnnatiFragment" />
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
@@ -59,6 +63,15 @@
 
         </action>
     </fragment>
+
+    <fragment
+        android:id="@+id/aboutUnnatiFragment"
+        android:name="com.kaushalpanjee.common.AboutUnnatiFragment"
+        android:label="AboutUnnatiFragment"
+        tools:layout="@layout/fragment_about_unnati">
+
+    </fragment>
+
     <fragment
         android:id="@+id/ekycFragment"
         android:name="com.kaushalpanjee.common.EKYCFragment"
