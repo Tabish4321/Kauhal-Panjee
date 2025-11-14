@@ -52,7 +52,7 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                 if (newPassword == confirmNewPassword){
 
                     val shaOldPassword= AppUtil.sha512Hash(oldPassword)
-                   // val shaNewPassword= AppUtil.sha512Hash(newPassword)
+                    // val shaNewPassword= AppUtil.sha512Hash(newPassword)
 
                     val encryptedNewPass=   AESCryptography.encryptIntoBase64String(newPassword, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
@@ -70,7 +70,6 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
             }
 
             else toastShort("please fill all fields")
-
 
         }
 

@@ -39,7 +39,6 @@ import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
-import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding

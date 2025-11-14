@@ -1,27 +1,37 @@
 package com.kaushalpanjee
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.toastLong
+import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
     ActivityWelcomeBinding::inflate
-)
-{
+) {
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +41,23 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
-       // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
+        // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
         AppUtil.changeAppLanguage(this, AppUtil.getSavedLanguagePreference(this))
 
-                lifecycleScope.launch {
+        lifecycleScope.launch {
             delay(2000)
 
-            /*if (isDeviceRooted() || isRunningOnEmulator()) {
-                showSecurityWarning()
-            }*/
+//            if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
+//                showSecurityWarning()
+//            }
             if (isDeviceRooted()) {
-            showSecurityWarning()
+                showSecurityWarning()
             }
             else {
                 navigate()
             }
         }
     }
-
 
     private fun navigate() {
         startActivity(Intent(this@WelcomeActivity, CommonActivity::class.java).apply {
@@ -102,6 +111,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             isDeviceRooted() && isRunningOnEmulator() -> "Rooted device and Emulator detected! For security reasons, this app cannot run."
             isDeviceRooted() -> "Rooted device detected! For security reasons, this app cannot run."
             isRunningOnEmulator() -> "Emulator detected! This app cannot run on emulators."
+            isDeveloperModeEnabled(this) -> "Developer Options or USB Debugging enabled! This app cannot run on emulators."
             else -> return
         }
 
@@ -109,7 +119,32 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             .setTitle("Security Warning")
             .setMessage(message)
             .setCancelable(false)
-            .setPositiveButton("Exit") { _, _ -> finishAffinity() }
+            .setPositiveButton("Exit") { _, _ ->
+                finishAffinity()
+                android.os.Process.killProcess(android.os.Process.myPid())
+                exitProcess(0)
+            }
             .show()
     }
+
+    /**
+     * Checks if the developer option or USB debugging.
+     */
+    private fun isDeveloperModeEnabled(activity: Activity): Boolean {
+        return try {
+            val devOptions = Settings.Global.getInt(
+                activity.contentResolver,
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
+            ) == 1
+            val adbEnabled = Settings.Global.getInt(
+                activity.contentResolver,
+                Settings.Global.ADB_ENABLED, 0
+            ) == 1
+            devOptions || adbEnabled
+        } catch (e: Exception) {
+            false
+        }
+    }
+
 }
+

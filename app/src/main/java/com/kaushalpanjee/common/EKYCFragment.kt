@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -34,6 +35,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -540,29 +542,51 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         return secureRandom.nextInt(9999).toString()
     }
 
-
+    fun isAppInstalled(context: Context, packageName: String): Boolean {
+        return try {
+            context.packageManager.getPackageInfo(packageName, 0)
+            true // App installed hai
+        } catch (e: PackageManager.NameNotFoundException) {
+            false // App installed nahi hai
+        }
+    }
     private fun invokeCaptureIntent() {
 
-        try {
-            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-            intent1.putExtra(
-                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                createPidOptions(getTransactionID(), "auth")
-            )
-            startUidaiAuthResult.launch(intent1)
+        val packageName = "in.gov.uidai.facerd"
+        if (isAppInstalled(requireContext(), packageName)) {
+            try {
+                val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
+                intent1.putExtra(
+                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
+                    createPidOptions(getTransactionID(), "auth")
+                )
+                startUidaiAuthResult.launch(intent1)
 
-            // val packageName = "com.example.otherapp" // Replace with the target app's package name
-            val intent =
-                requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-            intent?.putExtra(
-                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                createPidOptions(getTransactionID(), "auth")
-            )
-            if (intent != null) {
-                startActivity(intent)
+                // val packageName = "com.example.otherapp" // Replace with the target app's package name
+                val intent =
+                    requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
+                intent?.putExtra(
+                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
+                    createPidOptions(getTransactionID(), "auth")
+                )
+                if (intent != null) {
+                    startActivity(intent)
+                }
+            } catch (exp: Exception) {
+                log("EKYCDATA", exp.toString())
             }
-        } catch (exp: Exception) {
-            log("EKYCDATA", exp.toString())
+        } else {
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Alert!")
+                .setMessage("It seems you don't have the AadhaarFaceRD App app installed in your phone.")
+                .setCancelable(false)
+                .setPositiveButton("Install") { _, _ ->
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    this.startActivity(intent)
+                }
+                .show()
         }
 
     }
@@ -608,7 +632,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 collectFaceAuthResponse()
 
                 // Handle Aadhaar authentication or additional processing here if required
-            } else {
+            }
+            else {
                 toastLong(getString(R.string.kyc_failed_msg))
             }
 
