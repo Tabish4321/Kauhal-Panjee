@@ -469,7 +469,6 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-
                                     log("EKYCDATA", kycResp.toString())
 
                                     if (kycResp.isSuccess) {
@@ -511,6 +510,7 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
 
                                         hideProgressBar()
                                     }
+
                                     else {
                                         hideProgressBar()
                                         val decodedRar = decodeBase64(kycResp.rar)
@@ -524,7 +524,9 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                             findNavController().navigateUp()
                                         } ?: toastShort("Getting Error")
                                     }
-                                } catch (e: Exception) {
+                                }
+
+                                catch (e: Exception) {
                                     hideProgressBar()
                                     findNavController().navigateUp()
                                     e.printStackTrace()

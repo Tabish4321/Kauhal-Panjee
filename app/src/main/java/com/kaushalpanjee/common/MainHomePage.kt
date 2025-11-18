@@ -178,6 +178,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
+
+
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
 
      // Training Search Text

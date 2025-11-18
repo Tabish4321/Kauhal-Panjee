@@ -269,7 +269,8 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                             findNavController().navigateUp()
                                         } ?: toastShort("Getting Error")
                                     }
-                                } catch (e: Exception) {
+                                }
+                                catch (e: Exception) {
                                     hideProgressBar()
                                     toastShort("going back2")
                                     findNavController().navigateUp()

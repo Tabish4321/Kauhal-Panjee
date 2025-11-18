@@ -551,7 +551,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             )
             startUidaiAuthResult.launch(intent1)
 
-            // val packageName = "com.example.otherapp" // Replace with the target app's package name
+          /*  // val packageName = "com.example.otherapp" // Replace with the target app's package name
             val intent =
                 requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
             intent?.putExtra(
@@ -560,7 +560,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             )
             if (intent != null) {
                 startActivity(intent)
-            }
+            }*/
         } catch (exp: Exception) {
             log("EKYCDATA", exp.toString())
         }
