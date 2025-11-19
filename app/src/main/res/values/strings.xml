@@ -74,6 +74,8 @@
     <string name="Banking_information">Banking Information</string>
     <string name="select_HighestEducation">Highest Education<font color='#FF0000'>*</font></string>
     <string name="select_HighestEducation1">Highest Education</string>
+    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">Scheme Interested In</string>
     <string name="select_YearOfPassing">Year of passing of highest qualification</string>
     <string name="select_YearOfPassingTech">Year of passing of technical qualification</string>
     <string name="anyTechnicalEducation">Technical Education?<font color='#FF0000'>*</font></string>

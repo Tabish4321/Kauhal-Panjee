@@ -38,6 +38,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.LoginReq
+import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -68,6 +69,7 @@ import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.LogoutResponse
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
@@ -712,6 +714,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
+
+    private  var _getLogout =  MutableStateFlow<Resource<out LogoutResponse>>(Resource.Loading())
+    val getLogout = _getLogout.asSharedFlow()
+
+    fun getLogout(logoutReq: LogoutRequest,header :String){
+        viewModelScope.launch {
+            commonRepository.getLogout(logoutReq,header).collectLatest {
+                _getLogout.emit(it)
+            }
+        }
+
+    }
 
     private  var _aadhaarRekycApi =  MutableStateFlow<Resource<out AadhaarEkycRes>>(Resource.Loading())
     val aadhaarRekycApi = _aadhaarRekycApi.asSharedFlow()

@@ -2821,9 +2821,27 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_SchemeInterest"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"  />
+
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etSchemeInterestedIn"
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
+
+                    <TextView
                         android:id="@+id/tvrecievedAnyTrainingBefore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:text="@string/recievedAnyTrainingBefore"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"

@@ -327,6 +327,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var categoryAdapter: ArrayAdapter<String>
     private lateinit var maritalAdapter: ArrayAdapter<String>
     private lateinit var highestEducationAdapter: ArrayAdapter<String>
+    private lateinit var schemeListAdapter: ArrayAdapter<String>
 
 
     // State var
@@ -486,6 +487,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val highestEducationList =
         listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
+
+    private val schemesList = listOf("DDUGKY", "RSETI", "NRLM", "PM Vishwakarma", "PMKVY")
     private var sectorList = ArrayList<String>()
     private var sectorCode = ArrayList<String>()
     private var tradeName = ArrayList<String>()
@@ -944,7 +947,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             highestEducationList
         )
 
+        schemeListAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            schemesList
+        )
+
         binding.spinnerHighestEducation.setAdapter(highestEducationAdapter)
+        binding.spinnerSchemeInterestedIn.setAdapter(schemeListAdapter)
 
         //Adapter state setting
       /*  stateAdapter = ArrayAdapter(

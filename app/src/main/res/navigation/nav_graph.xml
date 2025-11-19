@@ -20,6 +20,10 @@
             android:id="@+id/action_loginFragment_to_mainHomePage"
             app:destination="@id/mainHomePage" />
         <action
+            android:id="@+id/action_mainHomePage_to_languageChangeFragment"
+            app:destination="@id/languageChangeFragment" />
+
+        <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
         <action

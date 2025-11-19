@@ -51,6 +51,8 @@ class SchemeAdapter(private val schemes: List<Scheme>) :
 
         fun bind(scheme: Scheme) {
             binding.data = scheme
+            // Disable nested scrolling (Main fix)
+            binding.rvSchemePoint.isNestedScrollingEnabled = false
             binding.rvSchemePoint.adapter = SchemeDetailAdapter(scheme.details)
 
             binding.tvSchemeName.setOnClickListener {

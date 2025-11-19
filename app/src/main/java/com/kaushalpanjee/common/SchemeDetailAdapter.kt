@@ -27,6 +27,7 @@ class SchemeDetailAdapter(private val schemeDetails: ArrayList<String>) :
 
         fun bind(schemePoint: String) {
             binding.data = schemePoint
+            binding.tvSchemePoint.isNestedScrollingEnabled = false
         }
     }
 }

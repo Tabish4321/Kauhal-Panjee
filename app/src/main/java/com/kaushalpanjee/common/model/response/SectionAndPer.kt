@@ -9,6 +9,7 @@ data class SectionAndPer(
 
 data class StatusItem(
     val personalStatus: Int,
+    val firstLogin: String,
     val imagePath: String,
     val educationalStatus: Int,
     val trainingStatus: Int,

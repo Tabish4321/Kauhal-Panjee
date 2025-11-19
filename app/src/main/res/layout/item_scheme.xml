@@ -93,7 +93,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/line"
                     tools:itemCount="3"
-                    tools:listitem="@layout/item_scheme_point" />
+                    tools:listitem="@layout/item_scheme_point"
+                    android:nestedScrollingEnabled="false"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

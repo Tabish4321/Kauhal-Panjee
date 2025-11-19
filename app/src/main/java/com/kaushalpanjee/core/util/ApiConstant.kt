@@ -49,6 +49,8 @@ object ApiConstant {
     const val  API_CANDIDATE_DETAILS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}candidateDetails"
     const val  API_CHANGE_IMAGE_CANDIDATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}changeProfilePhoto"
     const val  API_CHANGE_PASSWORD= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}changePassword"
+
+    const val  API_LOGOUT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}logout"
     const val  Forgot_PASSWORD_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}forgetIdPassword"
     const val  GET_LOGINID_PASS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getLoginIdPassword"
     const val  GET_TOKEN_GENERATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateToken"

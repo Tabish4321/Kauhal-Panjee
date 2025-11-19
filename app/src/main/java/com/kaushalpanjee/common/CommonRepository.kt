@@ -41,6 +41,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.LoginReq
+import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -73,6 +74,7 @@ import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.LogoutResponse
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
@@ -436,7 +438,11 @@ class CommonRepository @Inject constructor(
     }
 
 
-
+    suspend fun getLogout(logoutReq: LogoutRequest, header : String): Flow<Resource<out LogoutResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getLogout(header,logoutReq)
+        }
+    }
 
     suspend fun aadhaarRekycApi(aadhaarRekycReq: AadhaarRekycReq,header :String): Flow<Resource<out AadhaarEkycRes>>{
         return networkBoundResourceWithoutDb {
