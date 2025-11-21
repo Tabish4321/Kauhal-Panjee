@@ -188,12 +188,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 )
             } else {
                 showPassword = true
-
                 binding.etPassword.setRightDrawablePassword(
                     false, null, null,
                     ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
                 )
-
             }
 
         }
@@ -215,6 +213,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                     is Resource.Success -> {
                         hideProgressBar()
+
                         it.data?.let { getLoginResponse ->
                             when (getLoginResponse.responseCode) {
                                 200 -> {

@@ -105,7 +105,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         init()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
-
     }
      private fun init(){
          val drawerLayout = binding.drawerLayout
@@ -178,18 +177,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
-
-
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
 
      // Training Search Text
      searchQuery.observe(viewLifecycleOwner) { query ->
          if (query.length >= 4) {
              handleTrainingSearchQuery(query) // Trigger API call
-
          }
          else  binding.trainingRecyclerView.gone()
-
      }
 
      // Add TextWatcher to EditText
@@ -312,10 +307,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                         AppConstant.Constants.ENCRYPT_IV_KEY
                                     ) ?: "N/A"
 
-                                    AppUtil.saveAadhaarPreference(requireContext(),decryptedAadhaar
-                                    )
-
-
+                                    AppUtil.saveAadhaarPreference(requireContext(),decryptedAadhaar)
                                 }
                                 if (isFaceReg=="N"){
                                     val userId = userPreferences.getUseID()
