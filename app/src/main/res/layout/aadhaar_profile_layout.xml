@@ -42,6 +42,18 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="@dimen/dp_50"/>
 
+        <ImageButton
+            android:id="@+id/btnCertificate"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/certificate_icon"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintStart_toEndOf="@+id/viewDetails"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/editImageButton"
             android:layout_width="@dimen/dp_24"

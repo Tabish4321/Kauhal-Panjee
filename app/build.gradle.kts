@@ -116,6 +116,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.viewbinding)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -137,7 +138,7 @@ dependencies {
 
 
     implementation (libs.bundles.retrofitBundle)
-    implementation (libs.chucker)
+   // implementation (libs.chucker)
 
     //circle image
 

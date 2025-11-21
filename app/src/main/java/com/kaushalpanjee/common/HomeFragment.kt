@@ -576,7 +576,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-
+        binding.profileView.btnCertificate.setOnClickListener {
+            val intent = Intent(requireContext(), CertificateActivity::class.java)
+            intent.putExtra("CERT_URL", "")
+            startActivity(intent)
+        }
 
 
 

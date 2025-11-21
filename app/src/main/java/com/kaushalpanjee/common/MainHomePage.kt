@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -109,6 +110,34 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
 
+    }
+
+    fun detectFaceRD(context: Context, captureAction: String = AppConstant.Constants.CAPTURE_INTENT) {
+        val intent = Intent(captureAction)
+        val list = context.packageManager.queryIntentActivities(
+            intent,
+            PackageManager.MATCH_DEFAULT_ONLY
+        )
+
+        if (list.isNotEmpty()) {
+            Log.e("FACERD_CHECK", "FaceRD is AVAILABLE (intent can be handled).")
+            list.forEach {
+                Log.e("FACERD_HANDLER", "Package: ${it.activityInfo.packageName} | Class: ${it.activityInfo.name}")
+            }
+        } else {
+            Log.e("FACERD_CHECK", "FaceRD NOT available on this device.")
+        }
+    }
+
+    fun detectFaceRDByPackage(context: Context) {
+        val pkg = "in.gov.uidai.facerd"
+
+        try {
+            context.packageManager.getPackageInfo(pkg, 0)
+            Log.e("FACERD_PACKAGE", "FaceRD package FOUND.")
+        } catch (e: Exception) {
+            Log.e("FACERD_PACKAGE", "FaceRD package NOT found.")
+        }
     }
      private fun init(){
          val drawerLayout = binding.drawerLayout
