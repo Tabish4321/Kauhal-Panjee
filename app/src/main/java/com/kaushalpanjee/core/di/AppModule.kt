@@ -2,7 +2,7 @@ package com.kaushalpanjee.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.chuckerteam.chucker.api.ChuckerInterceptor
+//import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi

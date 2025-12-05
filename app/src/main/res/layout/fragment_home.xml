@@ -2785,7 +2785,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
                         android:text="@string/select_HighestEducation"
@@ -2793,11 +2792,47 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/highestEducationInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:hint="@string/select_HighestEducation1"
                         android:padding="1dp"
+                        android:textColorHint="@color/color_dark_green"
+                        app:boxStrokeColor="@color/color_dark_green">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerHighestEducationNew"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/classLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:visibility="gone"
+                        android:text="@string/select_Class"
+                        android:textColor="@color/color_dark_green" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/schoolingInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:hint="@string/select_HighestEducation1"
+                        android:padding="1dp"
+                        android:visibility="gone"
                         android:textColorHint="@color/color_dark_green"
                         app:boxStrokeColor="@color/color_dark_green">
 
@@ -2831,6 +2866,7 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
+                        android:visibility="gone"
                         android:text="@string/select_YearOfPassing"
                         android:textColor="@color/color_dark_green" />
 
@@ -2841,28 +2877,8 @@
                         android:focusable="false"
                         android:focusableInTouchMode="false"
                         android:inputType="none"
+                        android:visibility="gone"
                         android:hint="@string/select_YearOfPassing"
-                        android:textColor="@color/color_dark_green"
-                        android:textSize="15sp"
-                        tools:ignore="LabelFor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/languages"
-                        android:textColor="@color/color_dark_green" />
-
-
-                    <TextView
-                        android:id="@+id/tvLanguages"
-                        style="@style/EditText"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:inputType="none"
-                        android:hint="@string/select_languages"
                         android:textColor="@color/color_dark_green"
                         android:textSize="15sp"
                         tools:ignore="LabelFor" />
@@ -2882,6 +2898,7 @@
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:textColor="@android:color/black"
                             android:textSize="16sp"
+                            android:visibility="gone"
                             android:layout_marginBottom="8dp" />
 
 
@@ -2889,6 +2906,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:visibility="gone"
                             android:weightSum="2">
 
 
@@ -2934,7 +2952,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/TechnicalEducation1"
+                            android:text="@string/course"
                             android:textColor="@color/color_dark_green" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -2942,7 +2960,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
-                            android:hint="@string/TechnicalEducation1"
+                            android:hint="@string/course1"
                             android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
                             app:boxStrokeColor="@color/color_dark_green">
@@ -2979,7 +2997,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/DomainOfTech"
+                            android:text="@string/domain"
                             android:textColor="@color/color_dark_green" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -2987,7 +3005,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_demi_bold"
-                            android:hint="@string/DomainOfTech"
+                            android:hint="@string/domain1"
                             android:padding="1dp"
                             android:textColorHint="@color/color_dark_green"
                             app:boxStrokeColor="@color/color_dark_green">
@@ -3021,7 +3039,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/select_YearOfPassingTech"
+                            android:text="@string/select_YearOfPassingNew"
                             android:textColor="@color/color_dark_green" />
 
 
@@ -3031,7 +3049,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:inputType="none"
-                            android:hint="@string/select_YearOfPassingTech"
+                            android:hint="@string/select_YearOfPassingNew"
                             android:textColor="@color/color_dark_green"
                             android:textSize="15sp"
                             tools:ignore="LabelFor" />
@@ -3040,6 +3058,27 @@
 
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/languages"
+                        android:textColor="@color/color_dark_green" />
+
+
+                    <TextView
+                        android:id="@+id/tvLanguages"
+                        style="@style/EditText"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:hint="@string/select_languages"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor" />
 
 
                     <TextView
@@ -3193,6 +3232,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/llnatureOfEmpl"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llcurentlyEmployed">
 
@@ -3216,7 +3256,7 @@
                             android:layout_width="0dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
-                            android:text="@string/self_employed"
+                            android:text="@string/self_employment"
                             android:gravity="center"
                             android:id="@+id/optionnatureOfEmplYesSelect"
                             android:textColor="@color/black"
@@ -3246,6 +3286,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/llIntrestedIn"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llnatureOfEmpl">
 
@@ -3342,7 +3383,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/CustomChip"
-                            android:text="@string/self_employed"
+                            android:text="@string/self_employment"
                             android:checkable="true"
                             android:layout_margin="8dp"
                             android:elevation="7dp" />
@@ -3462,7 +3503,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/CurrentEarning"
+                        android:text="@string/CurrentEarningHint"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
@@ -3494,7 +3535,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/ExpectationSalary"
+                        android:text="@string/ExpectationIncome"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
@@ -3504,7 +3545,7 @@
                         android:id="@+id/etExpectationSalary"
                         style="@style/EditText"
                         android:layout_height="wrap_content"
-                        android:hint="@string/ExpectationSalary"
+                        android:hint="@string/ExpectationIncome"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:maxLength="6"
@@ -3621,10 +3662,43 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_SchemeInterest"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"  />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:hint="@string/select_SchemeInterest1"
+                        android:padding="1dp"
+                        android:textColorHint="@color/color_dark_green"
+                        app:boxStrokeColor="@color/color_dark_green">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerSchemeInterestedIn"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:inputType="none"
+                            android:textColor="@color/color_dark_green"
+                            android:textSize="15sp"
+                            tools:ignore="LabelFor" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                     <TextView
                         android:id="@+id/tvrecievedAnyTrainingBefore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_16sdp"
                         android:text="@string/recievedAnyTrainingBefore"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
@@ -3667,91 +3741,18 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llPreviousComTraining"
+                    android:id="@+id/previouslyTrainingChipsLinear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llrecievedAnyTrainingBefore">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:padding="@dimen/dp_4"
-                        android:textSize="@dimen/sp_16"
-                        android:text="@string/PreviousComTraining"
-                        android:textColor="@color/black" />
-
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipPreviousComTraGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:singleSelection="false"
-                        app:selectionRequired="false"
-                        app:chipSpacing="8dp"
-                        android:padding="16dp"
-                        android:orientation="horizontal">
-
-                        <!-- Chip 1: Job -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            style="@style/CustomChip"
-                            android:text="@string/ddugky"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 2: Training -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/rseti"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-
-                        <!-- Chip 3: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/pmkvy"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                        <!-- Chip 4: Both -->
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPrevOption4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/others"
-                            style="@style/CustomChip"
-                            android:checkable="true"
-                            android:layout_margin="8dp"
-                            android:elevation="7dp" />
-                    </com.google.android.material.chip.ChipGroup>
-
-                    <EditText
-                        android:id="@+id/tvPreviouslycompletedOthers"
-                        style="@style/EditText"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/mention_others_training"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"/>
-
-
+                    <include
+                        android:id="@+id/previouslyTrainingChips"
+                        layout="@layout/previously_training_chips"
+                        />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/llPreveiouscompTrainingMOnth"
@@ -3759,7 +3760,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">
+                    app:layout_constraintTop_toBottomOf="@+id/previouslyTrainingChipsLinear">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -3793,6 +3794,7 @@
                         android:orientation="vertical"
                         android:layout_marginTop="@dimen/dp_10"
                         android:id="@+id/llHeardAboutddugky"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">

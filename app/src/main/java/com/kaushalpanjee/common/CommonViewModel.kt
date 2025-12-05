@@ -38,10 +38,12 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.LoginReq
+import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
@@ -68,6 +70,7 @@ import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.LogoutResponse
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
@@ -163,9 +166,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
          private var _techEducation = MutableSharedFlow<Resource<out TechQualificationRes>>()
          val techEducation = _techEducation.asSharedFlow()
 
-         fun getTechEducation(appVersion: String,header :String,loginId :String){
+         fun getTechEducation(appVersion: String,header :String,loginId :String, qualCat: String){
             viewModelScope.launch {
-            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME,loginId,header).collectLatest {
+            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME,loginId,header, qualCat).collectLatest {
                 _techEducation.emit(it)
             }
         }
@@ -582,7 +585,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getSectorListAPI = _getSectorListAPI.asSharedFlow()
 
 
-    fun getSectorListAPI(techQualification: TechQualification,header :String){
+    fun getSectorListAPI(techQualification: SectorRequest,header :String){
         viewModelScope.launch {
             commonRepository.getSectorListAPI(techQualification,header).collectLatest {
                 _getSectorListAPI.emit(it)
@@ -712,6 +715,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
+
+    private  var _getLogout =  MutableStateFlow<Resource<out LogoutResponse>>(Resource.Loading())
+    val getLogout = _getLogout.asSharedFlow()
+
+    fun getLogout(logoutReq: LogoutRequest,header :String){
+        viewModelScope.launch {
+            commonRepository.getLogout(logoutReq,header).collectLatest {
+                _getLogout.emit(it)
+            }
+        }
+
+    }
 
     private  var _aadhaarRekycApi =  MutableStateFlow<Resource<out AadhaarEkycRes>>(Resource.Loading())
     val aadhaarRekycApi = _aadhaarRekycApi.asSharedFlow()

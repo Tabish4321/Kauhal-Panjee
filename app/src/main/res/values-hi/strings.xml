@@ -73,7 +73,7 @@
     <string name="Educational_information">शैक्षिक जानकारी</string>
     <string name="Employment_information">रोजगार जानकारी</string>
     <string name="Training_information">प्रशिक्षण जानकारी</string>
-    <string name="Banking_information">बैंकिंग जानकारी</string>
+    <string name="Banking_information">वित्तीय जानकारी</string>
     <string name="select_HighestEducation">उच्चतम शिक्षा<font color='#FF0000'>*</font></string>
     <string name="select_HighestEducation1">उच्चतम शिक्षा</string>
     <string name="select_YearOfPassing">उच्चतम योग्यता की उत्तीर्ण करने का वर्ष</string>
@@ -220,7 +220,29 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>उन्नति के बारे में</u></string>
+    <string name="unnati_schemes">उन्नति योजनाएँ</string>
+
+    <string name="ddugky_title">डीडीयूजीकेवाई</string>
+    <string name="rseti_title">आरएसईटीआई</string>
+    <string name="select_Class">कक्षा<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">अपना प्रमाणपत्र\n देखें</string>
+    <string name="pmvishwakarma">पीएम विश्वकर्मा</string>
+    <string name="nrlm">एनआरएलएम</string>
+    <string name="self_employment">स्व रोजगार</string>
+    <string name="ExpectationIncome">अपेक्षित मासिक आय (रुपये में)</string>
+    <string name="domain">कार्यक्षेत्र<font color='#FF0000'>*</font></string>
+    <string name="domain1">कार्यक्षेत्र</string>
+    <string name="course">कार्यप्रणाली<font color='#FF0000'>*</font></string>
+    <string name="course1">कार्यप्रणाली</string>
+    <string name="select_YearOfPassingNew">बीतने का वर्ष</string>
+    <string name="select_SchemeInterest">योजना में रुचि रखते हैं<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">योजना में रुचि रखते हैं</string>
+    <string name="ddugky_1">15-35 साल की उम्र के ग्रामीण युवाओं को स्किल डेवलपमेंट के अवसर।</string>
+    <string name="ddugky_2">उद्योग-संरेखित प्रशिक्षण का उद्देश्य रोजगार क्षमता में सुधार लाना और गुणवत्तापूर्ण नौकरी के अवसरों तक पहुंच बनाना है।</string>
+    <string name="ddugky_3">प्रशिक्षण सफलतापूर्वक पूरा करने पर संरचित प्लेसमेंट सहायता।</string>
+    <string name="rseti_1">18 से 50 वर्ष की आयु के ग्रामीण युवाओं के लिए अल्पकालिक प्रशिक्षण कार्यक्रम, जो स्व-रोजगार और सूक्ष्म उद्यम विकास पर केंद्रित हैं।</string>
+    <string name="rseti_2">व्यक्तिगत उद्यमों की स्थापना सक्षम करने के लिए बैंकों व ऋण संस्थानों से संपर्क स्थापित करने में सहायता करता है।</string>
+    <string name="rseti_3">नए व्यवसायों की स्थिरता और विकास सुनिश्चित करने के लिए प्रशिक्षण के बाद मार्गदर्शन और सहायता प्रदान की जाती है।</string>
 
 </resources>

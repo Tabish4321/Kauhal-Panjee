@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,6 +13,8 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,6 +33,7 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.FaceCheckReq
+import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
@@ -39,7 +43,7 @@ import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
-import com.kaushalpanjee.core.util.toastShort
+import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
@@ -107,6 +111,34 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         collectBannerResponse()
 
     }
+
+    fun detectFaceRD(context: Context, captureAction: String = AppConstant.Constants.CAPTURE_INTENT) {
+        val intent = Intent(captureAction)
+        val list = context.packageManager.queryIntentActivities(
+            intent,
+            PackageManager.MATCH_DEFAULT_ONLY
+        )
+
+        if (list.isNotEmpty()) {
+            Log.e("FACERD_CHECK", "FaceRD is AVAILABLE (intent can be handled).")
+            list.forEach {
+                Log.e("FACERD_HANDLER", "Package: ${it.activityInfo.packageName} | Class: ${it.activityInfo.name}")
+            }
+        } else {
+            Log.e("FACERD_CHECK", "FaceRD NOT available on this device.")
+        }
+    }
+
+    fun detectFaceRDByPackage(context: Context) {
+        val pkg = "in.gov.uidai.facerd"
+
+        try {
+            context.packageManager.getPackageInfo(pkg, 0)
+            Log.e("FACERD_PACKAGE", "FaceRD package FOUND.")
+        } catch (e: Exception) {
+            Log.e("FACERD_PACKAGE", "FaceRD package NOT found.")
+        }
+    }
      private fun init(){
          val drawerLayout = binding.drawerLayout
          binding.navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -117,13 +149,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                      AppUtil.saveLoginStatus(requireContext(), false)  // false means user is logged out
 
-                     findNavController().navigate(
-                         R.id.loginFragment,
-                         null,
-                         NavOptions.Builder()
-                             .setPopUpTo(R.id.mainHomePage, true)
-                             .build()
-                     )
+                     commonViewModel.getLogout(LogoutRequest(BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()), AppUtil.getSavedTokenPreference(requireContext()))
+
+                     collectLogoutResponse()
+
                  }
 
                  R.id.changePass -> {
@@ -214,6 +243,12 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      binding.personalImageLogo.setOnClickListener {
              findNavController().navigate(MainHomePageDirections.actionMainHomePageToViewDetailsFragment())
 
+     }
+
+     binding.certificateImageLogo.setOnClickListener {
+         val intent = Intent(requireContext(), CertificateActivity::class.java)
+         intent.putExtra("CERT_URL", "")
+         startActivity(intent)
      }
 
          binding.circleImageViewMH.setOnClickListener {
@@ -315,6 +350,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     AppUtil.saveAadhaarPreference(requireContext(),decryptedAadhaar
                                     )
 
+                                    if (x.firstLogin == "N"){
+                                        showForcePasswordDialog()
+                                    }
 
                                 }
                                 if (isFaceReg=="N"){
@@ -486,6 +524,52 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
     }
 
+    private fun collectLogoutResponse(){
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getLogout) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        showSnackBar(it.data?.responseDesc ?: "Something went wrong")
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data.let { logoutResponse ->
+                            when (logoutResponse?.responseCode) {
+                                200 -> {
+                                    findNavController().navigate(
+                                        R.id.loginFragment,
+                                        null,
+                                        NavOptions.Builder()
+                                            .setPopUpTo(R.id.mainHomePage, true)
+                                            .build()
+                                    )
+                                    toastLong(logoutResponse.responseMsg)
+                                }
+                                301 -> {
+
+                                    showUpdateDialog()
+                                }
+                                404 -> showSnackBar(logoutResponse.responseDesc)
+                                401 -> {
+                                    AppUtil.showSessionExpiredDialog(findNavController(), requireContext())
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
     private fun collectBannerResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBannerAPI) {
@@ -622,6 +706,25 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         val dialog = builder.create()
         dialog.setCancelable(false)  // Prevent outside touch dismissal
         dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+    private fun showForcePasswordDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Security Warning")
+            .setMessage("For security reasons, you must change your password before continuing.")
+            .setCancelable(false)
+            .setPositiveButton("OK") { _, _ ->
+                findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
+            }
+            .create()
+
+        dialog.setCanceledOnTouchOutside(false)
+
+        dialog.setOnKeyListener { _, keyCode, _ ->
+            keyCode == KeyEvent.KEYCODE_BACK // block back press
+        }
+
         dialog.show()
     }
 

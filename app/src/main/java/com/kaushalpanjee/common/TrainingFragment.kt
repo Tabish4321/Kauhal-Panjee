@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.WrappedList
+import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.response.DistrictList
@@ -100,7 +101,7 @@ class TrainingFragment : BaseFragment<FragmentTrainingBinding>(FragmentTrainingB
         binding.SpinnerDistrictName.setOnItemClickListener { parent, _, position, _ ->
             selectedDistrictItem = parent.getItemAtPosition(position).toString()
             if (position in district.indices) {
-                commonViewModel.getSectorListAPI(TechQualification(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
+                commonViewModel.getSectorListAPI(SectorRequest(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
                 selectedDistrictCodeItem = districtCode[position]
             } else {
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()

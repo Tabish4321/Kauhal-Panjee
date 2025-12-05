@@ -2192,7 +2192,6 @@
                 android:id="@+id/expandEducational"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_12"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -2214,7 +2213,7 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/select_HighestEducation"
+                        android:text="@string/select_HighestEducation1"
                         android:textColor="@color/color_dark_green" />
 
                     <TextView
@@ -2231,12 +2230,39 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llClass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llHighestEducation">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/select_Class"
+                        android:textColor="@color/color_dark_green" />
+
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etClass"
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llYearOfPassing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llHighestEducation">
+                    app:layout_constraintTop_toBottomOf="@+id/llClass">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -2244,7 +2270,8 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/select_YearOfPassing"
+                        android:visibility="gone"
+                        android:text="@string/select_YearOfPassingNew"
                         android:textColor="@color/color_dark_green" />
 
 
@@ -2254,28 +2281,10 @@
                         android:background="@drawable/edittext_background"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
+                        android:visibility="gone"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/languages"
-                        android:textColor="@color/color_dark_green" />
-
-
-                    <TextView
-                        android:id="@+id/tvLanguages"
-                        style="@style/EditText"
-                        android:background="@drawable/edittext_background"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        tools:ignore="LabelFor" />
 
 
                     <LinearLayout
@@ -2292,7 +2301,7 @@
                         android:id="@+id/llTechEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
 
@@ -2302,7 +2311,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/TechnicalEducation1"
+                            android:text="@string/course1"
                             android:textColor="@color/color_dark_green" />
 
                         <TextView
@@ -2325,7 +2334,7 @@
                         android:id="@+id/llDomainOfTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
 
@@ -2335,7 +2344,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/DomainOfTech"
+                            android:text="@string/domain1"
                             android:textColor="@color/color_dark_green" />
 
                         <TextView
@@ -2365,7 +2374,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/select_YearOfPassingTech"
+                            android:text="@string/select_YearOfPassingNew"
                             android:textColor="@color/color_dark_green" />
 
 
@@ -2379,7 +2388,25 @@
                             android:textSize="16sp"/>
 
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/languages"
+                            android:textColor="@color/color_dark_green" />
 
+
+                        <TextView
+                            android:id="@+id/tvLanguages"
+                            style="@style/EditText"
+                            android:background="@drawable/edittext_background"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            tools:ignore="LabelFor" />
 
                     </LinearLayout>
 
@@ -2578,6 +2605,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/llIntrestedIn"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llnatureOfEmpl">
 
@@ -2821,9 +2849,27 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_SchemeInterest"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"  />
+
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etSchemeInterestedIn"
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
+
+                    <TextView
                         android:id="@+id/tvrecievedAnyTrainingBefore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:text="@string/recievedAnyTrainingBefore"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
@@ -2939,6 +2985,7 @@
                         android:orientation="vertical"
                         android:layout_marginTop="@dimen/dp_10"
                         android:id="@+id/llHeardAboutddugky"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">

@@ -3,6 +3,7 @@ package com.kaushalpanjee.common
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.databinding.FragmentAboutUnnatiBinding
 import com.kaushalpanjee.model.Scheme
@@ -41,49 +42,50 @@ class AboutUnnatiFragment :
     private fun getUnnatiSchemes() : List<Scheme> {
         return  listOf<Scheme>(
             Scheme(
-                "NRLM",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                getString(R.string.ddugky_title),
+                "https://u.pcloud.link/publink/show?code=XZT0kC5Z50o1NG08myyzbjnq7T0P2HErMsck#/login",
                 arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
+                    getString(R.string.ddugky_1),
+                    getString(R.string.ddugky_2),
+                    getString(R.string.ddugky_3),
                 )
             ),
             Scheme(
-                "PM Vishwakarma",
+                getString(R.string.rseti_title),
                 "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
                 arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
-                )
-            ),
-            Scheme(
-                "PMKVY",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                )
-            ),
-            Scheme(
-                "DDUGKY",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
-                )
-            ),
-            Scheme(
-                "RSETI",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
+                    getString(R.string.rseti_1),
+                    getString(R.string.rseti_2),
+                    getString(R.string.rseti_3)
                 )
             )
+//            ,
+//            Scheme(
+//                "NRLM",
+//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//                arrayListOf(
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
+//                )
+//            ),
+//            Scheme(
+//                "PM Vishwakarma",
+//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//                arrayListOf(
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
+//                )
+//            ),
+//            Scheme(
+//                "PMKVY",
+//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//                arrayListOf(
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                )
+//            )
+
         )
     }
 }

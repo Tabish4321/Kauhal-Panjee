@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="36dp"
+    android:height="36dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- paper rectangle -->
+    <path
+        android:fillColor="#047cc1"
+        android:pathData="M4,3h10a1,1 0 0 1 1,1v16l-3-1.5L9,20V4a1,1 0 0 1 1-1H4z"/>
+
+    <!-- ribbon / badge -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M17.5,7.5c0,1.93 -1.57,3.5 -3.5,3.5s-3.5,-1.57 -3.5,-3.5 1.57,-3.5 3.5,-3.5 3.5,1.57 3.5,3.5z"/>
+
+    <!-- small inner circle (white) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M14,7.5a0.5,0.5 0 1 1 0,-1 0.5,0.5 0 0 1 0,1z" />
+
+    <!-- little lines to indicate text -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="0"
+        android:pathData="M6,6h6v1H6zM6,9h6v1H6zM6,12h6v1H6z" />
+</vector>

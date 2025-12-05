@@ -97,7 +97,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }
 
 
+        binding.changeLanguage.setOnClickListener {
+            findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
 
+        }
 
 // Disable long-press (prevents copy-paste menu)
         binding.etPassword.setOnLongClickListener { true }

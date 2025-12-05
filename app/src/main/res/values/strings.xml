@@ -36,14 +36,14 @@
     <string name="district">District<font color='#FF0000'>*</font></string>
     <string name="select_district">Select district</string>
     <string name="select_gp">Select Gram panchayat</string>
-    <string name="g_name">Guardian name</string>
+    <string name="g_name">Father name / Guardian name</string>
     <string name="guardian_name">Guardian Name</string>
     <string name="mother_name">Mother name<font color='#FF0000'>*</font></string>
-    <string name="guardian_alternative_number">Guardian /Alternative number<font color='#FF0000'>*</font></string>
+    <string name="guardian_alternative_number">Alternative mobile number<font color='#FF0000'>*</font></string>
     <string name="consent_text_short">I agree to voluntary share my identity information with e-kyc App. Read More</string>
     <string name="consent_text">I agree to voluntary share my identity information with e-kyc App.</string>
     <string name="candidate_name">Candidate name</string>
-    <string name="father_name">Guardian name<font color='#FF0000'>*</font></string>
+    <string name="father_name">Father name / Guardian name<font color='#FF0000'>*</font></string>
     <string name="category">Category<font color='#FF0000'>*</font></string>
     <string name="marital">Marital status<font color='#FF0000'>*</font></string>
     <string name="minority">Minority<font color='#FF0000'>*</font></string>
@@ -53,7 +53,7 @@
     <string name="do_you_Antyodaya">Do you have Antyodaya card</string>
     <string name="do_you_llRsby">Do you have RSBY/PM-JAY Card</string>
     <string name="do_you_Pip">Is PIP (Participatory Identification of Poor)</string>
-    <string name="father_incomer">Yearly income of the family (Rs.)</string>
+    <string name="father_incomer">Yearly income of the family (In Rupees)</string>
     <string name="voter_id">Voter Id</string>
     <string name="driving_id">Driving License</string>
     <string name="submit">Submit</string>
@@ -71,7 +71,7 @@
     <string name="Educational_information">Educational Information</string>
     <string name="Employment_information">Employment Information</string>
     <string name="Training_information">Training Information</string>
-    <string name="Banking_information">Banking Information</string>
+    <string name="Banking_information">Financial Information</string>
     <string name="select_HighestEducation">Highest Education<font color='#FF0000'>*</font></string>
     <string name="select_HighestEducation1">Highest Education</string>
     <string name="select_YearOfPassing">Year of passing of highest qualification</string>
@@ -84,9 +84,9 @@
     <string name="natureOfEmpl">What is the nature of employment?</string>
     <string name="IntrestedIn">Interested in?<font color='#FF0000'>*</font></string>
     <string name="EmploymentPreference">Employment Preference<font color='#FF0000'>*</font></string>
-    <string name="JobLocationPreference">Job Location Preference<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">Location Preference<font color='#FF0000'>*</font></string>
     <string name="CurrentEarning">What is personal current monthly earning in Rupees?</string>
-    <string name="CurrentEarningHint">Current Salary</string>
+    <string name="CurrentEarningHint">Current Earning</string>
     <string name="ExpectationSalary">Expected Minimum Monthly Salary (Rs.)</string>
     <string name="recievedAnyTrainingBefore">Have you received any training before?<font color='#FF0000'>*</font></string>
     <string name="PreviousComTraining">Previously completed training in</string>
@@ -134,12 +134,12 @@
     <string name="select_category">Select Category</string>
     <string name="name1">Mandatory field 1<font color='#FF0000'>*</font></string>
     <string name="validate">Validate</string>
-    <string name="upload_category_certificate">Upload Category Certificate</string>
+    <string name="upload_category_certificate">Upload SHG Member Proof</string>
     <string name="upload_shg_certificate">Upload SHG Certificate</string>
     <string name="upload_antyodaya_card">Upload Antyodaya Card</string>
     <string name="upload_rsby_pm_jay_card">Upload RSBY/PM-JAY CARD</string>
     <string name="upload_residence_certificate">Upload Residence Certificate</string>
-    <string name="guardian_alternative_numbern">Guardian/Alternative number</string>
+    <string name="guardian_alternative_numbern">Alternative mobile number</string>
     <string name="mother_namer">Mother Name</string>
     <string name="something_went_wrong_at_uidai_site">Something went wrong at UIDAI side.</string>
     <string name="ok">Ok</string>
@@ -175,7 +175,7 @@
     <string name="branch_name">Branch Name</string>
     <string name="view_profile"><u>View details</u></string>
     <string name="edit"><u>Edit details</u></string>
-    <string name="as_per_aadhaar">Aadhaar Address</string>
+    <string name="as_per_aadhaar">Address (As per Aadhaar)</string>
     <string name="forgot_id_and_password">Forgot id and password</string>
     <string name="sector">Sector<font color='#FF0000'>*</font></string>
     <string name="find_a_training_center">Find a training center</string>
@@ -220,5 +220,27 @@
     <string name="wardn">Ward<font color='#FF0000'>*</font></string>
     <string name="about_unnati"><u>About Unnati</u></string>
     <string name="unnati_schemes">Unnati Schemes</string>
+
+    <string name="ddugky_title">DDUGKY</string>
+    <string name="rseti_title">RSETI</string>
+    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">View Your\n    Certificate</string>
+    <string name="pmvishwakarma">PM Vishwakarma</string>
+    <string name="nrlm">NRLM</string>
+    <string name="self_employment">Self Employment</string>
+    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
+    <string name="domain">Domain<font color='#FF0000'>*</font></string>
+    <string name="domain1">Domain</string>
+    <string name="course">Course<font color='#FF0000'>*</font></string>
+    <string name="course1">Course</string>
+    <string name="select_YearOfPassingNew">Year of passing</string>
+    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">Scheme Interested In</string>
+    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
+    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
+    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
+    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
+    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
+    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
 
 </resources>

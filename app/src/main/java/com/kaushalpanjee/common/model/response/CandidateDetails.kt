@@ -124,15 +124,14 @@ data class Secc(
 )
 
 data class Educational(
-    val passingTechYear: String,
     val techDomain: String,
     val techDomainId: String,
-    val isTechEducate: String,
     val highesteducation: String,
     val language: String,
     val monthYearOfPassing: String,
     val techQualification: String,
-    val techQualificationId: String
+    val techQualificationId: String,
+    val highestClass : String
 )
 
 data class Employment(
@@ -141,8 +140,7 @@ data class Employment(
     val monthlyEarning: String,
     val isEmployeed: String,
     val expectedSalary: String,
-    val empNature: String,
-    val intrestedIn: String
+    val empNature: String
 )
 
 data class Training(
@@ -151,9 +149,7 @@ data class Training(
     val trade: String,
     val preCompTraining: String,
     val compTrainingDuration: String,
-    val sectorName: String,
-    val hearedAboutScheme: String,
-    val hearedFrom: String
+    val sectorName: String
 )
 
 data class Bank(
