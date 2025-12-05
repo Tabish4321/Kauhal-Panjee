@@ -48,6 +48,7 @@ import com.kaushalpanjee.databinding.FragmentForgotViaAadhaarBinding
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods.respDecodedXmlToPojoAuth
 import com.kaushalpanjee.uidai.capture.CaptureResponse
+import com.kaushalpanjee.security.SecurityUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -235,11 +236,7 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                 when (result.responseCode) {
                                     200 -> {
                                         candidateId = result.candidateId
-
                                         invokeCaptureIntent()
-
-
-
                                     }
                                     301 -> toastShort("Kindly Update from Play Store")
                                     404 -> showSnackBar(result.responseDesc)
@@ -292,8 +289,7 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
     }
 
     private fun createPidOptions(txnId: String, purpose: String): String {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"$PRODUCTION\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.
-        WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"$PRODUCTION\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${SecurityUtils.getWadhKey()}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
 
     private val startUidaiAuthResult =
@@ -469,6 +465,7 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
+
                                     log("EKYCDATA", kycResp.toString())
 
                                     if (kycResp.isSuccess) {
@@ -488,7 +485,6 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                         state = kycResp.uidData.poa.state ?: "N/A"
                                         dist = kycResp.uidData.poa.dist ?: "N/A"
                                         block = kycResp.uidData.poa.subdist ?: "N/A"
-
                                         village = kycResp.uidData.poa.vtc ?: "N/A"
                                         street = kycResp.uidData.poa.loc ?: "N/A"
                                         po = kycResp.uidData.poa.po ?: "N/A"
@@ -510,7 +506,6 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
 
                                         hideProgressBar()
                                     }
-
                                     else {
                                         hideProgressBar()
                                         val decodedRar = decodeBase64(kycResp.rar)
@@ -524,9 +519,7 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                             findNavController().navigateUp()
                                         } ?: toastShort("Getting Error")
                                     }
-                                }
-
-                                catch (e: Exception) {
+                                } catch (e: Exception) {
                                     hideProgressBar()
                                     findNavController().navigateUp()
                                     e.printStackTrace()
