@@ -220,7 +220,7 @@ dependencies {
     implementation("com.google.ai.edge.litert:litert-support:1.2.0")
 
     // MediaPipe Tasks Vision
-    implementation("com.google.mediapipe:tasks-vision:0.10.14")
+    implementation("com.google.mediapipe:tasks-vision:0.10.26.1")
 
     // Media3 -Video Player
     implementation("androidx.media3:media3-exoplayer:1.4.1")

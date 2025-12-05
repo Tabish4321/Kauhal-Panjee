@@ -22,7 +22,7 @@ class CertificateActivity : AppCompatActivity() {
 
     // === Replace this with the real certificate URL in production (HTTPS).
     // For this debug/demo we use the local path you uploaded:
-    private val certificateUrl = "https://kaushal.rural.gov.in/#/home"
+    private val certificateUrl = "https://kaushal.dord.gov.in/demo/#/certificate-details/2506027615"
 
     // If you have a server host constraint, set allowedHost = "yourserver.com"
     // For local file use null or check differently

@@ -46,6 +46,7 @@ import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
@@ -129,9 +130,9 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String): Flow<Resource<out TechQualificationRes>>{
+    suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String, qualCat : String): Flow<Resource<out TechQualificationRes>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId))
+            appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId, qualCat))
         }
 
     }
@@ -363,7 +364,7 @@ class CommonRepository @Inject constructor(
 
 
 
-    suspend fun getSectorListAPI(techQualification: TechQualification,header :String): Flow<Resource<out SectorResponse>>{
+    suspend fun getSectorListAPI(techQualification: SectorRequest,header :String): Flow<Resource<out SectorResponse>>{
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getSectorListAPI(header,techQualification)

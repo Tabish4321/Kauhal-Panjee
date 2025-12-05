@@ -3,6 +3,7 @@ package com.kaushalpanjee.common
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.databinding.FragmentAboutUnnatiBinding
 import com.kaushalpanjee.model.Scheme
@@ -41,48 +42,49 @@ class AboutUnnatiFragment :
     private fun getUnnatiSchemes() : List<Scheme> {
         return  listOf<Scheme>(
             Scheme(
-                "DDUGKY",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                getString(R.string.ddugky_title),
+                "https://u.pcloud.link/publink/show?code=XZT0kC5Z50o1NG08myyzbjnq7T0P2HErMsck#/login",
                 arrayListOf(
-                    "Skill development opportunities to rural youth in the age group of 15–35 years.",
-                    "Industry-aligned training aimed at improving employability and access to quality job opportunities.",
-                    "Structured placement support upon successful completion of training.",
+                    getString(R.string.ddugky_1),
+                    getString(R.string.ddugky_2),
+                    getString(R.string.ddugky_3),
                 )
             ),
             Scheme(
-                "RSETI",
+                getString(R.string.rseti_title),
                 "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
                 arrayListOf(
-                    "Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.",
-                    "Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.",
-                    "Post-training mentoring and handholding support to ensure sustainability and growth of new businesses."
-                )
-            ),
-            Scheme(
-                "NRLM",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
-                )
-            ),
-            Scheme(
-                "PM Vishwakarma",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
-                )
-            ),
-            Scheme(
-                "PMKVY",
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                arrayListOf(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+                    getString(R.string.rseti_1),
+                    getString(R.string.rseti_2),
+                    getString(R.string.rseti_3)
                 )
             )
+//            ,
+//            Scheme(
+//                "NRLM",
+//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//                arrayListOf(
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
+//                )
+//            ),
+//            Scheme(
+//                "PM Vishwakarma",
+//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//                arrayListOf(
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
+//                )
+//            ),
+//            Scheme(
+//                "PMKVY",
+//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//                arrayListOf(
+//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
+//                )
+//            )
 
         )
     }

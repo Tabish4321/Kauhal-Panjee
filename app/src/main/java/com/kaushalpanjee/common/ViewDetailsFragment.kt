@@ -828,11 +828,19 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         for (x in userCandidateEducationalDetailsList ){
 
                                             binding.ethighestEdu.setText(x.highesteducation)
+                                            if (x.highesteducation == "Schooling"){
+                                                binding.llClass.visibility = View.VISIBLE
+                                                binding.etClass.setText(x.highestClass)
+                                            }else{
+                                                binding.llTechEducation.visibility = View.VISIBLE
+                                                binding.llDomainOfTech.visibility = View.VISIBLE
+                                            }
+
                                             binding.tvClickYearOfPassing.setText(x.monthYearOfPassing)
                                             binding.tvLanguages.setText(x.language)
                                             binding.etTechEduc.setText(x.techQualification)
                                             binding.etTechDomain.setText(x.techDomain)
-                                            binding.tvClickYearOfPassingTech.setText(x.passingTechYear)
+                                            binding.tvClickYearOfPassingTech.setText(x.monthYearOfPassing)
                                         }
 
                                         for (x in userCandidateEmploymentDetailsList ){
@@ -853,7 +861,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                             handleStatus(binding.optionCurentlyEmployedYesSelect, binding.optionCurentlyEmployedNoSelect, currentluempo)
 
 
-                                            binding.etIntrestedIn.setText(x.intrestedIn)
+                                            //binding.etIntrestedIn.setText(x.intrestedIn)
                                             binding.etEmploPref.setText(x.empPreference)
                                             binding.etJobLoc.setText(x.preferJobLocation)
                                             binding.etCurrentEarning.setText(x.monthlyEarning)
@@ -865,24 +873,24 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         for (x in userCandidateTrainingDetailsList){
 
                                             val recievedTrainingBeforeStatus = x.isPreTraining
-                                            val heardStatus = x.hearedAboutScheme
+                                            //val heardStatus = x.hearedAboutScheme
 
                                             // Set the UI based on conditions
                                             handleStatus(binding.optionrecievedAnyTrainingBeforeYesSelect, binding.optioRecievedAnyTrainingBeforeNoSelect, recievedTrainingBeforeStatus)
-                                            handleStatus(binding.optionHaveYouHeardYes, binding.optionHaveYouHeardNo, heardStatus)
+                                            //handleStatus(binding.optionHaveYouHeardYes, binding.optionHaveYouHeardNo, heardStatus)
 
                                             binding.etPrevComTra.setText(x.preCompTraining)
-                                            binding.etWhereHaveHeard.setText(x.hearedFrom)
+                                           // binding.etWhereHaveHeard.setText(x.hearedFrom)
                                             binding.etSector.setText(x.sectorName)
                                             binding.etTrade.setText(x.trade)
 
 
-                                            if (heardStatus=="No"){
-
-
-                                                binding.etWhereHaveHeard.gone()
-
-                                            }
+//                                            if (heardStatus=="No"){
+//
+//
+//                                                binding.etWhereHaveHeard.gone()
+//
+//                                            }
 
 
                                             if (recievedTrainingBeforeStatus=="No"){

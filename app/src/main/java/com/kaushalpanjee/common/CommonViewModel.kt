@@ -43,6 +43,7 @@ import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
@@ -165,9 +166,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
          private var _techEducation = MutableSharedFlow<Resource<out TechQualificationRes>>()
          val techEducation = _techEducation.asSharedFlow()
 
-         fun getTechEducation(appVersion: String,header :String,loginId :String){
+         fun getTechEducation(appVersion: String,header :String,loginId :String, qualCat: String){
             viewModelScope.launch {
-            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME,loginId,header).collectLatest {
+            commonRepository.getTechEducationAPI(BuildConfig.VERSION_NAME,loginId,header, qualCat).collectLatest {
                 _techEducation.emit(it)
             }
         }
@@ -584,7 +585,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getSectorListAPI = _getSectorListAPI.asSharedFlow()
 
 
-    fun getSectorListAPI(techQualification: TechQualification,header :String){
+    fun getSectorListAPI(techQualification: SectorRequest,header :String){
         viewModelScope.launch {
             commonRepository.getSectorListAPI(techQualification,header).collectLatest {
                 _getSectorListAPI.emit(it)

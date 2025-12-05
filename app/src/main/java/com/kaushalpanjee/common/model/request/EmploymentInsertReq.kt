@@ -7,7 +7,6 @@ data class EmploymentInsertReq(
     val sectionCount: String, // Static and mandatory
     val isEmployeed: String,
     val employmentMode: String,
-    val intrestedIn: String,
     val employmentPreference: String,
     val jobLocationPreference: String,
     val monthlyEarning: String,

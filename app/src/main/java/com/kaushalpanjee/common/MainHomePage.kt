@@ -243,6 +243,12 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
+     binding.certificateImageLogo.setOnClickListener {
+         val intent = Intent(requireContext(), CertificateActivity::class.java)
+         intent.putExtra("CERT_URL", "")
+         startActivity(intent)
+     }
+
          binding.circleImageViewMH.setOnClickListener {
              binding.drawerLayout.openDrawer(GravityCompat.START)
 

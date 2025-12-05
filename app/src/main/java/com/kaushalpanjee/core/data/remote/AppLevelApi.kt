@@ -39,6 +39,7 @@ import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
@@ -265,7 +266,7 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_SECTOR)
     suspend fun getSectorListAPI(@Header("Authorization") token: String,
-                                 @Body techQualification: TechQualification):SectorResponse
+                                 @Body techQualification: SectorRequest):SectorResponse
 
 
 
