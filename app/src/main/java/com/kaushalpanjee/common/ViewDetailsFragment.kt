@@ -883,6 +883,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                            // binding.etWhereHaveHeard.setText(x.hearedFrom)
                                             binding.etSector.setText(x.sectorName)
                                             binding.etTrade.setText(x.trade)
+                                            binding.etSchemeInterestedIn.setText(x.schemeType)
 
 
 //                                            if (heardStatus=="No"){

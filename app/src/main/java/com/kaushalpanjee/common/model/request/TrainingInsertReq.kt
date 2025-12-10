@@ -10,5 +10,7 @@ data class TrainingInsertReq(
     val compTrainingDuration: String,
     val intrestedSector: String,
     val intrestedTrade: String,
-    val tradeCode: String
-)
+    val tradeCode: String,
+    val schemeType: String
+
+    )

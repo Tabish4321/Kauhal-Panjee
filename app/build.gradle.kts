@@ -7,7 +7,6 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
-
 }
 
 android {
@@ -21,7 +20,7 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 21
+        versionCode = 22
         versionName = "2.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -60,14 +59,11 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+           // signingConfig = signingConfigs.getByName("debug")
         }
 
         debug {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
 
@@ -101,9 +97,11 @@ android {
     }
 
     configurations.all {
-
+      // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
         exclude(group = "xpp3", module = "xpp3")
-
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
+        exclude(group = "pull-parser", module = "pull-parser")
     }
 }
 
@@ -164,22 +162,37 @@ dependencies {
     implementation (libs.androidx.core.splashscreen)
 
     //Xml
-    implementation(libs.jackson.dataformat.xml)
+    //implementation(libs.jackson.dataformat.xml)
+    // ✅ XML: Per-dep excludes (covers transitives)
+    implementation(libs.jackson.dataformat.xml) {
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
+        exclude(group = "stax", module = "stax-api")
+    }
+
     implementation("com.thoughtworks.xstream:xstream:1.4.7") {
         exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
     }
 
     implementation(libs.bcprov.jdk16)
     implementation(libs.jsr105.api)
     implementation("org.apache.santuario:xmlsec:2.0.3") {
         exclude(group = "org.codehaus.woodstox")
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
     }
    // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    implementation (libs.simple.xml)
+//    implementation (libs.simple.xml)\
+    implementation(libs.simple.xml) {  // ✅ UPDATED: Explicit exclude for Simple XML transitive
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
+        exclude(group = "net.sf.kxml", module = "kxml2")
+    }
 
     // Jetpack Compose
     implementation(platform("androidx.compose:compose-bom:2024.04.01"))

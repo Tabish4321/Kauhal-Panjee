@@ -1077,6 +1077,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                 }
                                 userPhotoUIADI?.let { it1 -> showBottomSheet(it1, name, gender, dob, careOf) }
+                                AppUtil.saveEmailPreference(requireContext(),"")
 
                                 toastLong("Your username and password have been sent to your email.")
 

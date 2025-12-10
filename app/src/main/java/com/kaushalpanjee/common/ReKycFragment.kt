@@ -209,7 +209,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
 
 
 
-                                            val encryptedAadhaarString =   AESCryptography.encryptIntoBase64String( AppUtil.getSavedAadhaarPreference(requireContext()), AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+                                            val encryptedAadhaarString =    AppUtil.getSavedAadhaarPreference(requireContext())
                                             val encryptedName =   AESCryptography.encryptIntoBase64String(name, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedGender =   AESCryptography.encryptIntoBase64String(gender, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
                                             val encryptedDob =   AESCryptography.encryptIntoBase64String(dob, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
@@ -439,12 +439,17 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             // Parse the capture response XML to an object
             val response = CaptureResponse.fromXML(captureResponse)
 
+            val decryptedAadhaar = AESCryptography.decryptIntoString(
+                AppUtil.getSavedAadhaarPreference(requireContext()),
+                AppConstant.Constants.ENCRYPT_KEY,
+                AppConstant.Constants.ENCRYPT_IV_KEY
+            ) ?: "N/A"
             if (response.isSuccess) {
                 showProgressBar()
                 // Process the response to generate the PoiType or other required fields
                 val poiType = XstreamCommonMethods.processPidBlockEkyc(
                     response.toXML(),
-                    AppUtil.getSavedAadhaarPreference(requireContext()),
+                    decryptedAadhaar,
                     false,
                     requireContext()
                 )

@@ -210,6 +210,29 @@
 
             />
 
+
+
+
+
+        <TextView
+            android:id="@+id/tvVersion"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_semi_bold"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/color_dark_green"
+            android:textSize="@dimen/sp_16"
+          app:layout_constraintTop_toBottomOf="@+id/tvLogin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+
+            />
+
+
+
         <TextView
             android:id="@+id/tvAboutUnnati"
             android:layout_width="@dimen/dp_0"

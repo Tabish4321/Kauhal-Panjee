@@ -107,7 +107,7 @@ object AppModule {
             writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
             readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
             if (BuildConfig.DEBUG) {
-                addNetworkInterceptor(ChuckerInterceptor(context))
+                //addNetworkInterceptor(ChuckerInterceptor(context))
                 val logging = HttpLoggingInterceptor { message ->
                     Log.d("API_LOG---->", message)
                 }.apply {

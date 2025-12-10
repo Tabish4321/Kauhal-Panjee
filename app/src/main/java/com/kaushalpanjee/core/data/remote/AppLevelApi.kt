@@ -49,6 +49,7 @@ import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
@@ -84,6 +85,7 @@ import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
+import com.kaushalpanjee.common.model.response.UnnatiListResponse
 import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.VillageResponse
@@ -342,6 +344,13 @@ interface AppLevelApi {
                                 @Body aadhaarRekycReq: AadhaarRekycReq):AadhaarEkycRes
 
 
+    @POST(ApiConstant.API_UNNATI_SCHEME)
+    suspend fun unnatiScheneListApi(@Header("Authorization") token: String,
+                                @Body unnatilistReq: UnnatilistReq):UnnatiListResponse
+
+
+
+
     @POST
     suspend fun postOnAUAFaceAuthNREGA(
         @Url url: String,
@@ -362,7 +371,7 @@ interface AppLevelApi {
         @Url url: String, // Full URL passed manually
         @Header("username") username: String,
         @Header("password") password: String,
-        @Field("jobcardno") jobcardNo: String
+        @Field("jobcardno", encoded = true) jobcardNo: String
     ): Response<JobcardResponse>
 
     @POST(ApiConstant.API_OTP_getBanner)

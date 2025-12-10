@@ -14,15 +14,26 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.activityViewModels
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.UserPreferences
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CertificateActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private val TAG = "CERTIFICATE"
+    @Inject
+    lateinit var userPreferences: UserPreferences
+
 
     // === Replace this with the real certificate URL in production (HTTPS).
     // For this debug/demo we use the local path you uploaded:
-    private val certificateUrl = "https://kaushal.dord.gov.in/demo/#/certificate-details/2506027615"
+    private var certificateUrl = ""
 
     // If you have a server host constraint, set allowedHost = "yourserver.com"
     // For local file use null or check differently
@@ -37,6 +48,12 @@ class CertificateActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        certificateUrl = intent.getStringExtra("CERT_URL").toString()
+
+
+
+
 
         webView = findViewById(R.id.certificateWebView)
         val progress = findViewById<View>(R.id.progress)
@@ -121,7 +138,9 @@ class CertificateActivity : AppCompatActivity() {
 
         // Load the certificate URL
         progress.visibility = View.VISIBLE
-        webView.loadUrl(certificateUrl)
+        Log.d(TAG, "certificateUrl:"+certificateUrl+userPreferences.getUseID())
+        webView.loadUrl(certificateUrl+userPreferences.getUseID())
+       // webView.loadUrl(certificateUrl+"2506027615")
 
     }
 

@@ -47,12 +47,12 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         lifecycleScope.launch {
             delay(2000)
 
-//            if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
-//                showSecurityWarning()
-//            }
-            if (isDeviceRooted()) {
+            if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
                 showSecurityWarning()
-            }
+           }
+         /*   if (isDeviceRooted()) {
+                showSecurityWarning()
+            }*/
             else {
                 navigate()
             }

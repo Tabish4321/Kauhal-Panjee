@@ -56,6 +56,7 @@ import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
@@ -87,6 +88,7 @@ import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
+import com.kaushalpanjee.common.model.response.UnnatiListResponse
 import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
@@ -451,6 +453,16 @@ class CommonRepository @Inject constructor(
             appLevelApi.aadhaarRekycApi(header,aadhaarRekycReq)
         }
     }
+
+    suspend fun unnatiScheneListApi(unnatilistReq: UnnatilistReq,header :String): Flow<Resource<out UnnatiListResponse>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.unnatiScheneListApi(header,unnatilistReq)
+        }
+    }
+
+
+
     suspend fun getChangePassOtp(loginIdNdPassReq: GetLoginIdNdPassReq): Flow<Resource<out ForgotIdOtpRes>>{
         return networkBoundResourceWithoutDb {
 

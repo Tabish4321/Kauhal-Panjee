@@ -149,7 +149,8 @@ data class Training(
     val trade: String,
     val preCompTraining: String,
     val compTrainingDuration: String,
-    val sectorName: String
+    val sectorName: String,
+    val schemeType : String
 )
 
 data class Bank(

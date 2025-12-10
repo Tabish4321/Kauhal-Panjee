@@ -74,6 +74,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var candidateName = ""
     private var totalPercentange =0.0f
     private var bannerImageList = ArrayList<String>()
+    private var certUrl = ""
+
 
     private val searchQuery = MutableLiveData<String>()
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
@@ -139,6 +141,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             Log.e("FACERD_PACKAGE", "FaceRD package NOT found.")
         }
     }
+
+
      private fun init(){
          val drawerLayout = binding.drawerLayout
          binding.navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -190,6 +194,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      }
 
  private fun  listeners(){
+
 
     //Training Adapter Setting
 
@@ -245,9 +250,18 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
+     if (certUrl == "N"){
+
+         binding.certificateImageLogo.gone()
+         binding.certificateImageText.gone()
+
+     }
+
+
      binding.certificateImageLogo.setOnClickListener {
+
          val intent = Intent(requireContext(), CertificateActivity::class.java)
-         intent.putExtra("CERT_URL", "")
+         intent.putExtra("CERT_URL", "${certUrl}")
          startActivity(intent)
      }
 
@@ -327,6 +341,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                 for (x in percentageList) {
 
+                                    certUrl = x.certFlag
                                     personalStatus= x.personalStatus.toString()
                                     educationalStatus= x.educationalStatus.toString()
                                     trainingStatus= x.trainingStatus.toString()
@@ -341,13 +356,13 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     userPreferences.updateUserStateLgdCode(null)
                                     userPreferences.updateUserStateLgdCode(x.stateLgdCode)
 
-                                    val decryptedAadhaar = AESCryptography.decryptIntoString(
-                                        x.aadhaarEnc,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY
-                                    ) ?: "N/A"
+//                                    val decryptedAadhaar = AESCryptography.decryptIntoString(
+//                                        x.aadhaarEnc,
+//                                        AppConstant.Constants.ENCRYPT_KEY,
+//                                        AppConstant.Constants.ENCRYPT_IV_KEY
+//                                    ) ?: "N/A"
 
-                                    AppUtil.saveAadhaarPreference(requireContext(),decryptedAadhaar
+                                    AppUtil.saveAadhaarPreference(requireContext(),x.aadhaarEnc
                                     )
 
                                     if (x.firstLogin == "N"){

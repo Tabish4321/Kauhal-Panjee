@@ -339,6 +339,7 @@ android:layout_height="match_parent"
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/certificate_image_text"
                 android:text="@string/view_your_certificate"
                 android:textColor="@color/color_dark_green"
                 android:fontFamily="@font/avenir_next_bold"

@@ -20,7 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-
 -keepattributes *Annotation*
 
 -keep class org.simpleframework.xml.** { *; }
@@ -44,6 +43,9 @@
 -keep class com.kaushalpanjee.core.domain.** { *; }
 -keep class com.kaushalpanjee.pojo.** { *; }
 
+# Room (Added for entity/DAO serialization)
+-keep class * extends androidx.room.** { *; }
+-dontwarn androidx.room.**
 
 # Keep hilt generated code
 -keep class dagger.hilt.** { *; }
@@ -72,11 +74,11 @@
 -keep class okhttp3.** { *; }
 -keep interface okhttp3.** { *; }
 
-#Gson
+# Gson
 -keep class com.google.gson.** { *; }
 -dontwarn com.google.gson.**
 
-#Moshi
+# Moshi
 -keep class com.squareup.moshi.** { *; }
 -dontwarn com.squareup.moshi.**
 
@@ -88,4 +90,55 @@
 
 #-keep class org.simpleframework.* { *; }
 #-keepclasseswithmembers class org.simpleframework.** { *; }
+# ... (your existing rules unchanged up to the XML section)
 
+# Ignore xmlpull / stax2 warnings during R8 shrink/minify
+# Suppress warnings for xmlpull and related classes
+-dontwarn org.xmlpull.v1.**
+-dontnote org.xmlpull.v1.**
+-dontwarn org.xmlpull.mxp1.**
+-dontwarn org.xmlpull.**
+-dontwarn android.content.res.**  # ✅ Suppresses framework inversion (safe per #123054725)
+-dontwarn org.codehaus.stax2.validation.**
+
+# Keep XmlPullParser classes intact (BROADENED)
+-keep class org.xmlpull.** { *; }  # ✅ UPDATED: org.xmlpull.** (not just v1)
+-keepclassmembers class org.xmlpull.** { *; }
+
+# Optional: If using KXML or similar, add
+-dontwarn org.kxml2.io.**
+
+# StAX2/Woodstox validation (fixes META-INF services warnings)
+-dontwarn org.codehaus.stax2.validation.**  # ✅ NEW: Covers DTD/RelaxNG/W3C schema factories
+
+
+-dontwarn aQute.bnd.annotation.spi.**
+-keep class aQute.bnd.annotation.spi.ServiceProvider.** { *; }
+
+# Java AWT/Swing (XStream desktop converters - safe to suppress on Android)
+-dontwarn java.awt.**
+-keep class java.awt.Color.* { *; }
+-keep class java.awt.Font.* { *; }
+-dontwarn javax.swing.**
+-keep class javax.swing.LookAndFeel.* { *; }
+-keep class javax.swing.plaf.FontUIResource.* { *; }
+
+# Java Beans (Jackson Java7Support)
+-dontwarn java.beans.**
+-keep class java.beans.ConstructorProperties.* { *; }
+-keep class java.beans.Transient.* { *; }
+
+# Java Beans (Jackson Java7Support)
+-dontwarn java.beans.**
+-keep class java.beans.ConstructorProperties.* { *; }
+-keep class java.beans.Transient.* { *; }
+
+# Koin DI (From pehchaanlib.aar - Keep if using injection in face detection)
+-dontwarn org.koin.core.annotation.**
+-keep class org.koin.core.annotation.Single.* { *; }
+-keep @org.koin.core.annotation.Single.* class * { *; }  # Preserves annotated classes
+
+-keep class org.bouncycastle.** { *; }
+-dontwarn org.bouncycastle.**
+-keep class javax.crypto.** { *; }
+-dontwarn javax.crypto.**

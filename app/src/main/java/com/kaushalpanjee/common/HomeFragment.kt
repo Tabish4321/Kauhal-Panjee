@@ -90,6 +90,7 @@ import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.Address
@@ -183,6 +184,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedCategoryItem = ""
     private var selectedMaritalItem = ""
     private var selectedHighestEducationItem = ""
+    private var selectedSchemeItem = ""
     private var selectedHighestEducationItemNew = ""
     private var shgValidateStatus = ""
     private var nregaValidateStatus = ""
@@ -229,6 +231,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedSectorCode = ""
     private var selectedTradeCode = ""
     private var selectedTrade = ""
+    private var sha512Aadhar = ""
     private var haveUHeardStatus = ""
     private var totalPercentange = 0.0f
     private var previouslycompletedduring = ""
@@ -447,6 +450,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedVillagePresentCodeItem = ""
     private var selectedbVillagePresentLgdCodeItem = ""
     private var selectedVillagePresentItem = ""
+    private var unnatiFlag = ""
 
     private lateinit var TechEduAdapter: ArrayAdapter<String>
     private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
@@ -484,7 +488,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val highestEducationListNew = listOf("Schooling", "Diploma", "Graduation", "Post Graduation")
 
-    private val schemesList = listOf("DDUGKY", "RSETI", "NRLM", "PM Vishwakarma", "PMKVY")
+    private var schemesList: List<String> = emptyList()
     private var sectorList = ArrayList<String>()
     private var sectorCode = ArrayList<String>()
     private var tradeName = ArrayList<String>()
@@ -511,13 +515,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectWhereHaveUHeardResponse()
         collectTechEducationResponse()
         collectSeccListResponse()
-        collectSetionAndPerResponse()
         collectUlbResponse()
         collectWardResponse()
         collectNregaValidateResponse()
         collectTradeResponse()
         collectSendEmailOTPResponse()
         collectSectorResponse()
+        collectUnnatiResponse()
 
         commonViewModel.getCandidateDetailsAPI(
             CandidateReq(
@@ -573,6 +577,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 AppUtil.getAndroidId(requireContext())
             ), AppUtil.getSavedTokenPreference(requireContext())
         )
+
+
+        collectSetionAndPerResponse()
+
         commonViewModel.getStateListApi()
         commonViewModel.getSectorListAPI(
             SectorRequest(
@@ -580,6 +588,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 userPreferences.getUseID()
             ), AppUtil.getSavedTokenPreference(requireContext())
         )
+
+
+
+
 
 
     }
@@ -1972,7 +1984,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-                            selectedHighestEducationItem = x.highesteducation
+                            selectedHighestEducationItem = x.highestClass
                             highestEducationDate = x.monthYearOfPassing
                             result = StringBuilder(x.language)
 
@@ -2140,6 +2152,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopTraining.setOnClickListener {
 
+
+
+
             if (isTrainingInfoVisible && trainingStatus.contains("0")) {
                 isTrainingInfoVisible = false
                 binding.expandTraining.visible()
@@ -2153,7 +2168,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                 showYesNoDialog(
-                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    context = requireContext(),
                     title = "Confirmation",
                     message = "Do you want to edit your Training info?",
                     onYesClicked = {
@@ -2185,6 +2200,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 //                                heardName
 //                            )
 
+                            setDropdownValue(
+                                binding.spinnerSchemeInterestedIn,
+                                x.schemeType,
+                                schemesList
+                            )
+
                             binding.tvClickPreviouslycompletedduring.text = x.compTrainingDuration
                             binding.tvSectorItems.text = x.sectorName
                             binding.tvTradeItems.text = x.trade
@@ -2195,6 +2216,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             //selectedHeardABoutItem = x.hearedFrom
                             selectedSector = x.sectorName
                             selectedTrade = x.trade
+                            selectedSchemeItem= x.schemeType
+
 
                         }
 
@@ -2279,6 +2302,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedHighestEducationItem = parent.getItemAtPosition(position).toString()
         }
 
+        binding.spinnerSchemeInterestedIn.setOnItemClickListener { parent, view, position, id ->
+            selectedSchemeItem = parent.getItemAtPosition(position).toString()
+        }
+
+
+
         binding.spinnerHighestEducationNew.setOnItemClickListener { parent, view, position, id ->
             selectedHighestEducationItemNew = parent.getItemAtPosition(position).toString()
             if (selectedHighestEducationItemNew == "Schooling") {
@@ -2310,7 +2339,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerDomainOfTech.clearFocus()
                 binding.spinnerDomainOfTech.setText("", false)
 
-            }else if (selectedHighestEducationItemNew == "Diploma") {
+            }
+            else if (selectedHighestEducationItemNew == "Diploma") {
                 binding.llTechEducation.visibility = View.VISIBLE
                 binding.llDomainOfTech.visibility = View.VISIBLE
                 binding.llYearOfPassingTech.visibility = View.VISIBLE
@@ -2347,7 +2377,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerDomainOfTech.clearFocus()
                 binding.spinnerDomainOfTech.setText("", false)
 
-            } else if (selectedHighestEducationItemNew == "Graduation") {
+            }
+            else if (selectedHighestEducationItemNew == "Graduation") {
                 binding.llTechEducation.visibility = View.VISIBLE
                 binding.llDomainOfTech.visibility = View.VISIBLE
                 binding.llYearOfPassingTech.visibility = View.VISIBLE
@@ -2384,7 +2415,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerDomainOfTech.clearFocus()
                 binding.spinnerDomainOfTech.setText("", false)
 
-            } else if (selectedHighestEducationItemNew == "Post Graduation") {
+            }
+            else if (selectedHighestEducationItemNew == "Post Graduation") {
                 binding.llTechEducation.visibility = View.VISIBLE
                 binding.llDomainOfTech.visibility = View.VISIBLE
                 binding.llYearOfPassingTech.visibility = View.VISIBLE
@@ -2421,7 +2453,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.spinnerDomainOfTech.clearFocus()
                 binding.spinnerDomainOfTech.setText("", false)
 
-            } else {
+            }
+            else {
                 binding.schoolingInput.visibility = View.GONE
                 binding.classLabel.visibility = View.GONE
                 binding.llTechEducation.visibility = View.GONE
@@ -4214,7 +4247,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             previousTrainingDuration,
                             selectedSectorCode,
                             selectedTrade,
-                            selectedTradeCode
+                            selectedTradeCode,
+                            selectedSchemeItem
                         ), AppUtil.getSavedTokenPreference(requireContext())
                     )
 
@@ -4237,7 +4271,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             previousTrainingDuration,
                             selectedSectorCode,
                             selectedTrade,
-                            selectedTradeCode
+                            selectedTradeCode,
+                            selectedSchemeItem
                         ), AppUtil.getSavedTokenPreference(requireContext())
                     )
 
@@ -4421,7 +4456,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         userPreferences.getUseID(),
                         AppUtil.getAndroidId(requireContext()),
                         "4",
-                        selectedTechEducationDate,
+                        highestEducationDate,
                         result.toString(),
                         selectedTechEducationItemCode,
                         selectedTechEducationDomainCode,
@@ -5701,6 +5736,48 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
+    private fun collectUnnatiResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.unnatiScheneListApi) { result ->
+                when (result) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        showSnackBar(result.error?.message ?: "Error fetching data")
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        result.data?.let { getUnnatiResponse ->
+                            if (getUnnatiResponse.responseCode == 200) {
+
+
+                                for (x in getUnnatiResponse.wrappedList){
+                                    schemesList = x.scheme
+                                    unnatiFlag = x.status
+
+                                }
+
+
+
+                            } else if (getUnnatiResponse.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(
+                                    findNavController(),
+                                    requireContext()
+                                )
+
+                            } else {
+                                showSnackBar("Something went wrong")
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
     private fun collectAadharDetailsResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getAadhaarList) {
@@ -6082,7 +6159,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     bankingStatus = x.bankingStatus.toString()
                                     totalPercentange = x.totalPercentage
 
+                                    val decAadhaar = AESCryptography.decryptIntoString(x.aadhaarEnc,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                                    sha512Aadhar =  AppUtil.sha512Hash(decAadhaar)
+
                                 }
+                                commonViewModel.unnatiScheneListApi(
+                                    UnnatilistReq(
+                                        BuildConfig.VERSION_NAME,
+                                        userPreferences.getUseID(),
+                                        AppUtil.getAndroidId(requireContext()),
+                                        sha512Aadhar
+                                    ), AppUtil.getSavedTokenPreference(requireContext())
+                                )
                                 // set dynamic meter
 
 

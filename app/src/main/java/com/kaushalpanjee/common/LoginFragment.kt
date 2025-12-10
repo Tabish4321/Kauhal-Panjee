@@ -69,6 +69,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listeners() {
 
+        binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
 
         binding.etEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

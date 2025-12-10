@@ -43,7 +43,7 @@ class AboutUnnatiFragment :
         return  listOf<Scheme>(
             Scheme(
                 getString(R.string.ddugky_title),
-                "https://u.pcloud.link/publink/show?code=XZT0kC5Z50o1NG08myyzbjnq7T0P2HErMsck#/login",
+                "https://files.catbox.moe/9h13by.mp4",
                 arrayListOf(
                     getString(R.string.ddugky_1),
                     getString(R.string.ddugky_2),
@@ -52,7 +52,7 @@ class AboutUnnatiFragment :
             ),
             Scheme(
                 getString(R.string.rseti_title),
-                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                "https://files.catbox.moe/78msk6.mp4",
                 arrayListOf(
                     getString(R.string.rseti_1),
                     getString(R.string.rseti_2),
