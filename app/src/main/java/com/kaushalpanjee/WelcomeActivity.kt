@@ -50,9 +50,9 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
                 showSecurityWarning()
            }
-         /*   if (isDeviceRooted()) {
+            if (isDeviceRooted()) {
                 showSecurityWarning()
-            }*/
+            }
             else {
                 navigate()
             }

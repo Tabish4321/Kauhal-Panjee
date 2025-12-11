@@ -225,30 +225,30 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>உன்னதி பற்றியது</u></string>
+    <string name="unnati_schemes">உன்னதி திட்டங்கள்</string>
 
-    <string name="ddugky_title">DDUGKY</string>
-    <string name="rseti_title">RSETI</string>
-    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
-    <string name="view_your_certificate">View Your\n    Certificate</string>
-    <string name="pmvishwakarma">PM Vishwakarma</string>
-    <string name="nrlm">NRLM</string>
-    <string name="self_employment">Self Employment</string>
-    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
-    <string name="domain">Domain<font color='#FF0000'>*</font></string>
-    <string name="domain1">Domain</string>
-    <string name="course">Course<font color='#FF0000'>*</font></string>
-    <string name="course1">Course</string>
-    <string name="select_YearOfPassingNew">Year of passing</string>
-    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
-    <string name="select_SchemeInterest1">Scheme Interested In</string>
-    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
-    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
-    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
-    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
-    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
-    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="ddugky_title">டிடியூஜிகேவை</string>
+    <string name="rseti_title">ஆர்எஸ்இடிஐ</string>
+    <string name="select_Class">வகுப்பு<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">உங்கள் சான்றிதழைப் பார்க்கவும்</string>
+    <string name="pmvishwakarma">பிஎம் விஸ்வகர்மா</string>
+    <string name="nrlm">என்ஆர்எல்எம்</string>
+    <string name="self_employment">சுயதொழில்</string>
+    <string name="ExpectationIncome">எதிர்பார்க்கப்படும் மாத வருமானம் (ரூ.)</string>
+    <string name="domain">டொமைன்<font color='#FF0000'>*</font></string>
+    <string name="domain1">டொமைன்</string>
+    <string name="course">பாடநெறி<font color='#FF0000'>*</font></string>
+    <string name="course1">பாடநெறி</string>
+    <string name="select_YearOfPassingNew">தேர்ச்சி பெற்ற ஆண்டு</string>
+    <string name="select_SchemeInterest">ஆர்வமுள்ள திட்டம்<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ஆர்வமுள்ள திட்டம்</string>
+    <string name="ddugky_1">15 முதல் 35 வயதுக்குட்பட்ட கிராமப்புற இளைஞர்களுக்கு திறன் மேம்பாட்டு வாய்ப்புகள்.</string>
+    <string name="ddugky_2">வேலைவாய்ப்பு மற்றும் தரமான வேலை வாய்ப்புகளுக்கான அணுகலை மேம்படுத்துவதை நோக்கமாகக் கொண்ட தொழில்துறை சார்ந்த பயிற்சி.</string>
+    <string name="ddugky_3">பயிற்சி வெற்றிகரமாக முடிந்தவுடன் கட்டமைக்கப்பட்ட வேலை வாய்ப்பு ஆதரவு.</string>
+    <string name="rseti_1">18–50 வயதுடைய கிராமப்புற இளைஞர்களுக்கான குறுகிய கால பயிற்சித் திட்டங்கள், சுயதொழில் மற்றும் நுண் நிறுவன மேம்பாட்டில் கவனம் செலுத்துகின்றன.</string>
+    <string name="rseti_2">தனிப்பட்ட நிறுவனங்களை நிறுவுவதற்கு வங்கிகள் மற்றும் கடன் நிறுவனங்களுடன் இணைப்பை எளிதாக்குகிறது.</string>
+    <string name="rseti_3">புதிய வணிகங்களின் நிலைத்தன்மை மற்றும் வளர்ச்சியை உறுதி செய்வதற்கு பயிற்சிக்குப் பிந்தைய வழிகாட்டுதல் மற்றும் கையடக்க ஆதரவு.</string>
     <string name="pmvishwakarma_">PM Vishwakarma</string>
     <string name="nrlm_">NRLM</string>
 

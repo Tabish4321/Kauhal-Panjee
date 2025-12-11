@@ -32,7 +32,23 @@
 
         <action
             android:id="@+id/action_loginFragment_to_aboutUnnatiFragment"
-            app:destination="@id/aboutUnnatiFragment" />
+            app:destination="@id/aboutUnnatiFragment">
+            <argument
+                android:name="ddugky"
+                app:argType="string" />
+            <argument
+                android:name="rseti"
+                app:argType="string" />
+            <argument
+                android:name="nrlm"
+                app:argType="string" />
+            <argument
+                android:name="pmvishwakarma"
+                app:argType="string" />
+            <argument
+                android:name="pmkvy"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />

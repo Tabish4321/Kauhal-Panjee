@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.Unnati
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
@@ -52,6 +53,7 @@ import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatiRequest
 import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
@@ -725,6 +727,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             commonRepository.getLogout(logoutReq,header).collectLatest {
                 _getLogout.emit(it)
+            }
+        }
+
+    }
+
+    private  var _getUnnati =  MutableStateFlow<Resource<out Unnati>>(Resource.Loading())
+    val getUnnati = _getUnnati.asSharedFlow()
+
+    fun getUnnati(languageString :UnnatiRequest){
+        viewModelScope.launch {
+            commonRepository.getUnnati(languageString).collectLatest {
+                _getUnnati.emit(it)
             }
         }
 

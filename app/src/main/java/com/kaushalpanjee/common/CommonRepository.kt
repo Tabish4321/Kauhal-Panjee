@@ -24,6 +24,7 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.Unnati
 import com.kaushalpanjee.common.model.request.AadhaarCheckForgot
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
@@ -56,6 +57,7 @@ import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatiRequest
 import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
@@ -444,6 +446,12 @@ class CommonRepository @Inject constructor(
     suspend fun getLogout(logoutReq: LogoutRequest, header : String): Flow<Resource<out LogoutResponse>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getLogout(header,logoutReq)
+        }
+    }
+
+    suspend fun getUnnati(languageString: UnnatiRequest): Flow<Resource<out Unnati>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getUnnati(languageString)
         }
     }
 

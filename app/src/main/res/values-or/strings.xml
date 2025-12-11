@@ -216,30 +216,30 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ଉନ୍ନତି ବିଷୟରେ</u></string>
+    <string name="unnati_schemes">ଉନ୍ନତି ଯୋଜନାମାନେ</string>
 
-    <string name="ddugky_title">DDUGKY</string>
-    <string name="rseti_title">RSETI</string>
-    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
-    <string name="view_your_certificate">View Your\n    Certificate</string>
-    <string name="pmvishwakarma">PM Vishwakarma</string>
-    <string name="nrlm">NRLM</string>
-    <string name="self_employment">Self Employment</string>
-    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
-    <string name="domain">Domain<font color='#FF0000'>*</font></string>
-    <string name="domain1">Domain</string>
-    <string name="course">Course<font color='#FF0000'>*</font></string>
-    <string name="course1">Course</string>
-    <string name="select_YearOfPassingNew">Year of passing</string>
-    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
-    <string name="select_SchemeInterest1">Scheme Interested In</string>
-    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
-    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
-    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
-    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
-    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
-    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="ddugky_title">ଡିଡିଉଜିକେଓଆଇ</string>
+    <string name="rseti_title">ଆରଏସଇଟିଆଇ</string>
+    <string name="select_Class">ଶ୍ରେଣୀ<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">ଆପଣଙ୍କର ପ୍ରମାଣପତ୍ର ଦେଖନ୍ତୁ</string>
+    <string name="pmvishwakarma">ପିଏମ ବିଶ୍ୱକର୍ମା</string>
+    <string name="nrlm">ଏନଏରଏଲଏମ</string>
+    <string name="self_employment">ସ୍ୱରୋଜଗାର</string>
+    <string name="ExpectationIncome">ଆଶା କରାଯାଇଥିବା ମାସିକ ଆୟ (ଟଙ୍କା)</string>
+    <string name="domain">ଡୋମେନ୍<font color='#FF0000'>*</font></string>
+    <string name="domain1">ଡୋମେନ୍</string>
+    <string name="course">ପାଠ୍ୟକ୍ରମ<font color='#FF0000'>*</font></string>
+    <string name="course1">ପାଠ୍ୟକ୍ରମ</string>
+    <string name="select_YearOfPassingNew">ପାସ୍ ବର୍ଷ</string>
+    <string name="select_SchemeInterest">ସ୍କିମ୍ ଆଗ୍ରହୀ<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ସ୍କିମ୍ ଆଗ୍ରହୀ</string>
+    <string name="ddugky_1">୧୫-୩୫ ବର୍ଷ ବୟସ ବର୍ଗର ଗ୍ରାମୀଣ ଯୁବକ ଯୁବତୀମାନଙ୍କୁ ଦକ୍ଷତା ବିକାଶ ସୁଯୋଗ।</string>
+    <string name="ddugky_2">ନିଯୁକ୍ତି ସୁଯୋଗ ଏବଂ ଗୁଣାତ୍ମକ ଚାକିରି ସୁଯୋଗ ପାଇବାକୁ ଉନ୍ନତ କରିବା ପାଇଁ ଉଦ୍ଦିଷ୍ଟ ଶିଳ୍ପ-ସମର୍ଥିତ ତାଲିମ।</string>
+    <string name="ddugky_3">ତାଲିମର ସଫଳ ସମାପ୍ତି ପରେ ସଂରଚିତ ନିଯୁକ୍ତି ସହାୟତା।</string>
+    <string name="rseti_1">୧୮-୫୦ ବର୍ଷ ବୟସର ଗ୍ରାମୀଣ ଯୁବକ ଯୁବତୀମାନଙ୍କ ପାଇଁ ସ୍ୱଳ୍ପକାଳୀନ ତାଲିମ କାର୍ଯ୍ୟକ୍ରମ, ସ୍ୱ-ନିଯୁକ୍ତି ଏବଂ କ୍ଷୁଦ୍ର-ଉଦ୍ୟୋଗ ବିକାଶ ଉପରେ ଧ୍ୟାନ କେନ୍ଦ୍ରିତ।</string>
+    <string name="rseti_2">ବ୍ୟକ୍ତିଗତ ଉଦ୍ୟୋଗ ପ୍ରତିଷ୍ଠାକୁ ସକ୍ଷମ କରିବା ପାଇଁ ବ୍ୟାଙ୍କ ଏବଂ ଋଣ ପ୍ରତିଷ୍ଠାନ ସହିତ ସଂଯୋଗକୁ ସୁଗମ କରେ।</string>
+    <string name="rseti_3">ନୂତନ ବ୍ୟବସାୟର ସ୍ଥାୟୀତ୍ୱ ଏବଂ ଅଭିବୃଦ୍ଧି ସୁନିଶ୍ଚିତ କରିବା ପାଇଁ ତାଲିମ ପରବର୍ତ୍ତୀ ପରାମର୍ଶ ଏବଂ ହସ୍ତଶିଳ୍ପ ସହାୟତା।</string>
     <string name="pmvishwakarma_">PM Vishwakarma</string>
     <string name="nrlm_">NRLM</string>
 

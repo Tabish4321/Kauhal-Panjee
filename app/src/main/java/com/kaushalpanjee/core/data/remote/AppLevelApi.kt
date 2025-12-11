@@ -14,6 +14,7 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.Unnati
 import com.kaushalpanjee.common.model.request.AadhaarCheckForgot
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
@@ -49,6 +50,7 @@ import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatiRequest
 import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
@@ -316,6 +318,8 @@ interface AppLevelApi {
     suspend fun getLogout(@Header("Authorization") token: String,
                           @Body logoutRequest: LogoutRequest): LogoutResponse
 
+    @POST(ApiConstant.API_UNNATI)
+    suspend fun getUnnati(@Body languageString: UnnatiRequest): Unnati
 
     @POST(ApiConstant.Forgot_PASSWORD_OTP)
     suspend fun getChangePassOtp(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):ForgotIdOtpRes

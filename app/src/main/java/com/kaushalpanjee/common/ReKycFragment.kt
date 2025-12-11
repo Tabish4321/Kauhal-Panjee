@@ -371,7 +371,6 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             )
             startUidaiAuthResult.launch(intent1)
 
-            // val packageName = "com.example.otherapp" // Replace with the target app's package name
             val intent =
                 requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
             intent?.putExtra(

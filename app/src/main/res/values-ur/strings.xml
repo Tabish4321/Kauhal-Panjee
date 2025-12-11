@@ -221,30 +221,30 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>اُناّتی کے بارے میں</u></string>
+    <string name="unnati_schemes">اُناّتی کی اسکیمیں</string>
 
-    <string name="ddugky_title">DDUGKY</string>
-    <string name="rseti_title">RSETI</string>
-    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
-    <string name="view_your_certificate">View Your\n    Certificate</string>
-    <string name="pmvishwakarma">PM Vishwakarma</string>
-    <string name="nrlm">NRLM</string>
-    <string name="self_employment">Self Employment</string>
-    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
-    <string name="domain">Domain<font color='#FF0000'>*</font></string>
-    <string name="domain1">Domain</string>
-    <string name="course">Course<font color='#FF0000'>*</font></string>
-    <string name="course1">Course</string>
-    <string name="select_YearOfPassingNew">Year of passing</string>
-    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
-    <string name="select_SchemeInterest1">Scheme Interested In</string>
-    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
-    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
-    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
-    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
-    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
-    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="ddugky_title">ڈی ڈی یو جے کے وائی</string>
+    <string name="rseti_title">آر ایس ای ٹی آئی</string>
+    <string name="select_Class">کلاس<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">اپنا سرٹیفکیٹ دیکھیں</string>
+    <string name="pmvishwakarma">پی ایم وِشوکرما</string>
+    <string name="nrlm">این آر ایل ایم</string>
+    <string name="self_employment">سیلف ایمپلائمنٹ</string>
+    <string name="ExpectationIncome">متوقع ماہانہ آمدنی (روپے)</string>
+    <string name="domain">ڈومین<font color='#FF0000'>*</font></string>
+    <string name="domain1">ڈومین</string>
+    <string name="course">کورس<font color='#FF0000'>*</font></string>
+    <string name="course1">کورس</string>
+    <string name="select_YearOfPassingNew">گزرنے کا سال</string>
+    <string name="select_SchemeInterest">اسکیم میں دلچسپی ہے۔<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">اسکیم میں دلچسپی ہے۔</string>
+    <string name="ddugky_1">15-35 سال کی عمر کے دیہی نوجوانوں کے لیے ہنر مندی کے مواقع۔</string>
+    <string name="ddugky_2">صنعت سے منسلک تربیت کا مقصد روزگار کی اہلیت کو بہتر بنانا اور ملازمت کے معیاری مواقع تک رسائی حاصل کرنا ہے۔</string>
+    <string name="ddugky_3">تربیت کی کامیاب تکمیل پر سٹرکچرڈ پلیسمنٹ سپورٹ۔</string>
+    <string name="rseti_1">18-50 سال کی عمر کے دیہی نوجوانوں کے لیے مختصر مدت کے تربیتی پروگرام، جو خود روزگار اور مائیکرو انٹرپرائز کی ترقی پر توجہ مرکوز کرتے ہیں۔</string>
+    <string name="rseti_2">انفرادی انٹرپرائزز کے قیام کے لیے بینکوں اور کریڈٹ اداروں کے ساتھ رابطے کی سہولت فراہم کرتا ہے۔</string>
+    <string name="rseti_3">نئے کاروبار کی پائیداری اور ترقی کو یقینی بنانے کے لیے بعد از تربیت رہنمائی اور ہینڈ ہولڈنگ سپورٹ۔</string>
     <string name="pmvishwakarma_">PM Vishwakarma</string>
     <string name="nrlm_">NRLM</string>
 

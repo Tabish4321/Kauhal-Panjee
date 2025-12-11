@@ -19,7 +19,7 @@ object AppConstant {
        //const val baseUrl= "http://10.197.183.177:8001/"                        //local
         const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
      // const val baseUrl= "https://kaushal.rural.gov.in/demobackend/"             //demo
-        //const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"             //demo
+       // const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"             //demo
 
     }
 

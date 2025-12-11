@@ -550,6 +550,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             false // App installed nahi hai
         }
     }
+/*
     private fun invokeCaptureIntent() {
 
         val packageName = "in.gov.uidai.facerd"
@@ -575,7 +576,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             } catch (exp: Exception) {
                 log("EKYCDATA", exp.toString())
             }
-        } else {
+        }
+        else {
 
             AlertDialog.Builder(requireContext())
                 .setTitle("Alert!")
@@ -590,6 +592,33 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
 
     }
+*/
+
+    private fun invokeCaptureIntent() {
+
+        try {
+            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
+            intent1.putExtra(
+                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
+                createPidOptions(getTransactionID(), "auth")
+            )
+            startUidaiAuthResult.launch(intent1)
+
+            val intent =
+                requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
+            intent?.putExtra(
+                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
+                createPidOptions(getTransactionID(), "auth")
+            )
+            if (intent != null) {
+                startActivity(intent)
+            }
+        } catch (exp: Exception) {
+            log("EKYCDATA", exp.toString())
+        }
+
+    }
+
 
     private fun createPidOptions(txnId: String, purpose: String): String {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${SecurityUtils.getWadhKey()}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"

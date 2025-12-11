@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.LoginReq
+import com.kaushalpanjee.common.model.request.UnnatiRequest
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
@@ -45,17 +46,51 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private var token = ""
     private var saltPassword = ""
 
+    var ddugky : String? = ""
+    var rseti : String? = ""
+    var nrlm : String? = ""
+    var pmvishwakarma : String? = ""
+    var pmkvy : String? = ""
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        commonViewModel.getUnnati(UnnatiRequest(AppUtil.getSavedLanguagePreference(requireContext())))
+        collectUnnatiData()
 
         init()
         handleBackPress()
 
 
+    }
+
+    private fun collectUnnatiData() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getUnnati) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        it.data.let { response ->
+
+                            ddugky = response?.data?.DDUGKY
+                            rseti = response?.data?.RSETI
+                            nrlm = response?.data?.NRLM
+                            pmvishwakarma = response?.data?.PM_VISHWAKARMA
+                            pmkvy = response?.data?.PMKVY
+
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
 
@@ -94,7 +129,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         }
         binding.tvAboutUnnati.setOnClickListener {
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToAboutUnnatiFragment())
+            val action = LoginFragmentDirections.actionLoginFragmentToAboutUnnatiFragment(
+                ddugky!!,
+                rseti!!,
+                nrlm!!,
+                pmvishwakarma!!,
+                pmkvy!!
+            )
+            findNavController().navigate(action)
         }
 
 

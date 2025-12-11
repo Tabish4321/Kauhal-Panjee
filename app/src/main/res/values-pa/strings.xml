@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name"> ਕੌਸ਼ਲ ਪੰਜੀ</string>
     <string name="login_id">ਲਾਗਇਨ ਆਈਡੀ</string>
     <string name="login">ਲਾਗਇਨ ਕਰੋ</string>
@@ -220,30 +220,30 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ਉਨੱਤੀ ਬਾਰੇ</u></string>
+    <string name="unnati_schemes">ਉਨੱਤੀ ਯੋਜਨਾਵਾਂ</string>
 
-    <string name="ddugky_title">DDUGKY</string>
-    <string name="rseti_title">RSETI</string>
-    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
-    <string name="view_your_certificate">View Your\n    Certificate</string>
-    <string name="pmvishwakarma">PM Vishwakarma</string>
-    <string name="nrlm">NRLM</string>
-    <string name="self_employment">Self Employment</string>
-    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
-    <string name="domain">Domain<font color='#FF0000'>*</font></string>
-    <string name="domain1">Domain</string>
-    <string name="course">Course<font color='#FF0000'>*</font></string>
-    <string name="course1">Course</string>
-    <string name="select_YearOfPassingNew">Year of passing</string>
-    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
-    <string name="select_SchemeInterest1">Scheme Interested In</string>
-    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
-    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
-    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
-    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
-    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
-    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="ddugky_title">ਡੀਡੀਆੂਜੀਕੇਵਾਈ</string>
+    <string name="rseti_title">ਆਰਐਸਈਟੀਆਈ</string>
+    <string name="select_Class">ਵਰਗ<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">ਆਪਣਾ ਸਰਟੀਫਿਕੇਟ ਵੇਖੋ</string>
+    <string name="pmvishwakarma">ਪੀਐਮ ਵਿਸ਼ਵਕਰਮਾ</string>
+    <string name="nrlm">ਐਨਆਰਐਲਐਮ</string>
+    <string name="self_employment">ਸਵੈ-ਰੋਜ਼ਗਾਰ</string>
+    <string name="ExpectationIncome">ਉਮੀਦਵਾਰ ਮਾਸਿਕ ਆਮਦਨ (₹)</string>
+    <string name="domain">ਡੋਮੇਨ<font color='#FF0000'>*</font></string>
+    <string name="domain1">ਡੋਮੇਨ</string>
+    <string name="course">ਕੋਰਸ<font color='#FF0000'>*</font></string>
+    <string name="course1">ਕੋਰਸ</string>
+    <string name="select_YearOfPassingNew">ਪਾਸਿੰਗ ਸਾਲ</string>
+    <string name="select_SchemeInterest">ਰੁਚੀ ਵਾਲੀ ਯੋਜਨਾ<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ਰੁਚੀ ਵਾਲੀ ਯੋਜਨਾ</string>
+    <string name="ddugky_1">15–35 ਸਾਲ ਦੇ ਪਿੰਡ ਦੇ ਯੁਵਕਾਂ ਲਈ ਹੁਨਰ ਵਿਕਾਸ ਦੇ ਮੌਕੇ।</string>
+    <string name="ddugky_2">ਉਦਯੋਗ-ਸੰਬੰਧਿਤ ਤਾਲੀਮ ਜੋ ਰੋਜ਼ਗਾਰ ਯੋਗਤਾ ਨੂੰ ਸੁਧਾਰਦੀ ਹੈ।</string>
+    <string name="ddugky_3">ਤਾਲੀਮ ਪੂਰੀ ਕਰਨ \'ਤੇ ਸੰਰਚਿਤ ਨਿਯੁਕਤੀ ਸਹਾਇਤਾ।</string>
+    <string name="rseti_1">18–50 ਸਾਲ ਦੇ ਪਿੰਡ ਦੇ ਯੁਵਕਾਂ ਲਈ ਛੋਟੀ ਮਿਆਦ ਵਾਲੇ ਤਾਲੀਮ ਪ੍ਰੋਗਰਾਮ, ਜੋ ਸਵੈ-ਰੋਜ਼ਗਾਰ ਅਤੇ ਛੋਟੇ ਉਦਯਮ ਵਿਕਾਸ \'ਤੇ ਧਿਆਨ ਦਿੰਦੇ ਹਨ।</string>
+    <string name="rseti_2">ਵਿਆਕਤੀਗਤ ਉਦਯਮ ਸਥਾਪਿਤ ਕਰਨ ਲਈ ਬੈਂਕਾਂ ਅਤੇ ਕਰਜ਼ਾ ਸੰਸਥਾਵਾਂ ਨਾਲ ਸੰਬੰਧ।</string>
+    <string name="rseti_3">ਤਾਲੀਮ ਮਗਰੋਂ ਮੈਨਟਰਨਿੰਗ ਅਤੇ ਸਹਾਇਤਾ, ਨਵੇਂ ਉਦਯਮ ਦੀ ਟਿਕਾਊ ਅਤੇ ਵਿਕਾਸ ਨੂੰ ਯਕੀਨੀ ਬਣਾਉਣ ਲਈ।</string>
     <string name="pmvishwakarma_">PM Vishwakarma</string>
     <string name="nrlm_">NRLM</string>
 

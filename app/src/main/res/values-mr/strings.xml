@@ -220,30 +220,30 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>उन्नती विषयी</u></string>
+    <string name="unnati_schemes">उन्नती योजना</string>
 
-    <string name="ddugky_title">DDUGKY</string>
-    <string name="rseti_title">RSETI</string>
-    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
-    <string name="view_your_certificate">View Your\n    Certificate</string>
-    <string name="pmvishwakarma">PM Vishwakarma</string>
-    <string name="nrlm">NRLM</string>
-    <string name="self_employment">Self Employment</string>
-    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
-    <string name="domain">Domain<font color='#FF0000'>*</font></string>
-    <string name="domain1">Domain</string>
-    <string name="course">Course<font color='#FF0000'>*</font></string>
-    <string name="course1">Course</string>
-    <string name="select_YearOfPassingNew">Year of passing</string>
-    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
-    <string name="select_SchemeInterest1">Scheme Interested In</string>
-    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
-    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
-    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
-    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
-    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
-    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="ddugky_title">डिडीयूजीकेवाय</string>
+    <string name="rseti_title">आरएसईटीआय</string>
+    <string name="select_Class">वर्ग<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">तुमचा प्रमाणपत्र पहा</string>
+    <string name="pmvishwakarma">पीएम विश्वकर्मा</string>
+    <string name="nrlm">एनआरएलएम</string>
+    <string name="self_employment">स्वयं रोजगार</string>
+    <string name="ExpectationIncome">अपेक्षित मासिक उत्पन्न (₹)</string>
+    <string name="domain">डोमेन<font color='#FF0000'>*</font></string>
+    <string name="domain1">डोमेन</string>
+    <string name="course">कोर्स<font color='#FF0000'>*</font></string>
+    <string name="course1">कोर्स</string>
+    <string name="select_YearOfPassingNew">पूर्ण केलेले वर्ष</string>
+    <string name="select_SchemeInterest">आवडीची योजना<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">आवडीची योजना</string>
+    <string name="ddugky_1">15–35 वयोगटातील ग्रामीण युवकांसाठी कौशल्य विकास संधी.</string>
+    <string name="ddugky_2">उद्योगासंबंधित प्रशिक्षण जे रोजगारक्षमता सुधारते.</string>
+    <string name="ddugky_3">प्रशिक्षण पूर्ण केल्यावर संरचित प्लेसमेंट समर्थन.</string>
+    <string name="rseti_1">18–50 वयोगटातील ग्रामीण युवकांसाठी लघु कालावधीचे प्रशिक्षण कार्यक्रम, स्वरोजगार आणि सूक्ष्मउद्योग विकासावर लक्ष केंद्रित.</string>
+    <string name="rseti_2">वैयक्तिक उद्योग स्थापन करण्यासाठी बँक व कर्ज संस्था कनेक्शन.</string>
+    <string name="rseti_3">प्रशिक्षणानंतर मार्गदर्शन व सहाय्य, नवीन उद्योगाची टिकाव आणि विकास सुनिश्चित करण्यासाठी.</string>
     <string name="pmvishwakarma_">PM Vishwakarma</string>
     <string name="nrlm_">NRLM</string>
 

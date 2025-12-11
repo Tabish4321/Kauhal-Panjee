@@ -225,30 +225,30 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ఉన్నతి గురించి</u></string>
+    <string name="unnati_schemes">ఉన్నతి పథకాలు</string>
 
-    <string name="ddugky_title">DDUGKY</string>
-    <string name="rseti_title">RSETI</string>
-    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
-    <string name="view_your_certificate">View Your\n    Certificate</string>
-    <string name="pmvishwakarma">PM Vishwakarma</string>
-    <string name="nrlm">NRLM</string>
-    <string name="self_employment">Self Employment</string>
-    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
-    <string name="domain">Domain<font color='#FF0000'>*</font></string>
-    <string name="domain1">Domain</string>
-    <string name="course">Course<font color='#FF0000'>*</font></string>
-    <string name="course1">Course</string>
-    <string name="select_YearOfPassingNew">Year of passing</string>
-    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
-    <string name="select_SchemeInterest1">Scheme Interested In</string>
-    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
-    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
-    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
-    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
-    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
-    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="ddugky_title">డిడియుజికేవై</string>
+    <string name="rseti_title">ఆర్‌ఎస్‌ఈటీఐ</string>
+    <string name="select_Class">తరగతి<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">మీ సర్టిఫికెట్‌ను వీక్షించండి</string>
+    <string name="pmvishwakarma">పీఎం విశ్వకర్మ</string>
+    <string name="nrlm">ఎన్‌ఆర్‌ఎల్‌ఎం</string>
+    <string name="self_employment">స్వయం ఉపాధి</string>
+    <string name="ExpectationIncome">ఆశించిన నెలవారీ ఆదాయం (రూ.)</string>
+    <string name="domain">డొమైన్<font color='#FF0000'>*</font></string>
+    <string name="domain1">డొమైన్</string>
+    <string name="course">కోర్సు<font color='#FF0000'>*</font></string>
+    <string name="course1">కోర్సు</string>
+    <string name="select_YearOfPassingNew">పాస్ అయిన సంవత్సరం</string>
+    <string name="select_SchemeInterest">ఆసక్తి ఉన్న పథకం<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ఆసక్తి ఉన్న పథకం</string>
+    <string name="ddugky_1">15–35 సంవత్సరాల మధ్య వయస్సు గల గ్రామీణ యువతకు నైపుణ్యాభివృద్ధి అవకాశాలు.</string>
+    <string name="ddugky_2">ఉపాధిని మెరుగుపరచడం మరియు నాణ్యమైన ఉద్యోగ అవకాశాలను పొందడం లక్ష్యంగా పరిశ్రమ-సమలేఖన శిక్షణ.</string>
+    <string name="ddugky_3">శిక్షణ విజయవంతంగా పూర్తయిన తర్వాత నిర్మాణాత్మక ప్లేస్‌మెంట్ మద్దతు.</string>
+    <string name="rseti_1">18–50 సంవత్సరాల వయస్సు గల గ్రామీణ యువతకు స్వయం ఉపాధి మరియు సూక్ష్మ-సంస్థ అభివృద్ధిపై దృష్టి సారించే స్వల్పకాలిక శిక్షణా కార్యక్రమాలు.</string>
+    <string name="rseti_2">వ్యక్తిగత సంస్థల స్థాపనకు వీలుగా బ్యాంకులు మరియు క్రెడిట్ సంస్థలతో అనుసంధానాన్ని సులభతరం చేస్తుంది.</string>
+    <string name="rseti_3">కొత్త వ్యాపారాల స్థిరత్వం మరియు వృద్ధిని నిర్ధారించడానికి శిక్షణ తర్వాత మార్గదర్శకత్వం మరియు హ్యాండ్‌హోల్డింగ్ మద్దతు.</string>
     <string name="pmvishwakarma_">PM Vishwakarma</string>
     <string name="nrlm_">NRLM</string>
 
