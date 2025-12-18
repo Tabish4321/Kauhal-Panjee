@@ -83,7 +83,7 @@ class AboutUnnatiFragment :
                     getString(R.string.rseti_2),
                     getString(R.string.rseti_3)
                 )
-            )
+            ),
 //            ,
 //            Scheme(
 //                "NRLM",
@@ -103,13 +103,22 @@ class AboutUnnatiFragment :
 //                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon."
 //                )
 //            ),
-//            Scheme(
-//                "PMKVY",
-//                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-//                arrayListOf(
-//                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. It may wrap into multiple lines but stays below the top-left icon.",
-//                )
-//            )
+            Scheme(
+                getString(R.string.pmkvy_),
+                pmkvy!!,
+                arrayListOf(
+                    getString(R.string.pmkvy_1),
+                    getString(R.string.pmkvy_2),
+                    getString(R.string.pmkvy_3),
+                    getString(R.string.pmkvy_4),
+                    getString(R.string.pmkvy_5),
+                    getString(R.string.pmkvy_6),
+                    getString(R.string.pmkvy_7),
+                    getString(R.string.pmkvy_8),
+                    getString(R.string.pmkvy_9),
+                    getString(R.string.pmkvy_10)
+                )
+            )
 
         )
     }
