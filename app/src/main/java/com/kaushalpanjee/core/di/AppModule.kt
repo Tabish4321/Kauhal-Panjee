@@ -3,7 +3,6 @@ package com.kaushalpanjee.core.di
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-//import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
@@ -78,7 +77,7 @@ object AppModule {
             .build()
     }
 
-    @Provides
+/*    @Provides
     @PostLoginOkHttpClient
     fun providesRetrofitForPostLogin(
         userPreferences: UserPreferences,
@@ -91,7 +90,28 @@ object AppModule {
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }*/
+
+    @Provides
+    @Singleton
+    @PostLoginOkHttpClient
+    fun providesRetrofitForPostLogin(
+        userPreferences: UserPreferences,
+        @ApplicationContext context: Context
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(AppConstant.StaticURL.baseUrl)
+            .client(
+                getRetrofitClient(
+                    userPreferences = userPreferences,
+                    context = context
+                )
+            )
+            .addConverterFactory(GsonConverterFactory.create())
+            // .addConverterFactory(ScalarsConverterFactory.create()) // ONLY if needed
+            .build()
     }
+
     private fun getRetrofitClient(
         authenticator: Authenticator? = null,
         userPreferences: UserPreferences,

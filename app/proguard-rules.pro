@@ -21,6 +21,10 @@
 #-renamesourcefileattribute SourceFile
 
 -keepattributes *Annotation*
+-keepattributes Signature
+-keep class com.google.gson.reflect.TypeToken { *; }
+
+
 
 -keep class org.simpleframework.xml.** { *; }
 -dontwarn org.simpleframework.xml.**

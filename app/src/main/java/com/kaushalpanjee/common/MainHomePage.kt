@@ -37,7 +37,6 @@ import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
-import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
@@ -47,7 +46,6 @@ import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
-import com.pehchaan.backend.service.AuthenticationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -81,7 +79,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
 
 
-    private val startForAuthentication =
+/*    private val startForAuthentication =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
@@ -101,7 +99,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             } else {
                 showFaceRegDialog(requireContext(),"Alert","❌ Try Again")
             }
-        }
+        }*/
 
     private val bannerImageBitmapList = mutableListOf<Bitmap>()
 
@@ -370,11 +368,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     }
 
                                 }
-                                if (isFaceReg=="N"){
+                               /* if (isFaceReg=="N"){
                                     val userId = userPreferences.getUseID()
                                     val userName = candidateName
                                     startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId,userName)
-                                }
+                                }*/
 
                                 binding.ivMeter.setImageBitmap(createHalfCircleProgressBitmap(300,300,totalPercentange,
                                     ContextCompat.getColor(requireContext(),R.color.color_FFFFFFB3),
@@ -692,6 +690,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         builder.create().show()
     }
 
+/*
     private fun startAuthentication(callType: String, userId: String,userName: String) {
         val intent = Intent(requireContext(), AuthenticationActivity::class.java)
         intent.putExtra(AppConstant.Constants.EXTRA_CLIENT_ID, AppConstant.Constants. YOUR_CLIENT_ID)
@@ -702,7 +701,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
         startForAuthentication.launch(intent)
     }
+*/
 
+/*
     private fun showFaceRegDialog(context: Context, title: String, message: String) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(context)
         builder.setTitle(title)
@@ -723,6 +724,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
+*/
 
     private fun showForcePasswordDialog() {
         val dialog = AlertDialog.Builder(requireContext())

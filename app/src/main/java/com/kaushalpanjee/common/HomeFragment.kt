@@ -488,7 +488,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private val highestEducationListNew = listOf("Schooling", "Diploma", "Graduation", "Post Graduation")
 
-    private var schemesList: List<String> = emptyList()
+    private var schemesList: MutableList<String> = mutableListOf()
     private var sectorList = ArrayList<String>()
     private var sectorCode = ArrayList<String>()
     private var tradeName = ArrayList<String>()
@@ -521,6 +521,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectTradeResponse()
         collectSendEmailOTPResponse()
         collectSectorResponse()
+
+        schemeListAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            schemesList
+        )
+        binding.spinnerSchemeInterestedIn.setAdapter(schemeListAdapter)
+
+
+
         collectUnnatiResponse()
 
         commonViewModel.getCandidateDetailsAPI(
@@ -983,15 +993,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             highestEducationListNew
         )
 
-        schemeListAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            schemesList
-        )
+
+
 
         binding.spinnerHighestEducation.setAdapter(highestEducationAdapter)
         binding.spinnerHighestEducationNew.setAdapter(highestEducationAdapterNew)
-        binding.spinnerSchemeInterestedIn.setAdapter(schemeListAdapter)
 
         //Adapter state setting
         /*  stateAdapter = ArrayAdapter(
@@ -1986,6 +1992,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                             selectedHighestEducationItem = x.highestClass
                             highestEducationDate = x.monthYearOfPassing
+
                             result = StringBuilder(x.language)
 
                             //technicalEducationStatus = x.isTechEducate
@@ -2031,6 +2038,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                             val currentluempo = x.isEmployeed
                             val natureEmp = x.empNature
+                            if (currentluempo=="Yes"){
+
+                                binding.llnatureOfEmpl.visible()
+
+                            }
+                            else
+                                binding.llnatureOfEmpl.gone()
+
 
                             if (natureEmp.contains("Self Employed")) {
                                 binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background_selected)
@@ -2245,7 +2260,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             showMonthYearPicker { selectedYear, selectedMonth ->
                 // Handle the selected month and year
                 binding.tvClickYearOfPassingTech.text = "$selectedMonth/$selectedYear"
-                selectedTechEducationDate = "$selectedMonth/$selectedYear"
+                highestEducationDate = "$selectedMonth/$selectedYear"
+
 
             }
         }
@@ -4450,7 +4466,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 //                result.isNotEmpty() && selectedTechEducationItemCode.isNotEmpty() &&
 //                selectedTechEducationDomainCode.isNotEmpty()){
                 // Hit the Insert Api
-                commonViewModel.insertEducationAPI(
+
+
+            commonViewModel.insertEducationAPI(
                     EducationalInsertReq(
                         BuildConfig.VERSION_NAME,
                         userPreferences.getUseID(),
@@ -5754,11 +5772,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                                 for (x in getUnnatiResponse.wrappedList){
-                                    schemesList = x.scheme
+                                    schemesList.clear()
+                                    schemesList.addAll(x.scheme)
                                     unnatiFlag = x.status
 
                                 }
 
+                                schemeListAdapter.notifyDataSetChanged()
 
 
                             } else if (getUnnatiResponse.responseCode == 401) {
@@ -6164,6 +6184,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     sha512Aadhar =  AppUtil.sha512Hash(decAadhaar)
 
                                 }
+
                                 commonViewModel.unnatiScheneListApi(
                                     UnnatilistReq(
                                         BuildConfig.VERSION_NAME,
@@ -6172,6 +6193,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         sha512Aadhar
                                     ), AppUtil.getSavedTokenPreference(requireContext())
                                 )
+
+
                                 // set dynamic meter
 
 

@@ -78,7 +78,6 @@ import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentEkyBinding
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods.respDecodedXmlToPojoAuth
-import com.kaushalpanjee.security.SecurityUtils
 import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -488,9 +487,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         val intentModel = Gson().fromJson(
             request?.let {
                 AESCryptography.decryptIntoString(
-                    it,
-                    SecurityUtils.getCryptId(),SecurityUtils.getCryptIv()
-                )
+                    it, AppConstant.Constants.CRYPT_ID,AppConstant.Constants.CRYPT_IV)
             },
             IntentModel::class.java
         )
@@ -621,9 +618,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     private fun createPidOptions(txnId: String, purpose: String): String {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${SecurityUtils.getWadhKey()}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
     }
-
 
     private fun handleCaptureResponse(captureResponse: String) {
         try {

@@ -13,6 +13,17 @@ android {
     namespace = "com.kaushalpanjee"
     compileSdk = 35
 
+
+
+    // ✅ FIX: 16 KB page-size Play Store rejection bypass
+
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+
     val  keystorePropertiesFile = rootProject.file("keystore.properties")
     val projectProperties = readProperties(keystorePropertiesFile)
 
@@ -20,31 +31,15 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 24
-        versionName = "2.4"
+        versionCode = 34
+        versionName = "2.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // ✅ Correct Kotlin DSL syntax for keeping all language resources
         resourceConfigurations += listOf("en", "hi", "as", "bn", "gu", "kn", "ml", "mr", "or", "pa", "ta", "te", "ur")
 
-        externalNativeBuild {
-            cmake {
-                cppFlags += "-std=c++17"
-            }
-        }
-
-        ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
-        }
     }
-
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-        }
-    }
-
 
 
     // ✅ Prevent Google Play from splitting languages (needed for in-app switching)
@@ -56,14 +51,35 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-           // signingConfig = signingConfigs.getByName("debug")
+            buildConfigField("String", "CLIENT_SECRET_KEY", projectProperties["CLIENT_SECRET_KEY"] as String)
+            buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
+            buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
+            buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
+            buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
+            buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
+            buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
+            buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+
+            // signingConfig = signingConfigs.getByName("debug")
         }
+
+
 
         debug {
             isMinifyEnabled = false
+
+            buildConfigField("String", "CLIENT_SECRET_KEY", projectProperties["CLIENT_SECRET_KEY"] as String)
+            buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
+            buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
+            buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
+            buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
+            buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
+            buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
+            buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+
         }
     }
 
@@ -103,6 +119,11 @@ android {
         exclude(group = "org.xmlpull", module = "xmlpull")
         exclude(group = "pull-parser", module = "pull-parser")
     }
+
+
+
+
+
 }
 
 fun readProperties(propertiesFile: File) = Properties().apply {
@@ -113,7 +134,7 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 
 dependencies {
     // Local AAR Library
-    implementation(files("libs/pehchaanlib.aar"))
+    //implementation(files("libs/pehchaanlib.aar"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -211,17 +232,17 @@ dependencies {
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.10.0")
 
-    // Transport runtime
+ /*   // Transport runtime
     implementation("com.google.android.datatransport:transport-runtime:2.2.6")
 
     // ML Kit (Vision)
     implementation("com.google.mlkit:face-detection:16.1.7")
-    implementation("com.google.mlkit:vision-common:16.1.7")
+    implementation("com.google.mlkit:vision-common:16.1.7")*/
 
-    // CameraX
+/*    // CameraX
     implementation("androidx.camera:camera-camera2:1.4.1")
     implementation("androidx.camera:camera-lifecycle:1.4.1")
-    implementation("androidx.camera:camera-view:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")*/
 
     // SweetAlert Dialog
     implementation("com.github.f0ris.sweetalert:library:1.5.6")
@@ -232,7 +253,7 @@ dependencies {
 
     // Kotlin Coroutines with Play Services
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0-RC")
-
+/*
     // TensorFlow Lite
     implementation("com.google.ai.edge.litert:litert:1.1.2")
     implementation("com.google.ai.edge.litert:litert-gpu:1.1.2")
@@ -240,7 +261,7 @@ dependencies {
     implementation("com.google.ai.edge.litert:litert-support:1.2.0")
 
     // MediaPipe Tasks Vision
-    implementation("com.google.mediapipe:tasks-vision:0.10.26.1")
+    implementation("com.google.mediapipe:tasks-vision:0.10.26.1")*/
 
     // Media3 -Video Player
     implementation("androidx.media3:media3-exoplayer:1.4.1")

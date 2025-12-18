@@ -19,8 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
-import com.kaushalpanjee.core.util.toastLong
-import com.kaushalpanjee.core.util.toastShort
+
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -50,11 +49,12 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
                 showSecurityWarning()
            }
-            if (isDeviceRooted()) {
+          /*  if (isDeviceRooted()) {
                 showSecurityWarning()
-            }
+            }*/
             else {
                 navigate()
+                //keyLogsTest()
             }
         }
     }

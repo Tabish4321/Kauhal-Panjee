@@ -1,7 +1,6 @@
 package com.kaushalpanjee.core.util
 
 import android.util.Base64
-import com.kaushalpanjee.security.SecurityUtils
 import java.io.UnsupportedEncodingException
 import java.nio.charset.StandardCharsets
 import java.security.InvalidAlgorithmParameterException
@@ -30,7 +29,7 @@ object AESCryptography {
 
             val keySpec = SecretKeySpec(keyBytes, "AES")
             val ivSpec = IvParameterSpec(ivBytes)
-            val cipher = Cipher.getInstance(SecurityUtils.getCryptLibAes())
+            val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
 
             val encryptedBytes = cipher.doFinal(inputText.toByteArray(StandardCharsets.UTF_8))
@@ -47,7 +46,7 @@ object AESCryptography {
 
             val keySpec = SecretKeySpec(keyBytes, "AES")
             val ivSpec = IvParameterSpec(ivBytes)
-            val cipher = Cipher.getInstance(SecurityUtils.getCryptLibAes())
+            val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
 
             val decodedBytes = Base64.decode(inputText, Base64.DEFAULT)
@@ -68,7 +67,7 @@ object AESCryptography {
 
             val keySpec = SecretKeySpec(keyBytes, "AES")
             val ivSpec = IvParameterSpec(ivBytes)
-            val cipher = Cipher.getInstance(SecurityUtils.getCryptLibAes())
+            val cipher = Cipher.getInstance(AppConstant.Constants.CRYPLIBAES)
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
 
             val encryptedBytes = hexStringToByteArray(encryptedText)

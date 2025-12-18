@@ -57,7 +57,6 @@ import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentViewDetailsBinding
-import com.kaushalpanjee.security.SecurityUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -821,8 +820,6 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                             binding.etSeccVillage.setText(x.seccVillageName)
                                             binding.etATINNo.setText(x.seccAHLTIN)
 
-
-
                                         }
 
                                         for (x in userCandidateEducationalDetailsList ){
@@ -846,7 +843,16 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         for (x in userCandidateEmploymentDetailsList ){
 
                                             val currentluempo = x.isEmployeed
+
                                             val natureEmp = x.empNature
+
+                                            if (currentluempo=="Yes"){
+
+                                                binding.llnatureOfEmpl.visible()
+
+                                            }
+                                            else
+                                                binding.llnatureOfEmpl.gone()
 
                                             if (natureEmp.contains("Self Employed")){
                                                 binding.optionnatureOfEmplYesSelect.setBackgroundResource(R.drawable.card_background_selected)

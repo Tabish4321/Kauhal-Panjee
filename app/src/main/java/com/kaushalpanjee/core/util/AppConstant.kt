@@ -1,7 +1,6 @@
 package com.kaushalpanjee.core.util
 
-import com.kaushalpanjee.security.SecurityUtils
-
+import com.kaushalpanjee.BuildConfig
 
 
 object AppConstant {
@@ -31,13 +30,11 @@ object AppConstant {
         const val CAPTURE_INTENT_RESULT = "in.gov.uidai.rdservice.face.CAPTURE_RESULT"
         const val CAPTURE_INTENT_RESPONSE_DATA = "response"
         const val DEVICE_CHECK_INTENT_RESULT = "in.gov.uidai.rdservice.face.CHECK_DEVICE_RESULT"
-
-
+        const val WADH_KEY = BuildConfig.WADH_KEY   //"sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
-        var ENCRYPT_IV_KEY = SecurityUtils.getEncryptIvKey()
-        var ENCRYPT_KEY = SecurityUtils.getEncryptKey()
-
+        var ENCRYPT_IV_KEY =BuildConfig.ENCRYPT_IV_KEY;
+        var ENCRYPT_KEY =BuildConfig.ENCRYPT_KEY;
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"
         const val ENGLISH: String = "english"
@@ -45,6 +42,10 @@ object AppConstant {
         const val PRE_PRODUCTION_CODE: String = "PP"
         const val CURRENT_ENVIRONMENT_CODE = PRE_PRODUCTION_CODE;
         const val PRODUCTION_CODE: String = "P"
+
+        const val CRYPT_ID = BuildConfig.CRYPT_ID   // "8080808080808080"
+        const val CRYPT_IV =BuildConfig.CRYPT_IV    // "8080808080808080"
+        const val CRYPLIBAES = BuildConfig.CRYPLIBAES
 
         const val EXTRA_CLIENT_ID = "client_id"
         const val EXTRA_FETCH_USER_EMBEDDING = "fetch_user_embeddings"
