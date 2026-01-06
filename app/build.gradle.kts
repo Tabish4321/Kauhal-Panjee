@@ -31,8 +31,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 34
-        versionName = "2.6"
+        versionCode = 36
+        versionName = "2.6.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -134,7 +134,7 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 
 dependencies {
     // Local AAR Library
-    //implementation(files("libs/pehchaanlib.aar"))
+    implementation(files("libs/pehchaanlib.aar"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -232,17 +232,17 @@ dependencies {
     // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.10.0")
 
- /*   // Transport runtime
+    // Transport runtime
     implementation("com.google.android.datatransport:transport-runtime:2.2.6")
 
     // ML Kit (Vision)
     implementation("com.google.mlkit:face-detection:16.1.7")
-    implementation("com.google.mlkit:vision-common:16.1.7")*/
+    implementation("com.google.mlkit:vision-common:16.1.7")
 
-/*    // CameraX
+    // CameraX
     implementation("androidx.camera:camera-camera2:1.4.1")
     implementation("androidx.camera:camera-lifecycle:1.4.1")
-    implementation("androidx.camera:camera-view:1.4.1")*/
+    implementation("androidx.camera:camera-view:1.4.1")
 
     // SweetAlert Dialog
     implementation("com.github.f0ris.sweetalert:library:1.5.6")
@@ -253,15 +253,20 @@ dependencies {
 
     // Kotlin Coroutines with Play Services
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0-RC")
-/*
     // TensorFlow Lite
-    implementation("com.google.ai.edge.litert:litert:1.1.2")
-    implementation("com.google.ai.edge.litert:litert-gpu:1.1.2")
-    implementation("com.google.ai.edge.litert:litert-gpu-api:1.1.2")
-    implementation("com.google.ai.edge.litert:litert-support:1.2.0")
+    implementation("com.google.ai.edge.litert:litert:1.4.0")
+    implementation("com.google.ai.edge.litert:litert-gpu:1.4.0")
+    implementation("com.google.ai.edge.litert:litert-gpu-api:1.4.0")
+    implementation("com.google.ai.edge.litert:litert-support:1.4.0")
 
     // MediaPipe Tasks Vision
-    implementation("com.google.mediapipe:tasks-vision:0.10.26.1")*/
+    implementation("com.google.mediapipe:tasks-vision:0.10.28")
+
+
+/*
+    tasksVision = "0.10.28"
+    tensorflow-lite2 = "1.4.0"
+    tensorflow-lite-support = "1.4.0"*/
 
     // Media3 -Video Player
     implementation("androidx.media3:media3-exoplayer:1.4.1")

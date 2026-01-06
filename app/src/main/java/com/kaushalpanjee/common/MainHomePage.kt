@@ -46,6 +46,7 @@ import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
+import com.pehchaan.backend.service.AuthenticationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -79,7 +80,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
 
 
-/*    private val startForAuthentication =
+    private val startForAuthentication =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
@@ -99,7 +100,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             } else {
                 showFaceRegDialog(requireContext(),"Alert","❌ Try Again")
             }
-        }*/
+        }
 
     private val bannerImageBitmapList = mutableListOf<Bitmap>()
 
@@ -112,7 +113,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     }
 
-    fun detectFaceRD(context: Context, captureAction: String = AppConstant.Constants.CAPTURE_INTENT) {
+ /*   fun detectFaceRD(context: Context, captureAction: String = AppConstant.Constants.CAPTURE_INTENT) {
         val intent = Intent(captureAction)
         val list = context.packageManager.queryIntentActivities(
             intent,
@@ -138,7 +139,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         } catch (e: Exception) {
             Log.e("FACERD_PACKAGE", "FaceRD package NOT found.")
         }
-    }
+    }*/
 
 
      private fun init(){
@@ -368,11 +369,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     }
 
                                 }
-                               /* if (isFaceReg=="N"){
+                                if (isFaceReg=="N"){
                                     val userId = userPreferences.getUseID()
                                     val userName = candidateName
                                     startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId,userName)
-                                }*/
+                                }
 
                                 binding.ivMeter.setImageBitmap(createHalfCircleProgressBitmap(300,300,totalPercentange,
                                     ContextCompat.getColor(requireContext(),R.color.color_FFFFFFB3),
@@ -411,6 +412,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     binding.tvAddressDetails.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
                                     binding.tvAddressDetails.setCompoundDrawablePadding(16)
                                 }
+
 
 
                                 if (bankingStatus.contains("1")){
@@ -521,7 +523,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                         it.data?.let { updateFaceApi ->
                             if (updateFaceApi.responseCode == 200) {
 
-                                showSnackBar(updateFaceApi.responseDesc)
+                                showSnackBar(updateFaceApi.responseMsg)
 
                             } else if (updateFaceApi.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
@@ -690,7 +692,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         builder.create().show()
     }
 
-/*
     private fun startAuthentication(callType: String, userId: String,userName: String) {
         val intent = Intent(requireContext(), AuthenticationActivity::class.java)
         intent.putExtra(AppConstant.Constants.EXTRA_CLIENT_ID, AppConstant.Constants. YOUR_CLIENT_ID)
@@ -701,9 +702,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
         startForAuthentication.launch(intent)
     }
-*/
 
-/*
     private fun showFaceRegDialog(context: Context, title: String, message: String) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(context)
         builder.setTitle(title)
@@ -724,7 +723,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
-*/
 
     private fun showForcePasswordDialog() {
         val dialog = AlertDialog.Builder(requireContext())
