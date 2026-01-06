@@ -1000,14 +1000,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.spinnerHighestEducationNew.setAdapter(highestEducationAdapterNew)
 
         //Adapter state setting
-        /*  stateAdapter = ArrayAdapter(
+          stateAdapter = ArrayAdapter(
               requireContext(),
               android.R.layout.simple_spinner_dropdown_item,
               state
           )
 
-          binding.SpinnerStateName.setAdapter(stateAdapter)
-  */
+          binding.spinnerState.setAdapter(stateAdapter)
         //Secc Adapter Setting
 
 
@@ -1584,7 +1583,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                                 lifecycleScope.launch {
-                                    district.clear()
+                                 //   district.clear()
 
                                     commonViewModel.getBlockListApi(
                                         x.permanentDistrictCode,
@@ -1592,9 +1591,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         userPreferences.getUseID()
                                     )
                                     gpAdapter.notifyDataSetChanged()
-                                    binding.TvDisName.visible()
-                                    binding.spinnerAutoDistrict.gone()
-                                    binding.TvDisName.text = x.permanentDistrictName
+                                  //  binding.TvDisName.visible()
+                                  //  binding.spinnerAutoDistrict.gone()
+                                    //binding.TvDisName.text = x.permanentDistrictName
+
+
+                                    setDropdownValue(
+                                        binding.spinnerDistrict,
+                                        x.permanentDistrictName,
+                                        district
+                                    )
+
 
                                     commonViewModel.getGpListApi(
                                         x.permanentBlcokCode,
@@ -1729,14 +1736,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         ), AppUtil.getSavedTokenPreference(requireContext())
                                     )
                                     gpAdapter.notifyDataSetChanged()
-                                    binding.TvDisName.visible()
-                                    binding.spinnerAutoDistrict.gone()
+                                  //  binding.TvDisName.visible()
+                                 //   binding.spinnerAutoDistrict.gone()
                                     binding.llBlock.visibility = View.GONE
                                     binding.llGp.visibility = View.GONE
                                     binding.llVillage.visibility = View.GONE
                                     binding.llWard.visibility = View.VISIBLE
                                     binding.llUlb.visibility = View.VISIBLE
-                                    binding.TvDisName.text = x.permanentDistrictName
+                              //      binding.TvDisName.text = x.permanentDistrictName
+
+
+                                    setDropdownValue(
+                                        binding.spinnerDistrict,
+                                        x.permanentDistrictName,
+                                        district
+                                    )
+
+
+
+
+
 
                                     val constraintSet = ConstraintSet()
                                     constraintSet.clone(binding.expandAddress)
@@ -2825,6 +2844,106 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         //State selection
+
+        binding.spinnerState.setOnItemClickListener { parent, view, position, id ->
+            selectedStateItem = parent.getItemAtPosition(position).toString()
+            if (position in state.indices) {
+                selectedStateCodeItem = stateCode[position]
+                selectedStateLgdCodeItem = stateLgdCode[position]
+                commonViewModel.getDistrictListApi(
+                    selectedStateCodeItem,
+                    AppUtil.getSavedTokenPreference(requireContext()),
+                    userPreferences.getUseID()
+                )
+
+
+                selectedDistrictCodeItem = ""
+                selectedDistrictLgdCodeItem = ""
+                selectedDistrictItem = ""
+                binding.spinnerDistrict.clearFocus()
+                binding.spinnerDistrict.setText("", false)
+
+
+
+
+                districtAdapter.notifyDataSetChanged()
+
+
+                selectedUlbCodeItem = ""
+                selectedUlbNameItem = ""
+                binding.spinnerUlb.clearFocus()
+                binding.spinnerUlb.setText("", false)
+
+
+
+                selectedWardCodeItem = ""
+                selectedWardNameItem = ""
+                binding.spinnerWard.clearFocus()
+                binding.spinnerWard.setText("", false)
+
+
+                selectedBlockCodeItem = ""
+                selectedbBlockLgdCodeItem = ""
+                selectedBlockItem = ""
+                binding.spinnerBlock.clearFocus()
+                binding.spinnerBlock.setText("", false)
+
+
+
+
+
+                selectedGpCodeItem = ""
+                selectedbGpLgdCodeItem = ""
+                selectedGpItem = ""
+                binding.spinnerGp.clearFocus()
+                binding.spinnerGp.setText("", false)
+
+
+
+                binding.spinnerPresentAddressGp.clearFocus()
+                binding.spinnerPresentAddressGp.setText("", false)
+
+
+                selectedVillageCodeItem = ""
+                selectedbVillageLgdCodeItem = ""
+                selectedVillageItem = ""
+                binding.spinnerVillage.clearFocus()
+                binding.spinnerVillage.setText("", false)
+
+
+                selectedVillagePresentCodeItem = ""
+                selectedbVillagePresentLgdCodeItem = ""
+                selectedVillagePresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+                selectedGpPresentCodeItem = ""
+                selectedbGpPresentLgdCodeItem = ""
+                selectedGpPresentItem = ""
+                selectedBlockPresentCodeItem = ""
+                selectedbBlockPresentLgdCodeItem = ""
+                selectedBlockPresentItem = ""
+                selectedDistrictPresentCodeItem = ""
+                selectedDistrictPresentLgdCodeItem = ""
+                selectedDistrictPresentItem = ""
+
+
+                binding.spinnerPresentAddressVillage.clearFocus()
+                binding.spinnerPresentAddressVillage.setText("", false)
+                binding.spinnerPresentAddressDistrict.clearFocus()
+                binding.spinnerPresentAddressDistrict.setText("", false)
+                binding.SpinnerPresentAddressStateName.clearFocus()
+                binding.SpinnerPresentAddressStateName.setText("", false)
+                binding.spinnerPresentAddressBlock.clearFocus()
+                binding.spinnerPresentAddressBlock.setText("", false)
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
 
 
         //District selection
@@ -5754,7 +5873,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
     private fun collectUnnatiResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.unnatiScheneListApi) { result ->
@@ -5796,7 +5914,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     private fun collectAadharDetailsResponse() {
         lifecycleScope.launch {
@@ -5894,7 +6011,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                             selectedSeccStateItem = x.regState
                                             selectedStateCodeItem = x.regStateCode
                                             selectedSeccStateCodeItem = x.regStateCode
-                                            binding.TvSpinnerStateName.text = x.regState
+                                           // binding.TvSpinnerStateName.text = x.regState
+
+                                            setDropdownValue(
+                                                binding.spinnerState,
+                                                x.regState,
+                                                state
+                                            )
+
                                             binding.stateesecc.text = x.regState
                                             stateRegCode = x.regStateCode
                                             commonViewModel.getDistrictListApi(
@@ -5922,7 +6046,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     @SuppressLint("SuspiciousIndentation")
     private fun collectTechEducationResponse() {
@@ -6011,7 +6134,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
     private fun collectWhereHaveUHeardResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getWhereHaveYouHeard) {
@@ -6055,7 +6177,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     private fun collectDpChangeResponse() {
         lifecycleScope.launch {
@@ -6318,7 +6439,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     private fun collectShgValidateResponse() {
         lifecycleScope.launch {
