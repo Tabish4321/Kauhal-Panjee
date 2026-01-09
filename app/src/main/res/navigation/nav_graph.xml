@@ -14,7 +14,8 @@
 
         <action
             android:id="@+id/action_loginFragment_to_ekycFragment"
-            app:destination="@id/ekycFragment" />
+            app:destination="@id/ekycFragment"
+            />
 
         <action
             android:id="@+id/action_loginFragment_to_mainHomePage"
@@ -145,6 +146,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_reKycFragment"
             app:destination="@id/reKycFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_trainingCenterAssign"
+            app:destination="@id/trainingCenterAssign" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -216,4 +220,9 @@
         android:name="com.kaushalpanjee.common.ForgotPassViaAadhaarFragment"
         android:label="ForgotPassViaAadhaarFragment"
         tools:layout="@layout/fragment_forgot_via_aadhaar"/>
+    <fragment
+        android:id="@+id/trainingCenterAssign"
+        android:name="com.kaushalpanjee.common.TrainingCenterAssign"
+        android:label="fragment_training_center_assign"
+        tools:layout="@layout/fragment_training_center_assign" />
 </navigation>

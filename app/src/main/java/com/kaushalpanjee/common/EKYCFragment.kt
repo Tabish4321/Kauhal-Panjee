@@ -1057,7 +1057,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private fun showStateDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Alert")
-        builder.setMessage(R.string.please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created)
+        //builder.setMessage(R.string.please_select_your_state_carefully_this_selection_cannot_be_changed_once_your_account_created)
+        builder.setMessage("Are You Sure want to submit this state")
 
         builder.setPositiveButton("ok") { dialog, _ ->
             binding.recyclerView.gone()

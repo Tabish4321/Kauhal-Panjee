@@ -14,13 +14,20 @@ android {
     compileSdk = 35
 
 
-
+    buildFeatures {
+        compose = true
+    }
     // ✅ FIX: 16 KB page-size Play Store rejection bypass
 
     packaging {
         jniLibs {
             useLegacyPackaging = true
         }
+    }
+
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
 
 
@@ -271,6 +278,12 @@ dependencies {
     // Media3 -Video Player
     implementation("androidx.media3:media3-exoplayer:1.4.1")
     implementation("androidx.media3:media3-ui:1.4.1")
+
+
+    implementation("androidx.compose.ui:ui:1.6.4")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
 
 }
 

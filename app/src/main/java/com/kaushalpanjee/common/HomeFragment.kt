@@ -5282,6 +5282,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         requireContext()
                                     )
                                 }
+                                403 -> {
+                                    showSnackBar(insertPersResponse.responseDesc)
+                                }
 
                                 else -> {
                                     showSnackBar(insertPersResponse.responseDesc)
