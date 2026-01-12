@@ -104,6 +104,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listeners() {
 
+
+
+        binding.tvWelcome.setOnClickListener {
+
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTrainingCenterAssign())        }
+
         binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
 
         binding.etEmail.addTextChangedListener(object : TextWatcher {
