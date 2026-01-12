@@ -53,9 +53,6 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_trainingCenterAssign"
-            app:destination="@id/trainingCenterAssign" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"

@@ -106,9 +106,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
-        binding.tvWelcome.setOnClickListener {
 
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToTrainingCenterAssign())        }
 
         binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
 
