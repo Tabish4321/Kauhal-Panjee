@@ -74,7 +74,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var totalPercentange =0.0f
     private var certUrl = ""
     private var schemeType = ""
-    private var stateCode = "05"
+    private var stateCode = ""
 
 
     private val searchQuery = MutableLiveData<String>()
@@ -212,7 +212,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      binding.trainingImageLogo.setOnClickListener {
 
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingCenterAssign("05",schemeType))
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingCenterAssign(stateCode,schemeType))
      }
 
 
@@ -316,7 +316,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     certUrl = x.certFlag
                                     schemeType = x.schemeType
-                                  //  stateCode = x.stateCode
+                                    stateCode = x.stateCode
                                     personalStatus= x.personalStatus.toString()
                                     educationalStatus= x.educationalStatus.toString()
                                     trainingStatus= x.trainingStatus.toString()

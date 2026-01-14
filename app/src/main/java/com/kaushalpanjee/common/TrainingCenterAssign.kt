@@ -37,7 +37,7 @@ class TrainingCenterAssign :
     BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by viewModels()
-    private var selectedScheme: String? = ""
+    private var selectedScheme: String? = "RSETI"
     private var stateCode: String? = ""
 
     override fun onCreateView(
@@ -634,6 +634,7 @@ fun BorderedTextView(text: String?) {
         }
     }
 }
+
 fun showError(context: Context, msg: String) {
     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
 }
@@ -671,6 +672,7 @@ fun TopLogoRow() {
         )
     }
 }
+
 @Composable
 fun CustomPopup(
     show: Boolean,
