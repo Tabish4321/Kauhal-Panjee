@@ -72,8 +72,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var isFaceReg = ""
     private var candidateName = ""
     private var totalPercentange =0.0f
-    private var bannerImageList = ArrayList<String>()
     private var certUrl = ""
+    private var schemeType = ""
+    private var stateCode = "05"
 
 
     private val searchQuery = MutableLiveData<String>()
@@ -113,33 +114,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     }
 
- /*   fun detectFaceRD(context: Context, captureAction: String = AppConstant.Constants.CAPTURE_INTENT) {
-        val intent = Intent(captureAction)
-        val list = context.packageManager.queryIntentActivities(
-            intent,
-            PackageManager.MATCH_DEFAULT_ONLY
-        )
-
-        if (list.isNotEmpty()) {
-            Log.e("FACERD_CHECK", "FaceRD is AVAILABLE (intent can be handled).")
-            list.forEach {
-                Log.e("FACERD_HANDLER", "Package: ${it.activityInfo.packageName} | Class: ${it.activityInfo.name}")
-            }
-        } else {
-            Log.e("FACERD_CHECK", "FaceRD NOT available on this device.")
-        }
-    }
-
-    fun detectFaceRDByPackage(context: Context) {
-        val pkg = "in.gov.uidai.facerd"
-
-        try {
-            context.packageManager.getPackageInfo(pkg, 0)
-            Log.e("FACERD_PACKAGE", "FaceRD package FOUND.")
-        } catch (e: Exception) {
-            Log.e("FACERD_PACKAGE", "FaceRD package NOT found.")
-        }
-    }*/
 
 
      private fun init(){
@@ -238,7 +212,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      binding.trainingImageLogo.setOnClickListener {
 
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingCenterAssign())
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingCenterAssign("05",schemeType))
      }
 
 
@@ -341,6 +315,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                 for (x in percentageList) {
 
                                     certUrl = x.certFlag
+                                    schemeType = x.schemeType
+                                  //  stateCode = x.stateCode
                                     personalStatus= x.personalStatus.toString()
                                     educationalStatus= x.educationalStatus.toString()
                                     trainingStatus= x.trainingStatus.toString()

@@ -225,8 +225,6 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         }
 
 
-
-
         binding.llTopPersonal.setOnClickListener {
 
             if (isPersonalVisible){

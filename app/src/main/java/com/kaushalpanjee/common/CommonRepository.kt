@@ -41,9 +41,15 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
+import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.LogoutRequest
+import com.kaushalpanjee.common.model.request.OrgInstituteReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.PiaListReq
+import com.kaushalpanjee.common.model.request.PiaTradeReq
+import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -75,11 +81,17 @@ import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
+import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.LogoutResponse
+import com.kaushalpanjee.common.model.response.OrgInstituteRes
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
+import com.kaushalpanjee.common.model.response.PiaListResponse
+import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
+import com.kaushalpanjee.common.model.response.PiaTrainingRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -520,6 +532,50 @@ class CommonRepository @Inject constructor(
             appLevelApi.checkJobcard(url,username,password,jobcardNo)
         }
     }
+
+    fun getPiaOrgList(piaListReq: PiaListReq): Flow<Resource<out PiaListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getPiaOrgList(piaListReq)
+        }
+    }
+
+
+    fun getTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq): Flow<Resource<out PiaTrainingCenterRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getTrainingList(piaTrainingCenterReq)
+        }
+    }
+
+
+
+    fun getTradeList(piaTradeReq: PiaTradeReq): Flow<Resource<out PiaTrainingRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getTrainingList(piaTradeReq)
+        }
+    }
+
+
+    fun getInstituteList(orgInstituteReq: OrgInstituteReq): Flow<Resource<out OrgInstituteRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getInstituteList(orgInstituteReq)
+        }
+    }
+
+
+    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq): Flow<Resource<out InstituteCourseRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getInstituteCourseList(instituteCourseReq)
+        }
+    }
+
+
+    fun insertTrainingCenter(insertTrainingCenterReq: InsertTrainingCenterReq ,header :String): Flow<Resource<out InsertTrainingCenterRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertTrainingCenter(header,insertTrainingCenterReq)
+        }
+    }
+
+
 
 
 

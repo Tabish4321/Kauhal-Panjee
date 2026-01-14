@@ -34,9 +34,15 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
+import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.LogoutRequest
+import com.kaushalpanjee.common.model.request.OrgInstituteReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.PiaListReq
+import com.kaushalpanjee.common.model.request.PiaTradeReq
+import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -72,11 +78,18 @@ import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
+import com.kaushalpanjee.common.model.response.InstituteCourse
+import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.LogoutResponse
+import com.kaushalpanjee.common.model.response.OrgInstituteRes
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
+import com.kaushalpanjee.common.model.response.PiaListResponse
+import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
+import com.kaushalpanjee.common.model.response.PiaTrainingRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -384,6 +397,34 @@ interface AppLevelApi {
 
 
 
+    @POST(ApiConstant.API_PIA_LIST)
+    suspend fun getPiaOrgList(@Body piaListReq: PiaListReq): PiaListResponse
 
+
+
+    @POST(ApiConstant.API_PIA_TRAINING_CENTER)
+    suspend fun getTrainingList(@Body piaTrainingCenterReq: PiaTrainingCenterReq): PiaTrainingCenterRes
+
+
+
+
+    @POST(ApiConstant.API_PIA_TRADE)
+    suspend fun getTrainingList(@Body piaTradeReq: PiaTradeReq): PiaTrainingRes
+
+
+
+
+    @POST(ApiConstant.API_INSTITUTE)
+    suspend fun getInstituteList(@Body orgInstituteReq: OrgInstituteReq): OrgInstituteRes
+
+
+    @POST(ApiConstant.API_INSTITUTE_COURSE)
+    suspend fun getInstituteCourseList(@Body instituteCourseReq: InstituteCourseReq): InstituteCourseRes
+
+
+
+    @POST(ApiConstant.API_INSERT_TRAINING_CENTER)
+    suspend fun insertTrainingCenter( @Header("Authorization") token: String,
+        @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 }

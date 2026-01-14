@@ -22,5 +22,8 @@ data class StatusItem(
     val candidateName: String,
     val aadhaarEnc: String,
     val certFlag: String,
-    val stateLgdCode: String
+    val stateLgdCode: String,
+    val schemeType: String,
+    val stateCode: String
+
 )

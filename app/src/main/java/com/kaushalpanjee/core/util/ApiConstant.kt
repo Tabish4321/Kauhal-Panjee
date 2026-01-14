@@ -49,7 +49,6 @@ object ApiConstant {
     const val  API_CANDIDATE_DETAILS= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}candidateDetails"
     const val  API_CHANGE_IMAGE_CANDIDATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}changeProfilePhoto"
     const val  API_CHANGE_PASSWORD= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}changePassword"
-
     const val  API_LOGOUT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}logout"
     const val  API_UNNATI= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getLink"
     const val  Forgot_PASSWORD_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}forgetIdPassword"
@@ -66,5 +65,11 @@ object ApiConstant {
     const val  API_ULB= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}ulbList"
     const val  API_WARD= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}wardList"
     const val  API_UNNATI_SCHEME= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}checkCandidateUnnati"
+    const val  API_PIA_LIST= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}kpPiaOrgList"
+    const val  API_PIA_TRAINING_CENTER= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}kpPiaTrainingCenters"
+    const val  API_PIA_TRADE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}trainingCenterCourse"
+    const val  API_INSTITUTE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}kpOrgTrainingCenters"
+    const val  API_INSTITUTE_COURSE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}instituteCourse"
+    const val  API_INSERT_TRAINING_CENTER = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateTrainingCenter"
 
 }

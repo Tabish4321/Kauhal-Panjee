@@ -148,7 +148,16 @@
             app:destination="@id/reKycFragment" />
         <action
             android:id="@+id/action_mainHomePage_to_trainingCenterAssign"
-            app:destination="@id/trainingCenterAssign" />
+            app:destination="@id/trainingCenterAssign">
+
+            <argument
+                android:name="stateCode"
+                app:argType="string" />
+            <argument
+                android:name="schemeType"
+                app:argType="string" />
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"

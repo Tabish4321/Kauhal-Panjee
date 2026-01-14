@@ -38,9 +38,15 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
+import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
 import com.kaushalpanjee.common.model.request.LogoutRequest
+import com.kaushalpanjee.common.model.request.OrgInstituteReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.PiaListReq
+import com.kaushalpanjee.common.model.request.PiaTradeReq
+import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -70,11 +76,17 @@ import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
+import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
 import com.kaushalpanjee.common.model.response.LogoutResponse
+import com.kaushalpanjee.common.model.response.OrgInstituteRes
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
+import com.kaushalpanjee.common.model.response.PiaListResponse
+import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
+import com.kaushalpanjee.common.model.response.PiaTrainingRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -91,10 +103,53 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository) :ViewModel() {
+
+    fun resetPia() {
+        _getPiaOrgList.value = Resource.Loading()
+        _isPiaCalled.value = false
+    }
+
+    fun resetPiaTraining() {
+        _getTrainingList.value = Resource.Loading()
+        _isPiaTrainingCalled.value = false
+    }
+
+    fun resetPiaTrade() {
+        _getTradeList.value = Resource.Loading()
+        _isPiaTradeCalled.value = false
+    }
+
+    fun resetInstitute() {
+        _getInstituteList.value = Resource.Loading()
+        _isInstituteCalled.value = false
+    }
+
+    fun resetInstituteCourse() {
+        _getInstituteCourseList.value = Resource.Loading()
+        _isInstituteCourseCalled.value = false
+    }
+
+
+    fun resetAllDependentApis() {
+        resetPia()
+        resetPiaTraining()
+        resetPiaTrade()
+        resetInstitute()
+        resetInstituteCourse()
+    }
+
+    fun resetInsertTrainingCenter() {
+        _insertTrainingCenter.value = Resource.Loading()
+        _isInsertTrainingCenterCalled.value = false
+    }
+
+
+
 
 
 
@@ -528,6 +583,163 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+
+
+    private val _getPiaOrgList =
+        MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
+
+    private val _isPiaCalled = MutableStateFlow(false)
+
+    val getPiaOrgList = _getPiaOrgList
+    val isPiaCalled = _isPiaCalled
+
+
+    fun getPiaOrgList(piaListReq: PiaListReq) {
+        _isPiaCalled.value = true   // mark API started
+
+        viewModelScope.launch {
+            commonRepository.getPiaOrgList(piaListReq)
+                .collectLatest {
+                    _getPiaOrgList.value = it
+                }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    private val _getTrainingList =
+        MutableStateFlow<Resource<out PiaTrainingCenterRes>>(Resource.Loading())
+
+    private val _isPiaTrainingCalled = MutableStateFlow(false)
+
+    val getTrainingList = _getTrainingList
+    val isPiaTrainingCalled = _isPiaTrainingCalled
+
+
+    fun getPiaTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq) {
+        _isPiaCalled.value = true   // mark API started
+
+        viewModelScope.launch {
+            commonRepository.getTrainingList(piaTrainingCenterReq)
+                .collectLatest {
+                    _getTrainingList.value = it
+                }
+        }
+    }
+
+
+
+
+    private val _getTradeList =
+        MutableStateFlow<Resource<out PiaTrainingRes>>(Resource.Loading())
+
+    private val _isPiaTradeCalled = MutableStateFlow(false)
+
+    val getTradeList = _getTradeList
+    val isPiaTradeCalled = _isPiaTradeCalled
+
+
+    fun getPiaTradeList(piaTradeReq: PiaTradeReq) {
+        _isPiaTradeCalled.value = true   // mark API started
+
+        viewModelScope.launch {
+            commonRepository.getTradeList(piaTradeReq)
+                .collectLatest {
+                    _getTradeList.value = it
+                }
+        }
+    }
+
+
+
+
+    private val _getInstituteList =
+        MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
+
+    private val _isInstituteCalled = MutableStateFlow(false)
+    val isInstituteCalled = _isInstituteCalled
+
+    val getInstituteList = _getInstituteList
+
+
+    fun getInstituteList(orgInstituteReq: OrgInstituteReq) {
+        _isInstituteCalled.value = true   // mark API started
+
+        viewModelScope.launch {
+            commonRepository.getInstituteList(orgInstituteReq)
+                .collectLatest {
+                    _getInstituteList.value = it
+                }
+        }
+    }
+
+
+
+
+
+    private val _getInstituteCourseList =
+        MutableStateFlow<Resource<out InstituteCourseRes>>(Resource.Loading())
+
+    private val _isInstituteCourseCalled = MutableStateFlow(false)
+
+    val getInstituteCourseList = _getInstituteCourseList
+    val isInstituteCourseCalled = _isInstituteCourseCalled
+
+
+    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq) {
+        _isInstituteCourseCalled.value = true   // mark API started
+
+        viewModelScope.launch {
+            commonRepository.getInstituteCourseList(instituteCourseReq)
+                .collectLatest {
+                    _getInstituteCourseList.value = it
+                }
+        }
+    }
+
+
+
+
+
+
+
+    private val _insertTrainingCenter =
+        MutableStateFlow<Resource<out InsertTrainingCenterRes>>(Resource.Loading())
+
+    private val _isInsertTrainingCenterCalled = MutableStateFlow(false)
+
+    val insertTrainingCenter = _insertTrainingCenter
+    val isInsertTrainingCenterCalled = _isInsertTrainingCenterCalled
+
+
+    fun insertTrainingCenter(insertTrainingCenterReq: InsertTrainingCenterReq,header :String) {
+        _isInsertTrainingCenterCalled.value = true   // mark API started
+
+        viewModelScope.launch {
+            commonRepository.insertTrainingCenter(insertTrainingCenterReq,header)
+                .collectLatest {
+                    _insertTrainingCenter.value = it
+                }
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     private  var _getLanguageListAPI =  MutableStateFlow<Resource<out LanguageList>>(Resource.Loading())
     val getLanguageListAPI = _getLanguageListAPI.asSharedFlow()
