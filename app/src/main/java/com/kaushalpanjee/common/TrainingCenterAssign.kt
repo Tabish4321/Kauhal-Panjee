@@ -37,7 +37,7 @@ class TrainingCenterAssign :
     BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by viewModels()
-    private var selectedScheme: String? = "RSETI"
+    private var selectedScheme: String? = ""
     private var stateCode: String? = ""
 
     override fun onCreateView(
