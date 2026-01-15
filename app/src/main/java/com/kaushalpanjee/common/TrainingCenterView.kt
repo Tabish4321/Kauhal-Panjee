@@ -22,6 +22,9 @@ import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.TrainingCenterViewBinding
 import kotlinx.coroutines.launch
 
+
+//https://github.com/Tabish4321/Kauhal-Panjee/settings/access
+//code commit 150120261436
 class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCenterViewBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by activityViewModels()
