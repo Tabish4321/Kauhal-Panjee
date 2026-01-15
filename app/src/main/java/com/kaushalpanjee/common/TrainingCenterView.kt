@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 
 //https://github.com/Tabish4321/Kauhal-Panjee/settings/access
-//code commit 150120261436
+//code commit 150120261453
 class TrainingCenterView : BaseFragment<TrainingCenterViewBinding>(TrainingCenterViewBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by activityViewModels()

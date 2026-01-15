@@ -32,6 +32,9 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.databinding.FragmentTrainingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+
+////https://github.com/Tabish4321/Kauhal-Panjee/settings/access
+////code commit 150120261453
 @AndroidEntryPoint
 class TrainingCenterAssign :
     BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
