@@ -123,6 +123,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
             Log.d("NOTI_DEBUG", "shouldOpen received: $shouldOpen")
 
             if (shouldOpen) {
+
                 parentFragmentManager.clearFragmentResult("OPEN_NOTIFICATION")
                 findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment()
                 )
