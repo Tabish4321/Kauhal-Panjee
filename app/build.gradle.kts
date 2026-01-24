@@ -1,5 +1,6 @@
 import java.io.File
 import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,6 +8,8 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -31,7 +34,7 @@ android {
     }
 
 
-    val  keystorePropertiesFile = rootProject.file("keystore.properties")
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
     val projectProperties = readProperties(keystorePropertiesFile)
 
     defaultConfig {
@@ -44,7 +47,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // ✅ Correct Kotlin DSL syntax for keeping all language resources
-        resourceConfigurations += listOf("en", "hi", "as", "bn", "gu", "kn", "ml", "mr", "or", "pa", "ta", "te", "ur")
+        resourceConfigurations += listOf(
+            "en",
+            "hi",
+            "as",
+            "bn",
+            "gu",
+            "kn",
+            "ml",
+            "mr",
+            "or",
+            "pa",
+            "ta",
+            "te",
+            "ur"
+        )
 
     }
 
@@ -60,28 +77,55 @@ android {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField("String", "CLIENT_SECRET_KEY", projectProperties["CLIENT_SECRET_KEY"] as String)
-            buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            buildConfigField(
+                "String",
+                "CLIENT_SECRET_KEY",
+                projectProperties["CLIENT_SECRET_KEY"] as String
+            )
+            buildConfigField(
+                "String",
+                "REFRESH_TOKEN_URL",
+                projectProperties["REFRESH_TOKEN_URL"] as String
+            )
             buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
-            buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
+            buildConfigField(
+                "String",
+                "ENCRYPT_IV_KEY",
+                projectProperties["ENCRYPT_IV_KEY"] as String
+            )
             buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
 
-            // signingConfig = signingConfigs.getByName("debug")
+           //  signingConfig = signingConfigs.getByName("release")
         }
-
-
 
         debug {
             isMinifyEnabled = false
-
-            buildConfigField("String", "CLIENT_SECRET_KEY", projectProperties["CLIENT_SECRET_KEY"] as String)
-            buildConfigField("String", "REFRESH_TOKEN_URL", projectProperties["REFRESH_TOKEN_URL"] as String)
+            isDebuggable=true
+            versionNameSuffix=""
+            applicationIdSuffix=""
+            buildConfigField(
+                "String",
+                "CLIENT_SECRET_KEY",
+                projectProperties["CLIENT_SECRET_KEY"] as String
+            )
+            buildConfigField(
+                "String",
+                "REFRESH_TOKEN_URL",
+                projectProperties["REFRESH_TOKEN_URL"] as String
+            )
             buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
-            buildConfigField("String", "ENCRYPT_IV_KEY", projectProperties["ENCRYPT_IV_KEY"] as String)
+            buildConfigField(
+                "String",
+                "ENCRYPT_IV_KEY",
+                projectProperties["ENCRYPT_IV_KEY"] as String
+            )
             buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
@@ -90,7 +134,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
         dataBinding = true
         buildConfig = true
@@ -105,30 +149,27 @@ android {
         jvmTarget = "1.8"
     }
 
-    flavorDimensions += listOf("app")
-    productFlavors {
-        create("dev") {
-            dimension = "app"
-            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
-
-        }
-        create("prod") {
-            dimension = "app"
-            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
-
-        }
-    }
+//    flavorDimensions += listOf("app")
+//    productFlavors {
+//        create("dev") {
+//            dimension = "app"
+//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
+//
+//        }
+//        create("prod") {
+//            dimension = "app"
+//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
+//
+//        }
+//    }
 
     configurations.all {
-      // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
+        // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
         exclude(group = "xpp3", module = "xpp3")
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
         exclude(group = "pull-parser", module = "pull-parser")
     }
-
-
-
 
 
 }
@@ -145,17 +186,18 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation (libs.material.v150)
+    implementation(libs.material.v150)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.viewbinding)
     implementation(libs.play.services.location)
     implementation(libs.androidx.activity)
+//    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation (libs.core.v300)
+    implementation(libs.core.v300)
 
-    implementation (libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.androidx.navigation.runtime.ktx)
@@ -165,17 +207,17 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
 
     implementation(libs.androidx.room.ktx)
-    implementation (libs.androidx.room.runtime)
+    implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
-    implementation (libs.androidx.viewpager2)
+    implementation(libs.androidx.viewpager2)
 
 
-    implementation (libs.bundles.retrofitBundle)
-   // implementation (libs.chucker)
+    implementation(libs.bundles.retrofitBundle)
+    // implementation (libs.chucker)
 
     //circle image
 
-    implementation (libs.circleimageview)
+    implementation(libs.circleimageview)
 
 
     implementation(libs.kotlinx.coroutines.android)
@@ -184,10 +226,10 @@ dependencies {
 
 
     //Glide
-    implementation (libs.glide)
+    implementation(libs.glide)
     annotationProcessor(libs.compiler)
 
-    implementation (libs.androidx.core.splashscreen)
+    implementation(libs.androidx.core.splashscreen)
 
     //Xml
     //implementation(libs.jackson.dataformat.xml)
@@ -210,7 +252,7 @@ dependencies {
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
     }
-   // implementation(libs.stax.api)
+    // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
@@ -270,10 +312,10 @@ dependencies {
     implementation("com.google.mediapipe:tasks-vision:0.10.28")
 
 
-/*
-    tasksVision = "0.10.28"
-    tensorflow-lite2 = "1.4.0"
-    tensorflow-lite-support = "1.4.0"*/
+    /*
+        tasksVision = "0.10.28"
+        tensorflow-lite2 = "1.4.0"
+        tensorflow-lite-support = "1.4.0"*/
 
     // Media3 -Video Player
     implementation("androidx.media3:media3-exoplayer:1.4.1")
@@ -284,6 +326,9 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    //implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-messaging")
 
 }
 

@@ -33,8 +33,7 @@ import com.kaushalpanjee.databinding.FragmentTrainingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TrainingCenterAssign :
-    BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
+class TrainingCenterAssign : BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by viewModels()
     private var selectedScheme: String? = ""

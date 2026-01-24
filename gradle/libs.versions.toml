@@ -36,6 +36,7 @@ converter-scalars = "2.5.0"
 chucker-version = "4.0.0"
 playServicesLocation = "21.3.0"
 viewpager2 = "1.1.0"
+#firebaseMessagingKtx = "25.0.1"
 
 
 [libraries]
@@ -83,6 +84,7 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }
+#firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 
 

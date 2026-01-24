@@ -6,6 +6,7 @@ data class LoginReq(
     val password: String,
     val imeiNo: String,
     val appVersion: String,
-    val deviceName: String
+    val deviceName: String,
+    val fcmToken: String=""
 )
 

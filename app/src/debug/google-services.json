@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381976878921",
+    "project_id": "kaushalpanjee-ee6ed",
+    "storage_bucket": "kaushalpanjee-ee6ed.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381976878921:android:0b7c0a210e92aa7c60c498",
+        "android_client_info": {
+          "package_name": "com.kaushalpanjee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA95JEY9NpIKjBgNLDl2PuaGpEUN73Ohx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

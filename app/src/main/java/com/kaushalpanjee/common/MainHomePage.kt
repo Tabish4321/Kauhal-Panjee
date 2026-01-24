@@ -107,14 +107,28 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handleBackPress()
         init()
+        handleBackPress()
+        handleNotification()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
-
     }
 
+    fun handleNotification(){
+        parentFragmentManager.setFragmentResultListener(
+            "OPEN_NOTIFICATION",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val shouldOpen = bundle.getBoolean("open", false)
+            Log.d("NOTI_DEBUG", "shouldOpen received: $shouldOpen")
 
+            if (shouldOpen) {
+                parentFragmentManager.clearFragmentResult("OPEN_NOTIFICATION")
+                findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment()
+                )
+            }
+        }
+    }
 
      private fun init(){
          val drawerLayout = binding.drawerLayout
@@ -177,18 +191,17 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          val selectedTrainingCenterCode = selectedItem.centerCode
          binding.etSearch.setText("")
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToSearchTrainingFragment(selectedTrainingCenterCode))
-
      }
 
      binding.changeLanguage.setOnClickListener {
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
-
      }
 
-
+     binding.circleINotification.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment())
+     }
 
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
-
      // Training Search Text
      searchQuery.observe(viewLifecycleOwner) { query ->
          if (query.length >= 4) {
@@ -196,7 +209,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
          }
          else  binding.trainingRecyclerView.gone()
-
      }
 
      // Add TextWatcher to EditText
@@ -215,24 +227,17 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingCenterAssign(stateCode,schemeType))
      }
 
-
-
-
      binding.personalImageLogo.setOnClickListener {
              findNavController().navigate(MainHomePageDirections.actionMainHomePageToViewDetailsFragment())
 
      }
 
      if (certUrl == "N"){
-
          binding.certificateImageLogo.gone()
          binding.certificateImageText.gone()
-
      }
 
-
      binding.certificateImageLogo.setOnClickListener {
-
          val intent = Intent(requireContext(), CertificateActivity::class.java)
          intent.putExtra("CERT_URL", "${certUrl}")
          startActivity(intent)
@@ -244,9 +249,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          }
 
      binding.tvCompleteNow.setOnClickListener {
-
          lifecycleScope.launch {
-
              showProgressBar()
              findNavController().navigate(MainHomePageDirections.actionMainHomePageToHomeFragment())
              delay(2000)

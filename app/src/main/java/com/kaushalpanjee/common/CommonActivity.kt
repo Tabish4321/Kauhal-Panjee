@@ -1,10 +1,14 @@
 package com.kaushalpanjee.common
 
+import android.Manifest
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.kaushalpanjee.R
@@ -40,5 +44,50 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         }
 
         navController?.graph = navGraph
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                101
+            )
+        }
+
+        handleNotificationIntent(intent)
     }
+
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleNotificationIntent(intent)
+    }
+
+    private fun handleNotificationIntent(intent: Intent?) {
+
+        val openNotification =
+            intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) ?: false
+
+        Log.d("NOTI_DEBUG", "OPEN_NOTIFICATION_LIST = $openNotification")
+
+        if (openNotification) {
+
+            intent?.removeExtra("OPEN_NOTIFICATION_LIST")
+
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.navGraphHost)
+                        as? NavHostFragment ?: return
+
+            navHostFragment.childFragmentManager.setFragmentResult(
+                "OPEN_NOTIFICATION",
+                Bundle().apply {
+                    putBoolean("open", true)
+                }
+            )
+        }
+    }
+
+
+
+
+
 }

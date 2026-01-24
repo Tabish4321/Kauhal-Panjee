@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -14,6 +15,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -191,17 +194,29 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     )
 
 
-                if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()) {
-                    userName = binding.etEmail.text.toString()
-                    password = binding.etPassword.text.toString()
-                    val shaPass = AppUtil.sha512Hash(password)
-                 //   toastLong("saltPass $saltPassword")
-                    val saltPass = shaPass+saltPassword
-                    val finalPass = AppUtil.sha512Hash(saltPass)
+                if (binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
+                    showSnackBar("Please enter id and password")
+                    return@launch
+                }
+                userName = binding.etEmail.text.toString()
+                password = binding.etPassword.text.toString()
+                val shaPass = AppUtil.sha512Hash(password)
+                //   toastLong("saltPass $saltPassword")
+                val saltPass = shaPass + saltPassword
+                val finalPass = AppUtil.sha512Hash(saltPass)
 
+                FirebaseMessaging.getInstance().token
+                    .addOnCompleteListener { task ->
+                        val fcmToken = if (task.isSuccessful) {
+                            task.result ?: ""
+                        } else {
+                            ""
+                        }
 
-                    //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
-                    commonViewModel.getLoginAPI(
+                        Log.d("-------------------------FCM_TOKEN--------------------------------------------------->", fcmToken)
+
+                        //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                        commonViewModel.getLoginAPI(
                         LoginReq(
                             userName,
                             finalPass,
@@ -209,17 +224,25 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             BuildConfig.VERSION_NAME,
                             ""
                         ))
-                    //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
 
-                    collectLoginResponse()
+//                            LoginReq(
+//                                userName,
+//                                finalPass,
+//                                AppUtil.getAndroidId(requireContext()),
+//                                BuildConfig.VERSION_NAME,
+//                                "",
+//                                fcmToken = fcmToken
+//                            ))
 
-                } else
-                    showSnackBar("Please enter id and password")
 
+                        //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
+                        collectLoginResponse()
 
+                    }
             }
-
         }
+
+
 
         binding.tvForgotPassword.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPassViaAadhaarFragment())

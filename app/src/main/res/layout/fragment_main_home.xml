@@ -26,20 +26,36 @@ android:layout_height="match_parent"
                 android:src="@drawable/top_card_bg"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/circleINotification"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginEnd="@dimen/dp_20"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_notification"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivDDGKY"
+                app:layout_constraintBottom_toBottomOf="@id/ivDDGKY"
+                app:shapeAppearanceOverlay="@style/CustomCircleShape"
+                app:strokeColor="@color/color_dark_green"
+                app:strokeWidth="1dp" />
+
+
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/circleImageViewMH"
                 android:layout_width="@dimen/dp_50"
                 android:layout_height="@dimen/dp_50"
-                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_12"
                 android:scaleType="centerCrop"
                 android:src="@drawable/person"
-                app:layout_constraintBottom_toBottomOf="@+id/ivDDGKY"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/ivDDGKY"
+                app:layout_constraintEnd_toStartOf="@id/circleINotification"
+                app:layout_constraintTop_toTopOf="@id/ivDDGKY"
+                app:layout_constraintBottom_toBottomOf="@id/ivDDGKY"
                 app:shapeAppearanceOverlay="@style/CustomCircleShape"
                 app:strokeColor="@color/color_dark_green"
                 app:strokeWidth="1dp" />
+
 
             <ImageView
                 android:id="@+id/change_language"
@@ -48,9 +64,10 @@ android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/dp_12"
                 android:scaleType="centerCrop"
                 android:src="@drawable/language"
-                app:layout_constraintBottom_toBottomOf="@+id/ivDDGKY"
-                app:layout_constraintEnd_toStartOf="@+id/circleImageViewMH"
-                app:layout_constraintTop_toTopOf="@+id/ivDDGKY" />
+                app:layout_constraintEnd_toStartOf="@id/circleImageViewMH"
+                app:layout_constraintTop_toTopOf="@id/ivDDGKY"
+                app:layout_constraintBottom_toBottomOf="@id/ivDDGKY" />
+
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivDDGKY"
