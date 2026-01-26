@@ -109,27 +109,25 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         super.onViewCreated(view, savedInstanceState)
         init()
         handleBackPress()
-        handleNotification()
+       // handleNotification()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
     }
 
-    fun handleNotification(){
-        parentFragmentManager.setFragmentResultListener(
-            "OPEN_NOTIFICATION",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val shouldOpen = bundle.getBoolean("open", false)
-            Log.d("NOTI_DEBUG", "shouldOpen received: $shouldOpen")
-
-            if (shouldOpen) {
-
-                parentFragmentManager.clearFragmentResult("OPEN_NOTIFICATION")
-                findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment()
-                )
-            }
-        }
-    }
+//    fun handleNotification(){
+//        parentFragmentManager.setFragmentResultListener(
+//            "OPEN_NOTIFICATION",
+//            viewLifecycleOwner
+//        ) { _, bundle ->
+//            val shouldOpen = bundle.getBoolean("open", false)
+//            Log.d("NOTI_DEBUG", "shouldOpen received: $shouldOpen")
+//            if (shouldOpen) {
+//                parentFragmentManager.clearFragmentResult("OPEN_NOTIFICATION")
+//                findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment()
+//                )
+//            }
+//        }
+//    }
 
      private fun init(){
          val drawerLayout = binding.drawerLayout

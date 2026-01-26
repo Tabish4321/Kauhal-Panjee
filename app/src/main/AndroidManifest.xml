@@ -64,15 +64,23 @@
             android:name=".WelcomeActivity"
             android:exported="true"
             android:theme="@style/Base.Theme.KaushalPanjee">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".common.CommonActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Base.Theme.KaushalPanjee" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".common.CommonActivity"
-            android:exported="false"></activity>
 
 
         <service
