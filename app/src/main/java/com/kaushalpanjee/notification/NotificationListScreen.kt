@@ -1,5 +1,6 @@
 package com.kaushalpanjee.notification
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,10 +20,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.CommonViewModel
+import com.kaushalpanjee.common.model.request.TrainingCenterReq
+import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.notification.notificationUi.DummyNotificationProvider
 import com.kaushalpanjee.notification.notificationUi.NotificationDataSource
 import com.kaushalpanjee.notification.notificationUi.NotificationUiModel
@@ -34,11 +42,68 @@ import com.kaushalpanjee.notification.notificationUi.NotificationUiModel
 @Composable
 fun NotificationListScreen(
     navController: NavController,
+    commonViewModel: CommonViewModel,
+    context: Context,
     dataSource: NotificationDataSource = DummyNotificationProvider
 ) {
     val context = LocalContext.current
     val notifications = remember { dataSource.getNotifications() }
     val listState = rememberLazyListState()
+
+//    val notificationState by commonViewModel
+//        .getNotificationList
+//        .collectAsStateWithLifecycle(initialValue = Resource.Loading())
+
+//    LaunchedEffect(Unit) {
+//        commonViewModel.getTrainingListAPI(
+//            TrainingCenterReq(
+//                BuildConfig.VERSION_NAME,
+//                sectorCode = "SECTOR",
+//                districtCode = "DISTRICT",
+//                userId = UserPreferences(context).getUseID(),
+//                androidId = AppUtil.getAndroidId(context)
+//            ),
+//            AppUtil.getSavedTokenPreference(context)
+//        )
+//    }
+
+
+//    when (trainingState) {
+//
+//        is Resource.Loading -> {
+//            CircularProgressIndicator()
+//        }
+//
+//        is Resource.Error -> {
+//            ErrorView(
+//                message = trainingState.error?.message ?: "Something went wrong"
+//            )
+//        }
+//
+//        is Resource.Success -> {
+//            val response = trainingState.data
+//
+//            when (response?.responseCode) {
+//                200 -> {
+//                    NotificationList(
+//                        list = response.centerList
+//                    )
+//                }
+//
+//                301 -> {
+//                    ShowSnackBar("Please update from PlayStore")
+//                }
+//
+//                401 -> {
+//                    AppUtil.showSessionExpiredDialog(navController, context)
+//                }
+//
+//                else -> {
+//                    ShowSnackBar("Something went wrong")
+//                }
+//            }
+//        }
+
 
     Scaffold(
         topBar = {
@@ -88,19 +153,17 @@ fun NotificationItemCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-
             Text(
                 text = item.title,
                 style = MaterialTheme.typography.titleMedium
             )
-
             Spacer(Modifier.height(4.dp))
 
             Text(

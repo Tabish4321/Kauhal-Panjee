@@ -32,7 +32,9 @@ class NotificationListFragment :
             setContent {
                 MaterialTheme {
                     NotificationListScreen(
-                        navController = findNavController()
+                        navController = findNavController(),
+                        commonViewModel = commonViewModel,
+                        context = requireContext()
                     )
                 }
             }

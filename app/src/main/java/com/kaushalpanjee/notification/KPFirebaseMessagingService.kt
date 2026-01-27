@@ -10,9 +10,9 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.kaushalpanjee.WelcomeActivity
-import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.CommonActivity
+import com.kaushalpanjee.core.util.AppUtil
 
 
 /**
@@ -23,9 +23,15 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
     val type ="OPEN_NOTIFICATION_LIST"
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+//        val isLoggedIn = AppUtil.getLoginStatus(applicationContext)
+//
+//        if (!isLoggedIn) {
+//            Log.d("FCM_TEST", "User not logged then notification not showing ")
+//            return
+//        }
+
         Log.d("FCM_TEST", "Message received: ${message}")
         Log.d("FCM_TEST", "Custome received: ${message.data}")
-
 
             //val type = message.data["type"]
         val title = message.notification?.title ?: message.data["title"] ?: "Notification"
@@ -73,6 +79,8 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
         prefs.edit().putBoolean("SHOULD_OPEN_NOTIFICATION", true).apply()
 
         val intent = Intent(this, CommonActivity::class.java).apply {
+         //   flags =Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("OPEN_NOTIFICATION_LIST", true)
@@ -85,7 +93,7 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
             System.currentTimeMillis().toInt(),
              intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        ) //PendingIntent.FLAG_ONE_SHOT
 
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -125,7 +133,6 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -148,7 +155,5 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
 
         manager.notify(1001, notification)
     }
-
-
 
 }

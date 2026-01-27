@@ -865,9 +865,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                 _getTrainingListAPI.emit(it)
             }
         }
-
-
     }
+
+
 
 
     private  var _getSelectedTrainingListAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())

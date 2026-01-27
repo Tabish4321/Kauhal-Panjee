@@ -217,22 +217,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                         //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
                         commonViewModel.getLoginAPI(
-                        LoginReq(
-                            userName,
-                            finalPass,
-                            AppUtil.getAndroidId(requireContext()),
-                            BuildConfig.VERSION_NAME,
-                            ""
-                        ))
+//                        LoginReq(
+//                            userName,
+//                            finalPass,
+//                            AppUtil.getAndroidId(requireContext()),
+//                            BuildConfig.VERSION_NAME,
+//                            ""
+//                        ))
 
-//                            LoginReq(
-//                                userName,
-//                                finalPass,
-//                                AppUtil.getAndroidId(requireContext()),
-//                                BuildConfig.VERSION_NAME,
-//                                "",
-//                                fcmToken = fcmToken
-//                            ))
+                            LoginReq(
+                                userName,
+                                finalPass,
+                                AppUtil.getAndroidId(requireContext()),
+                                BuildConfig.VERSION_NAME,
+                                "",
+                                fcmToken = fcmToken
+                            ))
 
 
                         //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
