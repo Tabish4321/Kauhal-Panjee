@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kaushalpanjee.notification.notificationUi.NotificationStatus
-import com.kaushalpanjee.notification.notificationUi.NotificationUiModel
+import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 
 @Composable
 fun NotificationItemCard(

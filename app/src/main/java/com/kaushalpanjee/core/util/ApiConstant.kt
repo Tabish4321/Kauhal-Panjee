@@ -71,8 +71,8 @@ object ApiConstant {
     const val  API_INSTITUTE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}kpOrgTrainingCenters"
     const val  API_INSTITUTE_COURSE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}instituteCourse"
     const val  API_INSERT_TRAINING_CENTER = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateTrainingCenter"
+    const val API_NOTIFICATION = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}api/invitation/getNotificationList"
+    const val API_APPROVECONDIDATE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}api/invitation/approveCandidate"
 
-    const val API_NOTIFICATION = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}notification"
 
-    //api/notification?page=0&size=10
 }

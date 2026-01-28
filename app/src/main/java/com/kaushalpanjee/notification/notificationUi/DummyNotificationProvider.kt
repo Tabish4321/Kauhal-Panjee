@@ -1,5 +1,7 @@
 package com.kaushalpanjee.notification.notificationUi
 
+import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
+
 
 /**
  * Created by Rishi Porwal

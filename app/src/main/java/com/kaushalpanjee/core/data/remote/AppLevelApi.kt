@@ -107,7 +107,10 @@ import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
+import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
+import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Header
@@ -429,11 +432,17 @@ interface AppLevelApi {
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 
-//        @GET(API_NOTIFICATION)
-//        suspend fun getNotifications(
-//            @Query("page") page: Int,
-//            @Query("size") size: Int
-//        ): NotificationResponse
+        @GET(API_NOTIFICATION)
+        suspend fun getNotifications(
+            @Query("page") page: Int,
+            @Query("size") size: Int
+        ): NotificationListResponse
+
+    @GET(API_APPROVECONDIDATE)
+    suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): Response<String>
+
+
+//    /api/invitation/approveCandidate
 
 
 

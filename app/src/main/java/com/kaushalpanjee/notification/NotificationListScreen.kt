@@ -46,7 +46,7 @@ import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.notification.notificationUi.DummyNotificationProvider
 import com.kaushalpanjee.notification.notificationUi.NotificationDataSource
 import com.kaushalpanjee.notification.notificationUi.NotificationStatus
-import com.kaushalpanjee.notification.notificationUi.NotificationUiModel
+import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 
 /**
  * Created by Rishi Porwal
