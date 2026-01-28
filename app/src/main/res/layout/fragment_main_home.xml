@@ -28,8 +28,8 @@ android:layout_height="match_parent"
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/circleINotification"
-                android:layout_width="@dimen/dp_40"
-                android:layout_height="@dimen/dp_40"
+                android:layout_width="@dimen/dp_35"
+                android:layout_height="@dimen/dp_35"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_notification"
@@ -39,8 +39,6 @@ android:layout_height="match_parent"
                 app:shapeAppearanceOverlay="@style/CustomCircleShape"
                 app:strokeColor="@color/color_dark_green"
                 app:strokeWidth="1dp" />
-
-
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/circleImageViewMH"

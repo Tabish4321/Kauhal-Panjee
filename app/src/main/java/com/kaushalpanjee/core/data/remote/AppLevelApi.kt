@@ -107,6 +107,7 @@ import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
+import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Header
@@ -426,5 +427,14 @@ interface AppLevelApi {
     @POST(ApiConstant.API_INSERT_TRAINING_CENTER)
     suspend fun insertTrainingCenter( @Header("Authorization") token: String,
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
+
+
+//        @GET(API_NOTIFICATION)
+//        suspend fun getNotifications(
+//            @Query("page") page: Int,
+//            @Query("size") size: Int
+//        ): NotificationResponse
+
+
 
 }

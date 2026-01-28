@@ -586,8 +586,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _getPiaOrgList =
-        MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
+    private val _getPiaOrgList = MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
 
     private val _isPiaCalled = MutableStateFlow(false)
 
@@ -662,8 +661,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _getInstituteList =
-        MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
+    private val _getInstituteList = MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
 
     private val _isInstituteCalled = MutableStateFlow(false)
     val isInstituteCalled = _isInstituteCalled
@@ -1039,13 +1037,34 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     fun getCheckJobCardAPI( url: String,username: String, password: String,jobcardNo: String){
         viewModelScope.launch {
-
             commonRepository.getCheckJobCardAPI(url,username,password,jobcardNo).collectLatest {
                 _nRegaValidate.emit(it)
             }
         }
     }
 
+
+
+
+//    private val _notifications =
+//        MutableStateFlow<Resource<List<NotificationUiModel>>>(Resource.Loading())
+//
+//    val notifications: StateFlow<Resource<List<NotificationUiModel>>> =
+//        _notifications
+
+
+//    fun loadNotifications() {
+//        viewModelScope.launch {
+//            notificationRepository.getNotifications()
+//                .collectLatest {
+//                    _notifications.value = it
+//                }
+//        }
+//    }
+
+    fun updateNotificationStatus(){
+
+    }
 
 
 

@@ -158,8 +158,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         if (intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) == true) {
             intent.removeExtra("OPEN_NOTIFICATION_LIST")
 
-            window.decorView.post {
-                navController?.navigate(R.id.notificationListFragment)
+            window.decorView.post { navController?.navigate(R.id.notificationListFragment)
             }
         }
 

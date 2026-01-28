@@ -7,5 +7,8 @@ data class NotificationUiModel(
     val id: String,
     val title: String,
     val message: String,
-    val time: String
+    val createdAt: Long,
+    var status: NotificationStatus = NotificationStatus.PENDING,
+    val isApproved: Boolean=true
 )
+
