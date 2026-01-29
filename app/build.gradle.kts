@@ -42,7 +42,7 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 40
-        versionName = "2.6.2"
+        versionName = "2.6.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -77,6 +77,7 @@ android {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
+            isDebuggable=true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

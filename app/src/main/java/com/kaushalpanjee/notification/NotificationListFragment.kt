@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.kaushalpanjee.common.CommonViewModel
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.databinding.FragmentTrainingBinding
+import com.kaushalpanjee.notification.with_api.NotificationListScreenN
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -31,19 +32,12 @@ class NotificationListFragment :
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    NotificationListScreen(
+                    NotificationListScreenN(
                         navController = findNavController(),
                         commonViewModel = commonViewModel,
-                        context = requireContext()
                     )
                 }
             }
         }
     }
 }
-
-// Api Integrating time
-//NotificationListScreen(
-//navController = findNavController(),
-//dataSource = ApiNotificationDataSource(api)
-//)

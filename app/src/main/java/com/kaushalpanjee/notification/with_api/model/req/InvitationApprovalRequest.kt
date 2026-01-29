@@ -9,8 +9,10 @@ data class InvitationApprovalRequest(
     // RSETI
     val instituteName: String?,
     val instituteTrade: String?,
+    val instituteId : String?,
     // DDU-GKY
     val centerName: String?,
     val centerTrade: String?,
-    val entryCode: String?
+    val entryCode: String?,
+    val status:String?
 )

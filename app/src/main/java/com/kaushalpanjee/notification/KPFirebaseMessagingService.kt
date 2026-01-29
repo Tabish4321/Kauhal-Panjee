@@ -21,100 +21,54 @@ import com.kaushalpanjee.core.util.AppUtil
 class KPFirebaseMessagingService : FirebaseMessagingService() {
 
     val type ="OPEN_NOTIFICATION_LIST"
+
+
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-//        val isLoggedIn = AppUtil.getLoginStatus(applicationContext)
-//        if (!isLoggedIn) {
-//            Log.d("FCM_TEST", "User not logged then notification not showing ")
-//            return
-//        }
 
-        Log.d("FCM_TEST", "Message received: ${message}")
-        Log.d("FCM_TEST", "Custome received: ${message.data}")
+        val isLoggedIn = AppUtil.getLoginStatus(applicationContext)
+        if (!isLoggedIn) {
+            Log.d("FCM_TEST", "User not logged then notification not showing ")
+            return
+        }
 
-            //val type = message.data["type"]
-        val title = message.notification?.title ?: message.data["title"] ?: "Notification"
-        val body = message.notification?.body ?: message.data["body"] ?: "You have a new message"
-        //val type = message.data["type"] ?: ""
+       // if (message.data.isEmpty()) return
+        val data = message.data
+        val title = data["title"] ?: "Notification"
+        val body = data["body"] ?: "You have a new message"
+        val type = data["type"]
 
-        if (type == "OPEN_NOTIFICATION_LIST") {
-            showNotificationn(title, body)
-            }
+        // Optional: extract extra fields if needed later
+        val scheme = data["scheme"]
+        val instituteTrade = data["instituteTrade"]
+        val entityCode = data["entityCode"]
 
+        showNotificationn(
+            title = title,
+            body = body
+        )
 
-//        if (message.data.isNotEmpty()) {
-//            //val type = message.data["type"]
-//            val title = message.data["title"] ?: "Notification"
-//            val body = message.data["body"] ?: "You have a new message"
-//            if (type == "OPEN_NOTIFICATION_LIST") {
-//                showNotification(title, body)
+//        when (type) {
+//            "INVITATION" -> {
+//                showNotificationn(
+//                    title = title,
+//                    body = body
+//                )
+//            }
+//            else -> {
+//                showNotificationn(
+//                    title = title,
+//                    body = body
+//                )
 //            }
 //        }
     }
-
-
-//    {
-//        "to": "<FCM_TOKEN>",
-//        "data": {
-//        "type": "OPEN_NOTIFICATION_LIST",
-//        "title": "Kaushal Panjee",
-//        "body": "This Notification Testing Purpose"
-//    }
-//    }
-
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
         Log.d("FCM_TOKEN", token)
     }
-
-//    private fun showNotification(title: String, body: String) {
-//
-//        val channelId = "default_channel"
-//
-//        // Save flag in SharedPreferences
-//        val prefs = getSharedPreferences("notification_prefs", Context.MODE_PRIVATE)
-//        prefs.edit().putBoolean("SHOULD_OPEN_NOTIFICATION", true).apply()
-//
-//        val intent = Intent(this, CommonActivity::class.java).apply {
-//         //   flags =Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-//                    Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            putExtra("OPEN_NOTIFICATION_LIST", true)
-//            action = System.currentTimeMillis().toString()
-//
-//        }
-//
-//        val pendingIntent = PendingIntent.getActivity(
-//            this,
-//            System.currentTimeMillis().toInt(),
-//             intent,
-//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//        ) //PendingIntent.FLAG_ONE_SHOT
-//
-//        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val channel = NotificationChannel(
-//                channelId,
-//                "General Notifications",
-//                NotificationManager.IMPORTANCE_HIGH
-//            )
-//            manager.createNotificationChannel(channel)
-//        }
-//
-//        val notification = NotificationCompat.Builder(this, channelId)
-//            .setSmallIcon(R.drawable.ic_notification)
-//            .setContentTitle(title)
-//            .setContentText(body)
-//            .setAutoCancel(true)
-//            .setContentIntent(pendingIntent)
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .build()
-//
-//        manager.notify(System.currentTimeMillis().toInt(), notification)
-//    }
 
 
     private fun showNotificationn(title: String, body: String) {

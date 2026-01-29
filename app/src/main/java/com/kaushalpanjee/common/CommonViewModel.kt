@@ -103,7 +103,8 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
-import com.kaushalpanjee.notification.notificationUi.NotificationStatus
+import com.kaushalpanjee.notification.with_api.NotificationStatus
+import com.kaushalpanjee.notification.with_api.NotificationUiEvent
 import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
@@ -1052,52 +1053,6 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-
-//    private val _notifications =
-//        MutableStateFlow<Resource<NotificationListResponse>>(Resource.Loading())
-//
-//    val notifications: StateFlow<Resource<NotificationListResponse>> =
-//        _notifications
-
-
-//    fun loadNotifications(page: Int = 0, size: Int = 10) {
-//        viewModelScope.launch {
-//            commonRepository
-//                .getNotifications(page, size)
-//                .collectLatest {
-//                    _notifications.emit(it)
-//                }
-//        }
-//    }
-
-
-//    private val _notificationList =
-//        MutableStateFlow<Resource<List<UserNotification>>>(Resource.Loading())
-//
-//    val notificationList: StateFlow<Resource<List<UserNotification>>> =
-//        _notificationList
-//
-//    fun loadNotifications(page: Int = 0, size: Int = 10) {
-//        viewModelScope.launch {
-//            commonRepository.getNotifications(page, size)
-//                .collectLatest { result ->
-//                    when (result) {
-//                        is Resource.Success -> {
-//                            _notificationList.value =
-//                                Resource.Success(result.data?.content ?: emptyList())
-//                        }
-//                        is Resource.Error -> {
-//                         //   _notificationList.value = Resource.Error(result.message)
-//                        }
-//                        is Resource.Loading -> {
-//                            _notificationList.value = Resource.Loading()
-//                        }
-//                    }
-//                }
-//        }
-//    }
-
-
     private val _notificationList =
         MutableStateFlow<Resource<List<NotificationUiModel>>>(Resource.Loading())
 
@@ -1133,8 +1088,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                             isLastPage = newItems.isEmpty()
                             currentPage++
 
-                            val oldList =
-                                (_notificationList.value as? Resource.Success)?.data.orEmpty()
+                            val oldList = (_notificationList.value as? Resource.Success)?.data.orEmpty()
 
                             _notificationList.value =
                                 Resource.Success(
@@ -1152,73 +1106,76 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
+    private val _actionLoading = MutableStateFlow<String?>(null)
+
+    private val _uiEvent = MutableSharedFlow<NotificationUiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
 
 
+    fun updateNotificationStatus(
+        notificationId: String,
+        status: String
+    ) {
+        val currentList = (_notificationList.value as? Resource.Success)?.data ?: return
+
+        val notification = currentList.find { it.id == notificationId } ?: return
 
 
+        val request = InvitationApprovalRequest(
 
-    // in fragment
-//    viewModel.loadNotifications()
-//
-//    @Composable
-//fun NotificationScreen(
-//    viewModel: NotificationViewModel
-//) {
-//    LaunchedEffect(Unit) {
-//        viewModel.loadNotifications()
-//    }
-//
-//    val notificationState =
-//        viewModel.notificationList.collectAsState().value
-//
-//    when (notificationState) {
-//        is Resource.Loading -> {
-//            LoadingView()
-//        }
-//
-//        is Resource.Success -> {
-//            NotificationList(
-//                list = notificationState.data ?: emptyList()
-//            )
-//        }
-//
-//        is Resource.Error -> {
-//            ErrorView(message = notificationState.message)
-//        }
-//    }
-//}
+            scheme = "RSETI",//notification.scheme,
+            candidateId = notification.candidateId,
+            status = status,
+            instituteId= notification.instituteId,
+            instituteName = "",
+            instituteTrade = "",
+            centerName = "",
+            centerTrade ="" ,//notification.centerTrade,
+            entryCode = "",//notification.entityCode,
+
+        )
+
+        // DDU-GKY
+//        val centerName: String?,
+//        val centerTrade: String?,
+//        val entryCode: String?,
 
 
-
-
-
-//    fun loadNotifications() {
-//        viewModelScope.launch {
-//            notificationRepository.getNotifications()
-//                .collectLatest {
-//                    _notifications.value = it
-//                }
-//        }
-//    }
-
-
-
-
-
-
-
-
-    private var _invitationApprove = MutableSharedFlow<Resource<out Response<String>>>()
-    val invitationApprove = _invitationApprove.asSharedFlow()
-
-    fun updateNotificationStatus(invitationReq: InvitationApprovalRequest){
         viewModelScope.launch {
-            commonRepository.invitationApprove(invitationReq).collectLatest {
-                _invitationApprove.emit(it)
-            }
+            _actionLoading.value = notificationId
+            _notificationList.value = Resource.Success(
+                currentList.map {
+                    if (it.id == notificationId)
+                        it.copy(invitationStatus = status)
+                    else it
+                }
+            )
 
+
+            commonRepository.invitationApprove(request)
+                .collectLatest { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                           // val msg = result.data?.body()??: "Status updated successfully"
+                            val msg = "Status updated successfully"
+                            _uiEvent.emit(
+                                NotificationUiEvent.ShowToast(msg)
+                            )
+                            loadNotifications(loadMore = false)
+                        }
+
+                        is Resource.Error -> {
+                            _notificationList.value = Resource.Success(currentList)
+                            _uiEvent.emit(NotificationUiEvent.ShowToast("Something went wrong"))
+                        }
+
+                        else -> Unit
+                    }
+                    _actionLoading.value = null
+                }
         }
     }
+
 
 
 

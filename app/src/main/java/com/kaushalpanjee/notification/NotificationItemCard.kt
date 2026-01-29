@@ -28,7 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.kaushalpanjee.notification.notificationUi.NotificationStatus
+import com.kaushalpanjee.notification.TimeUtils.toMillis
+import com.kaushalpanjee.notification.with_api.NotificationStatus
 import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 
 @Composable
@@ -54,18 +55,18 @@ fun NotificationItemCard(
 
             ) {
                 Text(
-                    text = TimeUtils.getRelativeTime(item.createdAt),
+                    text = TimeUtils.getRelativeTime(item.createdAt.toMillis()),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                StatusBadge(status = item.status)
+                StatusBadge(status = item.invitationStatus)
             }
 
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = item.title,
+                text = item.title, //+" (${item.})",
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold
                 ),
@@ -83,7 +84,9 @@ fun NotificationItemCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (item.status == NotificationStatus.PENDING) {
+            if (item.invitationStatus == "P") {
+           // if (item.invitationStatus == "P") {
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -122,12 +125,12 @@ fun NotificationItemCard(
 
 
 @Composable
-fun StatusBadge(status: NotificationStatus) {
+fun StatusBadge(status: String) {
     val (text, color, bgColor) = when (status) {
-        NotificationStatus.ACCEPTED ->
+        "APPROVED","A" ->
             Triple("Accepted", Color(0xFF2E7D32), Color(0xFFE8F5E9))
 
-        NotificationStatus.REJECTED ->
+       "REJECTED","R" ->
             Triple("Rejected", Color.Red, Color(0xFFFDECEA))
 
         else -> return

@@ -1,5 +1,6 @@
 package com.kaushalpanjee.core.di
 
+import LoggingInterceptor
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
@@ -126,15 +127,17 @@ object AppModule {
             connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
             writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
             readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
-            if (BuildConfig.DEBUG) {
+          //  if (BuildConfig.DEBUG) {
                 //addNetworkInterceptor(ChuckerInterceptor(context))
-                val logging = HttpLoggingInterceptor { message ->
-                    Log.d("API_LOG---->", message)
-                }.apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-                addNetworkInterceptor(logging)
-            }
+//                val logging = HttpLoggingInterceptor { message ->
+//                    Log.d("API_LOG---->", message)
+//                }.apply {
+//                    level = HttpLoggingInterceptor.Level.BODY
+//                }
+//                addNetworkInterceptor(logging)
+                addInterceptor(LoggingInterceptor())
+
+            //}
             addInterceptor(CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context))
             authenticator?.let { authenticator(it) }
         }.build()

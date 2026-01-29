@@ -180,8 +180,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      }
 
  private fun  listeners(){
-
-
     //Training Adapter Setting
 
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
