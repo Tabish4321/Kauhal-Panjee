@@ -41,8 +41,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 40
-        versionName = "2.6.1"
+        versionCode = 41
+        versionName = "2.6.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -74,10 +74,10 @@ android {
     }
 
     buildTypes {
-        release {
+        release     {
             isMinifyEnabled = false
             isShrinkResources = false
-            isDebuggable=true
+            isDebuggable=false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
