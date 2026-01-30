@@ -1106,7 +1106,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
-    private val _actionLoading = MutableStateFlow<String?>(null)
+    public val _actionLoading = MutableStateFlow<String?>(null)
 
     private val _uiEvent = MutableSharedFlow<NotificationUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
@@ -1143,24 +1143,17 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
         viewModelScope.launch {
             _actionLoading.value = notificationId
-            _notificationList.value = Resource.Success(
-                currentList.map {
-                    if (it.id == notificationId)
-                        it.copy(invitationStatus = status)
-                    else it
-                }
-            )
-
-
             commonRepository.invitationApprove(request)
                 .collectLatest { result ->
                     when (result) {
                         is Resource.Success -> {
                            // val msg = result.data?.body()??: "Status updated successfully"
-                            val msg = "Status updated successfully"
+                            val msg = "Invitation Updated."
                             _uiEvent.emit(
                                 NotificationUiEvent.ShowToast(msg)
                             )
+
+                            resetPagination()
                             loadNotifications(loadMore = false)
                         }
 
@@ -1176,7 +1169,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
-
-
-
+    private fun resetPagination() {
+        isLoading = false
+        isLastPage = false
+        currentPage = 0
+    }
 }

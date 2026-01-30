@@ -1,5 +1,6 @@
 package com.kaushalpanjee.notification.with_api
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.kaushalpanjee.common.CommonViewModel
 import com.kaushalpanjee.notification.with_api.NotificationStatus
@@ -24,6 +26,20 @@ fun NotificationListScreenN(
     commonViewModel: CommonViewModel
 ) {
     val notificationState = commonViewModel.notificationList.collectAsState().value
+    val actionLoadingId = commonViewModel._actionLoading.collectAsState().value
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        commonViewModel.uiEvent.collect { event ->
+            when (event) {
+                is NotificationUiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 
     LaunchedEffect(Unit) {
         commonViewModel.loadNotifications()
