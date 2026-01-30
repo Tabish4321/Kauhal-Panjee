@@ -84,7 +84,7 @@ fun NotificationItemCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (item.invitationStatus == "P") {
+            if (item.invitationStatus == "P") { // P
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End

@@ -103,6 +103,7 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
+import com.kaushalpanjee.notification.with_api.LoadingView
 import com.kaushalpanjee.notification.with_api.NotificationStatus
 import com.kaushalpanjee.notification.with_api.NotificationUiEvent
 import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
@@ -111,7 +112,9 @@ import com.kaushalpanjee.notification.with_api.model.res.NotificationListRespons
 import com.kaushalpanjee.notification.with_api.model.res.UserNotification
 import com.kaushalpanjee.notification.with_api.model.toUiModel
 import com.utilize.core.domain.model.response.BaseErrorResponse
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -1053,7 +1056,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _notificationList =
+    public val _notificationList =
         MutableStateFlow<Resource<List<NotificationUiModel>>>(Resource.Loading())
 
     val notificationList: StateFlow<Resource<List<NotificationUiModel>>> =
@@ -1096,7 +1099,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                                 )
                         }
                         is Resource.Error -> {
-                            _notificationList.value = Resource.Error(BaseErrorResponse(0,"Something Went wrong",false,""))
+                            _notificationList.value = Resource.Error(BaseErrorResponse(0,"Something Went wrong to get list",false,""))
                         }
 
                         is Resource.Loading -> Unit
@@ -1108,66 +1111,58 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     public val _actionLoading = MutableStateFlow<String?>(null)
 
-    private val _uiEvent = MutableSharedFlow<NotificationUiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
-
+    private val _uiEvent = MutableSharedFlow<NotificationUiEvent?>()
+    val uiEvent: SharedFlow<NotificationUiEvent?> = _uiEvent
 
     fun updateNotificationStatus(
         notificationId: String,
         status: String
     ) {
-        val currentList = (_notificationList.value as? Resource.Success)?.data ?: return
+        val currentList =
+            (_notificationList.value as? Resource.Success)?.data ?: return
 
-        val notification = currentList.find { it.id == notificationId } ?: return
-
+        val notification =
+            currentList.find { it.id == notificationId } ?: return
 
         val request = InvitationApprovalRequest(
-
-            scheme = "RSETI",//notification.scheme,
+            scheme = "RSETI",
             candidateId = notification.candidateId,
             status = status,
-            instituteId= notification.instituteId,
+            instituteId = notification.instituteId,
             instituteName = "",
             instituteTrade = "",
             centerName = "",
-            centerTrade ="" ,//notification.centerTrade,
-            entryCode = "",//notification.entityCode,
-
+            centerTrade = "",
+            entryCode = ""
         )
-
-        // DDU-GKY
-//        val centerName: String?,
-//        val centerTrade: String?,
-//        val entryCode: String?,
-
-
         viewModelScope.launch {
             _actionLoading.value = notificationId
-            commonRepository.invitationApprove(request)
-                .collectLatest { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                           // val msg = result.data?.body()??: "Status updated successfully"
-                            val msg = "Invitation Updated."
-                            _uiEvent.emit(
-                                NotificationUiEvent.ShowToast(msg)
-                            )
+            val result = commonRepository
+                .invitationApprove(request)
+                .first { it !is Resource.Loading }
 
-                            resetPagination()
-                            loadNotifications(loadMore = false)
-                        }
-
-                        is Resource.Error -> {
-                            _notificationList.value = Resource.Success(currentList)
-                            _uiEvent.emit(NotificationUiEvent.ShowToast("Something went wrong"))
-                        }
-
-                        else -> Unit
+            when (result) {
+                is Resource.Success -> {
+                    val raw = result.data?.string() ?: ""
+                        _uiEvent.emit(NotificationUiEvent.ShowToast(raw))
+                        resetPagination()
+                        loadNotifications()
                     }
-                    _actionLoading.value = null
+
+                is Resource.Error -> {
+                  //  resetPagination()
+                  //  loadNotifications()
+                    _uiEvent.emit(NotificationUiEvent.ShowToast(
+                             "Something went wrong In status Api"
+                        )
+                    )
                 }
+                is Resource.Loading<*> -> Unit
+            }
+            _actionLoading.value = null
         }
     }
+
 
     private fun resetPagination() {
         isLoading = false

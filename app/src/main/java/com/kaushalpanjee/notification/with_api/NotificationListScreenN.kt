@@ -36,6 +36,7 @@ fun NotificationListScreenN(
                 is NotificationUiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                else -> {}
             }
         }
     }
@@ -48,7 +49,7 @@ fun NotificationListScreenN(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Notifications") },
+                title = { Text("Invitation List") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null)

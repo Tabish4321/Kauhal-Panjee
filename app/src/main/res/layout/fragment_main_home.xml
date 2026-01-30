@@ -42,8 +42,8 @@
             <!-- Notification -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/circleINotification"
-                android:layout_width="@dimen/dp_35"
-                android:layout_height="@dimen/dp_35"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
                 android:layout_marginEnd="@dimen/dp_20"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_notification"

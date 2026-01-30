@@ -108,8 +108,10 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -593,8 +595,8 @@ class CommonRepository @Inject constructor(
 
 
 
-    suspend fun invitationApprove(invitation : InvitationApprovalRequest): Flow<Resource<out Response<String>>> {
-        return networkBoundResourceWithoutDb {
+    suspend fun invitationApprove(invitation : InvitationApprovalRequest): Flow<Resource<out ResponseBody>> {
+        return networkBoundResourceWithoutDbn {
             appLevelApi.invitationApproved(invitation)
         }
     }

@@ -111,6 +111,7 @@ import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Header
@@ -439,6 +440,6 @@ interface AppLevelApi {
         ): NotificationListResponse
 
     @POST(API_APPROVECONDIDATE)
-    suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): Response<String>
+    suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
 
 }

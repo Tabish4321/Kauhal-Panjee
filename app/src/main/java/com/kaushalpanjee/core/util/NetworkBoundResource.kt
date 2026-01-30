@@ -3,6 +3,7 @@ package com.kaushalpanjee.core.util
 import com.google.gson.Gson
 import com.utilize.core.domain.model.response.BaseErrorResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -60,6 +61,29 @@ fun <RequestType> networkBoundResourceWithoutDb(
         emit(Resource.Error(error, null))
     }
 }
+
+fun <T> networkBoundResourceWithoutDbn(
+    apiCall: suspend () -> T
+): Flow<Resource<T>> {
+    return flow {
+        emit(Resource.Loading())
+
+        val response = apiCall()
+        emit(Resource.Success(response))
+    }.catch { e ->
+        emit(
+            Resource.Error(
+                BaseErrorResponse(
+                    code = 0,
+                    message = e.message ?: "Unknown error",
+                    success = false,
+                    data = Any()
+                )
+            )
+        )
+    }
+}
+
 
  fun getErrorMessage(throwable: HttpException): BaseErrorResponse {
 

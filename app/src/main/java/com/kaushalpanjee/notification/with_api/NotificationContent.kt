@@ -68,7 +68,7 @@ fun NotificationContent(
 
 
 @Composable
-private fun LoadingView(modifier: Modifier) {
+ fun LoadingView(modifier: Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

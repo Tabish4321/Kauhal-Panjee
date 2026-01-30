@@ -38,14 +38,8 @@ import androidx.compose.ui.unit.dp
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = "No notifications",
+                text = "No Invitation List",
                 style = MaterialTheme.typography.titleMedium,
-                color = Color.Gray
-            )
-
-            Text(
-                text = "You're all caught up ",
-                style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
             )
         }
@@ -55,6 +49,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun EmptyNotificationView(modifier: Modifier) {
+
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

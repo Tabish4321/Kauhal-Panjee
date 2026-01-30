@@ -32,7 +32,15 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
             return
         }
 
-       // if (message.data.isEmpty()) return
+        if (message.data.isEmpty()){
+            val title =  "Notification"
+            val body = "You have a new message"
+            showNotificationn(
+                title = title,
+                body = body
+            )
+            return
+        }
         val data = message.data
         val title = data["title"] ?: "Notification"
         val body = data["body"] ?: "You have a new message"

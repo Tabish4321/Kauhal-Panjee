@@ -214,17 +214,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                         }
 
                         Log.d("--FCM_TOKEN-", fcmToken)
-
-                        //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
                         commonViewModel.getLoginAPI(
-//                        LoginReq(
-//                            userName,
-//                            finalPass,
-//                            AppUtil.getAndroidId(requireContext()),
-//                            BuildConfig.VERSION_NAME,
-//                            ""
-//                        ))
-
                             LoginReq(
                                 userName,
                                 finalPass,
@@ -233,11 +223,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 "",
                                 fcmToken = fcmToken
                             ))
-
-
-                        //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
                         collectLoginResponse()
-
                     }
             }
         }
