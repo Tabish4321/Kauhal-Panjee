@@ -257,7 +257,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
+                            toastShort("Server error")
                         }
                     }
 

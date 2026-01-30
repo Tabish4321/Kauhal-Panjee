@@ -6427,13 +6427,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                             } else if (getSecctionAndPerAPI.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
-                            } else if (getSecctionAndPerAPI.responseCode == 401) {
+                            }
+                            else if (getSecctionAndPerAPI.responseCode == 401) {
                                 AppUtil.showSessionExpiredDialog(
                                     findNavController(),
                                     requireContext()
                                 )
 
-                            } else {
+                            }
+                             else {
                                 showSnackBar("Something went wrong")
                             }
                         } ?: showSnackBar("Internal Server Error")

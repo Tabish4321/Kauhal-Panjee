@@ -349,6 +349,38 @@ android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@+id/certificate_image_logo"
                 app:layout_constraintStart_toEndOf="@+id/trainingDetailsTitle"/>
 
+
+
+
+
+
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/attendance_image_logo"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_70"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
+                android:src="@drawable/attendance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/personaltv"  />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mark_attendance_ojt"
+                android:id="@+id/attendanceTv"
+                android:textColor="@color/color_dark_green"
+                android:fontFamily="@font/avenir_next_bold"
+                android:layout_marginStart="@dimen/dp_30"
+                android:textSize="@dimen/sp_15"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@+id/attendance_image_logo"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

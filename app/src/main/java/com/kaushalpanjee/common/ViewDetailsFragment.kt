@@ -10,14 +10,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.transition.TransitionManager
 import android.util.Base64
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -25,7 +22,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
@@ -38,7 +34,6 @@ import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.response.Address
 import com.kaushalpanjee.common.model.response.AddressDetail
 import com.kaushalpanjee.common.model.response.Bank
-import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.Educational
 import com.kaushalpanjee.common.model.response.Employment
 import com.kaushalpanjee.common.model.response.Personal

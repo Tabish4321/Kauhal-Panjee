@@ -158,6 +158,9 @@
                 app:argType="string" />
 
         </action>
+        <action
+            android:id="@+id/action_mainHomePage_to_attendanceFragment"
+            app:destination="@id/attendanceFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -234,4 +237,18 @@
         android:name="com.kaushalpanjee.common.TrainingCenterAssign"
         android:label="fragment_training_center_assign"
         tools:layout="@layout/fragment_training_center_assign" />
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.kaushalpanjee.common.AttendanceFragment"
+        android:label="AttendanceFragment"
+        tools:layout="@layout/attendance_fragment">
+
+        <argument
+            android:name="image"
+            app:argType="string" />
+        <argument
+            android:name="candidateName"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

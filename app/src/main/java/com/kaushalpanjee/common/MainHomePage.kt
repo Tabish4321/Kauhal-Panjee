@@ -73,6 +73,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var candidateName = ""
     private var totalPercentange =0.0f
     private var certUrl = ""
+    private var attendanceFlag = "N"
     private var schemeType = ""
     private var stateCode = ""
 
@@ -156,13 +157,13 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          binding.trainingRecyclerView.gone()
 
 
-         listeners()
          autoScroll()
          commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
-
          collectSetionAndPerResponse()
          collectTrainingSearchResponse()
+
+         listeners()
 
      }
 
@@ -223,12 +224,24 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
-     if (certUrl == "N"){
 
-         binding.certificateImageLogo.gone()
-         binding.certificateImageText.gone()
+
+
+     if (attendanceFlag == "N"){
+
+         binding.attendanceImageLogo.gone()
+         binding.attendanceTv.gone()
 
      }
+
+
+     binding.attendanceImageLogo.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToAttendanceFragment(imagePath,candidateName))
+
+     }
+
+
+
 
 
      binding.certificateImageLogo.setOnClickListener {
@@ -339,6 +352,15 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     AppUtil.saveAadhaarPreference(requireContext(),x.aadhaarEnc
                                     )
+
+                                    if (certUrl == "N"){
+
+                                        binding.certificateImageLogo.gone()
+                                        binding.certificateImageText.gone()
+
+                                    }
+
+
 
                                     if (x.firstLogin == "N"){
                                         showForcePasswordDialog()

@@ -256,6 +256,14 @@
     <string name="pmkvy_8">Training includes soft skills, digital literacy, and financial literacy to enhance overall employability.</string>
     <string name="pmkvy_9">The scheme places special focus on youth, including women, SC/ST communities, minorities and persons with disabilities.</string>
     <string name="pmkvy_10">Skill development is linked with industry needs, supporting opportunities for wage employment and self-employment.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance(OJT)</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 
 </resources>

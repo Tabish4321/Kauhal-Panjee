@@ -171,7 +171,7 @@ dependencies {
 
 
     implementation (libs.bundles.retrofitBundle)
-   // implementation (libs.chucker)
+   // implementation (libs.chucker)`
 
     //circle image
 

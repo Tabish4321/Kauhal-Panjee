@@ -258,5 +258,13 @@
     <string name="pmkvy_8">تربیتی پروگرام میں نرم مہارتیں، ڈیجیٹل خواندگی اور مالی خواندگی شامل ہوتی ہے، جس سے مجموعی روزگار کی صلاحیت میں اضافہ ہوتا ہے۔</string>
     <string name="pmkvy_9">یہ منصوبہ خاص طور پر نوجوانوں، خواتین، ایس سی/ایس ٹی طبقات، اقلیتوں اور معذور افراد پر خصوصی توجہ دیتا ہے۔</string>
     <string name="pmkvy_10">ہنر کی ترقی کو صنعت کی ضروریات کے ساتھ ہم آہنگ کیا گیا ہے، جس کے نتیجے میں تنخواہ دار ملازمتوں اور خود روزگار کے مواقع میں اضافہ ہوتا ہے۔</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance(OJT)</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

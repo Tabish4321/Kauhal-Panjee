@@ -262,5 +262,13 @@
     <string name="pmkvy_8">பயிற்சியில் மென்மையான திறன்கள், டிஜிட்டல் எழுத்தறிவு மற்றும் நிதி எழுத்தறிவு போன்றவை சேர்க்கப்பட்டுள்ளதால், மொத்த வேலைவாய்ப்பு திறன் அதிகரிக்கப்படுகிறது.</string>
     <string name="pmkvy_9">இந்த திட்டம் குறிப்பாக இளைஞர்கள், பெண்கள், எஸ்சி/எஸ்டி சமூகங்கள், சிறுபான்மையினர் மற்றும் மாற்றுத்திறனாளிகள் மீது சிறப்பு கவனம் செலுத்துகிறது.</string>
     <string name="pmkvy_10">திறன் மேம்பாடு தொழில் தேவைகளுடன் இணைக்கப்பட்டுள்ளதால், ஊதிய அடிப்படையிலான வேலைகள் மற்றும் சுயதொழில் வாய்ப்புகள் அதிகரிக்கின்றன.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance(OJT)</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

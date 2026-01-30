@@ -262,5 +262,13 @@
     <string name="pmkvy_8">శిక్షణలో సాఫ్ట్ స్కిల్స్, డిజిటల్ అక్షరాస్యత, ఆర్థిక అక్షరాస్యత వంటి అంశాలు ఉంటాయి, ఇవి మొత్తం ఉపాధి సామర్థ్యాన్ని పెంచుతాయి.</string>
     <string name="pmkvy_9">ఈ యోజన ముఖ్యంగా యువత, మహిళలు, ఎస్సీ/ఎస్టీ సమూహాలు, మైనారిటీలు మరియు దివ్యాంగులు మీద ప్రత్యేక దృష్టి పెడుతుంది.</string>
     <string name="pmkvy_10">నైపుణ్య అభివృద్ధిని పరిశ్రమ అవసరాలతో అనుసంధానించడం ద్వారా వేతన ఆధారిత ఉద్యోగాలు మరియు స్వయం ఉపాధి అవకాశాలు పెరుగుతాయి.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance(OJT)</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

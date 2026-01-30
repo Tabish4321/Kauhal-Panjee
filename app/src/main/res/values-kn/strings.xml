@@ -257,5 +257,13 @@
     <string name="pmkvy_8">ತರಬೇತಿಯಲ್ಲಿ ಸಾಫ್ಟ್ ಸ್ಕಿಲ್ಸ್, ಡಿಜಿಟಲ್ ಸಾಕ್ಷರತೆ ಮತ್ತು ಆರ್ಥಿಕ ಸಾಕ್ಷರತೆಗೂ ಪ್ರಾಮುಖ್ಯತೆ ನೀಡಲಾಗುತ್ತದೆ, ಇದು ಒಟ್ಟಾರೆ ಉದ್ಯೋಗಾರ್ಹತೆಯನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ.</string>
     <string name="pmkvy_9">ಈ ಯೋಜನೆ ವಿಶೇಷವಾಗಿ ಯುವಕರು, ಮಹಿಳೆಯರು, ಎಸ್‌ಸಿ/ಎಸ್‌ಟಿ ಸಮುದಾಯ, ಅಲ್ಪಸಂಖ್ಯಾತರು ಮತ್ತು ದಿವ್ಯಾಂಗ ವ್ಯಕ್ತಿಗಳ ಮೇಲೆ ವಿಶೇಷ ಗಮನ ಕೇಂದ್ರೀಕರಿಸುತ್ತದೆ.</string>
     <string name="pmkvy_10">ಕೌಶಲ್ಯ ಅಭಿವೃದ್ಧಿಯನ್ನು ಕೈಗಾರಿಕಾ ಅಗತ್ಯಗಳಿಗೆ ಜೋಡಿಸಲಾಗಿದ್ದು, ಇದರಿಂದ ವೇತನಾಧಾರಿತ ಉದ್ಯೋಗ ಮತ್ತು ಸ್ವಯಂ ಉದ್ಯೋಗ ಅವಕಾಶಗಳು ಹೆಚ್ಚುತ್ತವೆ.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance(OJT)</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

@@ -48,6 +48,11 @@ object AppUtil {
 
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }
+    fun getCurrentDateForAttendance(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy, EEEE", Locale.getDefault())
+        return dateFormat.format(calendar.time)
+    }
 
     fun sha512Hash(input: String): String {
         val digest = MessageDigest.getInstance("SHA-512")

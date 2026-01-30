@@ -253,5 +253,13 @@
     <string name="pmkvy_8">ପ୍ରଶିକ୍ଷଣରେ ସଫ୍ଟ୍ ସ୍କିଲ୍, ଡିଜିଟାଲ ସାକ୍ଷରତା ଓ ଆର୍ଥିକ ସାକ୍ଷରତା ଅନ୍ତର୍ଭୁକ୍ତ ହୁଏ, ଯାହା ସମଗ୍ର ନିଯୁକ୍ତିଯୋଗ୍ୟତା ବଢ଼ାଏ।</string>
     <string name="pmkvy_9">ଏହି ଯୋଜନା ବିଶେଷତଃ ଯୁବକ-ଯୁବତୀ, ମହିଳା, ଏସସି/ଏସଟି ସମୁଦାୟ, ଅଲ୍ପସଂଖ୍ୟକ ଓ ଦିବ୍ୟାଙ୍ଗ ବ୍ୟକ୍ତିମାନଙ୍କୁ ମୁଖ୍ୟ ଗୁରୁତ୍ୱ ଦେଇଥାଏ।</string>
     <string name="pmkvy_10">କୌଶଳ ବିକାଶକୁ ଶିଳ୍ପର ଆବଶ୍ୟକତା ସହିତ ସଂଯୋଗ କରାଯାଇଛି, ଯାହାଦ୍ୱାରା ଉପାର୍ଜନମୂଖୀ ଚାକିରି ଓ ସ୍ୱୟଂରୋଜଗାର ସୁଯୋଗ ବୃଦ୍ଧି ପାଏ।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance(OJT)</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>
