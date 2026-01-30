@@ -15,7 +15,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
@@ -26,6 +29,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
+import android.Manifest
+import android.app.ComponentCaller
+import androidx.navigation.fragment.NavHostFragment
+
 
 @AndroidEntryPoint
 class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
@@ -40,8 +47,10 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
+
         // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
         AppUtil.changeAppLanguage(this, AppUtil.getSavedLanguagePreference(this))
+
 
         lifecycleScope.launch {
             delay(2000)
@@ -145,6 +154,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
             false
         }
     }
+
 
 }
 

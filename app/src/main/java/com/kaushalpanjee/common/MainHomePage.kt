@@ -157,13 +157,13 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          binding.trainingRecyclerView.gone()
 
 
+         listeners()
          autoScroll()
          commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
+
          collectSetionAndPerResponse()
          collectTrainingSearchResponse()
-
-         listeners()
 
      }
 
@@ -239,9 +239,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          findNavController().navigate(MainHomePageDirections.actionMainHomePageToAttendanceFragment(imagePath,candidateName))
 
      }
-
-
-
 
 
      binding.certificateImageLogo.setOnClickListener {

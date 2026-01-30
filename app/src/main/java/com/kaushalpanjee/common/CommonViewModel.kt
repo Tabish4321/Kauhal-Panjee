@@ -103,7 +103,18 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
+import com.kaushalpanjee.notification.with_api.LoadingView
+import com.kaushalpanjee.notification.with_api.NotificationStatus
+import com.kaushalpanjee.notification.with_api.NotificationUiEvent
+import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
+import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import com.kaushalpanjee.notification.with_api.model.res.UserNotification
+import com.kaushalpanjee.notification.with_api.model.toUiModel
+import com.utilize.core.domain.model.response.BaseErrorResponse
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -586,8 +597,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _getPiaOrgList =
-        MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
+    private val _getPiaOrgList = MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
 
     private val _isPiaCalled = MutableStateFlow(false)
 
@@ -662,8 +672,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _getInstituteList =
-        MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
+    private val _getInstituteList = MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
 
     private val _isInstituteCalled = MutableStateFlow(false)
     val isInstituteCalled = _isInstituteCalled
@@ -865,9 +874,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                 _getTrainingListAPI.emit(it)
             }
         }
-
-
     }
+
+
 
 
     private  var _getSelectedTrainingListAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
@@ -1039,7 +1048,6 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     fun getCheckJobCardAPI( url: String,username: String, password: String,jobcardNo: String){
         viewModelScope.launch {
-
             commonRepository.getCheckJobCardAPI(url,username,password,jobcardNo).collectLatest {
                 _nRegaValidate.emit(it)
             }
@@ -1048,5 +1056,117 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
+    public val _notificationList =
+        MutableStateFlow<Resource<List<NotificationUiModel>>>(Resource.Loading())
 
+    val notificationList: StateFlow<Resource<List<NotificationUiModel>>> =
+        _notificationList
+
+    private var currentPage = 0
+    private var isLastPage = false
+    private var isLoading = false
+
+
+    fun loadNotifications(loadMore: Boolean = false) {
+        if (isLoading || isLastPage) return
+
+        isLoading = true
+
+        if (!loadMore) {
+            currentPage = 0
+            isLastPage = false
+            _notificationList.value = Resource.Loading()
+        }
+
+        viewModelScope.launch {
+            commonRepository.getNotifications(currentPage, 10)
+                .collectLatest { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            val newItems =
+                                result.data?.content
+                                    ?.map { it.toUiModel() }
+                                    ?: emptyList()
+
+                            isLastPage = newItems.isEmpty()
+                            currentPage++
+
+                            val oldList = (_notificationList.value as? Resource.Success)?.data.orEmpty()
+
+                            _notificationList.value =
+                                Resource.Success(
+                                    if (loadMore) oldList + newItems else newItems
+                                )
+                        }
+                        is Resource.Error -> {
+                            _notificationList.value = Resource.Error(BaseErrorResponse(0,"Something Went wrong to get list",false,""))
+                        }
+
+                        is Resource.Loading -> Unit
+                    }
+                    isLoading = false
+                }
+        }
+    }
+
+    public val _actionLoading = MutableStateFlow<String?>(null)
+
+    private val _uiEvent = MutableSharedFlow<NotificationUiEvent?>()
+    val uiEvent: SharedFlow<NotificationUiEvent?> = _uiEvent
+
+    fun updateNotificationStatus(
+        notificationId: String,
+        status: String
+    ) {
+        val currentList =
+            (_notificationList.value as? Resource.Success)?.data ?: return
+
+        val notification =
+            currentList.find { it.id == notificationId } ?: return
+
+        val request = InvitationApprovalRequest(
+            scheme = "RSETI",
+            candidateId = notification.candidateId,
+            status = status,
+            instituteId = notification.instituteId,
+            instituteName = "",
+            instituteTrade = "",
+            centerName = "",
+            centerTrade = "",
+            entryCode = ""
+        )
+        viewModelScope.launch {
+            _actionLoading.value = notificationId
+            val result = commonRepository
+                .invitationApprove(request)
+                .first { it !is Resource.Loading }
+
+            when (result) {
+                is Resource.Success -> {
+                    val raw = result.data?.string() ?: ""
+                        _uiEvent.emit(NotificationUiEvent.ShowToast(raw))
+                        resetPagination()
+                        loadNotifications()
+                    }
+
+                is Resource.Error -> {
+                  //  resetPagination()
+                  //  loadNotifications()
+                    _uiEvent.emit(NotificationUiEvent.ShowToast(
+                             "Something went wrong In status Api"
+                        )
+                    )
+                }
+                is Resource.Loading<*> -> Unit
+            }
+            _actionLoading.value = null
+        }
+    }
+
+
+    private fun resetPagination() {
+        isLoading = false
+        isLastPage = false
+        currentPage = 0
+    }
 }

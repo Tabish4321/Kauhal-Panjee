@@ -108,6 +108,10 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
+import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -518,6 +522,10 @@ class CommonRepository @Inject constructor(
     }
 
 
+
+
+
+
     suspend fun shgValidateAPI(url:String, shgValidateReq: ShgValidateReq): Flow<Resource<out Response<ShgValidateRes>>> {
         return networkBoundResourceWithoutDb {
             appLevelApi.shgValidateAPI(url,shgValidateReq)
@@ -576,8 +584,22 @@ class CommonRepository @Inject constructor(
     }
 
 
+    fun getNotifications(
+        page: Int,
+        size: Int
+    ): Flow< Resource<out NotificationListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getNotifications(page, size)
+        }
+    }
 
 
+
+    suspend fun invitationApprove(invitation : InvitationApprovalRequest): Flow<Resource<out ResponseBody>> {
+        return networkBoundResourceWithoutDbn {
+            appLevelApi.invitationApproved(invitation)
+        }
+    }
 
 
 }
