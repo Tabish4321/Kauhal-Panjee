@@ -437,8 +437,6 @@ interface AppLevelApi {
             @Query("size") size: Int
         ): NotificationListResponse
 
-    @POST(API_APPROVECONDIDATE)
-    suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
 
     @POST(API_APPROVECONDIDATE)
     suspend fun updateNotificationStatus(

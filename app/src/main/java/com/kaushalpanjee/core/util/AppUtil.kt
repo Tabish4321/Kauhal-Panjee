@@ -420,6 +420,7 @@ object AppUtil {
 
     fun createErrorResponse(
         exception: Exception? = null,
+        throwable: Throwable? = null,
         errorMessage: String = "Something went wrong!",
         errorCode: Int = -1,
         errorData: Any = ""
@@ -432,6 +433,22 @@ object AppUtil {
         )
     }
 
-
+    fun createErrorResponse(
+        throwable: Throwable? = null,
+        errorMessage: String = "Something went wrong!",
+        errorCode: Int = -1,
+        errorData: Any = ""
+    ): BaseErrorResponse {
+        return BaseErrorResponse(
+            code = errorCode,
+            message = throwable?.message?.takeIf { it.isNotEmpty() } ?: errorMessage,
+            success = false,
+            data = throwable?.localizedMessage?.takeIf { it.isNotEmpty() } ?: errorData
+        )
     }
+
+
+
+
+}
 

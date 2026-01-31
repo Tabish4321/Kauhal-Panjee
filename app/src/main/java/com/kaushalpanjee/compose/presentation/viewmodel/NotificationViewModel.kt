@@ -62,9 +62,8 @@ class NotificationViewModel @Inject constructor(
         val pageToLoad = if (resetPagination) 0 else currentState.currentPage
 
         viewModelScope.launch {
-            getNotificationsUseCase(pageToLoad, 10).collect { result ->
+            getNotificationsUseCase(pageToLoad, 10).collectLatest { result ->
                 isLoading = false
-
                 _state.update { state ->
                     when (result) {
                         is Resource.Success -> {
@@ -94,7 +93,6 @@ class NotificationViewModel @Inject constructor(
                     }
                 }
 
-                // Handle side effects
                 when (result) {
                     is Resource.Error -> {
                         _sideEffects.emit(
@@ -134,7 +132,7 @@ class NotificationViewModel @Inject constructor(
                 candidateId = item.candidateId,
                 instituteId = item.instituteId,
                 status = status
-            ).collect { result ->
+            ).collectLatest { result ->
 
                 _state.update {
                     it.copy(actionLoadingIds = it.actionLoadingIds - id)
@@ -142,9 +140,24 @@ class NotificationViewModel @Inject constructor(
 
                 when (result) {
                     is Resource.Success -> {
+//                        _state.update {
+//                            it.copy(actionLoadingIds = it.actionLoadingIds - id)
+//                        }
+
                         _sideEffects.emit(
-                            NotificationContract.SideEffect.ShowToast("Updated")
+                            NotificationContract.SideEffect.ShowToast(result.data?:"Success")
                         )
+
+//                        _state.update { state ->
+//                            val list =
+//                                (state.notifications as? Resource.Success)?.data.orEmpty()
+//
+//                            state.copy(
+//                                notifications = Resource.Success(
+//                                    list.filterNot { it.id == id }
+//                                )
+//                            )
+//                        }// this for local item update ...if dont want load whole list
                         loadNotifications(true)
                     }
 
@@ -156,7 +169,9 @@ class NotificationViewModel @Inject constructor(
                         )
                     }
 
-                    else -> Unit
+                    is Resource.Loading -> {
+                        //  loader
+                    }
                 }
             }
         }

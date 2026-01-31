@@ -582,22 +582,5 @@ class CommonRepository @Inject constructor(
     }
 
 
-    fun getNotifications(
-        page: Int,
-        size: Int
-    ): Flow< Resource<out NotificationListResponse>> {
-        return networkBoundResourceWithoutDb {
-            appLevelApi.getNotifications(page, size)
-        }
-    }
-
-
-
-    suspend fun invitationApprove(invitation : InvitationApprovalRequest): Flow<Resource<out ResponseBody>> {
-        return networkBoundResourceWithoutDbn {
-            appLevelApi.invitationApproved(invitation)
-        }
-    }
-
 
 }
