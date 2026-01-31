@@ -76,10 +76,8 @@ import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
-import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
-import com.kaushalpanjee.common.model.response.InstituteCourse
 import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
@@ -107,10 +105,10 @@ import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
+import com.kaushalpanjee.compose.data.remote.request.InvitationApprovalRequest
+import com.kaushalpanjee.compose.data.remote.response.NotificationListResponse
 import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
-import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
-import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -442,4 +440,8 @@ interface AppLevelApi {
     @POST(API_APPROVECONDIDATE)
     suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
 
+    @POST(API_APPROVECONDIDATE)
+    suspend fun updateNotificationStatus(
+        @Body request: InvitationApprovalRequest
+    ): Response<ResponseBody>
 }

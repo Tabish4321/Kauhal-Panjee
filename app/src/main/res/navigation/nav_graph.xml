@@ -239,7 +239,7 @@
         tools:layout="@layout/fragment_training_center_assign" />
     <fragment
         android:id="@+id/notificationListFragment"
-        android:name="com.kaushalpanjee.notification.NotificationListFragment"
+        android:name="com.kaushalpanjee.compose.fragment.NotificationListFragment"
         android:label="fragment_notification_list_fragment"
         tools:layout="@layout/fragment_training_center_assign" />
 </navigation>

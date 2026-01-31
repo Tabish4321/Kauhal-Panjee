@@ -1,9 +1,8 @@
-package com.kaushalpanjee.notification
+package com.kaushalpanjee.compose.firebaseService
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
@@ -13,7 +12,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.util.AppUtil
-
 
 /**
  * Created by Rishi Porwal
@@ -95,7 +93,7 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(

@@ -331,10 +331,20 @@ dependencies {
     //implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging")
 
+
+
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("junit:junit:4.13.2")
+
+        // Hilt
+        implementation ("com.google.dagger:hilt-android:2.48")
+        kapt ("com.google.dagger:hilt-compiler:2.48")
+        // Hilt Navigation Compose
+        implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+        // For ViewModel
+        implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 }
 
 kapt {

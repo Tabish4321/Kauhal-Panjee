@@ -37,6 +37,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import com.utilize.core.domain.model.response.BaseErrorResponse
 import java.security.MessageDigest
 import java.security.SecureRandom
 
@@ -414,6 +415,21 @@ object AppUtil {
         )
 
         isSessionDialogShown = false // Reset flag after navigation
+    }
+
+
+    fun createErrorResponse(
+        exception: Exception? = null,
+        errorMessage: String = "Something went wrong!",
+        errorCode: Int = -1,
+        errorData: Any = ""
+    ): BaseErrorResponse {
+        return BaseErrorResponse(
+            code = errorCode,
+            message = exception?.message?.takeIf { it.isNotEmpty() } ?: errorMessage,
+            success = false,
+            data = exception?.localizedMessage?.takeIf { it.isNotEmpty() } ?: errorData
+        )
     }
 
 

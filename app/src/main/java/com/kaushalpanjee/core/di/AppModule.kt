@@ -5,6 +5,10 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.compose.data.repository.NotificationRepositoryImpl
+import com.kaushalpanjee.compose.domain.repository.NotificationRepository
+import com.kaushalpanjee.compose.domain.usecase.GetNotificationsUseCase
+import com.kaushalpanjee.compose.domain.usecase.UpdateNotificationStatusUseCase
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
 import com.kaushalpanjee.core.util.ApiConstant
@@ -17,6 +21,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
 import okhttp3.Cache

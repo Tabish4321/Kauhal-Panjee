@@ -13,7 +13,6 @@ import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.DistrictResponse
-import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.data.local.database.AppDatabase
@@ -107,10 +106,9 @@ import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
-import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.compose.data.remote.request.InvitationApprovalRequest
+import com.kaushalpanjee.compose.data.remote.response.NotificationListResponse
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
-import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
-import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
 import javax.inject.Inject
 
