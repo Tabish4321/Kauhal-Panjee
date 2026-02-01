@@ -1,8 +1,8 @@
-package com.kaushalpanjee.compose.ui.component
+package com.kaushalpanjee.compose.ui.invitation_component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.kaushalpanjee.compose.presentation.contract.NotificationContract
+import com.kaushalpanjee.compose.presentation.contract.InvitationContract
 import com.kaushalpanjee.compose.ui.commonComponent.ErrorView
 import com.kaushalpanjee.compose.ui.commonComponent.LoadingView
 import com.kaushalpanjee.core.util.Resource
@@ -13,7 +13,7 @@ import com.kaushalpanjee.core.util.Resource
 @Composable
 fun NotificationContent(
     modifier: Modifier = Modifier,
-    state: NotificationContract.State,
+    state: InvitationContract.State,
     onLoadMore: () -> Unit,
     onApprove: (String) -> Unit,
     onDisapprove: (String) -> Unit

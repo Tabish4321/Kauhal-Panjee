@@ -1,4 +1,4 @@
-package com.kaushalpanjee.compose.ui.component
+package com.kaushalpanjee.compose.ui.invitation_component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement

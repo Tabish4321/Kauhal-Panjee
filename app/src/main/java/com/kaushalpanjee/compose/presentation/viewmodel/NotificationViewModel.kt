@@ -3,7 +3,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaushalpanjee.compose.domain.usecase.GetNotificationsUseCase
 import com.kaushalpanjee.compose.domain.usecase.UpdateNotificationStatusUseCase
-import com.kaushalpanjee.compose.presentation.contract.NotificationContract
+import com.kaushalpanjee.compose.presentation.contract.InvitationContract
 import com.kaushalpanjee.core.util.AppUtil.createErrorResponse
 import com.kaushalpanjee.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,20 +20,20 @@ class NotificationViewModel @Inject constructor(
     private val updateNotificationStatusUseCase: UpdateNotificationStatusUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(NotificationContract.State())
-    val state: StateFlow<NotificationContract.State> = _state.asStateFlow()
+    private val _state = MutableStateFlow(InvitationContract.State())
+    val state: StateFlow<InvitationContract.State> = _state.asStateFlow()
 
-    private val _sideEffects = MutableSharedFlow<NotificationContract.SideEffect>()
-    val sideEffects: SharedFlow<NotificationContract.SideEffect> = _sideEffects.asSharedFlow()
+    private val _sideEffects = MutableSharedFlow<InvitationContract.SideEffect>()
+    val sideEffects: SharedFlow<InvitationContract.SideEffect> = _sideEffects.asSharedFlow()
 
     private var isLoading = false
 
-    fun onEvent(event: NotificationContract.Event) {
+    fun onEvent(event: InvitationContract.Event) {
         when (event) {
-            NotificationContract.Event.LoadNotifications -> loadNotifications(resetPagination = true)
-            NotificationContract.Event.LoadMoreNotifications -> loadMoreNotifications()
-            NotificationContract.Event.RefreshNotifications -> refreshNotifications()
-            is NotificationContract.Event.UpdateNotificationStatus ->
+            InvitationContract.Event.LoadNotifications -> loadNotifications(resetPagination = true)
+            InvitationContract.Event.LoadMoreNotifications -> loadMoreNotifications()
+            InvitationContract.Event.RefreshNotifications -> refreshNotifications()
+            is InvitationContract.Event.UpdateNotificationStatus ->
                 updateNotificationStatus(event.notificationId, event.status)
         }
     }
@@ -96,7 +96,7 @@ class NotificationViewModel @Inject constructor(
                 when (result) {
                     is Resource.Error -> {
                         _sideEffects.emit(
-                            NotificationContract.SideEffect.ShowError(
+                            InvitationContract.SideEffect.ShowError(
                                 result.error!!.message ?: "Failed to load notifications"
                             )
                         )
@@ -145,7 +145,7 @@ class NotificationViewModel @Inject constructor(
 //                        }
 
                         _sideEffects.emit(
-                            NotificationContract.SideEffect.ShowToast(result.data?:"Success")
+                            InvitationContract.SideEffect.ShowToast(result.data?:"Success")
                         )
 
 //                        _state.update { state ->
@@ -163,7 +163,7 @@ class NotificationViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _sideEffects.emit(
-                            NotificationContract.SideEffect.ShowError(
+                            InvitationContract.SideEffect.ShowError(
                                 result.error?.message ?: "Failed"
                             )
                         )

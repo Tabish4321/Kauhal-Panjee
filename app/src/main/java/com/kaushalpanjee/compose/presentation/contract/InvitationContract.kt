@@ -5,7 +5,7 @@ import com.kaushalpanjee.core.util.Resource
 /**
  * Created by Rishi Porwal
  */
-sealed interface NotificationContract {
+sealed interface InvitationContract {
     data class State(
         val notifications: Resource<List<NotificationUiModel>> = Resource.Loading(),
         val actionLoadingIds: Set<String> = emptySet(),

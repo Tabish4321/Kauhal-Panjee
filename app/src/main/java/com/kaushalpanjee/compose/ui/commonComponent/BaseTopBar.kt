@@ -10,15 +10,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.ui.draw.shadow
 
-
-
 /**
  * Created by Rishi Porwal
  */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationTopBar(
+fun BaseTopBar(
     title: String,
     onBackClick: () -> Unit
 ) {

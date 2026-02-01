@@ -166,7 +166,7 @@
         android:id="@+id/languageChangeFragment"
         android:name="com.kaushalpanjee.common.LanguageChangeFragment"
         android:label="LanguageChangeFragment"
-        tools:layout="@layout/fragment_forgot_password">
+        tools:layout="@layout/fragment_language_change">
 
     </fragment>
     <fragment
