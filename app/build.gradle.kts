@@ -42,7 +42,7 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 41
-        versionName = "2.6.3"
+        versionName = "2.6.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -335,6 +335,11 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("junit:junit:4.13.2")
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.concurrent:concurrent-futures-ktx:1.1.0")
+    implementation("androidx.lifecycle:lifecycle-service:2.7.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
 }
 
 kapt {

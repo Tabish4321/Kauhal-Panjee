@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -31,12 +32,16 @@ import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
+import com.pehchaan.backend.utils.AppPreferencesManager.putBoolean
 import java.security.MessageDigest
 import java.security.SecureRandom
 
@@ -407,7 +412,7 @@ object AppUtil {
 
     fun logoutUser(navController: NavController, context: Context) {
         // Clear user session data
-        AppUtil.saveLoginStatus(context, false)
+        saveLoginStatus(context, false)
 
         // Navigate to login and reset the flag after navigation
         navController.navigate(
@@ -422,5 +427,73 @@ object AppUtil {
     }
 
 
-    }
+        private const val TAG = "AppUtil"
+        private const val PREFS_NAME = "kaushal_panjee"
+        private const val KEY_NOTIFICATION_CLICKED = "notification_clicked"
+        private const val KEY_NOTIFICATION_DATA = "notification_data"
+        private const val KEY_LOGIN_STATUS = "login_status"
+        private const val KEY_FCM_TOKEN = "fcm_token"
+
+        private fun getPrefs(context: Context): SharedPreferences {
+            return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        }
+
+        fun setNotificationClicked(context: Context, clicked: Boolean) {
+            Log.d(TAG, "📝 Setting notification clicked: $clicked")
+            getPrefs(context).edit().putBoolean(KEY_NOTIFICATION_CLICKED, clicked).apply()
+        }
+
+        fun consumeNotificationClicked(context: Context): Boolean {
+            val clicked = getPrefs(context).getBoolean(KEY_NOTIFICATION_CLICKED, false)
+            Log.d(TAG, "📝 Checking notification clicked: $clicked")
+
+            if (clicked) {
+                getPrefs(context).edit().remove(KEY_NOTIFICATION_CLICKED).apply()
+                Log.d(TAG, "📝 Cleared notification clicked flag")
+            }
+
+            // Also log notification data for debugging
+            val data = getNotificationData(context)
+            if (data.isNotEmpty()) {
+                Log.d(TAG, "📝 Notification data found: $data")
+            }
+
+            return clicked
+        }
+
+        fun saveNotificationData(context: Context, data: Map<String, String>) {
+            val json = Gson().toJson(data)
+            getPrefs(context).edit().putString(KEY_NOTIFICATION_DATA, json).apply()
+            Log.d(TAG, "📝 Saved notification data: ${data.size} items")
+        }
+
+        fun getNotificationData(context: Context): Map<String, String> {
+            val json = getPrefs(context).getString(KEY_NOTIFICATION_DATA, "{}") ?: "{}"
+            return try {
+                val type = object : TypeToken<Map<String, String>>() {}.type
+                Gson().fromJson(json, type) ?: emptyMap()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error parsing notification data", e)
+                emptyMap()
+            }
+        }
+
+        fun clearNotificationData(context: Context) {
+            getPrefs(context).edit().remove(KEY_NOTIFICATION_DATA).apply()
+            Log.d(TAG, "📝 Cleared notification data")
+        }
+
+
+
+        fun saveFCMToken(context: Context, token: String) {
+            getPrefs(context).edit().putString(KEY_FCM_TOKEN, token).apply()
+        }
+
+        fun getFCMToken(context: Context): String? {
+            return getPrefs(context).getString(KEY_FCM_TOKEN, null)
+        }
+
+
+
+}
 

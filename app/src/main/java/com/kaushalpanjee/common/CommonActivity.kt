@@ -1,20 +1,11 @@
 package com.kaushalpanjee.common
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.View
-import android.view.WindowManager
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-import androidx.navigation.fragment.NavHostFragment
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
@@ -24,31 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding::inflate) {
 
-    private var navController: NavController? = null
+    companion object {
+        private const val TAG = "CommonActivity"
+    }
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.attributes.layoutInDisplayCutoutMode =
-            WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.navGraphHost) as NavHostFragment
-        navController = navHostFragment.navController
-        val graphInflater = navHostFragment.navController.navInflater
-        val navGraph = graphInflater.inflate(R.navigation.nav_graph)
-        val isLoggedIn = AppUtil.getLoginStatus(this)
-        if (isLoggedIn) {
-            navGraph.setStartDestination(R.id.mainHomePage)
-        } else {
-            navGraph.setStartDestination(R.id.loginFragment)
-        }
-
-        navController?.graph = navGraph
-
+        // Request permission for Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                 this,
@@ -57,110 +31,89 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
             )
         }
 
-        handleNotificationIntent(intent)
+        // 🔥 CRITICAL: Log all intent extras
+        logIntentExtras("onCreate")
 
-
+        // Check if launched from notification
+        checkNotificationIntent(intent)
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        handleNotificationIntent()
-//    }
-
-    private fun handleNotificationIntent() {
-        // Always check the current intent
-        val intent = intent
-        Log.d("NOTI_DEBUG", "Checking intent in onResume: ${intent.extras}")
-
-        // Check if we came from notification (you need to set this flag in the notification)
-        val openNotification = intent.getBooleanExtra("OPEN_NOTIFICATION_LIST", false)
-
-        Log.d("NOTI_DEBUG", "OPEN_NOTIFICATION_LIST = $openNotification")
-
-        // Also check SharedPreferences as a backup method
-        val prefs = getSharedPreferences("notification_prefs", Context.MODE_PRIVATE)
-        val shouldOpenNotification = prefs.getBoolean("SHOULD_OPEN_NOTIFICATION", false)
-
-        if (intent.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) || shouldOpenNotification) {
-            Log.d("NOTI_DEBUG", "Opening notification list")
-
-            // if (openNotification && navController != null) {
-            // Clear the flag immediately to prevent re-triggering
-            intent.removeExtra("OPEN_NOTIFICATION_LIST")
-            prefs.edit().putBoolean("SHOULD_OPEN_NOTIFICATION", false).apply()
-
-            // Check if user is logged in
-            val isLoggedIn = AppUtil.getLoginStatus(this)
-
-            // Use handler to ensure navigation happens after UI is ready
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (isLoggedIn) {
-                    navController?.navigate(
-                        R.id.notificationListFragment,
-                        null,
-                        NavOptions.Builder()
-                            .setPopUpTo(R.id.mainHomePage, false)
-                            .build()
-                    )
-                } else {
-                    val bundle = Bundle().apply {
-                        putBoolean("redirect_to_notifications", true)
-                    }
-                    navController?.navigate(
-                        R.id.loginFragment,
-                        bundle,
-                        NavOptions.Builder()
-                            .setPopUpTo(R.id.loginFragment, true)
-                            .build()
-                    )
-                }
-            }, 300)
-        }
-    }
-//    override fun onNewIntent(intent: Intent) {
-//        super.onNewIntent(intent)
-//        setIntent(intent)
-//        //handleNotificationIntent(intent)
-//        Log.d("NOTI_DEBUG", "onNewIntent called with: ${intent.extras}")
-//    }
-
-//    override fun onResume() {
-//        super.onResume()
-//        handleNotificationIntent()
-//
-//    }
-
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        //   setIntent(intent)
-        handleNotificationIntent(intent)
-    }
 
-//    private fun handleNotificationIntent(intent: Intent?) {
-//
-//        val openNotification =
-//            intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) ?: false
-//
-//        Log.d("NOTI_DEBUG", "OPEN_NOTIFICATION_LIST = $openNotification")
-//
-//        if (openNotification) {
-//            intent!!.removeExtra("OPEN_NOTIFICATION_LIST")
-//
-//            window.decorView.post {
-//                navController?.navigate(R.id.notificationListFragment)
-//            }
-//        }
-//
-//    }
+        // 🔥 CRITICAL: Log all intent extras
+        logIntentExtras("onNewIntent")
 
-    private fun handleNotificationIntent(intent: Intent?) {
-        if (intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) == true) {
-            intent.removeExtra("OPEN_NOTIFICATION_LIST")
+        // Check if launched from notification (app was already running)
+        checkNotificationIntent(intent)    }
 
-            window.decorView.post { navController?.navigate(R.id.notificationListFragment)
-            }
+
+    private fun logIntentExtras(source: String) {
+        Log.d(TAG, "🔍 $source - Intent extras:")
+        intent?.extras?.keySet()?.forEach { key ->
+            val value = intent.extras?.get(key)
+            Log.d(TAG, "   $key = $value (${value?.javaClass?.simpleName})")
         }
 
+        // Also log action and data
+        Log.d(TAG, "🔍 Action: ${intent?.action}")
+        Log.d(TAG, "🔍 Data: ${intent?.data}")
+        Log.d(TAG, "🔍 Flags: ${intent?.flags}")
+    }
+
+    private fun checkNotificationIntent(intent: Intent?) {
+        if (intent == null) return
+
+        // 🔥 MULTIPLE WAYS to detect notification click:
+
+        // 1. Check our custom extra
+        val fromExtra = intent.getBooleanExtra("from_notification", false)
+
+        // 2. Check for FCM data in extras
+        val hasFcmData = intent.extras?.containsKey("google.message_id") == true ||
+                intent.extras?.containsKey("from") == true ||
+                intent.extras?.containsKey("gcm.n.analytics_data") == true
+
+        // 3. Check our custom action
+        val fromAction = intent.action == "NOTIFICATION_CLICK"
+
+        // 4. Check if app was launched by notification click (system flag)
+        //val launchedFromHistory = (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0
+
+        Log.d(TAG, "📱 Notification check:")
+        Log.d(TAG, "   fromExtra: $fromExtra")
+        Log.d(TAG, "   hasFcmData: $hasFcmData")
+        Log.d(TAG, "   fromAction: $fromAction")
+     //   Log.d(TAG, "   launchedFromHistory: $launchedFromHistory")
+
+        // If ANY of these are true, it's from notification
+        val fromNotification = fromExtra || hasFcmData || fromAction
+
+        if (fromNotification) {
+            Log.d(TAG, "✅ App launched from notification!")
+
+            // Save to SharedPreferences (works in all states)
+            AppUtil.setNotificationClicked(this, true)
+
+            // Also save notification data
+            val notificationData = mutableMapOf<String, String>()
+            intent.extras?.keySet()?.forEach { key ->
+                val value = intent.getStringExtra(key)
+                if (value != null) {
+                    notificationData[key] = value
+                }
+            }
+            AppUtil.saveNotificationData(this, notificationData)
+
+            Log.d(TAG, "✅ Notification data saved to SharedPreferences")
+        } else {
+            Log.d(TAG, "❌ Not from notification")
+        }
     }
 }
+
+
+//if (AppUtil.wasNotificationClicked()) {
+//    navigateToNotification()
+//    AppUtil.clearNotificationFlag()
+//}
