@@ -109,7 +109,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         super.onViewCreated(view, savedInstanceState)
         init()
         handleBackPress()
-       // handleNotification()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
     }
@@ -128,6 +127,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 //            }
 //        }
 //    }
+
+    override fun onStart() {
+        super.onStart()
+        if(AppUtil.getNotificationStatus(requireContext())){
+            showSnackBar("Working")
+            AppUtil.clearNotificationStatus(requireContext())
+        }
+    }
 
      private fun init(){
          val drawerLayout = binding.drawerLayout

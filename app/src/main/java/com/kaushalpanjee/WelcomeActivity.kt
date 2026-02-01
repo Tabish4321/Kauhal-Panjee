@@ -41,6 +41,7 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppUtil.debugIntent("onCreateWelcomeActivity", intent)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =
@@ -68,11 +69,24 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         }
     }
 
+
     private fun navigate() {
+        //val bundle = intent?.extras ?: return
+        //val openNotification = bundle.getBoolean("OPEN_NOTIFICATION_LIST", false)
+        if (intent.getBooleanExtra("FROM_NOTIFICATION", false)) {
+            AppUtil.saveNotificationStatus(this, true)
+        }
         startActivity(Intent(this@WelcomeActivity, CommonActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         })
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        AppUtil.debugIntent("onNewIntentWelcomeActivity", intent)
+
+    }
+
 
     /**
      * Checks if the device is rooted.

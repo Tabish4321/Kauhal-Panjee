@@ -31,6 +31,7 @@ import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -445,6 +446,42 @@ object AppUtil {
             success = false,
             data = throwable?.localizedMessage?.takeIf { it.isNotEmpty() } ?: errorData
         )
+    }
+
+
+    fun saveNotificationStatus(context: Context, isNotification: Boolean) {
+        context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE).edit()
+            .putBoolean("OPEN_NOTIFICATION_LIST", isNotification)
+            .apply()
+    }
+
+    fun getNotificationStatus(context: Context): Boolean {
+        return context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+            .getBoolean("OPEN_NOTIFICATION_LIST", false)
+    }
+
+    fun clearNotificationStatus(context: Context) {
+        saveNotificationStatus(context, false)
+    }
+
+     fun debugIntent(from: String, intent: Intent?) {
+
+        Log.d("Notification_INTENT_DEBUG----->", "---- $from ----")
+
+        if (intent == null) {
+            Log.d("Notification_INTENT_DEBUG----->", "Intent is NULL")
+            return
+        }
+
+        val extras = intent.extras
+        if (extras == null) {
+            Log.d("Notification_INTENT_DEBUG----->", "Extras are NULL")
+            return
+        }
+
+        for (key in extras.keySet()) {
+            Log.d("Notification_INTENT_DEBUG----->", "Key=$key  Value=${extras.get(key)}")
+        }
     }
 
 

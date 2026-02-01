@@ -59,6 +59,10 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
             WindowManager.LayoutParams.FLAG_SECURE
         )*/
 
+        if (arguments?.getBoolean("FROM_NOTIFICATION", false) == true) {
+            AppUtil.saveNotificationStatus(requireContext(), true)
+        }
+
         return binding.root
     }
 
