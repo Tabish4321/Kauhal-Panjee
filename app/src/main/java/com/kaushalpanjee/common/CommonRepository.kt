@@ -449,12 +449,11 @@ class CommonRepository @Inject constructor(
     }
 
 
-    suspend fun getChangePass(changePassReq: ChangePassReq,header :String): Flow<Resource<out InsertRes>>{
-        return networkBoundResourceWithoutDb {
-
-            appLevelApi.getChangePass(header,changePassReq)
-        }
-    }
+//    suspend fun getChangePass(changePassReq: ChangePassReq,header :String): Flow<Resource<out InsertRes>>{
+//        return networkBoundResourceWithoutDb {
+//            appLevelApi.getChangePass(header,changePassReq)
+//        }
+//    }
 
 
     suspend fun getLogout(logoutReq: LogoutRequest, header : String): Flow<Resource<out LogoutResponse>>{

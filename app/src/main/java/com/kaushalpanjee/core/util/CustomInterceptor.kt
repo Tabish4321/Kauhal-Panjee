@@ -26,7 +26,6 @@ class CustomInterceptor @Inject constructor(
     private val userPreferences: UserPreferences,
     private val isAuthenticationRequired: Boolean,
     private val context: Context? = null
-
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -135,7 +134,7 @@ class CustomInterceptor @Inject constructor(
         )
         reqBuilder.addHeader("timezone", getTimeZone())
         if (isPostLogin) {
-            reqBuilder.addHeader("authorization", userPreferences.getAccessToken())
+          //  reqBuilder.addHeader("authorization",  AppUtil.getSavedTokenPreference(context!!))
         } else {
             reqBuilder.addHeader("client_secret", BuildConfig.CLIENT_SECRET_KEY)
           //  reqBuilder.addHeader("client_secret", SecurityUtils.getClientSecretKey())

@@ -59,76 +59,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
 
         handleNotificationIntent(intent)
 
-
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        handleNotificationIntent()
-//    }
-
-    private fun handleNotificationIntent() {
-        // Always check the current intent
-        val intent = intent
-        Log.d("NOTI_DEBUG", "Checking intent in onResume: ${intent.extras}")
-
-        // Check if we came from notification (you need to set this flag in the notification)
-        val openNotification = intent.getBooleanExtra("OPEN_NOTIFICATION_LIST", false)
-
-        Log.d("NOTI_DEBUG", "OPEN_NOTIFICATION_LIST = $openNotification")
-
-        // Also check SharedPreferences as a backup method
-        val prefs = getSharedPreferences("notification_prefs", Context.MODE_PRIVATE)
-        val shouldOpenNotification = prefs.getBoolean("SHOULD_OPEN_NOTIFICATION", false)
-
-        if (intent.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) || shouldOpenNotification) {
-            Log.d("NOTI_DEBUG", "Opening notification list")
-
-            // if (openNotification && navController != null) {
-            // Clear the flag immediately to prevent re-triggering
-            intent.removeExtra("OPEN_NOTIFICATION_LIST")
-            prefs.edit().putBoolean("SHOULD_OPEN_NOTIFICATION", false).apply()
-
-            // Check if user is logged in
-            val isLoggedIn = AppUtil.getLoginStatus(this)
-
-            // Use handler to ensure navigation happens after UI is ready
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (isLoggedIn) {
-                    navController?.navigate(
-                        R.id.notificationListFragment,
-                        null,
-                        NavOptions.Builder()
-                            .setPopUpTo(R.id.mainHomePage, false)
-                            .build()
-                    )
-                } else {
-                    val bundle = Bundle().apply {
-                        putBoolean("redirect_to_notifications", true)
-                    }
-                    navController?.navigate(
-                        R.id.loginFragment,
-                        bundle,
-                        NavOptions.Builder()
-                            .setPopUpTo(R.id.loginFragment, true)
-                            .build()
-                    )
-                }
-            }, 300)
-        }
-    }
-//    override fun onNewIntent(intent: Intent) {
-//        super.onNewIntent(intent)
-//        setIntent(intent)
-//        //handleNotificationIntent(intent)
-//        Log.d("NOTI_DEBUG", "onNewIntent called with: ${intent.extras}")
-//    }
-
-//    override fun onResume() {
-//        super.onResume()
-//        handleNotificationIntent()
-//
-//    }
 
 
     override fun onNewIntent(intent: Intent) {
@@ -137,22 +68,6 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         handleNotificationIntent(intent)
     }
 
-//    private fun handleNotificationIntent(intent: Intent?) {
-//
-//        val openNotification =
-//            intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) ?: false
-//
-//        Log.d("NOTI_DEBUG", "OPEN_NOTIFICATION_LIST = $openNotification")
-//
-//        if (openNotification) {
-//            intent!!.removeExtra("OPEN_NOTIFICATION_LIST")
-//
-//            window.decorView.post {
-//                navController?.navigate(R.id.notificationListFragment)
-//            }
-//        }
-//
-//    }
 
     private fun handleNotificationIntent(intent: Intent?) {
         if (intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) == true) {

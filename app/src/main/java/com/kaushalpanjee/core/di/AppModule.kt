@@ -140,8 +140,8 @@ object AppModule {
 //                    level = HttpLoggingInterceptor.Level.BODY
 //                }
 //                addNetworkInterceptor(logging)
-                addInterceptor(LoggingInterceptor())
-
+            //addInterceptor(AuthInterceptor(context))
+            addInterceptor(LoggingInterceptor())
             //}
             addInterceptor(CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context))
             authenticator?.let { authenticator(it) }

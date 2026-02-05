@@ -46,6 +46,7 @@ fun NotificationScreen(
 
     Scaffold(
         topBar = {
+
             BaseTopBar(
                 title = "Invitations",
                 onBackClick = { navController.popBackStack() }

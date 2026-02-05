@@ -51,7 +51,8 @@ object AppConstant {
         const val EXTRA_FETCH_USER_EMBEDDING = "fetch_user_embeddings"
         const val EXTRA_CALL_TYPE = "call_type"
         const val EXTRA_USER_ID = "user_id"
-        const val EXTRA_USER_IDS = "user_ids_json"
+        const val EXTRA_USER_IDS = "" +
+                ""
         const val EXTRA_USER_NAME = "user_name"
         const val CALL_TYPE_LOGIN = "LOGIN"
         const val CALL_TYPE_REGISTRATION = "REGISTRATION"
