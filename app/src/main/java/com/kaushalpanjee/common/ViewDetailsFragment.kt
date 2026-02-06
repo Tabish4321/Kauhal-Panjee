@@ -886,10 +886,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
 
 //                                            if (heardStatus=="No"){
-//
-//
 //                                                binding.etWhereHaveHeard.gone()
-//
 //                                            }
 
 

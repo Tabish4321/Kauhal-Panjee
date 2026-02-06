@@ -52,6 +52,7 @@ import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
 import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
@@ -98,6 +99,7 @@ import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UnnatiListResponse
@@ -292,11 +294,14 @@ interface AppLevelApi {
 
 
 
-    @POST(ApiConstant.API_TRADE)
+    @POST(ApiConstant.API_SEARCH_TRADE)
     suspend fun getTradeListAPI(@Header("Authorization") token: String,
-                                @Body tradeReq: TradeReq):TradeResponse
+                                @Body tradeReq: TradeSearchReq):TradeSearchRes
 
-
+//    @POST(ApiConstant.API_SEARCH_TRADE)
+//    suspend fun getTradeSearchListAPI(@Header("Authorization") token: String,
+//                                @Body tradeReq: TradeSearchReq
+//    ): TradeSearchRes
 
     @POST(ApiConstant.API_TRAINING_SEARCH)
     suspend fun getTrainingSearchAPI(@Header("Authorization") token: String,

@@ -59,6 +59,7 @@ import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
 import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
@@ -100,6 +101,7 @@ import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UnnatiListResponse
@@ -398,12 +400,13 @@ class CommonRepository @Inject constructor(
     }
 
 
-    suspend fun getTradeListAPI(tradeReq: TradeReq,header :String): Flow<Resource<out TradeResponse>>{
+    suspend fun getTradeListAPI(tradeReq: TradeSearchReq,header :String): Flow<Resource<out TradeSearchRes>>{
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getTradeListAPI(header,tradeReq)
         }
     }
+
 
 
 

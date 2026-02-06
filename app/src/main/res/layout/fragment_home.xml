@@ -3659,7 +3659,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
                 android:id="@+id/expandTraining"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewTraining">
@@ -3908,7 +3908,9 @@
                         android:layout_marginTop="@dimen/dp_10"
                         android:id="@+id/llwhichSectorRUIntrested"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="gone"
+                        >
 
                         <TextView
                             android:layout_width="match_parent"
@@ -3945,15 +3947,25 @@
                             android:textColor="@android:color/black"
                             android:textSize="16sp"
                             android:layout_marginBottom="8dp" />
+
+
+                        <AutoCompleteTextView
+                            android:id="@+id/searchTradeView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/EditText"
+                            android:hint="Search Trade"
+                            android:completionThreshold="1"
+                            android:inputType="text" />
+
                         <TextView
                             android:id="@+id/tvTradeItems"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             style="@style/EditText"
-                            android:text="@string/select_trade"/>
-
-
+                            android:text="@string/select_trade"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/btnTrainingSubmit"
