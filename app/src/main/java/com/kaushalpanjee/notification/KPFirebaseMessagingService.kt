@@ -32,44 +32,19 @@ class KPFirebaseMessagingService : FirebaseMessagingService() {
             return
         }
 
-        if (message.data.isEmpty()){
-            val title =  "Notification"
-            val body = "You have a new message"
-            showNotificationn(
-                title = title,
-                body = body
-            )
+        if (message.notification != null) {
+            val title = message.notification?.title ?: "Kaushal Panjee"
+            val body = message.notification?.body ?: "You have a new Invitation"
+
+            showNotificationn(title, body)
             return
         }
-        val data = message.data
-        val title = data["title"] ?: "Notification"
-        val body = data["body"] ?: "You have a new message"
-        val type = data["type"]
+        if (message.data.isNotEmpty()) {
+            val title = message.data["title"] ?: "Kaushal Panjee"
+            val body = message.data["body"] ?: "You have a new Invitation"
 
-        // Optional: extract extra fields if needed later
-        val scheme = data["scheme"]
-        val instituteTrade = data["instituteTrade"]
-        val entityCode = data["entityCode"]
-
-        showNotificationn(
-            title = title,
-            body = body
-        )
-
-//        when (type) {
-//            "INVITATION" -> {
-//                showNotificationn(
-//                    title = title,
-//                    body = body
-//                )
-//            }
-//            else -> {
-//                showNotificationn(
-//                    title = title,
-//                    body = body
-//                )
-//            }
-//        }
+            showNotificationn(title, body)
+        }
     }
 
     override fun onNewToken(token: String) {
