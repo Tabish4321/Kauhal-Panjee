@@ -24,8 +24,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kaushalpanjee.R
 import com.kaushalpanjee.compose.presentation.contract.AboutUnnatiIntent
 import com.kaushalpanjee.compose.presentation.viewmodel.AboutUnnatiViewModel
-import com.kaushalpanjee.compose.ui.SchemeCard
-import com.kaushalpanjee.compose.ui.UnnatiTopHeader
+import com.kaushalpanjee.compose.ui.AboutUnnati.SchemeCard
+import com.kaushalpanjee.compose.ui.AboutUnnati.UnnatiTopHeader
 import com.kaushalpanjee.compose.ui.theme.AvenirNextBold
 
 /**

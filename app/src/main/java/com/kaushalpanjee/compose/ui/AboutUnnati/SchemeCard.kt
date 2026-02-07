@@ -1,4 +1,4 @@
-package com.kaushalpanjee.compose.ui
+package com.kaushalpanjee.compose.ui.AboutUnnati
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

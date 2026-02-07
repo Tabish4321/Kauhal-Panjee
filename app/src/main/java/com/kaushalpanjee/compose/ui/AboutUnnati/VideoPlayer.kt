@@ -1,4 +1,4 @@
-package com.kaushalpanjee.compose.ui
+package com.kaushalpanjee.compose.ui.AboutUnnati
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
