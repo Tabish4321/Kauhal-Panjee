@@ -19,6 +19,9 @@ class LoggingInterceptor : Interceptor {
         Log.d(TAG, "URL: ${request.url}\n")
         Log.d(TAG, "Method: ${request.method}\n")
         Log.d(TAG, "Headers: ${request.headers}\n")
+        Log.d(TAG,"Headers: ${request.headers("Authorization")}")
+       // request.headers("Authorization")
+
 
         val gson = GsonBuilder().setPrettyPrinting().create()
         request.body?.let {

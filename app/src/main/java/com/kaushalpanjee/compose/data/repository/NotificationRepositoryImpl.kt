@@ -33,9 +33,7 @@ class NotificationRepositoryImpl @Inject constructor(
                 apiService.getNotifications(page, size)
             },
             mapper = { response ->
-                response.content
-                    ?.map { it.toUiModel() }
-                    ?: emptyList()
+                response.content?.map { it.toUiModel() } ?: emptyList()
             }
         )
 

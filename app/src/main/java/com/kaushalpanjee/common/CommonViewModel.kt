@@ -893,18 +893,18 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-    private var _getChangePass = MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
-    val getChangePass = _getChangePass.asSharedFlow()
-
-
-    fun getChangePass(changePassReq: ChangePassReq, header: String) {
-        viewModelScope.launch {
-            commonRepository.getChangePass(changePassReq, header).collectLatest {
-                _getChangePass.emit(it)
-            }
-        }
-
-    }
+//    private var _getChangePass = MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+//    val getChangePass = _getChangePass.asSharedFlow()
+//
+//
+//    fun getChangePass(changePassReq: ChangePassReq, header: String) {
+//        viewModelScope.launch {
+//            commonRepository.getChangePass(changePassReq, header).collectLatest {
+//                _getChangePass.emit(it)
+//            }
+//        }
+//
+//    }
 
 
     private var _getLogout = MutableStateFlow<Resource<out LogoutResponse>>(Resource.Loading())

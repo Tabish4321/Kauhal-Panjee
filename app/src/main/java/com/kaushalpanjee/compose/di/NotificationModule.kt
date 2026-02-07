@@ -2,8 +2,11 @@ package com.kaushalpanjee.compose.di
 
 
 
+import com.kaushalpanjee.compose.data.repository.ChangePassWordRepoImpl
 import com.kaushalpanjee.compose.data.repository.NotificationRepositoryImpl
+import com.kaushalpanjee.compose.domain.repository.ChangePasswordRepository
 import com.kaushalpanjee.compose.domain.repository.NotificationRepository
+import com.kaushalpanjee.compose.domain.usecase.GetChangePasswordUseCases
 import com.kaushalpanjee.compose.domain.usecase.GetNotificationsUseCase
 import com.kaushalpanjee.compose.domain.usecase.UpdateNotificationStatusUseCase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
@@ -24,13 +27,6 @@ import javax.inject.Singleton
 @InstallIn(ViewModelComponent::class)
 object NotificationModule {
 
-//    @Provides
-//    @ViewModelScoped
-//    fun provideAppLevelApi(
-//        @AppModule.PostLoginOkHttpClient retrofit: Retrofit
-//    ): AppLevelApi {
-//        return retrofit.create(AppLevelApi::class.java)
-//    }
 
     @Provides
     @ViewModelScoped
@@ -55,4 +51,5 @@ object NotificationModule {
     ): UpdateNotificationStatusUseCase {
         return UpdateNotificationStatusUseCase(repository)
     }
+
 }

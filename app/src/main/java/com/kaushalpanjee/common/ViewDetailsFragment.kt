@@ -141,7 +141,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
         commonViewModel.getAadhaarListAPI(AdharDetailsReq
-            (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext())
+             (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext())
         )
 
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
@@ -154,12 +154,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
             findNavController().navigateUp()
         }
-
-
         binding.profileView.viewDetails.setText(R.string.edit)
-
-
-
 
         binding.voterIdUpload.setOnClickListener {
             showDocumentDialog(voterImage)
@@ -332,7 +327,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                            //showSnackBar(baseErrorResponse.message)
                         }
                     }
 

@@ -232,12 +232,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         binding.tvForgotPassword.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPassViaAadhaarFragment())
-
-
         }
 
         binding.etPassword.onRightDrawableClicked {
-
             log("onRightDrawableClicked", "onRightDrawableClicked")
             if (showPassword) {
                 showPassword = false
@@ -269,7 +266,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             toastShort(baseErrorResponse.message)
                         }
                     }
-
                     is Resource.Success -> {
                         hideProgressBar()
 

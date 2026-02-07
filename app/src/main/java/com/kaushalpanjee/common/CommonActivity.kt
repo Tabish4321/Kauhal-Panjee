@@ -29,13 +29,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-      //  val bundle = intent?.extras ?: return
-       // val openNotification = bundle.getBoolean("OPEN_NOTIFICATION_LIST", false)
-        AppUtil.debugIntent("onCreateCommonActivity", intent)
 
-        if (intent?.getBooleanExtra("FROM_NOTIFICATION", false) == true) {
-            AppUtil.saveNotificationStatus(this, true)
-        }
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
@@ -62,18 +56,15 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
                 101
             )
         }
+
         handleNotificationIntent(intent)
 
     }
 
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         //   setIntent(intent)
-        AppUtil.debugIntent("onNewIntent", intent)
-
-        if (intent.getBooleanExtra("FROM_NOTIFICATION", false)) {
-            AppUtil.saveNotificationStatus(this, true)
-        }
         handleNotificationIntent(intent)
     }
 
@@ -87,6 +78,4 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         }
 
     }
-
-
 }
