@@ -1,7 +1,9 @@
 package com.kaushalpanjee.compose.di
 
 import LoggingInterceptor
+import android.content.Context
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.compose.data.mapper.AboutUnnatiUiMapper
 import com.kaushalpanjee.compose.data.repository.ChangePassWordRepoImpl
 import com.kaushalpanjee.compose.domain.repository.ChangePasswordRepository
 import com.kaushalpanjee.compose.domain.usecase.GetChangePasswordUseCases
@@ -11,12 +13,22 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object ChangePasswordModule {
+
+
+    @Provides
+    fun provideAboutUnnatiUiMapper(
+        @ApplicationContext context: Context
+    ): AboutUnnatiUiMapper {
+        return AboutUnnatiUiMapper(context)
+    }
+
 
     @Provides
     @ViewModelScoped

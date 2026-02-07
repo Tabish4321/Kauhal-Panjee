@@ -42,11 +42,10 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 40
-        versionName = "2.6.1"
+        versionName = "2.6.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // ✅ Correct Kotlin DSL syntax for keeping all language resources
         resourceConfigurations += listOf(
             "en",
             "hi",
@@ -66,7 +65,6 @@ android {
     }
 
 
-    // ✅ Prevent Google Play from splitting languages (needed for in-app switching)
     bundle {
         language {
             enableSplit = false
@@ -345,6 +343,8 @@ dependencies {
         implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
         // For ViewModel
         implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+        implementation ("androidx.compose.material:material-icons-extended")
+
 }
 
 kapt {

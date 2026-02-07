@@ -8,6 +8,7 @@
     <color name="color_red">#FF385D</color>
     <color name="color_dark_green">#173430</color>
     <color name="color_dark_light_green">#1F675D</color>
+    <color name="color_extra_light_green">#4CEBD5</color>
     <color name="color_grey">#CDC9C9</color>
     <color name="color_light_grey">#F0F0F0</color>
     <color name="color_sub_text">#6F8985</color>
