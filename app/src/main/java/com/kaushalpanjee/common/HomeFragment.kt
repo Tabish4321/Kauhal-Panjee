@@ -612,7 +612,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         TradeSearchReq(
                             BuildConfig.VERSION_NAME,
                             userPreferences.getUseID(),
-                            query
+                            query,
+                            selectedSchemeItem
                         ),
                         AppUtil.getSavedTokenPreference(requireContext())
                     )

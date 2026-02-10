@@ -71,7 +71,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var candidateName = ""
     private var totalPercentange =0.0f
     private var certUrl = ""
-    private var attendanceFlag = "y"
+    private var attendanceFlag = ""
     private var schemeType = ""
     private var stateCode = ""
 
@@ -227,11 +227,16 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
-     if (attendanceFlag == "N"){
+     if (attendanceFlag == "Y"){
 
+         binding.attendanceImageLogo.visible()
+         binding.attendanceTv.visible()
+
+     }
+     else
+     {
          binding.attendanceImageLogo.gone()
          binding.attendanceTv.gone()
-
      }
 
 
@@ -336,6 +341,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     bankingStatus= x.bankingStatus.toString()
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
+                                    attendanceFlag= x.ojtFlag
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
                                     userPreferences.updateUserStateLgdCode(null)
