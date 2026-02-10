@@ -27,6 +27,7 @@ import java.util.Calendar
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
+import android.R.attr.resource
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentResolver
@@ -88,6 +89,7 @@ import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.ULBReq
 import com.kaushalpanjee.common.model.request.UnnatilistReq
@@ -119,9 +121,11 @@ import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -130,6 +134,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
+import kotlin.collections.joinToString
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -227,10 +232,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var currentlyEmpStatus = ""
     private var natureEmpEmpStatus = ""
     private var traingBeforeStatus = ""
-    private var selectedSector = ""
-    private var selectedSectorCode = ""
-    private var selectedTradeCode = ""
-    private var selectedTrade = ""
+
     private var sha512Aadhar = ""
     private var haveUHeardStatus = ""
     private var totalPercentange = 0.0f
@@ -273,6 +275,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var currentSalary = ""
     private var salaryExpectation = ""
     private var accLenghth = ""
+
 
 
     //Secc Address
@@ -498,6 +501,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedTradeIndices: MutableList<Int> = mutableListOf()
     private val searchQuery = MutableLiveData<String>()
 
+    private val tradeNameList = mutableListOf<String>()
+    private val tradeCodeList = mutableListOf<String>()
+    private val sectorCodeList = mutableListOf<Int>()
+
+
+    private val selectedTradeNames = linkedSetOf<String>()
+    private val selectedTradeCodes = linkedSetOf<String>()
+    private val selectedSectorCodes = linkedSetOf<Int>()
+
+
+
+    private var selectedSector = ""
+    private var selectedSectorCode =""
+    private var selectedTradeCode = ""
+    private var selectedTrade = ""
+
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -518,9 +540,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectUlbResponse()
         collectWardResponse()
         collectNregaValidateResponse()
-        collectTradeResponse()
         collectSendEmailOTPResponse()
-        collectSectorResponse()
+
+
+        allResponseintrade()
+
+
+
+       // collectSectorResponse()
 
         schemeListAdapter = ArrayAdapter(
             requireContext(),
@@ -557,6 +584,140 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             })
 
     }
+
+    private fun setupTradeSearch() {
+        binding.searchTradeView.addTextChangedListener(object : TextWatcher {
+            private var job: Job? = null
+            private var lastQuery: String = ""
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val query = s.toString().trim()
+                job?.cancel()
+                if (query.length < 3) {
+                    tradeNameList.clear()
+                    return
+                }
+
+                if (query == lastQuery) return
+
+                lastQuery = query
+
+                job = lifecycleScope.launch {
+                    delay(400)
+                    withContext(Dispatchers.Main) {
+                        tradeNameList.clear()
+                    }
+
+                    commonViewModel.getTradeListAPI(
+                        TradeSearchReq(
+                            BuildConfig.VERSION_NAME,
+                            userPreferences.getUseID(),
+                            query
+                        ),
+                        AppUtil.getSavedTokenPreference(requireContext())
+                    )
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun allResponseintrade() {
+     //   setupTradeAdapter()
+        setupTradeSearch()
+        collectTradeResponse()
+
+        binding.searchTradeView.setOnItemClickListener { _, _, position, _ ->
+            val tradeName = tradeNameList[position]
+            val tradeCode = tradeCodeList[position]
+            val secotreCode= sectorCodeList[position]
+
+            selectedTradeNames.add(tradeName)
+            selectedTradeCodes.add(tradeCode)
+            selectedSectorCodes.add(secotreCode)
+
+
+            updateSelectedTradesUI()
+
+            binding.searchTradeView.text.clear()
+        }
+    }
+
+    private fun updateSelectedTradesUI() {
+        if (selectedTradeNames.isEmpty()) {
+            binding.tvTradeItems.visibility = View.GONE
+        } else {
+            binding.tvTradeItems.visibility = View.VISIBLE
+            binding.tvTradeItems.text = selectedTradeNames.joinToString(",")
+            selectedSectorCode = selectedSectorCodes.joinToString(",")
+             selectedTradeCode = selectedTradeCodes.joinToString(",")
+            selectedTrade = selectedTradeNames.joinToString(",")
+        }
+    }
+
+    private fun collectTradeResponse() {
+        lifecycleScope.launch {
+            commonViewModel.getTradeListAPI.collectLatest { response ->
+                when (response) {
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        response.error?.message?.let { showSnackBar(it) }
+
+                        // Clear dropdown on error
+                        tradeNameList.clear()
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        response.data?.let { response ->
+                            if (response.responseCode == 200) {
+                                withContext(Dispatchers.Main) {
+
+                                    tradeNameList.clear()
+                                    tradeCodeList.clear()
+                                    sectorCodeList.clear()
+
+                                    response.wrappedList.forEach { trade ->
+                                        tradeNameList.add(trade.trade ?: "")
+                                        tradeCodeList.add(trade.tradeCode ?: "")
+                                        sectorCodeList.add(trade.sectorId ?: 0)
+                                    }
+
+                                    // Create NEW adapter each time (as a last resort)
+                                    val newAdapter = ArrayAdapter(
+                                        requireContext(),
+                                        android.R.layout.simple_dropdown_item_1line,
+                                        tradeNameList
+                                    )
+                                    binding.searchTradeView.setAdapter(newAdapter)
+
+                                    // Force dropdown
+                                    if (tradeNameList.isNotEmpty()) {
+                                        binding.searchTradeView.post {
+                                            binding.searchTradeView.showDropDown()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+    }
+
+
+
+
 
 
     private fun init() {
@@ -2186,9 +2347,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.llTopTraining.setOnClickListener {
 
-
-
-
             if (isTrainingInfoVisible && trainingStatus.contains("0")) {
                 isTrainingInfoVisible = false
                 binding.expandTraining.visible()
@@ -2213,7 +2371,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                         for (x in userCandidateTrainingDetailsList) {
-
                             val recievedTrainingBeforeStatus = x.isPreTraining
                            // val heardStatus = x.hearedAboutScheme
 
@@ -2223,17 +2380,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 binding.optioRecievedAnyTrainingBeforeNoSelect,
                                 recievedTrainingBeforeStatus
                             )
-//                            handleStatus(
-//                                binding.optionHaveYouHeardYes,
-//                                binding.optionHaveYouHeardNo,
-//                                heardStatus
-//                            )
-//                            setDropdownValue(
-//                                binding.spinnerHeardAboutddugky,
-//                                x.hearedFrom,
-//                                heardName
-//                            )
-
                             setDropdownValue(
                                 binding.spinnerSchemeInterestedIn,
                                 x.schemeType,
@@ -2258,10 +2404,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                     },
                     onNoClicked = {
-
                     }
                 )
-
             }
         }
 
@@ -3420,75 +3564,92 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-
-        //Branch Spinner
         binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
-            branchName = parent.getItemAtPosition(position).toString()
-            if (position in branchListValue.indices) {
-                branchCode = branchCodeList[position]
-                bankCode = bankCodeList[position]
-                bankName1 = bankListValue[position]
-                accLenghth = bankAccountLenghth[position]
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, branchListValue)
+            binding.bankingView.spinnerBranchName.setAdapter(adapter)
 
+            binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                val originalPosition = branchListValue.indexOf(selectedItem)
 
+                if (originalPosition != -1 && originalPosition in branchListValue.indices) {
+                    branchName = branchListValue[originalPosition]
+                    branchCode = branchCodeList[originalPosition]
+                    bankCode = bankCodeList[originalPosition]
+                    bankName1 = bankListValue[originalPosition]
+                    accLenghth = bankAccountLenghth[originalPosition]
 
-                binding.bankingView.etBankName.setText(bankName1)
-                binding.bankingView.etBranchName.setText(branchName)
+                    binding.bankingView.etBankName.setText(bankName1)
+                    binding.bankingView.etBranchName.setText(branchName)
 
-                if (accLenghth.isNotBlank()) {
-                    val lengths = accLenghth.split(",")
-                        .mapNotNull { it.toIntOrNull() }
-                        .sorted()
+                    if (accLenghth.isNotBlank()) {
+                        val lengths = accLenghth.split(",")
+                            .mapNotNull { it.toIntOrNull() }
+                            .sorted()
 
-                    val maxLength = lengths.maxOrNull() ?: 0
+                        val maxLength = lengths.maxOrNull() ?: 0
 
-                    if (lengths.size == 1) {
-                        binding.bankingView.etBankAcNo.filters =
-                            arrayOf(InputFilter.LengthFilter(lengths.first()))
-                    } else if (lengths.isNotEmpty()) {
-                        binding.bankingView.etBankAcNo.filters =
-                            arrayOf(InputFilter.LengthFilter(maxLength))
+                        if (lengths.size == 1) {
+                            binding.bankingView.etBankAcNo.filters =
+                                arrayOf(InputFilter.LengthFilter(lengths.first()))
+                        } else if (lengths.isNotEmpty()) {
+                            binding.bankingView.etBankAcNo.filters =
+                                arrayOf(InputFilter.LengthFilter(maxLength))
 
-                        // Add text change listener for validation
-                        binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
-                            override fun afterTextChanged(s: Editable?) {
-                                s?.let {
-                                    if (it.length in lengths || it.isEmpty()) {
-                                        binding.bankingView.etBankAcNo.error = null
-                                        binding.bankingView.btnBnakingSubmit.visible()
-                                    } else {
-                                        binding.bankingView.etBankAcNo.error =
-                                            "Account number must be ${lengths.joinToString(", ")} digits"
+                            binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
+                                override fun afterTextChanged(s: Editable?) {
+                                    s?.let {
+                                        if (it.length in lengths || it.isEmpty()) {
+                                            binding.bankingView.etBankAcNo.error = null
+                                            binding.bankingView.btnBnakingSubmit.visible()
+                                        } else {
+                                            binding.bankingView.etBankAcNo.error =
+                                                "Account number must be ${lengths.joinToString(", ")} digits"
+                                        }
                                     }
                                 }
-                            }
 
-                            override fun beforeTextChanged(
-                                s: CharSequence?,
-                                start: Int,
-                                count: Int,
-                                after: Int
-                            ) {
-                            }
+                                override fun beforeTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    count: Int,
+                                    after: Int
+                                ) {
+                                }
 
-                            override fun onTextChanged(
-                                s: CharSequence?,
-                                start: Int,
-                                before: Int,
-                                count: Int
-                            ) {
-                            }
-                        })
+                                override fun onTextChanged(
+                                    s: CharSequence?,
+                                    start: Int,
+                                    before: Int,
+                                    count: Int
+                                ) {
+                                }
+                            })
+                        }
+                    } else {
+                        binding.bankingView.etBankAcNo.filters = arrayOf()
                     }
                 } else {
-                    // accLenghth is blank: remove filters if needed
-                    binding.bankingView.etBankAcNo.filters = arrayOf()
+                    Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            binding.bankingView.spinnerBranchName.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
                 }
 
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            } else {
-                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
-            }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (!branchListValue.contains(s.toString())) {
+                        branchName = ""
+                        branchCode = ""
+                        bankCode = ""
+                        bankName1 = ""
+                        accLenghth = ""
+                    }
+                }
+            })
         }
 
 
@@ -4126,9 +4287,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-
-        // If Secc Yess
-
         binding.optionOrigSecccYesSelect.setOnClickListener {
 
             binding.optionOrigSecccYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
@@ -4155,47 +4313,53 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-        binding.tvSectorItems.setOnClickListener {
-            MaterialDialog(requireContext()).show {
-                title(text = "Select Sectors")
-                val itemList = sectorList.toList()
-
-                listItemsMultiChoice(
-                    items = itemList,
-                    initialSelection = selectedSectorIndices.toIntArray() // Use sector-specific indices
-                ) { _, indices, _ ->
-                    // Update selected indices for sectors
-                    selectedSectorIndices = indices.toMutableList()
-
-                    // Display selected items in the TextView
-                    binding.tvSectorItems.text =
-                        "Selected Sectors: ${indices.joinToString(",") { itemList[it] }}"
-
-                    // Store the selected sectors as a comma-separated string
-                    selectedSector = indices.joinToString(",") { itemList[it] }
-
-                    // Store the selected sector codes as a comma-separated string
-                    selectedSectorCode = indices.joinToString(",") { sectorCode[it] }
-
-                    // Call API with selected sector codes
-                    commonViewModel.getTradeListAPI(
-                        TradeReq(
-                            BuildConfig.VERSION_NAME,
-                            selectedSectorCode,
-                            userPreferences.getUseID()
-                        ), AppUtil.getSavedTokenPreference(requireContext())
-                    )
-                    selectedTradeIndices.clear()
-                    binding.tvTradeItems.text = "Select Trade"
-                    selectedTrade = ""
 
 
-                }
 
-                positiveButton(text = "OK")
-                negativeButton(text = "Cancel")
-            }
-        }
+//        binding.tvSectorItems.setOnClickListener {
+//            MaterialDialog(requireContext()).show {
+//                title(text = "Select Sectors")
+//                val itemList = sectorList.toList()
+//
+//                listItemsMultiChoice(
+//                    items = itemList,
+//                    initialSelection = selectedSectorIndices.toIntArray() // Use sector-specific indices
+//                ) { _, indices, _ ->
+//                    // Update selected indices for sectors
+//                    selectedSectorIndices = indices.toMutableList()
+//
+//                    // Display selected items in the TextView
+//                    binding.tvSectorItems.text = "Selected Sectors: ${indices.joinToString(",") { itemList[it] }}"
+//
+//                    // Store the selected sectors as a comma-separated string
+//                    selectedSector = indices.joinToString(",") { itemList[it] }
+//
+//                    // Store the selected sector codes as a comma-separated string
+//                    selectedSectorCode = indices.joinToString(",") { sectorCode[it] }
+//
+//                    // Call API with selected sector codes
+////                    commonViewModel.getTradeListAPI(
+////                        TradeReq(
+////                            BuildConfig.VERSION_NAME,
+////                            selectedSectorCode,
+////                            userPreferences.getUseID()
+////                        ), AppUtil.getSavedTokenPreference(requireContext())
+//
+////                    )
+//
+//                    commonViewModel.getTradeListAPI(TradeSearchReq(BuildConfig.VERSION_NAME, userPreferences.getUseID(),selectedSectorCode, ), AppUtil.getSavedTokenPreference(requireContext()))
+//                    selectedTradeIndices.clear()
+//                    binding.tvTradeItems.text = "Select Trade"
+//                    selectedTrade = ""
+//
+//                }
+//                positiveButton(text = "OK")
+//                negativeButton(text = "Cancel")
+//            }
+//        }
+
+
+
         binding.bankingView.etBankAcNo.onRightDrawableClicked {
 
             log("onRightDrawableClicked", "onRightDrawableClicked")
@@ -4217,33 +4381,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-        binding.tvTradeItems.setOnClickListener {
-            MaterialDialog(requireContext()).show {
-                title(text = "Select Trades")
-                val itemList = tradeName.toList()
 
-                listItemsMultiChoice(
-                    items = itemList,
-                    initialSelection = selectedTradeIndices.toIntArray() // Use trade-specific indices
-                ) { _, indices, _ ->
-                    // Update selected indices for trades
-                    selectedTradeIndices = indices.toMutableList()
 
-                    // Display selected items in the TextView
-                    binding.tvTradeItems.text =
-                        "Selected Trades: ${indices.joinToString(",") { itemList[it] }}"
-
-                    // Store the selected trades as a comma-separated string
-                    selectedTrade = indices.joinToString(",") { itemList[it] }
-
-                    // Store the selected sector codes as a comma-separated string
-                    selectedTradeCode = indices.joinToString(",") { tradeCode[it] }
-                }
-
-                positiveButton(text = "OK")
-                negativeButton(text = "Cancel")
-            }
-        }
         //All Submit Button Here
 
 
@@ -4361,98 +4500,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             // Join the selected options into a comma-separated string
             selectedPrevCompleteTraining = selectedOptions.joinToString(", ")
-            traingBeforeStatus
+          //  traingBeforeStatus
             previousTrainingDuration = binding.tvClickPreviouslycompletedduring.text.toString()
 
 
-            if (traingBeforeStatus.isNotEmpty() && selectedSector.isNotEmpty() && selectedTradeCode.isNotEmpty()) {
 
-
-                if (traingBeforeStatus.contains("Yes") && selectedPrevCompleteTraining.isNotEmpty()) {
-                    //Hit the Insert API
-
-                    commonViewModel.insertTrainingAPI(
-                        TrainingInsertReq(
-                            BuildConfig.VERSION_NAME,
-                            userPreferences.getUseID(),
-                            AppUtil.getAndroidId(requireContext()),
-                            "6",
-                            traingBeforeStatus,
-                            selectedPrevCompleteTraining,
-                            previousTrainingDuration,
-                            selectedSectorCode,
-                            selectedTrade,
-                            selectedTradeCode,
-                            selectedSchemeItem
-                        ), AppUtil.getSavedTokenPreference(requireContext())
-                    )
-
-                    collectInsertTrainingResponse()
-
-
-                } else if (traingBeforeStatus.contains("No")) {
-
-
-                    //Hit the Insert API
-
-                    commonViewModel.insertTrainingAPI(
-                        TrainingInsertReq(
-                            BuildConfig.VERSION_NAME,
-                            userPreferences.getUseID(),
-                            AppUtil.getAndroidId(requireContext()),
-                            "6",
-                            traingBeforeStatus,
-                            selectedPrevCompleteTraining,
-                            previousTrainingDuration,
-                            selectedSectorCode,
-                            selectedTrade,
-                            selectedTradeCode,
-                            selectedSchemeItem
-                        ), AppUtil.getSavedTokenPreference(requireContext())
-                    )
-
-                    collectInsertTrainingResponse()
-
-
-                }
-//                else if (traingBeforeStatus.contains("No") && haveUHeardStatus.contains("Yes") && selectedHeardABoutItem.isNotEmpty()) {
-//
-//                    commonViewModel.insertTrainingAPI(
-//                        TrainingInsertReq(
-//                            BuildConfig.VERSION_NAME,
-//                            userPreferences.getUseID(),
-//                            AppUtil.getAndroidId(requireContext()),
-//                            "6",
-//                            traingBeforeStatus,
-//                            selectedPrevCompleteTraining,
-//                            previousTrainingDuration,
-//                            haveUHeardStatus,
-//                            selectedHeardABoutItem,
-//                            selectedSectorCode,
-//                            selectedTrade,
-//                            selectedTradeCode
-//                        ), AppUtil.getSavedTokenPreference(requireContext())
-//                    )
-//
-//                    collectInsertTrainingResponse()
-//
-//
-//                }
-                else {
-
-                    toastShort("Please complete training info first")
-
-
-                }
-
-
-            } else {
-
+            if (traingBeforeStatus.isEmpty() && selectedTradeCode.isEmpty()) {
                 toastShort("Please complete training info first")
-
-
+                return@setOnClickListener
             }
 
+            if (traingBeforeStatus.contains("Yes") && selectedPrevCompleteTraining.isEmpty()) {
+                toastShort("Please complete training info first")
+                return@setOnClickListener
+            }
+
+            val request = TrainingInsertReq(
+                BuildConfig.VERSION_NAME,
+                userPreferences.getUseID(),
+                AppUtil.getAndroidId(requireContext()),
+               "6",
+                 traingBeforeStatus,
+                 selectedPrevCompleteTraining,
+                 previousTrainingDuration,
+                selectedSectorCode,
+                selectedTrade,
+                 selectedTradeCode,
+                 selectedSchemeItem
+            )
+
+            commonViewModel.insertTrainingAPI(
+                request,
+                AppUtil.getSavedTokenPreference(requireContext())
+            )
+
+            collectInsertTrainingResponse()
+
+
+            /////////////
 
         }
 
@@ -6722,53 +6807,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private fun collectTradeResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getTradeListAPI) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
-                    }
 
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { getTradeList ->
-                            if (getTradeList.responseCode == 200) {
-                                val sectorList1 = getTradeList.wrappedList
-
-                                tradeName.clear()
-                                tradeCode.clear()
-                                for (x in sectorList1) {
-                                    tradeName.add(x.trade)
-                                    tradeCode.add(x.tradeCode)
-
-                                }
-
-
-                            } else if (getTradeList.responseCode == 301) {
-                                getTradeList.responseMsg?.let { it1 -> showSnackBar(it1) }
-                            } else if (getTradeList.responseCode == 302) {
-                                getTradeList.responseMsg?.let { it1 -> showSnackBar(it1) }
-                            } else if (getTradeList.responseCode == 401) {
-                                AppUtil.showSessionExpiredDialog(
-                                    findNavController(),
-                                    requireContext()
-                                )
-                            } else if (getTradeList.responseCode == 204) {
-                                getTradeList.responseDesc?.let { it1 -> showSnackBar(it1) }
-                            } else {
-                                getTradeList.responseDesc?.let { it1 -> showSnackBar(it1) }
-                            }
-                        } ?: showSnackBar("Internal Server Error")
-                    }
-                }
-            }
-        }
-    }
 
 
     private fun setDropdownValue(

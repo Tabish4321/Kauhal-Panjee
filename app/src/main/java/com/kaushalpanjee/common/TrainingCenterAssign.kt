@@ -251,12 +251,7 @@ fun TrainingCenterScreen(
                     }
             )
 
-
-
             Spacer(modifier = Modifier.width(20.dp))
-
-
-
             TopLogoRow()
 
             Text("Assign Training Center", style = MaterialTheme.typography.headlineMedium,
@@ -284,7 +279,6 @@ fun TrainingCenterScreen(
                     selectedCourse = null
 
                     commonViewModel.resetAllDependentApis()
-
                     commonViewModel.getPiaOrgList(
                         PiaListReq(
                             BuildConfig.VERSION_NAME,
@@ -299,7 +293,6 @@ fun TrainingCenterScreen(
 
             /* ================= DDUGKY FLOW ================= */
             if (selectedScheme == "DDUGKY") {
-
                 SimpleDropdown(
                     label = "Select PIA",
                     selectedItem = selectedPia,
@@ -309,10 +302,8 @@ fun TrainingCenterScreen(
                         selectedPia = pia
                         selectedTraining = null
                         selectedTrade = null
-
                         commonViewModel.resetPiaTraining()
                         commonViewModel.resetPiaTrade()
-
                         commonViewModel.getPiaTrainingList(
                             PiaTrainingCenterReq(
                                 BuildConfig.VERSION_NAME,

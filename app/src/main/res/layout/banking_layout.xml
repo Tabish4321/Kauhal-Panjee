@@ -139,21 +139,13 @@
                         android:id="@+id/spinnerBranchName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
                         android:textColor="@color/color_dark_green"
                         android:textSize="15sp"
-                        android:focusable="false"
+                        android:inputType="text"
+                        android:focusable="true"
                         tools:ignore="LabelFor" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
             </LinearLayout>
-
-
-
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"

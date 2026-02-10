@@ -56,6 +56,7 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
@@ -97,6 +98,7 @@ import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UnnatiListResponse
@@ -855,19 +857,22 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-    private  var _getTradeListAPI =  MutableStateFlow<Resource<out TradeResponse>>(Resource.Loading())
+    private  var _getTradeListAPI =  MutableStateFlow<Resource<out TradeSearchRes>>(Resource.Loading())
     val getTradeListAPI = _getTradeListAPI.asSharedFlow()
 
 
-    fun getTradeListAPI(tradeReq: TradeReq,header :String){
+    fun getTradeListAPI(tradeReq: TradeSearchReq,header :String){
         viewModelScope.launch {
             commonRepository.getTradeListAPI(tradeReq,header).collectLatest {
                 _getTradeListAPI.emit(it)
             }
         }
 
-
     }
+
+
+
+    //getTradeSearchListAPI
 
     private  var _getTrainingSearchAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
     val getTrainingSearchAPI = _getTrainingSearchAPI.asSharedFlow()

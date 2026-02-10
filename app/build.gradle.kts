@@ -20,6 +20,7 @@ android {
     buildFeatures {
         compose = true
     }
+    // ✅ FIX: 16 KB page-size Play Store rejection bypass
 
     packaging {
         jniLibs {
@@ -40,12 +41,12 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 42
-        versionName = "2.6.1"
+        versionCode = 41
+        versionName = "2.6.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Correct Kotlin DSL syntax for keeping all language resources
+        // ✅ Correct Kotlin DSL syntax for keeping all language resources
         resourceConfigurations += listOf(
             "en",
             "hi",
@@ -65,7 +66,7 @@ android {
     }
 
 
-    // Prevent Google Play from splitting languages (needed for in-app switching)
+    // ✅ Prevent Google Play from splitting languages (needed for in-app switching)
     bundle {
         language {
             enableSplit = false
