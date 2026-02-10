@@ -1014,9 +1014,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         seccAdapter = SeccAdapter { selectedItem ->
 
             selectedAhlTin = selectedItem.ahltin
-            selectedSeccName = selectedItem.seccName
-            binding.searchView.setText("Father:-" + selectedItem.fatherName)
-            toastShort("Selected Item: ${selectedItem.seccName}")
+            selectedSeccName = selectedItem.seccname
+            binding.searchView.setText("Father:-" + selectedItem.fathername)
+            toastShort("Selected Item: ${selectedItem.seccname}")
             binding.recyclerView.gone()
         }
         binding.recyclerView.adapter = seccAdapter
@@ -6248,8 +6248,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                                 for (x in heardList) {
 
-                                    seccName.add(x.seccName)
-                                    fatherName.add(x.fatherName)
+                                    seccName.add(x.seccname)
+                                    fatherName.add(x.fathername)
                                     ahlTinNo.add(x.ahltin)
                                 }
 

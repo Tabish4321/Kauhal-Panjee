@@ -41,6 +41,7 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -80,6 +81,7 @@ import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
+import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
 import com.kaushalpanjee.common.model.response.InstituteCourseRes
@@ -575,6 +577,18 @@ class CommonRepository @Inject constructor(
             appLevelApi.getInstituteCourseList(instituteCourseReq)
         }
     }
+
+
+
+    fun insertOjtAttendance(insertOjtReq: InsertOjtReq,header :String): Flow<Resource<out InsertOjtRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertOjtAttendance(header,insertOjtReq)
+        }
+    }
+
+
+
+
 
 
     fun insertTrainingCenter(insertTrainingCenterReq: InsertTrainingCenterReq ,header :String): Flow<Resource<out InsertTrainingCenterRes>> {

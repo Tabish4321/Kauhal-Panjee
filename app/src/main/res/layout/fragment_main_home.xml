@@ -353,9 +353,9 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/attendance_image_logo"
-                android:layout_width="@dimen/dp_70"
-                android:layout_height="@dimen/dp_70"
-                android:layout_marginStart="@dimen/dp_30"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60"
+                android:layout_marginStart="@dimen/dp_50"
                 android:layout_marginTop="@dimen/dp_10"
                 android:src="@drawable/attendance"
                 app:layout_constraintStart_toStartOf="parent"

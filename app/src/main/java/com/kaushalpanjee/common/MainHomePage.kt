@@ -71,7 +71,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var candidateName = ""
     private var totalPercentange =0.0f
     private var certUrl = ""
-    private var attendanceFlag = "N"
+    private var attendanceFlag = "y"
     private var schemeType = ""
     private var stateCode = ""
 
@@ -236,7 +236,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
      binding.attendanceImageLogo.setOnClickListener {
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToAttendanceFragment(imagePath,candidateName))
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToAttendanceFragment())
 
      }
 

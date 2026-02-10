@@ -34,6 +34,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -77,6 +78,7 @@ import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
 import com.kaushalpanjee.common.model.response.InstituteCourse
@@ -425,6 +427,16 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_INSTITUTE_COURSE)
     suspend fun getInstituteCourseList(@Body instituteCourseReq: InstituteCourseReq): InstituteCourseRes
+
+
+
+
+    @POST(ApiConstant.API_INSERT_OJT_ATTENDANCE)
+    suspend fun insertOjtAttendance( @Header("Authorization") token: String,
+                                     @Body insertOjtReq: InsertOjtReq): InsertOjtRes
+
+
+
 
 
 

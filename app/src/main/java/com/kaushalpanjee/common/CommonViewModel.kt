@@ -38,6 +38,7 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -75,6 +76,7 @@ import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
+import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
 import com.kaushalpanjee.common.model.response.InstituteCourseRes
@@ -718,6 +720,24 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
+
+
+
+
+
+    private  var _insertOjtAttendance =  MutableStateFlow<Resource<out InsertOjtRes>>(Resource.Loading())
+    val insertOjtAttendance = _insertOjtAttendance.asStateFlow()
+
+
+    fun insertOjtAttendance(insertOjtReq: InsertOjtReq,header :String) {
+        viewModelScope.launch {
+            commonRepository.insertOjtAttendance(insertOjtReq,header).collectLatest {
+                _insertOjtAttendance.emit(it)
+            }
+        }
+
+
+    }
 
 
 

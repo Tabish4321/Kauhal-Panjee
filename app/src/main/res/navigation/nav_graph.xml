@@ -251,12 +251,7 @@
         android:label="AttendanceFragment"
         tools:layout="@layout/attendance_fragment">
 
-        <argument
-            android:name="image"
-            app:argType="string" />
-        <argument
-            android:name="candidateName"
-            app:argType="string" />
+
 
     </fragment>
 </navigation>

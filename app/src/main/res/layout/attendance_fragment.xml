@@ -60,7 +60,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/circleImageView"
 
                 />
+            <TextView
+                android:id="@+id/tvWorkplace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Workplace Name"
+                android:layout_marginTop="@dimen/dp_12"
+                android:fontFamily="@font/avenir_next_semi_bold"
+                android:textColor="@color/color_dark_green"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintStart_toStartOf="@+id/circleImageView"
+                app:layout_constraintTop_toBottomOf="@+id/tvAadhaarName"
 
+                />
 
             <ImageView
                 android:layout_width="@dimen/dp_20"
@@ -69,7 +81,7 @@
                 tools:viewBindingIgnore="true"
                 android:id="@+id/ivPhoneIcon"
                 android:src="@drawable/phonee"
-                app:layout_constraintTop_toBottomOf="@+id/tvAadhaarName"
+                app:layout_constraintTop_toBottomOf="@+id/tvWorkplace"
                 app:layout_constraintStart_toStartOf="@+id/circleImageView"
                 />
 
@@ -276,7 +288,7 @@
                 android:textColor="@color/white"
                 android:elevation="4dp"
                 android:textSize="@dimen/sp_16"
-                android:background="@drawable/card_background"
+                android:background="@drawable/checkout_button_background"
                 android:layout_margin="8dp"
                 />
 

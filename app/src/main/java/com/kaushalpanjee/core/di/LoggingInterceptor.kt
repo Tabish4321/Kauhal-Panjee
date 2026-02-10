@@ -1,5 +1,4 @@
 import android.util.Log
-import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.RequestBody
 import okhttp3.Response
@@ -12,34 +11,28 @@ class LoggingInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val request = chain.request()
-        val response: Response
 
-        Log.d(TAG, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
-        Log.d(TAG, "=====================REQUEST========================================================")
-        Log.d(TAG, "URL: ${request.url}\n")
-        Log.d(TAG, "Method: ${request.method}\n")
-        Log.d(TAG, "Headers: ${request.headers}\n")
+        Log.d(TAG, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        Log.d(TAG, "REQUEST")
+        Log.d(TAG, "URL     : ${request.url}")
+        Log.d(TAG, "Method  : ${request.method}")
+        Log.d(TAG, "Headers : ${request.headers}")
+        Log.d(TAG, "AuthHdr : ${request.header("Authorization")}")
 
-        val gson = GsonBuilder().setPrettyPrinting().create()
         request.body?.let {
-            val jsonResponse = gson.toJson(it)
-            Log.d(TAG, "Body: ${jsonResponse}\n")
-            Log.d(TAG, "Body: ${bodyToString(it)}\n")
+            Log.d(TAG, "Body    : ${bodyToString(it)}")
         }
 
-        response = chain.proceed(request)
+        val response = chain.proceed(request)
 
-       // val copy = response.peekBody(Long.MAX_VALUE)
-        val copy = response.peekBody(1024 * 1024)
-        Log.d(TAG, "======================= RESPONSE========================================================")
-        Log.d(TAG, "Code: ${response.code}\n")
-        Log.d(TAG, "URL: ${response.request.url}\n")
-        Log.d(TAG, "Body: ${copy.string()}\n")
+        val peekBody = response.peekBody(1024 * 1024)
 
-        //  Log.d(TAG, "Message : ${ response.message}\n")
+        Log.d(TAG, "-------------------- RESPONSE --------------------")
+        Log.d(TAG, "Code : ${response.code}")
+        Log.d(TAG, "URL  : ${response.request.url}")
+        Log.d(TAG, "Body : ${peekBody.string()}")
 
-
-        Log.d(TAG, "━━━━━━━━━━━━━━━━━END━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        Log.d(TAG, "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
         return response
     }
