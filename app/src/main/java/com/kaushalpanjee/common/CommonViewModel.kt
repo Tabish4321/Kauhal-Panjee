@@ -107,6 +107,7 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
+import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.notification.with_api.LoadingView
 import com.kaushalpanjee.notification.with_api.NotificationStatus
 import com.kaushalpanjee.notification.with_api.NotificationUiEvent
@@ -122,7 +123,12 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
-class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository) :ViewModel() {
+class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository,
+                                          private val userPreferences: UserPreferences
+) :ViewModel() {
+
+
+
 
     fun resetPia() {
         _getPiaOrgList.value = Resource.Loading()
@@ -1092,6 +1098,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var isLoading = false
 
 
+/*
     fun loadNotifications(loadMore: Boolean = false) {
         if (isLoading || isLastPage) return
 
@@ -1129,6 +1136,68 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
                         is Resource.Loading -> Unit
                     }
+                    isLoading = false
+                }
+        }
+    }
+*/
+
+
+
+    fun loadNotifications(loadMore: Boolean = false) {
+
+        val candidateId = userPreferences.getUseID()
+
+        if (candidateId.isEmpty()) {
+            _notificationList.value =
+                Resource.Error(BaseErrorResponse(0,"Candidate ID not found",false,""))
+            return
+        }
+
+        if (isLoading || isLastPage) return
+
+        isLoading = true
+
+        if (!loadMore) {
+            currentPage = 0
+            isLastPage = false
+            _notificationList.value = Resource.Loading()
+        }
+
+        viewModelScope.launch {
+
+            commonRepository.getNotifications(candidateId, currentPage, 10)
+                .collectLatest { result ->
+
+                    when (result) {
+
+                        is Resource.Success -> {
+
+                            val newItems =
+                                result.data?.content
+                                    ?.map { it.toUiModel() }
+                                    ?: emptyList()
+
+                            isLastPage = newItems.size < 10   // ⭐ pagination fix
+                            currentPage++
+
+                            val oldList =
+                                (_notificationList.value as? Resource.Success)?.data.orEmpty()
+
+                            _notificationList.value =
+                                Resource.Success(
+                                    if (loadMore) oldList + newItems else newItems
+                                )
+                        }
+
+                        is Resource.Error -> {
+                            _notificationList.value =
+                                Resource.Error(BaseErrorResponse(0,"Something Went wrong",false,""))
+                        }
+
+                        is Resource.Loading -> Unit
+                    }
+
                     isLoading = false
                 }
         }
@@ -1171,7 +1240,8 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                     val raw = result.data?.string() ?: ""
                         _uiEvent.emit(NotificationUiEvent.ShowToast(raw))
                         resetPagination()
-                        loadNotifications()
+                        loadNotifications(
+                        )
                     }
 
                 is Resource.Error -> {

@@ -300,10 +300,6 @@ interface AppLevelApi {
     suspend fun getTradeListAPI(@Header("Authorization") token: String,
                                 @Body tradeReq: TradeSearchReq):TradeSearchRes
 
-//    @POST(ApiConstant.API_SEARCH_TRADE)
-//    suspend fun getTradeSearchListAPI(@Header("Authorization") token: String,
-//                                @Body tradeReq: TradeSearchReq
-//    ): TradeSearchRes
 
     @POST(ApiConstant.API_TRAINING_SEARCH)
     suspend fun getTrainingSearchAPI(@Header("Authorization") token: String,
@@ -450,11 +446,18 @@ interface AppLevelApi {
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 
-        @GET(API_NOTIFICATION)
+        /*@GET(API_NOTIFICATION)
         suspend fun getNotifications(
             @Query("page") page: Int,
             @Query("size") size: Int
-        ): NotificationListResponse
+        ): NotificationListResponse*/
+
+    @GET(API_NOTIFICATION)
+    suspend fun getNotifications(
+        @Query("candidateId") candidateId: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): NotificationListResponse
 
     @POST(API_APPROVECONDIDATE)
     suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
