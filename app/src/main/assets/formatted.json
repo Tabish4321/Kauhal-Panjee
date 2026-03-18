@@ -1,0 +1,1212 @@
+{
+  "batch_id": "195",
+  "exam_date_time": "2026-02-13T23:47:12",
+  "exam_id": "47",
+  "question_sets": [
+    {
+      "question": [
+        {
+          "question_value": "Which of these is a coordinating conjunction?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4717,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "because"
+            },
+            {
+              "option_key": "B",
+              "option_value": "since"
+            },
+            {
+              "option_key": "C",
+              "option_value": "and"
+            },
+            {
+              "option_key": "D",
+              "option_value": "although"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the purpose of a gerund?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4709,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "To act as a noun from a verb"
+            },
+            {
+              "option_key": "B",
+              "option_value": "To act as an adjective"
+            },
+            {
+              "option_key": "C",
+              "option_value": "To modify a verb"
+            },
+            {
+              "option_key": "D",
+              "option_value": "To connect clauses"
+            }
+          ]
+        },
+        {
+          "question_value": "Which season comes after spring?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4690,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Summer"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Winter"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Autumn"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Fall"
+            }
+          ]
+        },
+        {
+          "question_value": "I like to eat ___ apple.",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4719,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "an"
+            },
+            {
+              "option_key": "B",
+              "option_value": "a"
+            },
+            {
+              "option_key": "C",
+              "option_value": "the"
+            },
+            {
+              "option_key": "D",
+              "option_value": "in"
+            }
+          ]
+        },
+        {
+          "question_value": "Which type of sentence contains a main clause and one or more subordinate clauses?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4707,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Simple"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Compound"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Complex"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Compound-Complex"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the term for a word that imitates a natural sound?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4724,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Alliteration"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Onomatopoeia"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Hyperbole"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Metaphor"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the largest planet in our solar system?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4720,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Earth"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Jupiter"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Mars"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Venus"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the sound a dog makes?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4733,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "meow"
+            },
+            {
+              "option_key": "B",
+              "option_value": "bark"
+            },
+            {
+              "option_key": "C",
+              "option_value": "quack"
+            },
+            {
+              "option_key": "D",
+              "option_value": "roar"
+            }
+          ]
+        },
+        {
+          "question_value": "Who wrote the play \"Romeo and Juliet\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4723,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Charles Dickens"
+            },
+            {
+              "option_key": "B",
+              "option_value": "William Shakespeare"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Jane Austen"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Mark Twain"
+            }
+          ]
+        },
+        {
+          "question_value": "Which country is famous for the Great Wall?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4697,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "India"
+            },
+            {
+              "option_key": "B",
+              "option_value": "China"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Egypt"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Italy"
+            }
+          ]
+        },
+        {
+          "question_value": "Which of the following is a demonstrative pronoun?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4740,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "who"
+            },
+            {
+              "option_key": "B",
+              "option_value": "that"
+            },
+            {
+              "option_key": "C",
+              "option_value": "her"
+            },
+            {
+              "option_key": "D",
+              "option_value": "which"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the capital of France?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4728,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Berlin"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Madrid"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Paris"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Rome"
+            }
+          ]
+        },
+        {
+          "question_value": "A group of wolves is called a ___.",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4705,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "herd"
+            },
+            {
+              "option_key": "B",
+              "option_value": "pack"
+            },
+            {
+              "option_key": "C",
+              "option_value": "flock"
+            },
+            {
+              "option_key": "D",
+              "option_value": "swarm"
+            }
+          ]
+        },
+        {
+          "question_value": "Which word is an adjective?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4696,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "jump"
+            },
+            {
+              "option_key": "B",
+              "option_value": "quickly"
+            },
+            {
+              "option_key": "C",
+              "option_value": "green"
+            },
+            {
+              "option_key": "D",
+              "option_value": "sing"
+            }
+          ]
+        },
+        {
+          "question_value": "Which planet is closest to the sun?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4704,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Earth"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Mars"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Venus"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Mercury"
+            }
+          ]
+        },
+        {
+          "question_value": "Which tense is used for an action that will happen in the future?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4691,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Past"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Present"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Future"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Perfect"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the opposite of \"benevolent\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4695,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "kind"
+            },
+            {
+              "option_key": "B",
+              "option_value": "generous"
+            },
+            {
+              "option_key": "C",
+              "option_value": "malevolent"
+            },
+            {
+              "option_key": "D",
+              "option_value": "helpful"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the main function of a verb in a sentence?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4734,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "To describe a noun"
+            },
+            {
+              "option_key": "B",
+              "option_value": "To show an action or state of being"
+            },
+            {
+              "option_key": "C",
+              "option_value": "To connect words"
+            },
+            {
+              "option_key": "D",
+              "option_value": "To modify a verb"
+            }
+          ]
+        },
+        {
+          "question_value": "In the passive voice, the subject of the sentence ___ the action.",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4692,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "performs"
+            },
+            {
+              "option_key": "B",
+              "option_value": "receives"
+            },
+            {
+              "option_key": "C",
+              "option_value": "avoids"
+            },
+            {
+              "option_key": "D",
+              "option_value": "initiates"
+            }
+          ]
+        },
+        {
+          "question_value": "A person who teaches is a ___.",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4727,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "doctor"
+            },
+            {
+              "option_key": "B",
+              "option_value": "teacher"
+            },
+            {
+              "option_key": "C",
+              "option_value": "pilot"
+            },
+            {
+              "option_key": "D",
+              "option_value": "chef"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the meaning of the idiom \"break a leg\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4732,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "To get injured"
+            },
+            {
+              "option_key": "B",
+              "option_value": "To perform poorly"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Good luck"
+            },
+            {
+              "option_key": "D",
+              "option_value": "To run away"
+            }
+          ]
+        },
+        {
+          "question_value": "Which of the following is a subordinating conjunction?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4722,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "and"
+            },
+            {
+              "option_key": "B",
+              "option_value": "but"
+            },
+            {
+              "option_key": "C",
+              "option_value": "or"
+            },
+            {
+              "option_key": "D",
+              "option_value": "because"
+            }
+          ]
+        },
+        {
+          "question_value": "What do you call a baby dog?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4684,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "kitten"
+            },
+            {
+              "option_key": "B",
+              "option_value": "puppy"
+            },
+            {
+              "option_key": "C",
+              "option_value": "calf"
+            },
+            {
+              "option_key": "D",
+              "option_value": "cub"
+            }
+          ]
+        },
+        {
+          "question_value": "Which country's capital is Tokyo?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4706,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "China"
+            },
+            {
+              "option_key": "B",
+              "option_value": "South Korea"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Japan"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Thailand"
+            }
+          ]
+        },
+        {
+          "question_value": "What literary device is used in the phrase \"busy as a bee\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4710,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Metaphor"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Simile"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Hyperbole"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Personification"
+            }
+          ]
+        },
+        {
+          "question_value": "Which of these is a fruit?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4689,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "potato"
+            },
+            {
+              "option_key": "B",
+              "option_value": "carrot"
+            },
+            {
+              "option_key": "C",
+              "option_value": "apple"
+            },
+            {
+              "option_key": "D",
+              "option_value": "onion"
+            }
+          ]
+        },
+        {
+          "question_value": "Which word is a noun?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4715,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "run"
+            },
+            {
+              "option_key": "B",
+              "option_value": "slowly"
+            },
+            {
+              "option_key": "C",
+              "option_value": "table"
+            },
+            {
+              "option_key": "D",
+              "option_value": "big"
+            }
+          ]
+        },
+        {
+          "question_value": "Which sentence uses a semicolon correctly?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4698,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "I like apples; and bananas."
+            },
+            {
+              "option_key": "B",
+              "option_value": "He was tired; he went to bed."
+            },
+            {
+              "option_key": "C",
+              "option_value": "The sun is hot; so is the sand."
+            },
+            {
+              "option_key": "D",
+              "option_value": "I have three choices; blue, red, or green."
+            }
+          ]
+        },
+        {
+          "question_value": "Which of these is a reflexive pronoun?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4726,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "he"
+            },
+            {
+              "option_key": "B",
+              "option_value": "him"
+            },
+            {
+              "option_key": "C",
+              "option_value": "himself"
+            },
+            {
+              "option_key": "D",
+              "option_value": "his"
+            }
+          ]
+        },
+        {
+          "question_value": "What is a synonym for \"large\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4688,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "small"
+            },
+            {
+              "option_key": "B",
+              "option_value": "tiny"
+            },
+            {
+              "option_key": "C",
+              "option_value": "huge"
+            },
+            {
+              "option_key": "D",
+              "option_value": "short"
+            }
+          ]
+        },
+        {
+          "question_value": "Which of these is a collective noun?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4685,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Happiness"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Library"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Child"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Run"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the main function of an adjective?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4739,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "To describe a verb"
+            },
+            {
+              "option_key": "B",
+              "option_value": "To describe a noun or pronoun"
+            },
+            {
+              "option_key": "C",
+              "option_value": "To connect clauses"
+            },
+            {
+              "option_key": "D",
+              "option_value": "To show an action"
+            }
+          ]
+        },
+        {
+          "question_value": "What color is a banana?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4686,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Blue"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Red"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Yellow"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Green"
+            }
+          ]
+        },
+        {
+          "question_value": "Identify the pronoun in the sentence: \"They are my friends.\"",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4687,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "They"
+            },
+            {
+              "option_key": "B",
+              "option_value": "are"
+            },
+            {
+              "option_key": "C",
+              "option_value": "my"
+            },
+            {
+              "option_key": "D",
+              "option_value": "friends"
+            }
+          ]
+        },
+        {
+          "question_value": "Which animal says \"moo\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4700,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Dog"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Cat"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Cow"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Bird"
+            }
+          ]
+        },
+        {
+          "question_value": "Which sentence is in the simple past tense?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4718,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "She will cook."
+            },
+            {
+              "option_key": "B",
+              "option_value": "She cooked."
+            },
+            {
+              "option_key": "C",
+              "option_value": "She is cooking."
+            },
+            {
+              "option_key": "D",
+              "option_value": "She has cooked."
+            }
+          ]
+        },
+        {
+          "question_value": "What is the term for a word that connects a noun or pronoun to another part of the sentence?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4701,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Verb"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Adverb"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Preposition"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Conjunction"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the main purpose of an adverb?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4703,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "To describe a noun"
+            },
+            {
+              "option_key": "B",
+              "option_value": "To describe a verb, adjective, or another adverb"
+            },
+            {
+              "option_key": "C",
+              "option_value": "To connect words"
+            },
+            {
+              "option_key": "D",
+              "option_value": "To show possession"
+            }
+          ]
+        },
+        {
+          "question_value": "Which word is an adverb of frequency?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4737,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "quickly"
+            },
+            {
+              "option_key": "B",
+              "option_value": "often"
+            },
+            {
+              "option_key": "C",
+              "option_value": "here"
+            },
+            {
+              "option_key": "D",
+              "option_value": "today"
+            }
+          ]
+        },
+        {
+          "question_value": "Which animal is known as the \"king of the jungle\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4693,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Tiger"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Lion"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Elephant"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Bear"
+            }
+          ]
+        },
+        {
+          "question_value": "The sky is usually what color during the day?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4729,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Red"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Blue"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Black"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Green"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the plural of \"foot\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4725,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "foots"
+            },
+            {
+              "option_key": "B",
+              "option_value": "feets"
+            },
+            {
+              "option_key": "C",
+              "option_value": "feet"
+            },
+            {
+              "option_key": "D",
+              "option_value": "footies"
+            }
+          ]
+        },
+        {
+          "question_value": "Which word is a preposition?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4711,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "run"
+            },
+            {
+              "option_key": "B",
+              "option_value": "happy"
+            },
+            {
+              "option_key": "C",
+              "option_value": "to"
+            },
+            {
+              "option_key": "D",
+              "option_value": "quickly"
+            }
+          ]
+        },
+        {
+          "question_value": "What do you use to write on a blackboard?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4736,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Pen"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Crayon"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Chalk"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Pencil"
+            }
+          ]
+        },
+        {
+          "question_value": "The book is ___ the table.",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4699,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "in"
+            },
+            {
+              "option_key": "B",
+              "option_value": "on"
+            },
+            {
+              "option_key": "C",
+              "option_value": "at"
+            },
+            {
+              "option_key": "D",
+              "option_value": "over"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the capital of Australia?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4713,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Sydney"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Melbourne"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Canberra"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Brisbane"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the difference between \"affect\" and \"effect\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4738,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Affect is a noun, effect is a verb"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Affect is a verb, effect is a noun"
+            },
+            {
+              "option_key": "C",
+              "option_value": "They are synonyms"
+            },
+            {
+              "option_key": "D",
+              "option_value": "They have opposite meanings"
+            }
+          ]
+        },
+        {
+          "question_value": "Identify the participial phrase in \"Running late, he missed the bus.\"",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4708,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Running late"
+            },
+            {
+              "option_key": "B",
+              "option_value": "he missed the bus"
+            },
+            {
+              "option_key": "C",
+              "option_value": "missed the bus"
+            },
+            {
+              "option_key": "D",
+              "option_value": "he missed"
+            }
+          ]
+        },
+        {
+          "question_value": "What is the name of the planet we live on?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4712,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Mars"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Venus"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Earth"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Jupiter"
+            }
+          ]
+        },
+        {
+          "question_value": "Which word is an antonym for \"happy\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4702,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Joyful"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Sad"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Glad"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Cheerful"
+            }
+          ]
+        }
+      ],
+      "question_set_id": "QS2"
+    }
+  ]
+}

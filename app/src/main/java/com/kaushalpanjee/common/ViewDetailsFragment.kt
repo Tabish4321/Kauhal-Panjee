@@ -141,8 +141,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
         commonViewModel.getAadhaarListAPI(AdharDetailsReq
-             (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext())
-        )
+             (BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
     }

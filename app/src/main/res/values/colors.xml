@@ -26,5 +26,6 @@
     <color name="chip_background">#B3FFFFFF</color> <!-- Yellow background -->
     <color name="chip_stroke_color">#FF9800</color> <!-- Orange stroke -->
 
-
+    <color name="white_brilliant">#FEFEFE</color>
+    <color name="button_pressed_state">#8A74D8</color>
 </resources>

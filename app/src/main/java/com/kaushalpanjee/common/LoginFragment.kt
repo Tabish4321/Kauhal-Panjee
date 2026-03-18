@@ -71,6 +71,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun collectUnnatiData() {
         lifecycleScope.launch {
+
+
+
+
             collectLatestLifecycleFlow(commonViewModel.getUnnati) {
                 when (it) {
                     is Resource.Loading -> showProgressBar()
@@ -109,7 +113,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
+        binding.tvWelcome.setOnClickListener {
 
+            findNavController().navigate(R.id.action_fragmentLogin_to_cbtDetailsFragment)
+        }
 
         binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
 

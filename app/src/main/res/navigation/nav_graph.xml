@@ -53,7 +53,27 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
+
+
+
+
+
+        <action
+            android:id="@+id/action_fragmentLogin_to_cbtDetailsFragment"
+            app:destination="@id/cbtDetailsFragment" />
     </fragment>
+
+
+
+
+
+    <fragment
+        android:id="@+id/cbtDetailsFragment"
+        android:name="com.kaushalpanjee.CBT.CbtDetailFragment"
+        android:label="CbtBasicDetailsFragment" />
+
+
+
     <fragment
         android:id="@+id/forgotPasswordFragment"
         android:name="com.kaushalpanjee.common.ForgotPasswordFragment"
@@ -149,6 +169,15 @@
         <action
             android:id="@+id/action_mainHomePage_to_notificationListFragment"
             app:destination="@id/notificationListFragment"/>
+
+
+        <action
+            android:id="@+id/action_fragmentLogin_to_cbtDetailsFragment"
+            app:destination="@id/cbtDetailsFragment" />
+
+
+
+
         <action
             android:id="@+id/action_mainHomePage_to_trainingCenterAssign"
             app:destination="@id/trainingCenterAssign">

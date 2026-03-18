@@ -1,0 +1,252 @@
+{
+  "batch_id": "195",
+  "exam_date_time": "2026-02-13T23:47:12",
+  "exam_id": "47",
+  "question_sets": [
+    {
+      "question": [
+        {
+          "question_value": "1 Which of these is a coordinating conjunction?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4717,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "because"
+            },
+            {
+              "option_key": "B",
+              "option_value": "since"
+            },
+            {
+              "option_key": "C",
+              "option_value": "and"
+            },
+            {
+              "option_key": "D",
+              "option_value": "although"
+            }
+          ]
+        },
+        {
+          "question_value": "2 What is the purpose of a gerund?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4709,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "To act as a noun from a verb"
+            },
+            {
+              "option_key": "B",
+              "option_value": "To act as an adjective"
+            },
+            {
+              "option_key": "C",
+              "option_value": "To modify a verb"
+            },
+            {
+              "option_key": "D",
+              "option_value": "To connect clauses"
+            }
+          ]
+        },
+        {
+          "question_value": "3 Which season comes after spring?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4690,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Summer"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Winter"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Autumn"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Fall"
+            }
+          ]
+        },
+        {
+          "question_value": "4 I like to eat ___ apple.",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4719,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "an"
+            },
+            {
+              "option_key": "B",
+              "option_value": "a"
+            },
+            {
+              "option_key": "C",
+              "option_value": "the"
+            },
+            {
+              "option_key": "D",
+              "option_value": "in"
+            }
+          ]
+        },
+        {
+          "question_value": "5 Which type of sentence contains a main clause and one or more subordinate clauses?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4707,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Simple"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Compound"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Complex"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Compound-Complex"
+            }
+          ]
+        },
+        {
+          "question_value": "6 What is the term for a word that imitates a natural sound?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4724,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Alliteration"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Onomatopoeia"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Hyperbole"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Metaphor"
+            }
+          ]
+        },
+        {
+          "question_value": "7 What is the largest planet in our solar system?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4720,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Earth"
+            },
+            {
+              "option_key": "B",
+              "option_value": "Jupiter"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Mars"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Venus"
+            }
+          ]
+        },
+        {
+          "question_value": "8 What is the sound a dog makes?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4733,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "meow"
+            },
+            {
+              "option_key": "B",
+              "option_value": "bark"
+            },
+            {
+              "option_key": "C",
+              "option_value": "quack"
+            },
+            {
+              "option_key": "D",
+              "option_value": "roar"
+            }
+          ]
+        },
+        {
+          "question_value": "9 Who wrote the play \"Romeo and Juliet\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4723,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Charles Dickens"
+            },
+            {
+              "option_key": "B",
+              "option_value": "William Shakespeare"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Jane Austen"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Mark Twain"
+            }
+          ]
+        },
+        {
+          "question_value": "10 Who wrote the play \"Romeo and Juliet\"?",
+          "marks_per_qs": 2,
+          "language": "en",
+          "question_id": 4723,
+          "option": [
+            {
+              "option_key": "A",
+              "option_value": "Charles Dickens"
+            },
+            {
+              "option_key": "B",
+              "option_value": "William Shakespeare"
+            },
+            {
+              "option_key": "C",
+              "option_value": "Jane Austen"
+            },
+            {
+              "option_key": "D",
+              "option_value": "Mark Twain"
+            }
+          ]
+        }
+      ],
+      "question_set_id": "QS2"
+    }
+  ]
+}

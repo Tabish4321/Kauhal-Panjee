@@ -330,6 +330,8 @@
                 app:layout_constraintStart_toEndOf="@id/training_image_logo"
                 app:layout_constraintTop_toBottomOf="@id/services_provided" />
 
+
+
             <TextView
                 android:id="@+id/certificate_image_text"
                 android:layout_width="wrap_content"
@@ -343,6 +345,47 @@
                 android:gravity="center"
                 app:layout_constraintStart_toEndOf="@id/trainingDetailsTitle"
                 app:layout_constraintTop_toBottomOf="@id/certificate_image_logo" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/cbt_image_logo"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_70"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_12"
+                android:src="@drawable/exam_cbt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/personaltv" />
+
+
+
+            <TextView
+                android:id="@+id/cbt_image_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_6"
+                android:text="@string/cbt_exam"
+                android:textColor="@color/color_dark_green"
+                android:fontFamily="@font/avenir_next_bold"
+                android:textSize="@dimen/sp_15"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cbt_image_logo" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

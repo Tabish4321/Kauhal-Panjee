@@ -1,5 +1,6 @@
 [versions]
-agp = "8.5.0"
+agp = "8.6.1"
+#agp = "8.5.0"
 bcprovJdk16 = "1.45"
 circleimageview = "3.1.0"
 compiler = "4.13.0"
@@ -36,6 +37,8 @@ converter-scalars = "2.5.0"
 chucker-version = "4.0.0"
 playServicesLocation = "21.3.0"
 viewpager2 = "1.1.0"
+material3WindowSizeClass = "1.4.0"
+uiGraphics = "1.10.5"
 #firebaseMessagingKtx = "25.0.1"
 
 
@@ -84,6 +87,8 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
 simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }
+androidx-material3-window-size-class1 = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
 #firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 

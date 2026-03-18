@@ -258,4 +258,25 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+
+    <string name="no_data_title">No Data Found</string>
+    <string name="no_data_description">Nothing to show right now. Please check back later.</string>
+    <string name="cbt_exam">CBT Exam</string>
+    <string name="candidate_id">Candidate ID :</string>
+    <string name="candidate_name_cbt">Candidate Name</string>
+    <string name="question">Question</string>
+    <string name="save_next">Save &amp; Next</string>
+    <string name="save_review">Save &amp; Review</string>
+    <string name="mark">Mark</string>
+    <string name="clear">Clear</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="question_index">Question Index</string>
+    <string name="answered">Answered</string>
+    <string name="not_answered">Not Answered</string>
+
+
+
+
+
 </resources>

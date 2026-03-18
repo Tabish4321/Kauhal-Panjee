@@ -31,6 +31,16 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="ThemeOverlay.App.RoundedDialog" parent="ThemeOverlay.Material3.Dialog">
+        <item name="dialogCornerRadius">28dp</item>
+    </style>
 
+    <style name="RoundedTopCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
 
 </resources>

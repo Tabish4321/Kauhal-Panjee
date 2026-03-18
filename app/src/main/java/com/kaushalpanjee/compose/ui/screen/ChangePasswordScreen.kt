@@ -1,5 +1,6 @@
 package com.kaushalpanjee.compose.ui.screen
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +29,10 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.gson.Gson
 import com.kaushalpanjee.R
 import com.kaushalpanjee.compose.presentation.contract.ChangePasswordContract
 import com.kaushalpanjee.compose.ui.commonComponent.PasswordTextField
@@ -160,4 +163,27 @@ fun ChangePasswordScreen(
     }
 }
 
+
+
+
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun ChangePasswordScreenPreview() {
+//
+//    val previewState = ChangePasswordContract.State(
+//        oldPassword = "",
+//        newPassword = "",
+//        confirmPassword = "",
+//        isLoading = false
+//    )
+//
+//    ChangePasswordScreen(
+//        uiState = previewState,
+//        onOldPassChange = {},
+//        onNewPassChange = {},
+//        onConfirmPassChange = {},
+//        onSubmit = {},
+//        onBack = {}
+//    )
+//}
 

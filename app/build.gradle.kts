@@ -42,7 +42,8 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 40
-        versionName = "2.6.3"
+//        versionName = "2.6.1"
+        versionName = "2.6.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -190,6 +191,8 @@ dependencies {
     implementation(libs.androidx.viewbinding)
     implementation(libs.play.services.location)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.material3.window.size.class1)
+    implementation(libs.androidx.ui.graphics)
 //    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -268,11 +271,18 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.7")
     implementation("androidx.compose.material3:material3:1.2.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // CardView
     implementation("androidx.cardview:cardview:1.0.0")
@@ -328,6 +338,17 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     //implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging")
+
+
+//    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+//    implementation("androidx.compose.runtime:runtime")
+
+
+//  Swiperefreshlayout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+
+
 
 
 

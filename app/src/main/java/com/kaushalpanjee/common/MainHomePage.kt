@@ -235,6 +235,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
              findNavController().navigate(MainHomePageDirections.actionMainHomePageToViewDetailsFragment())
 
      }
+     binding.cbtImageLogo.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionFragmentLoginToCbtDetailsFragment())
+
+     }
 
      if (certUrl == "N"){
          binding.certificateImageLogo.gone()

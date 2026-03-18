@@ -258,4 +258,24 @@
     <string name="pmkvy_9">यह योजना विशेष रूप से युवाओं, महिलाओं, एससी/एसटी समुदायों, अल्पसंख्यकों और दिव्यांगजनों पर ध्यान केंद्रित करती है।</string>
     <string name="pmkvy_10">कौशल विकास को उद्योग की जरूरतों से जोड़ा गया है, जिससे वेतन आधारित रोजगार और स्वयं-रोजगार के अवसर बेहतर होते हैं।</string>
 
+
+
+
+    <string name="cbt_exam">सीबीटी परीक्षा</string>
+    <string name="candidate_id">उम्मीदवार आईडी :</string>
+    <string name="candidate_name_cbt">उम्मीदवार का नाम</string>
+    <string name="question">प्रश्न</string>
+
+    <string name="save_next">सहेजें और अगला</string>
+    <string name="save_review">सहेजें और समीक्षा</string>
+    <string name="mark">चिह्नित करें</string>
+    <string name="clear">साफ करें</string>
+
+    <string name="previous">पिछला</string>
+    <string name="next">अगला</string>
+
+    <string name="question_index">प्रश्न सूची</string>
+    <string name="answered">उत्तर दिया गया</string>
+    <string name="not_answered">उत्तर नहीं दिया गया</string>
+
 </resources>
