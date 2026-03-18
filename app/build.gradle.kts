@@ -17,6 +17,10 @@ android {
     compileSdk = 35
 
 
+
+
+
+
     buildFeatures {
         compose = true
     }
@@ -66,7 +70,7 @@ android {
     }
 
 
-    // ✅ Prevent Google Play from splitting languages (needed for in-app switching)
+    //  Prevent Google Play from splitting languages (needed for in-app switching)
     bundle {
         language {
             enableSplit = false
@@ -103,7 +107,7 @@ android {
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
 
-           //  signingConfig = signingConfigs.getByName("release")
+          //   signingConfig = signingConfigs.getByName("release")
         }
 
         debug {
@@ -328,7 +332,6 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    //implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
