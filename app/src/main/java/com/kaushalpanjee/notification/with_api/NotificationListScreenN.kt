@@ -15,10 +15,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.kaushalpanjee.common.CommonViewModel
 import com.kaushalpanjee.notification.with_api.NotificationStatus
-
+import com.kaushalpanjee.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationListScreenN(
@@ -49,7 +50,7 @@ fun NotificationListScreenN(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Invitation List") },
+                title = { Text(text = stringResource(R.string.invitation_list)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, null)

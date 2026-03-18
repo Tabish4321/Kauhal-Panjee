@@ -263,6 +263,14 @@
     <string name="total_hours">Total Hours</string>
     <string name="mark_attendance_ojt">Mark Attendance</string>
     <string name="attendance_marked">Attendance Marked</string>
+
     <string name="careof">"Care Of: "</string>
+
+
+
+
+<!--    Ajit Ranjan Notification 18/03/2026-->
+
+    <string name="invitation_list" translatable="false">Invitation List</string>
 
 </resources>

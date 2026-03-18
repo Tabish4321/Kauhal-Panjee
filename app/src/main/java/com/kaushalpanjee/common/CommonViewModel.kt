@@ -1178,7 +1178,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                                     ?.map { it.toUiModel() }
                                     ?: emptyList()
 
-                            isLastPage = newItems.size < 10   // ⭐ pagination fix
+                            isLastPage = newItems.size < 10   //  pagination fix
                             currentPage++
 
                             val oldList =

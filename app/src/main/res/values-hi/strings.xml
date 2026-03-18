@@ -266,4 +266,10 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+    <!--    Ajit Ranjan Notification 18/03/2026-->
+    <string name="invitation_list">आमंत्रण सूची</string>
+
 </resources>
