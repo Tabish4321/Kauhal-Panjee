@@ -5,23 +5,32 @@ import com.kaushalpanjee.BuildConfig
 
 object AppConstant {
 
-    object BundleConstant{
+    object BundleConstant {
         const val EXTRA_BUNDLE = "EXTRA_BUNDLE"
         const val HEADING = "HEADING"
     }
-    object StaticURL{
-        const val BUCKET_PROFILE= "profile/"
-        const val BUCKET_DOCUMENTS= "documents/"
-        const val BUCKET_CATEGORY= "category/"
-       // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
-        const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid/stateservices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
-       //const val baseUrl= "http://10.197.183.177:8001/"                        //local
-       // const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
-        const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"             //demo
+
+    object StaticURL {
+        const val BUCKET_PROFILE = "profile/"
+        const val BUCKET_DOCUMENTS = "documents/"
+        const val BUCKET_CATEGORY = "category/"
+
+        // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
+        const val FACE_AUTH_UIADI =
+            "https://nregarep2.nic.in/uid/stateservices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
+
+
+        const val BHASHINI_URL = "https://dhruva-api.bhashini.gov.in/services/inference/pipeline"
+        const val BHASHINI_AUTH = "5QqK4amQLCINDosdd41kAYmdTKxeQ73js0O8xXtSz_q-T1pmZdKmVZ5ikXOCycLI"
+        const val BHASHINI_SERVICE_ID = "ai4bharat/indictrans-v2-all-gpu--t4"
+
+        //const val baseUrl= "http://10.197.183.177:8001/"                        //local
+        // const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
+        const val baseUrl = "https://kaushal.dord.gov.in/demobackend/"             //demo
 
     }
 
-    object Constants{
+    object Constants {
         //AADHAAR CONST
         const val CAPTURE_INTENT = "in.gov.uidai.rdservice.face.CAPTURE"
         const val DEVICE_CHECK_INTENT = "in.gov.uidai.rdservice.face.CHECK_DEVICE"
@@ -32,8 +41,8 @@ object AppConstant {
         const val WADH_KEY = BuildConfig.WADH_KEY   //"sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
-        var ENCRYPT_IV_KEY =BuildConfig.ENCRYPT_IV_KEY;
-        var ENCRYPT_KEY =BuildConfig.ENCRYPT_KEY;
+        var ENCRYPT_IV_KEY = BuildConfig.ENCRYPT_IV_KEY;
+        var ENCRYPT_KEY = BuildConfig.ENCRYPT_KEY;
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"
         const val ENGLISH: String = "english"
@@ -43,7 +52,7 @@ object AppConstant {
         const val PRODUCTION_CODE: String = "P"
 
         const val CRYPT_ID = BuildConfig.CRYPT_ID   // "8080808080808080"
-        const val CRYPT_IV =BuildConfig.CRYPT_IV    // "8080808080808080"
+        const val CRYPT_IV = BuildConfig.CRYPT_IV    // "8080808080808080"
         const val CRYPLIBAES = BuildConfig.CRYPLIBAES
 
         const val EXTRA_CLIENT_ID = "client_id"

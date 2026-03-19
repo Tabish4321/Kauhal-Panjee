@@ -26,11 +26,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kaushalpanjee.notification.TimeUtils.toMillis
 import com.kaushalpanjee.notification.with_api.NotificationStatus
 import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
+
+
+import com.kaushalpanjee.R
 
 @Composable
 fun NotificationItemCard(
@@ -38,6 +43,7 @@ fun NotificationItemCard(
     onApprove: () -> Unit,
     onDisapprove: () -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,7 +61,7 @@ fun NotificationItemCard(
 
             ) {
                 Text(
-                    text = TimeUtils.getRelativeTime(item.createdAt.toMillis()),
+                    text = TimeUtils.getRelativeTime(item.createdAt.toMillis(),context),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -99,7 +105,10 @@ fun NotificationItemCard(
                     ) {
                         Icon(Icons.Default.Close, contentDescription = null)
                         Spacer(Modifier.width(6.dp))
-                        Text("Reject")
+                        Text(text = stringResource(R.string.reject))
+
+
+//                        Text("Reject")
                     }
 
                     Spacer(modifier = Modifier.width(20.dp))
@@ -113,7 +122,11 @@ fun NotificationItemCard(
                     ) {
                         Icon(Icons.Default.Check, contentDescription = null)
                         Spacer(Modifier.width(6.dp))
-                        Text("Accept", color = Color.White)
+                        Text(
+                            text = stringResource(R.string.accept),
+                            color = Color.White
+                        )
+//                        Text("Accept", color = Color.White)
                     }
                 }
             }
@@ -146,3 +159,107 @@ fun StatusBadge(status: String) {
         )
     }
 }
+
+
+
+
+
+
+
+
+
+
+//@Composable
+//fun NotificationItemCard(
+//    item: NotificationUiModel,
+//    onApprove: () -> Unit,
+//    onDisapprove: () -> Unit
+//) {
+//    val context = LocalContext.current
+//
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp, vertical = 8.dp),
+//        shape = RoundedCornerShape(16.dp),
+//        elevation = CardDefaults.cardElevation(12.dp),
+//        colors = CardDefaults.cardColors(containerColor = Color.White)
+//    ) {
+//
+//        Column(modifier = Modifier.padding(16.dp)) {
+//
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                Text(
+//                    text = TimeUtils.getRelativeTime(
+//                        context,
+//                        item.createdAt.toMillis()
+//                    ),
+//                    style = MaterialTheme.typography.labelSmall,
+//                    color = MaterialTheme.colorScheme.primary
+//                )
+//
+//                StatusBadge(status = item.invitationStatus)
+//            }
+//
+//            Spacer(modifier = Modifier.height(14.dp))
+//
+//            Text(
+//                text = item.title,
+//                style = MaterialTheme.typography.titleLarge.copy(
+//                    fontWeight = FontWeight.Bold
+//                ),
+//                color = MaterialTheme.colorScheme.onSurface
+//            )
+//
+//            Spacer(modifier = Modifier.height(6.dp))
+//
+//            Text(
+//                text = item.message,
+//                style = MaterialTheme.typography.bodyLarge,
+//                color = MaterialTheme.colorScheme.onSurfaceVariant
+//            )
+//
+//            Spacer(modifier = Modifier.height(16.dp))
+//
+//            if (item.invitationStatus == "P") {
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.End
+//                ) {
+//                    OutlinedButton(
+//                        onClick = onDisapprove,
+//                        border = BorderStroke(1.dp, Color.Red),
+//                        shape = RoundedCornerShape(10.dp),
+//                        colors = ButtonDefaults.outlinedButtonColors(
+//                            contentColor = Color.Red
+//                        )
+//                    ) {
+//                        Icon(Icons.Default.Close, contentDescription = null)
+//                        Spacer(Modifier.width(6.dp))
+//                        Text(text = stringResource(R.string.reject))
+//                    }
+//
+//                    Spacer(modifier = Modifier.width(20.dp))
+//
+//                    Button(
+//                        onClick = onApprove,
+//                        shape = RoundedCornerShape(10.dp),
+//                        colors = ButtonDefaults.buttonColors(
+//                            containerColor = Color(0xFF2E7D32)
+//                        )
+//                    ) {
+//                        Icon(Icons.Default.Check, contentDescription = null)
+//                        Spacer(Modifier.width(6.dp))
+//                        Text(
+//                            text = stringResource(R.string.accept),
+//                            color = Color.White
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}

@@ -271,4 +271,21 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+    <!--    Ajit Ranjan Notification 18/03/2026-->
+
+    <string name="just_now">இப்பொழுது</string>
+    <string name="min_ago">நிமிடங்கள் முன்பு</string>
+    <string name="hour_ago">மணிநேரம் முன்பு</string>
+    <string name="yesterday">நேற்று</string>
+    <string name="today">இன்று</string>
+    <string name="accept">ஏற்கவும்</string>
+    <string name="reject">நிராகரிக்கவும்</string>
+    <string name="accepted">ஏற்றுக்கொள்ளப்பட்டது</string>
+    <string name="rejected">நிராகரிக்கப்பட்டது</string>
+    <string name="pending">நிலுவையில்</string>
+    <string name="invitation_list">அழைப்புப் பட்டியல்</string>
+
 </resources>

@@ -272,4 +272,15 @@
     <!--    Ajit Ranjan Notification 18/03/2026-->
     <string name="invitation_list">आमंत्रण सूची</string>
 
+    <string name="just_now" >अभी-अभी</string>
+    <string name="min_ago" >मिनट पहले</string>
+    <string name="hour_ago" >घंटा पहले</string>
+    <string name="yesterday" >कल</string>
+    <string name="today" >आज</string>
+    <string name="accept" >स्वीकार करें</string>
+    <string name="reject" >अस्वीकार करें</string>
+    <string name="accepted">स्वीकृत</string>
+    <string name="rejected">अस्वीकृत</string>
+    <string name="pending">लंबित</string>
+
 </resources>

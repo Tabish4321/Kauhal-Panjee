@@ -1,7 +1,12 @@
 package com.kaushalpanjee.notification.with_api.model
 
-import com.kaushalpanjee.notification.with_api.NotificationStatus
+import com.kaushalpanjee.bhahni.BhashiniHelper
+import com.kaushalpanjee.common.CommonRepository
 import com.kaushalpanjee.notification.with_api.model.res.UserNotification
+import kotlinx.coroutines.runBlocking
+
+import android.content.Context
+import com.kaushalpanjee.R
 
 /**
  * Created by Rishi Porwal
@@ -17,21 +22,49 @@ data class NotificationUiModel(
     val entityCode: String?,
     val candidateId: String?
 )
+/**
+ * Created by Ajit Ranajan
+ */
+fun UserNotification.toUiModel(): NotificationUiModel {
 
+    val cleanBody = body.orEmpty()
+        .replace("\n click to Accept/Reject.", "", true)
+        .trim()
 
-fun UserNotification.toUiModel(): NotificationUiModel =
-    NotificationUiModel(
+    val translatedTitle = runBlocking {
+        BhashiniHelper.translate(title.orEmpty())
+    }
+
+    val translatedMessage = runBlocking {
+        BhashiniHelper.translate(cleanBody)
+    }
+
+    return NotificationUiModel(
         id = id?.toString().orEmpty(),
-        title = title.orEmpty(),
-//        message = body.orEmpty(),
-        message = body.orEmpty().replace("\n click to Accept/Reject.", "", ignoreCase = true).trim(),
+        title = translatedTitle,
+        message = translatedMessage,
         createdAt = createdOn.orEmpty(),
-        invitationStatus = invitationFlag.orEmpty(), // P / A / R
+        invitationStatus = invitationFlag.orEmpty(),
         instituteTrade = instituteTrade,
         instituteId = instituteId,
         entityCode = entityCode,
         candidateId = candidateId
     )
+}
+
+//fun UserNotification.toUiModel(): NotificationUiModel =
+//    NotificationUiModel(
+//        id = id?.toString().orEmpty(),
+//        title = title.orEmpty(),
+////        message = body.orEmpty(),
+//        message = body.orEmpty().replace("\n click to Accept/Reject.", "", ignoreCase = true).trim(),
+//        createdAt = createdOn.orEmpty(),
+//        invitationStatus = invitationFlag.orEmpty(), // P / A / R
+//        instituteTrade = instituteTrade,
+//        instituteId = instituteId,
+//        entityCode = entityCode,
+//        candidateId = candidateId
+//    )
 
 
 fun String.toInvitationText(): String =

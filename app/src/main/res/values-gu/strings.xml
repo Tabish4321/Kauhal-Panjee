@@ -266,4 +266,18 @@
     <string name="careof">"Care Of: "</string>
 
 
+    <!--    Ajit Ranjan Notification 18/03/2026-->
+    <string name="just_now">હમણાં જ</string>
+    <string name="min_ago">મિનિટ પહેલા</string>
+    <string name="hour_ago">કલાક પહેલા</string>
+    <string name="yesterday">ગઈકાલે</string>
+    <string name="today">આજે</string>
+    <string name="accept">સ્વીકારો</string>
+    <string name="reject">નકારી કાઢો</string>
+    <string name="accepted">સ્વીકાર્યું</string>
+    <string name="rejected">નકાર્યું</string>
+    <string name="pending">બાકી</string>
+    <string name="invitation_list">આમંત્રણ યાદી</string>
+
+
 </resources>

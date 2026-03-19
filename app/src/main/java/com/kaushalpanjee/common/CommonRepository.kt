@@ -628,4 +628,39 @@ class CommonRepository @Inject constructor(
     }
 
 
+//      bhashani implementation API  Ajit Ranjan
+
+        // ✅ THIS FUNCTION MISSING → ADD THIS
+//        suspend fun translate(text: String): String {
+//
+//            val request = TranslationRequest(
+//                pipelineTasks = listOf(
+//                    PipelineTask(
+//                        config = Config(
+//                            language = Language(
+//                                sourceLanguage = "en",
+//                                targetLanguage = "hi"
+//                            )
+//                        )
+//                    )
+//                ),
+//                inputData = InputData(
+//                    input = listOf(InputItem(source = text))
+//                )
+//            )
+//
+//            val response = appLevelApi.translateText(
+//                token = "5QqK4amQLCINDosdd41kAYmdTKxeQ73js0O8xXtSz_q-T1pmZdKmVZ5ikXOCycLI",
+//                request = request
+//            )
+//
+//            return response.pipelineResponse
+//                .firstOrNull()
+//                ?.output
+//                ?.firstOrNull()
+//                ?.target
+//                ?: text
+//        }
+
+
 }

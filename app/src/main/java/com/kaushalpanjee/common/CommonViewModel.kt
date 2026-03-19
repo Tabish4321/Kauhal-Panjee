@@ -122,6 +122,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
+
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
+
+
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 @HiltViewModel
 class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository,
                                           private val userPreferences: UserPreferences
@@ -1201,6 +1213,58 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                     isLoading = false
                 }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+//        viewModelScope.launch {
+//
+//            commonRepository.getNotifications(candidateId, currentPage, 10)
+//                .collectLatest { result ->
+//
+//                    when (result) {
+//
+//                        is Resource.Success -> {
+//
+//                            val newItems =
+//                                result.data?.content
+//                                    ?.map { notification ->
+//                                        // ✅ FIX: repository pass करो
+//                                        notification.toUiModel(commonRepository)
+//                                    }
+//                                    ?: emptyList()
+//
+//                            isLastPage = newItems.size < 10
+//                            currentPage++
+//
+//                            val oldList =
+//                                (_notificationList.value as? Resource.Success)?.data.orEmpty()
+//
+//                            _notificationList.value =
+//                                Resource.Success(
+//                                    if (loadMore) oldList + newItems else newItems
+//                                )
+//                        }
+//
+//                        is Resource.Error -> {
+//                            _notificationList.value =
+//                                Resource.Error(BaseErrorResponse(0, "Something Went wrong", false, ""))
+//                        }
+//
+//                        is Resource.Loading -> Unit
+//                    }
+//
+//                    isLoading = false
+//                }
+//        }
     }
 
     public val _actionLoading = MutableStateFlow<String?>(null)
@@ -1264,4 +1328,10 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         isLastPage = false
         currentPage = 0
     }
+
+
+
+
+
+
 }

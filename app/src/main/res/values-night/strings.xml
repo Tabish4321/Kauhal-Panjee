@@ -13,4 +13,26 @@
     <string name="mark_attendance_ojt">Mark Attendance</string>
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
+
+    <!--    Ajit Ranjan Notification 18/03/2026-->
+    <!--    Ajit Ranjan Notification 18/03/2026-->
+
+
+    <string name="invitation_list" translatable="false">Invitation List</string>
+
+
+
+
+
+    <string name="just_now" >Just now</string>
+    <string name="min_ago" >min ago</string>
+    <string name="hour_ago" >hour ago</string>
+    <string name="yesterday" >Yesterday</string>
+    <string name="today" >Today</string>
+    <string name="accept" >Accept</string>
+    <string name="reject" >Reject</string>
+    <string name="accepted" translatable="false">Accepted</string>
+    <string name="rejected" translatable="false">Rejected</string>
+
+    <string name="pending" translatable="false">Pending</string>
 </resources>

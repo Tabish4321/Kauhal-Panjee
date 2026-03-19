@@ -317,6 +317,16 @@ dependencies {
     implementation("com.google.mediapipe:tasks-vision:0.10.28")
 
 
+
+
+
+//    livedata
+//    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+//    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+
     /*
         tasksVision = "0.10.28"
         tensorflow-lite2 = "1.4.0"

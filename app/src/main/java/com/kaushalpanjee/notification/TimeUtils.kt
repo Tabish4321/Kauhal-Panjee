@@ -1,5 +1,6 @@
 package com.kaushalpanjee.notification
 
+import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -7,69 +8,92 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-
+import com.kaushalpanjee.R
+import android.content.Context
 object TimeUtils {
 
-    fun getRelativeTime(createdAt: Long): String {
-        val now = System.currentTimeMillis()
+    @SuppressLint("StringFormatInvalid")
+
+//
+    fun getRelativeTime(createdAt: Long,context: Context): String { val now = System.currentTimeMillis()
         val diff = now - createdAt
-
         val minute = 60 * 1000
         val hour = 60 * minute
         val day = 24 * hour
-
         return when {
-            diff < minute ->
-                "Just now"
-
-            diff < hour ->
-                "${diff / minute} min ago"
-
-            diff < day && isToday(createdAt) ->
-                "${diff / hour} hour ago"
-
-            isYesterday(createdAt) ->
-                "Yesterday"
-
-            isToday(createdAt) ->
-                "Today"
-
-            else ->
-                formatDate(createdAt)
-        }
+            diff < minute -> context.getString(R.string.just_now)
+            diff < hour ->  "${diff / minute} ${context.getString(R.string.min_ago)}"
+            diff < day && isToday(createdAt) ->   "${diff / hour} ${context.getString(R.string.hour_ago)}"
+            isYesterday(createdAt) -> context.getString(R.string.yesterday)
+            isToday(createdAt) -> context.getString(R.string.today) else -> formatDate(createdAt) }
     }
 
-    fun getRelativeTime(createdAt: String): String {
-        val createdMillis = createdAt.toMillis()
-        if (createdMillis == 0L) return ""
 
-        val now = System.currentTimeMillis()
-        val diff = now - createdMillis
 
-        val minute = 60 * 1000
-        val hour = 60 * minute
-        val day = 24 * hour
 
-        return when {
-            diff < minute ->
-                "Just now"
 
-            diff < hour ->
-                "${diff / minute} min ago"
+//    fun getRelativeTime(context: Context, createdAt: Long,): String {
+//        val now = System.currentTimeMillis()
+//        val diff = now - createdAt
+//
+//        val minute = 60 * 1000
+//        val hour = 60 * minute
+//        val day = 24 * hour
+//
+//        return when {
+//            diff < minute ->
+//                context.getString(R.string.just_now)
+//
+//            diff < hour ->
+//                context.getString(R.string.min_ago, diff / minute)
+//
+//            diff < day && isToday(createdAt) ->
+//                context.getString(R.string.hour_ago, diff / hour)
+//
+//            isYesterday(createdAt) ->
+//                context.getString(R.string.yesterday)
+//
+//            isToday(createdAt) ->
+//                context.getString(R.string.today)
+//
+//            else ->
+//                formatDate(createdAt)
+//        }
+//    }
 
-            diff < day && isToday(createdMillis) ->
-                "${diff / hour} hour ago"
 
-            isYesterday(createdMillis) ->
-                "Yesterday"
 
-            isToday(createdMillis) ->
-                "Today"
-
-            else ->
-                formatDate(createdMillis)
-        }
-    }
+//    fun getRelativeTime(createdAt: String,context: Context): String {
+//        val createdMillis = createdAt.toMillis()
+//        if (createdMillis == 0L) return ""
+//
+//        val now = System.currentTimeMillis()
+//        val diff = now - createdMillis
+//
+//        val minute = 60 * 1000
+//        val hour = 60 * minute
+//        val day = 24 * hour
+//
+//        return when {
+//            diff < minute ->
+//                "Just now"
+//
+//            diff < hour ->
+//                "${diff / minute} min ago"
+//
+//            diff < day && isToday(createdMillis) ->
+//                "${diff / hour} hour ago"
+//
+//            isYesterday(createdMillis) ->
+//                "Yesterday"
+//
+//            isToday(createdMillis) ->
+//                "Today"
+//
+//            else ->
+//                formatDate(createdMillis)
+//        }
+//    }
 
 
     fun String.toMillis(): Long {
