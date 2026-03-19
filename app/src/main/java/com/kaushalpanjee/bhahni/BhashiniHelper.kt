@@ -21,7 +21,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 
-
+////mac commit in use 20/03/2026 kaushal panjee
 object BhashiniHelper {
     private val context: Context
         get() = KaushalPanjeeApplication.getContext()
