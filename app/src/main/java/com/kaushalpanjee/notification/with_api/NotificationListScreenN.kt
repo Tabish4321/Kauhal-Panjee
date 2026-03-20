@@ -49,6 +49,7 @@ fun NotificationListScreenN(
 
     Scaffold(
         topBar = {
+            //            Ajit Ranjan use Resource.string
             TopAppBar(
                 title = { Text(text = stringResource(R.string.invitation_list)) },
                 navigationIcon = {

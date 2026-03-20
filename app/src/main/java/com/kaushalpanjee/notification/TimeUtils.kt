@@ -14,7 +14,7 @@ object TimeUtils {
 
     @SuppressLint("StringFormatInvalid")
 
-//
+//          Ajit Ranjan use Resource.string
     fun getRelativeTime(createdAt: Long,context: Context): String { val now = System.currentTimeMillis()
         val diff = now - createdAt
         val minute = 60 * 1000

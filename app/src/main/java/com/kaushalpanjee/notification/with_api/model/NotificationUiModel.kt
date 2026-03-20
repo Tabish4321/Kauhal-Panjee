@@ -1,12 +1,8 @@
 package com.kaushalpanjee.notification.with_api.model
 
-import com.kaushalpanjee.bhahni.BhashiniHelper
-import com.kaushalpanjee.common.CommonRepository
+import com.kaushalpanjee.bhashini.helper.BhashiniHelper
 import com.kaushalpanjee.notification.with_api.model.res.UserNotification
 import kotlinx.coroutines.runBlocking
-
-import android.content.Context
-import com.kaushalpanjee.R
 
 /**
  * Created by Rishi Porwal
@@ -25,16 +21,19 @@ data class NotificationUiModel(
 /**
  * Created by Ajit Ranajan
  */
-fun UserNotification.toUiModel(): NotificationUiModel {
 
+fun UserNotification.toUiModel(): NotificationUiModel {
+//            Ajit Ranjan remove click to Accept/Reject.
     val cleanBody = body.orEmpty()
         .replace("\n click to Accept/Reject.", "", true)
         .trim()
 
+
+//    Ajit Ranjan add Bhashini
     val translatedTitle = runBlocking {
         BhashiniHelper.translate(title.orEmpty())
     }
-
+//    Ajit Ranjan add Bhashini
     val translatedMessage = runBlocking {
         BhashiniHelper.translate(cleanBody)
     }

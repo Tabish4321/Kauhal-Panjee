@@ -105,6 +105,7 @@ fun NotificationItemCard(
                     ) {
                         Icon(Icons.Default.Close, contentDescription = null)
                         Spacer(Modifier.width(6.dp))
+                        //            Ajit Ranjan use Resource.string
                         Text(text = stringResource(R.string.reject))
 
 
@@ -122,6 +123,7 @@ fun NotificationItemCard(
                     ) {
                         Icon(Icons.Default.Check, contentDescription = null)
                         Spacer(Modifier.width(6.dp))
+                        //            Ajit Ranjan use Resource.string
                         Text(
                             text = stringResource(R.string.accept),
                             color = Color.White
@@ -139,10 +141,13 @@ fun NotificationItemCard(
 fun StatusBadge(status: String) {
     val (text, color, bgColor) = when (status) {
         "APPROVED","A" ->
-            Triple("Accepted", Color(0xFF2E7D32), Color(0xFFE8F5E9))
+//            Ajit Ranjan use Resource.string
+            Triple(stringResource(R.string.accepted),Color(0xFF2E7D32), Color(0xFFE8F5E9))
+//            Triple("Accepted", Color(0xFF2E7D32), Color(0xFFE8F5E9))
 
        "REJECTED","R" ->
-            Triple("Rejected", Color.Red, Color(0xFFFDECEA))
+           //            Ajit Ranjan use Resource.string
+            Triple(stringResource(R.string.rejected), Color.Red, Color(0xFFFDECEA))
 
         else -> return
     }
