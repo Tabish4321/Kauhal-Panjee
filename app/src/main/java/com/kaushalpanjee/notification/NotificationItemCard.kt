@@ -1,7 +1,9 @@
 package com.kaushalpanjee.notification
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,7 +49,18 @@ fun NotificationItemCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .then(
+                if (item.invitationStatus == "A") {
+                    Modifier.clickable {
+                        Toast.makeText(
+                            context,
+                            "Accepted item clicked",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else Modifier
+            ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)

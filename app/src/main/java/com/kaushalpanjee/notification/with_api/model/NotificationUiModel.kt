@@ -51,20 +51,6 @@ fun UserNotification.toUiModel(): NotificationUiModel {
     )
 }
 
-//fun UserNotification.toUiModel(): NotificationUiModel =
-//    NotificationUiModel(
-//        id = id?.toString().orEmpty(),
-//        title = title.orEmpty(),
-////        message = body.orEmpty(),
-//        message = body.orEmpty().replace("\n click to Accept/Reject.", "", ignoreCase = true).trim(),
-//        createdAt = createdOn.orEmpty(),
-//        invitationStatus = invitationFlag.orEmpty(), // P / A / R
-//        instituteTrade = instituteTrade,
-//        instituteId = instituteId,
-//        entityCode = entityCode,
-//        candidateId = candidateId
-//    )
-
 
 fun String.toInvitationText(): String =
     when (this) {
