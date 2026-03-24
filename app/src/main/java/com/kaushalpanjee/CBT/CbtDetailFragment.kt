@@ -76,7 +76,7 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
             }
 
             // ✅ ONLY USE CBTTheme (REMOVE MaterialTheme)
-            CBTTheme {
+//            CBTTheme {
 
                 CBTExamScreen(
                     questionList = questionList,
@@ -88,6 +88,11 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
                 )
             }
         }
+
+
+
+
+
 //          these use without font and screen size
 //        binding.composeView.setContent {
 //
