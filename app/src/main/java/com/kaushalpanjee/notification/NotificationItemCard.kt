@@ -38,12 +38,16 @@ import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 
 
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.CommonViewModel
+import com.kaushalpanjee.common.model.UidaiKycRequest
+import com.kaushalpanjee.core.util.AppConstant
 
 @Composable
 fun NotificationItemCard(
     item: NotificationUiModel,
     onApprove: () -> Unit,
-    onDisapprove: () -> Unit
+    onDisapprove: () -> Unit,
+    commonViewModel: CommonViewModel
 ) {
     val context = LocalContext.current
     Card(
@@ -52,7 +56,10 @@ fun NotificationItemCard(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .then(
                 if (item.invitationStatus == "A") {
+
                     Modifier.clickable {
+
+
                         Toast.makeText(
                             context,
                             "Accepted item clicked",

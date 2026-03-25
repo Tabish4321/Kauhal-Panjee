@@ -21,6 +21,7 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.notification.NotificationItemCard
 import com.kaushalpanjee.notification.with_api.NotificationStatus
 import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
+import com.kaushalpanjee.common.CommonViewModel
 
 @Composable
 fun NotificationContent(
@@ -28,7 +29,9 @@ fun NotificationContent(
     state: Resource<List<NotificationUiModel>>,
     onLoadMore: () -> Unit,
     onApprove: (String) -> Unit,
-    onDisapprove: (String) -> Unit
+
+    onDisapprove: (String) -> Unit,
+    commonViewModel: CommonViewModel
 ) {
     when (state) {
 
@@ -57,7 +60,8 @@ fun NotificationContent(
                             NotificationStatus.REJECTED -> onDisapprove(id)
                             else -> Unit
                         }
-                    }
+                    },
+                    commonViewModel = commonViewModel
                 )
             }
         }
@@ -92,7 +96,8 @@ private fun NotificationList(
     modifier: Modifier,
     notifications: List<NotificationUiModel>,
     onLoadMore: () -> Unit,
-    onAction: (String, NotificationStatus) -> Unit
+    onAction: (String, NotificationStatus) -> Unit,
+    commonViewModel: CommonViewModel
 ) {
     val listState = rememberLazyListState()
 
@@ -116,7 +121,8 @@ private fun NotificationList(
                 },
                 onDisapprove = {
                     onAction(item.id, NotificationStatus.REJECTED)
-                }
+                },
+                commonViewModel = commonViewModel
             )
 
         }
@@ -141,5 +147,3 @@ private fun NotificationList(
 //    ) {
 //        onLoadMore()
 //    }
-
-

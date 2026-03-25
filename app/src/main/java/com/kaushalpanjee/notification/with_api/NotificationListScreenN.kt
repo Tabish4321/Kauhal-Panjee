@@ -65,8 +65,8 @@ fun NotificationListScreenN(
             state = notificationState,
             onLoadMore = { commonViewModel.loadNotifications(loadMore = true) },
             onApprove = { commonViewModel.updateNotificationStatus(it,status= "APPROVED") },
-            onDisapprove = { commonViewModel.updateNotificationStatus(it,status= "REJECTED") }
+            onDisapprove = { commonViewModel.updateNotificationStatus(it,status= "REJECTED") },
+            commonViewModel = commonViewModel
         )
     }
 }
-
