@@ -73,10 +73,12 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
 
             LaunchedEffect(questionList) {
                 questionListData = questionList
+                // Lock activity to portrait orientation during exam
+                activity?.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
 
             // ✅ ONLY USE CBTTheme (REMOVE MaterialTheme)
-            CBTTheme {
+//            CBTTheme {
 
                 CBTExamScreen(
                     questionList = questionList,
@@ -84,9 +86,13 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
                      userPreferences.getUserName(),
                     examId = examId,
                     questionSetId = questionSetId,
-                    batchId = batchId
+                    batchId = batchId,
+                    onOrientationChange = {
+                        // Navigate back to home page when orientation changes
+                        activity?.supportFragmentManager?.popBackStack()
+                    }
                 )
-            }
+//            }
         }
 //          these use without font and screen size
 //        binding.composeView.setContent {
