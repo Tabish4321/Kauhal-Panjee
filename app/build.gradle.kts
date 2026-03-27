@@ -149,19 +149,19 @@ android {
         jvmTarget = "1.8"
     }
 
-//    flavorDimensions += listOf("app")
-//    productFlavors {
-//        create("dev") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
-//
-//        }
-//        create("prod") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
-//
-//        }
-//    }
+    flavorDimensions += listOf("app")
+    productFlavors {
+        create("dev") {
+            dimension = "app"
+            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
+
+        }
+        create("prod") {
+            dimension = "app"
+            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
+
+        }
+    }
 
     configurations.all {
         // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
