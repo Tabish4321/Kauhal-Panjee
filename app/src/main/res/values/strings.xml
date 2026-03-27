@@ -274,9 +274,7 @@
     <string name="question_index">Question Index</string>
     <string name="answered">Answered</string>
     <string name="not_answered">Not Answered</string>
-
-
-
+    <string name="loading_questions">Loading Questions...</string>
 
 
 </resources>

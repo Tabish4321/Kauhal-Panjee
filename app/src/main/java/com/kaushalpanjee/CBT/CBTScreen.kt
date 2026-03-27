@@ -62,6 +62,8 @@ import com.example.myapplication.CBT.api.Question
 // 🔹 Android
 import android.util.Log
 import android.widget.Toast
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 
 // 🔹 Compose Core
 import androidx.compose.foundation.background
@@ -73,6 +75,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -92,7 +95,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-//import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.CBT.api.ApiResponse
 import com.example.myapplication.CBT.api.QuestionSet
 import com.google.gson.Gson
@@ -115,7 +118,7 @@ import com.google.gson.JsonObject
 import com.kaushalpanjee.CBT.ActionButton
 import com.kaushalpanjee.CBT.OutlineBtn
 import com.kaushalpanjee.CBT.AppDimens
-//import com.kaushalpanjee.CBT.dimens
+
 import com.kaushalpanjee.CBT.submit.RetrofitClient
 import com.kaushalpanjee.CBT.submit.SubmitExamItem
 import com.kaushalpanjee.CBT.submit.SubmitExamRequest
@@ -130,6 +133,12 @@ import kotlin.inc
 import kotlin.text.compareTo
 import com.kaushalpanjee.R
 
+// ViewModel and SavedState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.collectAsState
+import com.kaushalpanjee.CBT.CBTExamViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CBTExamScreen(
@@ -138,7 +147,9 @@ fun CBTExamScreen(
     candidatName: String,
     examId: String,
     questionSetId: String,
-    batchId: String
+    batchId: String,
+    viewModel: CBTExamViewModel = viewModel(),
+    onOrientationChange: (() -> Unit)? = null
 ) {
 
     if (questionList.isEmpty()) {
@@ -148,19 +159,40 @@ fun CBTExamScreen(
         return
     }
 
-    var examStarted by remember { mutableStateOf(false) }
-    var currentIndex by remember { mutableStateOf(0) }
-    var timeLeft by remember { mutableStateOf(1800) }
-    var examFinished by remember { mutableStateOf(false) }
-    var editMode by remember { mutableStateOf(false) }
-    var showReviewDialog by remember { mutableStateOf(false) }
-    var showSuccessDialog by remember { mutableStateOf(false) }
+    // Collect ViewModel StateFlows
+    val examStarted by viewModel.examStarted.collectAsState()
+    val currentIndex by viewModel.currentIndex.collectAsState()
+    val timeLeft by viewModel.timeLeft.collectAsState()
+    val examFinished by viewModel.examFinished.collectAsState()
+    val editMode by viewModel.editMode.collectAsState()
+    val showReviewDialog by viewModel.showReviewDialog.collectAsState()
+    val showSuccessDialog by viewModel.showSuccessDialog.collectAsState()
+    val submissionLoading by viewModel.submissionLoading.collectAsState()
+    val submissionError by viewModel.submissionError.collectAsState()
 
-    val answers = remember { mutableStateMapOf<String, String>() }
-    val markedQuestions = remember { mutableStateMapOf<String, Boolean>() }
-    val questionStatus = remember { mutableStateMapOf<String, String>() }
+    val answers by viewModel.answers.collectAsState()
+    val markedQuestions by viewModel.markedQuestions.collectAsState()
+    val questionStatus by viewModel.questionStatus.collectAsState()
 
     val screenHeight = LocalConfiguration.current.screenHeightDp
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
+
+    // 🔥 ORIENTATION DETECTION - Go back to home if device rotates to landscape
+    val currentOrientation = configuration.orientation
+    LaunchedEffect(currentOrientation) {
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.w("CBTExamScreen", "Device rotated to landscape - navigating back to home")
+            onOrientationChange?.invoke()
+        }
+    }
+
+    // Start timer once when exam begins
+    LaunchedEffect(examStarted) {
+        if (examStarted && !examFinished) {
+            viewModel.startTimer()
+        }
+    }
 
     // ---------------- START SCREEN ----------------
     if (!examStarted) {
@@ -189,7 +221,7 @@ fun CBTExamScreen(
 
                 Spacer(Modifier.height(20.dp))
 
-                Button(onClick = { examStarted = true }) {
+                Button(onClick = { viewModel.startExam() }) {
                     Text("Start Exam")
                 }
             }
@@ -199,17 +231,6 @@ fun CBTExamScreen(
 
     val currentQuestion = questionList[currentIndex]
 
-    // ---------------- TIMER ----------------
-    LaunchedEffect(Unit) {
-        while (!examFinished && timeLeft > 0) {
-            delay(1000)
-            timeLeft--
-        }
-        if (timeLeft == 0) {
-            examFinished = true
-            showSuccessDialog = true
-        }
-    }
 
     Scaffold(
         containerColor = Color(0x33F2F2F2),
@@ -279,7 +300,7 @@ fun CBTExamScreen(
 
                         Spacer(Modifier.width(10.dp))
 
-                        IconButton(onClick = { showReviewDialog = true }) {
+                        IconButton(onClick = { viewModel.toggleReviewDialog() }) {
                             Icon(Icons.Default.List, null, tint = Color.Black)
                         }
                     }
@@ -296,48 +317,55 @@ fun CBTExamScreen(
                 .navigationBarsPadding()
         ) {
 
-            // 🔥 Scroll Area
+            // 🔥 SCROLLABLE QUESTION AREA
             Column(
                 modifier = Modifier
                     .weight(1f)
+                    .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
+                    .padding(horizontal = 14.dp, vertical = 8.dp)
             ) {
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // Question Counter & Progress
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = stringResource(id = R.string.question),
-                        fontSize = 22.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        "${currentIndex + 1}",
-                        fontSize = 22.sp,
+                        " ${currentIndex + 1}",
+                        fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
 
-                    Text(" / ${questionList.size}", fontSize = 22.sp)
+                    Text(" / ${questionList.size}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
-
-                Spacer(Modifier.height(8.dp))
 
                 LinearProgressIndicator(
                     progress = (currentIndex + 1) / questionList.size.toFloat(),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(6.dp)
+                        .height(5.dp)
+                        .padding(vertical = 6.dp)
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(10.dp))
 
                 Text(
                     "${currentIndex + 1}. ${currentQuestion.question_value}",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(vertical = 8.dp)
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(10.dp))
 
                 currentQuestion.option.forEach { option ->
 
@@ -345,231 +373,32 @@ fun CBTExamScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                answers[currentQuestion.question_id] = option.option_key
+                                viewModel.selectAnswer(currentQuestion.question_id, option.option_key)
                             }
-                            .padding(vertical = 8.dp),
+                            .padding(vertical = 6.dp)
+                            .background(
+                                if (answers[currentQuestion.question_id] == option.option_key)
+                                    MaterialTheme.colorScheme.primaryContainer
+                                else
+                                    Color.Transparent,
+                                RoundedCornerShape(8.dp)
+                            )
+                            .padding(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
                         RadioButton(
                             selected = answers[currentQuestion.question_id] == option.option_key,
                             onClick = {
-                                answers[currentQuestion.question_id] = option.option_key
+                                viewModel.selectAnswer(currentQuestion.question_id, option.option_key)
                             }
                         )
 
-                        Text(option.option_value, modifier = Modifier.padding(start = 8.dp))
+                        Text(option.option_value, modifier = Modifier.padding(start = 10.dp), fontSize = 13.sp)
                     }
                 }
 
-                Spacer(Modifier.height(20.dp))
-
-                // Action Buttons
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-
-                    Text(
-                        text = "",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    val buttonList = listOf(
-                        R.string.save_next to Color(0xFF4CAF50),
-                        R.string.save_review to Color(0xFFFFC107),
-                        R.string.mark to Color(0xFF03A9F4),
-                        R.string.clear to Color.Gray
-                    )
-
-                    buttonList.forEach { (textRes, color) ->
-
-                        val text = stringResource(id = textRes)
-
-                        Text(
-                            text = text,
-                            modifier = Modifier
-                                .weight(1f)
-                                .background(color, RoundedCornerShape(6.dp))
-                                .clickable {
-                                    val id = currentQuestion.question_id
-
-                                    when (textRes) {
-
-                                        R.string.clear -> {
-                                            answers.remove(id)
-                                            questionStatus.remove(id)
-                                        }
-
-                                        else -> {
-                                            questionStatus[id] = text
-                                            if (currentIndex < questionList.lastIndex) currentIndex++
-                                        }
-                                    }
-                                }
-                                .padding(vertical = 10.dp),
-
-                            textAlign = TextAlign.Center,
-                            color = if (textRes == R.string.save_review) Color.Black else Color.White,
-                            fontSize = 10.sp
-                        )
-                    }
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-//                ) {
-//                    Text(
-//                        text = stringResource(id = R.string.question),
-//                        fontSize = 22.sp,
-//                        fontWeight = FontWeight.Bold
-//                    )
-//
-//                    listOf(
-//                        "Save & Next" to Color(0xFF4CAF50),
-//                        "Save & Review" to Color(0xFFFFC107),
-//                        "Mark" to Color(0xFF03A9F4),
-//                        "Clear" to Color.Gray
-//                    ).forEach { (text, color) ->
-//
-//                        Text(
-//                            text,
-//                            modifier = Modifier
-//                                .weight(1f)
-//                                .background(color, RoundedCornerShape(6.dp))
-//                                .clickable {
-//                                    val id = currentQuestion.question_id
-//
-//                                    when (text) {
-//                                        "Clear" -> {
-//                                            answers.remove(id)
-//                                            questionStatus.remove(id)
-//                                        }
-//                                        else -> {
-//                                            questionStatus[id] = text
-//                                            if (currentIndex < questionList.lastIndex) currentIndex++
-//                                        }
-//                                    }
-//                                }
-//                                .padding(vertical = 10.dp),
-//                            textAlign = TextAlign.Center,
-//                            color = if (text == "Save & Review") Color.Black else Color.White,
-//                            fontSize = 10.sp
-//                        )
-//                    }
-//                }
-//            }
-                Spacer(Modifier.height(20.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    // Previous (Left)
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color.Transparent)
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.horizontalGradient(
-                                    listOf(
-                                        MaterialTheme.colorScheme.primary,
-                                        MaterialTheme.colorScheme.primaryContainer,
-                                        MaterialTheme.colorScheme.secondary
-                                    )
-                                ),
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .clickable {
-                                if (currentIndex > 0) currentIndex--
-                            }
-                            .padding(horizontal = 16.dp, vertical = 10.dp)
-                    ) {
-                        Text(
-//                            text = "Previous",
-                            text = stringResource(id = R.string.previous),
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    // Next (Right)
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color.Transparent)
-                            .border(
-                                width = 2.dp,
-                                brush = Brush.horizontalGradient(
-                                    listOf(
-                                        MaterialTheme.colorScheme.primary,
-                                        MaterialTheme.colorScheme.primaryContainer,
-                                        MaterialTheme.colorScheme.secondary
-                                    )
-                                ),
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .clickable {
-                                if (currentIndex < questionList.lastIndex)
-                                    currentIndex++
-                            }
-                            .padding(horizontal = 16.dp, vertical = 10.dp)
-                    ) {
-                        Text(
-                            text =  stringResource(id = R.string.next),
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-
-
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp),
-//                horizontalArrangement = Arrangement.SpaceBetween
-//            ) {
-//
-//                Button(onClick = {
-//                    if (currentIndex > 0) currentIndex--
-//                }) {
-//                    Text("Previous")
-//                }
-
-//                Button(onClick = {
-//                    if (currentIndex < questionList.lastIndex) currentIndex++
-//                }) {
-//                    Text("Next")
-//                }
-
-
+                Spacer(Modifier.height(12.dp))
             }
             if (showReviewDialog) {
 
@@ -590,16 +419,17 @@ fun CBTExamScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(16.dp)
+                                .padding(12.dp)
                         ) {
 
                             // Top Bar (Back + Title)
                             Row(
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth()
                             ) {
 
                                 IconButton(
-                                    onClick = { showReviewDialog = false }
+                                    onClick = { viewModel.closeReviewDialog() }
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.ArrowBack,
@@ -608,60 +438,70 @@ fun CBTExamScreen(
                                 }
 
                                 Text(
-//                                    text = "Question Index",
                                     text = stringResource(id = R.string.question_index),
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
 
-                            Spacer(modifier = Modifier.height(10.dp))
+                            Spacer(modifier = Modifier.height(8.dp))
 
                             // Color Legend Layout
                             Row(
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp),
+                                horizontalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
 
                                 // Red Box
                                 Box(
                                     modifier = Modifier
-                                        .size(18.dp)
-                                        .background(Color(0xFFF44336), RoundedCornerShape(4.dp))
+                                        .size(14.dp)
+                                        .background(Color(0xFFF44336), RoundedCornerShape(3.dp))
                                 )
 
-                                Spacer(modifier = Modifier.width(6.dp))
-
-//                                Text("Not Answered")
                                 Text(
-//                                    text = "Question Index",
-                                    text = stringResource(id = R.string.not_answered)
-
+                                    text = stringResource(id = R.string.not_answered),
+                                    fontSize = 11.sp
                                 )
-//                                Text stringResource(id = R.string.question_index)
-
-                                Spacer(modifier = Modifier.width(20.dp))
 
                                 // Green Box
                                 Box(
                                     modifier = Modifier
-                                        .size(18.dp)
-                                        .background(Color(0xFF4CAF50), RoundedCornerShape(4.dp))
+                                        .size(14.dp)
+                                        .background(Color(0xFF4CAF50), RoundedCornerShape(3.dp))
                                 )
 
-                                Spacer(modifier = Modifier.width(6.dp))
-
-//                                Text("Answered")
                                 Text(
-                                text = stringResource(id = R.string.answered))
+                                    text = stringResource(id = R.string.answered),
+                                    fontSize = 11.sp
+                                )
+
+                                // Yellow Box
+                                Box(
+                                    modifier = Modifier
+                                        .size(14.dp)
+                                        .background(Color(0xFFFFC107), RoundedCornerShape(3.dp))
+                                )
+
+                                Text(
+                                    text = "Review",
+                                    fontSize = 11.sp
+                                )
                             }
 
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(10.dp))
 
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(5),
-                                modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(8.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxWidth(),
+                                verticalArrangement = Arrangement.spacedBy(6.dp),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
 
                                 items(questionList.size) { index ->
@@ -686,12 +526,12 @@ fun CBTExamScreen(
 
                                     Box(
                                         modifier = Modifier
-                                            .size(50.dp)
-                                            .clip(RoundedCornerShape(8.dp))
+                                            .size(45.dp)
+                                            .clip(RoundedCornerShape(6.dp))
                                             .background(bgColor)
                                             .clickable {
-                                                currentIndex = index
-                                                showReviewDialog = false
+                                                viewModel.goToQuestion(index)
+                                                viewModel.closeReviewDialog()
                                             },
                                         contentAlignment = Alignment.Center
                                     ) {
@@ -699,105 +539,383 @@ fun CBTExamScreen(
                                         Text(
                                             text = "${index + 1}",
                                             color = Color.White,
-                                            fontWeight = FontWeight.Bold
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 11.sp
                                         )
                                     }
                                 }
                             }
 
+                            Spacer(modifier = Modifier.height(8.dp))
 
-
+                            // Close Button
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp)
+                                    .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(6.dp))
+                                    .clickable { viewModel.closeReviewDialog() }
+                                    .padding(10.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "Close",
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp
+                                )
+                            }
 
                         }
                     }
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
-            // 🔥 YOUR ORIGINAL SUBMIT BUTTON (UNCHANGED)
-            val context = LocalContext.current
+            
+            // 🔥 ACTION BUTTONS (Save & Next, Save Review, Mark, Clear)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    val buttonList = listOf(
+                        R.string.save_next to Color(0xFF4CAF50),
+                        R.string.save_review to Color(0xFFFFC107),
+                        R.string.mark to Color(0xFF03A9F4),
+                        R.string.clear to Color.Gray
+                    )
 
+                    buttonList.forEach { (textRes, color) ->
+                        val text = stringResource(id = textRes)
+
+                        Text(
+                            text = text,
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(color, RoundedCornerShape(5.dp))
+                                .clickable {
+                                    val id = currentQuestion.question_id
+
+                                    when (textRes) {
+                                        R.string.clear -> {
+                                            viewModel.clearAnswer(id)
+                                        }
+                                        R.string.save_review -> {
+                                            viewModel.markQuestion(id)
+                                            viewModel.saveAndNext(id, text, questionList.size)
+                                        }
+                                        R.string.mark -> {
+                                            viewModel.markQuestion(id)
+                                        }
+                                        else -> {
+                                            viewModel.saveAndNext(id, text, questionList.size)
+                                        }
+                                    }
+                                }
+                                .padding(vertical = 7.dp),
+                            textAlign = TextAlign.Center,
+                            color = if (textRes == R.string.save_review) Color.Black else Color.White,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(4.dp))
+
+                // 🔥 NAVIGATION BUTTONS (Previous & Next)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Previous Button
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(Color.Transparent)
+                            .border(
+                                width = 1.5.dp,
+                                brush = Brush.horizontalGradient(
+                                    listOf(
+                                        MaterialTheme.colorScheme.primary,
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    )
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                viewModel.previousQuestion()
+                            }
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.previous),
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp
+                        )
+                    }
+
+                    // Next Button
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(Color.Transparent)
+                            .border(
+                                width = 1.5.dp,
+                                brush = Brush.horizontalGradient(
+                                    listOf(
+                                        MaterialTheme.colorScheme.primary,
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    )
+                                ),
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable {
+                                viewModel.nextQuestion(questionList.size)
+                            }
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.next),
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp
+                        )
+                    }
+                }
+            }
+
+            // 🔥 SUBMIT BUTTON
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .clickable {
-
-                        val submitList = questionList.map { question ->
-
-                            val answerGiven = answers[question.question_id] ?: ""
-
-                            val category = when {
-                                markedQuestions[question.question_id] == true -> "Mark & Review"
-                                answerGiven.isNotEmpty() -> "Save & Next"
-                                else -> "Not Answered"
-                            }
-
-                            SubmitExamItem(
-                                question_id = question.question_id,
-                                answer_given = answerGiven,
-                                category = category,
-                                marks_per_qs = question.marks_per_qs
-                            )
-                        }
-
-                        val request = SubmitExamRequest(
-                            cand_id = candidateId,
-                            batch_id = batchId,
-                            exam_id = examId,
-                            question_set_id = questionSetId,
-                            Ques_and_ans = submitList
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                        if (submissionLoading) MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                        else MaterialTheme.colorScheme.primary
+                    )
+                    .clickable(enabled = !submissionLoading) {
+                        viewModel.submitExam(
+                            questionList,
+                            candidateId,
+                            batchId,
+                            examId,
+                            questionSetId,
+                            context
                         )
-
-                        CoroutineScope(Dispatchers.IO).launch {
-                            try {
-
-                                val gson = Gson()
-                                Log.d("FINAL_JSON", gson.toJson(request))
-
-                                val response = RetrofitClient.api.submitExam(request)
-
-                                withContext(Dispatchers.Main) {
-
-                                    if (response.isSuccessful) {
-                                        Toast.makeText(
-                                            context,
-                                            "Exam Submitted Successfully ✅",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-
-                                        examFinished = true
-                                        showSuccessDialog = true
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Submission Failed ❌",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-
-                            } catch (e: Exception) {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        context,
-                                        "Network Error ⚠️",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
                     }
-                    .padding(vertical = 14.dp),
+                    .padding(vertical = 11.dp),
                 contentAlignment = Alignment.Center
             ) {
+                if (submissionLoading) {
+                    Text(
+                        text = "Submitting...",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp
+                    )
+                } else {
+                    Text(
+                        text = if (editMode) "Update & Submit" else "Submit Exam",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp
+                    )
+                }
+            }
 
-                Text(
-                    text = if (editMode) "Update & Submit" else "Submit Exam",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
+            // 🔥 SUCCESS DIALOG - Show when exam submitted successfully
+            if (showSuccessDialog) {
+                AlertDialog(
+                    onDismissRequest = { viewModel.closeSuccessDialog() },
+                    title = {
+                        Text(
+                            text = "✅ Success!",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF4CAF50)
+                        )
+                    },
+                    text = {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Text(
+                                text = "Your exam has been submitted successfully!",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            
+                            Divider()
+                            
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Text(
+                                    text = "Candidate ID:",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = candidateId,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            
+                            Text(
+                                text = "We're syncing your results in the background. You can close this app.",
+                                fontSize = 12.sp,
+                                color = Color.Gray,
+                                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { viewModel.closeSuccessDialog() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF4CAF50)
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(45.dp)
+                        ) {
+                            Text(
+                                text = "OK",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
                 )
+            }
+
+            // 🔥 FAILURE DIALOG - Show when exam submission fails
+            if (submissionError != null) {
+                AlertDialog(
+                    onDismissRequest = { },
+                    title = {
+                        Text(
+                            text = "❌ Submission Failed",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFE53935)
+                        )
+                    },
+                    text = {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Text(
+                                text = "Error:",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFFE53935)
+                            )
+                            
+                            Text(
+                                text = submissionError ?: "Unknown error occurred",
+                                fontSize = 13.sp,
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color(0xFFFFEBEE), RoundedCornerShape(6.dp))
+                                    .padding(10.dp)
+                            )
+                            
+                            Divider()
+                            
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Text(
+                                    text = "Candidate ID:",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = candidateId,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.padding(top = 4.dp)
+                                )
+                            }
+                            
+                            Text(
+                                text = "Please check your internet connection and try again.",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { 
+                                // Clear error and allow user to retry or go back
+                                // User can try submitting again
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFE53935)
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(45.dp)
+                        ) {
+                            Text(
+                                text = "Retry",
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                        }
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                )
+            }
+
+            // Show error toast if submission fails
+            submissionError?.let { error ->
+                LaunchedEffect(error) {
+                    Toast.makeText(
+                        context,
+                        error,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
     }
