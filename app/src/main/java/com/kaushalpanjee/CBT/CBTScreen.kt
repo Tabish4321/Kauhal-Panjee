@@ -376,7 +376,10 @@ fun CBTExamScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                viewModel.selectAnswer(currentQuestion.question_id, option.option_key)
+                                viewModel.selectAnswer(
+                                    currentQuestion.question_id,
+                                    option.option_key
+                                )
                             }
                             .padding(vertical = 6.dp)
                             .background(
@@ -556,7 +559,10 @@ fun CBTExamScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(4.dp)
-                                    .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(6.dp))
+                                    .background(
+                                        MaterialTheme.colorScheme.primary,
+                                        RoundedCornerShape(6.dp)
+                                    )
                                     .clickable { viewModel.closeReviewDialog() }
                                     .padding(10.dp),
                                 contentAlignment = Alignment.Center
@@ -607,13 +613,16 @@ fun CBTExamScreen(
                                         R.string.clear -> {
                                             viewModel.clearAnswer(id)
                                         }
+
                                         R.string.save_review -> {
                                             viewModel.markQuestion(id)
                                             viewModel.saveAndNext(id, text, questionList.size)
                                         }
+
                                         R.string.mark -> {
                                             viewModel.markQuestion(id)
                                         }
+
                                         else -> {
                                             viewModel.saveAndNext(id, text, questionList.size)
                                         }
@@ -759,7 +768,7 @@ fun CBTExamScreen(
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             Text(
-                                text = "Your exam has been submitted successfully!",
+                                text = stringResource(R.string.your_exam_has_been_submitted_successfully),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold
                             )

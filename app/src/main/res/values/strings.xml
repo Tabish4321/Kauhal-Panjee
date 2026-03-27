@@ -275,6 +275,7 @@
     <string name="answered">Answered</string>
     <string name="not_answered">Not Answered</string>
     <string name="loading_questions">Loading Questions...</string>
+    <string name="your_exam_has_been_submitted_successfully">Your exam has been submitted successfully!</string>
 
 
 </resources>
