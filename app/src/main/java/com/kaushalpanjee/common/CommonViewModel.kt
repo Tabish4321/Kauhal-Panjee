@@ -126,13 +126,15 @@ import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-
-
+import com.kaushalpanjee.notification.with_api.model.CheckCandidateUiState
+import com.kaushalpanjee.notification.with_api.model.req.checkcandidateRequest
+import com.kaushalpanjee.notification.with_api.model.res.checkcandidateResponse
 
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 
 @HiltViewModel
 class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository,
@@ -1323,6 +1325,123 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
+
+
+    private val _checkcandidateRequestList =
+        MutableStateFlow(CheckCandidateUiState())
+
+    val checkcandidateRequestList: StateFlow<CheckCandidateUiState> =
+        _checkcandidateRequestList
+
+    fun checkcandidate(candidateId: String, instituteId: String) {
+        val request = checkcandidateRequest(
+            scheme = "RSETI",
+            candidateId = candidateId,
+            instituteId = instituteId
+        )
+        viewModelScope.launch {
+
+            commonRepository
+                .checkcandidate(request)
+                .collect { result ->
+
+                    when (result) {
+
+                        is Resource.Loading -> Unit
+
+                        is Resource.Success -> {
+                            try {
+                                val raw = result.data?.string() ?: ""
+
+                                val json = JSONObject(raw)
+
+                                val message = json.optString("message")
+                                val status = json.optString("status")
+                                val showDialog = json.optBoolean("showDialog")
+                                val showHappyUnhappy = json.optBoolean("showHappyUnhappy") // 🔥 ADD
+
+                                if (showDialog) {
+                                    _checkcandidateRequestList.value =
+                                        CheckCandidateUiState(
+                                            isDialogVisible = true,
+                                            message = message,
+                                            status = status,
+                                            showHappyUnhappy = showHappyUnhappy // 🔥 ADD
+                                        )
+                                }
+
+                            } catch (e: Exception) {
+                                _checkcandidateRequestList.value =
+                                    CheckCandidateUiState(
+                                        isDialogVisible = true,
+                                        message = "Parsing error",
+                                        status = "ERROR"
+                                    )
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            _checkcandidateRequestList.value =
+                                CheckCandidateUiState(
+                                    isDialogVisible = true,
+                                    message = "Something went wrong",
+                                    status = "ERROR"
+                                )
+                        }
+                    }
+                }
+        }
+//        viewModelScope.launch {
+//            commonRepository
+//                .checkcandidate(request)
+//                .collect { result ->
+//                    when (result) {
+//                        is Resource.Loading -> Unit
+//                        is Resource.Success -> {
+//                            try {
+//                                // 🔥 ResponseBody → String
+//                                val raw = result.data?.string() ?: ""
+//
+//                                // 🔥 JSON parse
+//                                val json = JSONObject(raw)
+//
+//                                val message = json.optString("message")
+//                                val status = json.optString("status")
+//                                val showDialog = json.optBoolean("showDialog")
+//
+//                                if (showDialog) {
+//                                    _checkcandidateRequestList.value =
+//                                        CheckCandidateUiState(
+//                                            isDialogVisible = true,
+//                                            message = message,
+//                                            status = status
+//                                        )
+//                                }
+//                            } catch (e: Exception) {
+//                                _checkcandidateRequestList.value =
+//                                    CheckCandidateUiState(
+//                                        isDialogVisible = true,
+//                                        message = "Parsing error",
+//                                        status = "ERROR"
+//                                    )
+//                            }
+//                        }
+//                        is Resource.Error -> {
+//                            _checkcandidateRequestList.value =
+//                                CheckCandidateUiState(
+//                                    isDialogVisible = true,
+//                                    message = "Something went wrong",
+//                                    status = "ERROR"
+//                                ) }
+//                    }
+//                }
+//        }
+
+
+
+
+
+    }
     private fun resetPagination() {
         isLoading = false
         isLastPage = false

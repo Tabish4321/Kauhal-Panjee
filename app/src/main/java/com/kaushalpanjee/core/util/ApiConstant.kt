@@ -74,6 +74,8 @@ object ApiConstant {
     const val  API_INSERT_TRAINING_CENTER = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateTrainingCenter"
     const val API_NOTIFICATION = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getNotificationList"
     const val API_APPROVECONDIDATE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}aprroveCandidate"
+
+    const val API_CHECKCANDIDATE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}check-candidate"
     const val API_INSERT_OJT_ATTENDANCE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertOjtCandidateAttendance"
 
 

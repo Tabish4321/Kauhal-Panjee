@@ -112,8 +112,10 @@ import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
+import com.kaushalpanjee.core.util.ApiConstant.API_CHECKCANDIDATE
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.req.checkcandidateRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
 import retrofit2.http.Field
@@ -463,7 +465,8 @@ interface AppLevelApi {
     suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
 
 
-
+    @POST(API_CHECKCANDIDATE)
+    suspend fun checkcandidate(@Body invitation: checkcandidateRequest): ResponseBody
 
 
 

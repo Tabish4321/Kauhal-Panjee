@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -26,6 +27,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -48,8 +51,10 @@ fun NotificationItemCard(
     onApprove: () -> Unit,
     onDisapprove: () -> Unit,
     commonViewModel: CommonViewModel
+
 ) {
     val context = LocalContext.current
+    val uiState by commonViewModel.checkcandidateRequestList.collectAsState()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,20 +63,26 @@ fun NotificationItemCard(
                 if (item.invitationStatus == "A") {
 
                     Modifier.clickable {
+                        commonViewModel.checkcandidate("2523464946","2")
 
 
-                        Toast.makeText(
-                            context,
-                            "Accepted item clicked",
-                            Toast.LENGTH_SHORT
-                        ).show()
+
                     }
                 } else Modifier
             ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
-    ) {
+    )
+
+
+
+
+
+
+
+
+    {
 
         Column(modifier = Modifier.padding(16.dp)) {
 
@@ -154,6 +165,63 @@ fun NotificationItemCard(
             }
         }
     }
+
+//    if (uiState.isDialogVisible) {
+//
+//        AlertDialog(
+//            onDismissRequest = {
+//                commonViewModel.dismissDialog()
+//            },
+//
+//            title = {
+//                Text(text = uiState.status)
+//            },
+//
+//            text = {
+//                Column {
+//                    Text(text = uiState.message)
+//
+//                    if (uiState.showHappyUnhappy) {
+//
+//                        Spacer(modifier = Modifier.height(16.dp))
+//
+//                        Row(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            horizontalArrangement = Arrangement.SpaceEvenly
+//                        ) {
+//
+//                            Button(
+//                                onClick = {
+//                                    // Happy
+//                                    commonViewModel.dismissDialog()
+//                                }
+//                            ) {
+//                                Text("😊 Happy")
+//                            }
+//
+//                            Button(
+//                                onClick = {
+//                                    // Unhappy
+//                                    commonViewModel.dismissDialog()
+//                                }
+//                            ) {
+//                                Text("😞 Unhappy")
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        )
+//    }
+
+    // 👇 ALWAYS OUTSIDE CARD
+//    if (uiState.isDialogVisible) {
+//        AlertDialog()
+//    }
+
+
+
+
 }
 
 
