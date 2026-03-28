@@ -1442,6 +1442,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+    // ✅ 🔥 YE ADD KARO (IMPORTANT)
+    fun resetDialog() {
+        _checkcandidateRequestList.value = CheckCandidateUiState()
+    }
+
     private fun resetPagination() {
         isLoading = false
         isLastPage = false
