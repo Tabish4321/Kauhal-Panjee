@@ -114,6 +114,7 @@ import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.req.MarkUnhappyRequest
 import com.kaushalpanjee.notification.with_api.model.req.checkcandidateRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
@@ -765,6 +766,19 @@ class CommonRepository @Inject constructor(
         return networkBoundResourceWithoutDbn {
             appLevelApi.checkcandidate(checkcandidaterequest)
         }
+    }
+
+
+
+        suspend fun markunhappyRequest(checkcandidaterequest: MarkUnhappyRequest
+        ): Flow<Resource<out ResponseBody>> {
+            return networkBoundResourceWithoutDbn {
+                appLevelApi.markunhappy(checkcandidaterequest)
+            }
+
+
+
+
     }
 }
 

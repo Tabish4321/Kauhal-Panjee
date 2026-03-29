@@ -126,8 +126,11 @@ import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import com.kaushalpanjee.notification.with_api.model.CheckCandidateUiState
+import com.kaushalpanjee.notification.with_api.model.req.MarkUnhappyRequest
 import com.kaushalpanjee.notification.with_api.model.req.checkcandidateRequest
+import com.kaushalpanjee.notification.with_api.model.res.MARKUNHAPPY
 import com.kaushalpanjee.notification.with_api.model.res.checkcandidateResponse
 
 
@@ -1218,56 +1221,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-
-
-
-
-
-
-
-
-
-//        viewModelScope.launch {
-//
-//            commonRepository.getNotifications(candidateId, currentPage, 10)
-//                .collectLatest { result ->
-//
-//                    when (result) {
-//
-//                        is Resource.Success -> {
-//
-//                            val newItems =
-//                                result.data?.content
-//                                    ?.map { notification ->
-//                                        // ✅ FIX: repository pass करो
-//                                        notification.toUiModel(commonRepository)
-//                                    }
-//                                    ?: emptyList()
-//
-//                            isLastPage = newItems.size < 10
-//                            currentPage++
-//
-//                            val oldList =
-//                                (_notificationList.value as? Resource.Success)?.data.orEmpty()
-//
-//                            _notificationList.value =
-//                                Resource.Success(
-//                                    if (loadMore) oldList + newItems else newItems
-//                                )
-//                        }
-//
-//                        is Resource.Error -> {
-//                            _notificationList.value =
-//                                Resource.Error(BaseErrorResponse(0, "Something Went wrong", false, ""))
-//                        }
-//
-//                        is Resource.Loading -> Unit
-//                    }
-//
-//                    isLoading = false
-//                }
-//        }
-    }
+       }
 
     public val _actionLoading = MutableStateFlow<String?>(null)
 
@@ -1325,7 +1279,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-
+//      27/03/2026 Notification
 
     private val _checkcandidateRequestList =
         MutableStateFlow(CheckCandidateUiState())
@@ -1391,61 +1345,82 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                     }
                 }
         }
-//        viewModelScope.launch {
-//            commonRepository
-//                .checkcandidate(request)
-//                .collect { result ->
-//                    when (result) {
-//                        is Resource.Loading -> Unit
-//                        is Resource.Success -> {
-//                            try {
-//                                // 🔥 ResponseBody → String
-//                                val raw = result.data?.string() ?: ""
-//
-//                                // 🔥 JSON parse
-//                                val json = JSONObject(raw)
-//
-//                                val message = json.optString("message")
-//                                val status = json.optString("status")
-//                                val showDialog = json.optBoolean("showDialog")
-//
-//                                if (showDialog) {
-//                                    _checkcandidateRequestList.value =
-//                                        CheckCandidateUiState(
-//                                            isDialogVisible = true,
-//                                            message = message,
-//                                            status = status
-//                                        )
-//                                }
-//                            } catch (e: Exception) {
-//                                _checkcandidateRequestList.value =
-//                                    CheckCandidateUiState(
-//                                        isDialogVisible = true,
-//                                        message = "Parsing error",
-//                                        status = "ERROR"
-//                                    )
-//                            }
-//                        }
-//                        is Resource.Error -> {
-//                            _checkcandidateRequestList.value =
-//                                CheckCandidateUiState(
-//                                    isDialogVisible = true,
-//                                    message = "Something went wrong",
-//                                    status = "ERROR"
-//                                ) }
-//                    }
-//                }
-//        }
-
-
-
-
 
     }
-    // ✅ 🔥 YE ADD KARO (IMPORTANT)
+
     fun resetDialog() {
         _checkcandidateRequestList.value = CheckCandidateUiState()
     }
+
+
+    private val _markunhappyRequestList =
+        MutableStateFlow(CheckCandidateUiState())
+
+    val markunhappy: StateFlow<CheckCandidateUiState> =
+        _markunhappyRequestList
+    fun markunhappy(candidateId: String, instituteId: String,remark: String) {
+        val request = MarkUnhappyRequest(
+            candidateId = "2509237607",
+            instituteId = "113"
+        )
+        viewModelScope.launch {
+            commonRepository.markunhappyRequest(request)
+                .collect { result ->
+
+                    when (result) {
+
+                        is Resource.Loading -> Unit
+
+                        is Resource.Success -> {
+                            try {
+                                val raw = result.data?.string() ?: ""
+
+                                val response = Gson().fromJson(raw, MARKUNHAPPY::class.java)
+
+                                val message = response.message ?: ""
+                                val status = response.status ?: ""
+
+                                // ✅ Direct Boolean usage
+                                val showDialog = response.showDialog ?: false
+                                val showHappyUnhappy = response.showHappyUnhappy ?: false
+
+                                // ❗ IMPORTANT: always update state (not only when showDialog)
+                                _markunhappyRequestList.value =
+                                    CheckCandidateUiState(
+                                        isDialogVisible = showDialog, // API se control
+                                        message = message,
+                                        status = status,
+                                        showHappyUnhappy = showHappyUnhappy
+                                    )
+
+                            } catch (e: Exception) {
+                                _markunhappyRequestList.value =
+                                    CheckCandidateUiState(
+                                        isDialogVisible = true,
+                                        message = "Parsing error",
+                                        status = "ERROR"
+                                    )
+                            }
+                        }
+
+                        is Resource.Error -> {
+                            _markunhappyRequestList.value =
+                                CheckCandidateUiState(
+                                    isDialogVisible = true,
+                                    message = "Something went wrong",
+                                    status = "ERROR"
+                                )
+                        }
+                    }
+                }
+        }
+
+    }
+
+
+
+
+
 
     private fun resetPagination() {
         isLoading = false

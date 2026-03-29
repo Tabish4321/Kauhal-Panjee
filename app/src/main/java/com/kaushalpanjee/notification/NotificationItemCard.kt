@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +63,35 @@ fun NotificationItemCard(
 
     val context = LocalContext.current
     val uiState by commonViewModel.checkcandidateRequestList.collectAsState()
+
+
+
+
+
+    // ✅ NEW state (API response ke liye)
+    val markUnhappyState by commonViewModel.markunhappy.collectAsState()
+
+    // 🔥 👉 YAHAN USE KARNA HAI (Dialog se upar / outside)
+    LaunchedEffect(markUnhappyState.status) {
+        if (markUnhappyState.status == "SUCCESS") {
+
+            Toast.makeText(
+                context,
+                markUnhappyState.message ?: "Success",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            commonViewModel.resetDialog()
+        }
+
+        if (markUnhappyState.status == "ERROR") {
+            Toast.makeText(
+                context,
+                markUnhappyState.message ?: "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     if (uiState.isDialogVisible == true) {
 
@@ -150,12 +180,10 @@ fun NotificationItemCard(
                                     if (remark.isBlank()) {
                                         showError = true
                                     } else {
-                                        // ✅ VALID SUBMIT
-                                        Toast.makeText(
-                                            context,
-                                            "Submitted: $remark",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+
+
+                                    commonViewModel.markunhappy(item.candidateId.toString(),item.instituteId.toString(),"Remak Ajit Ranjan")
+
 
                                         commonViewModel.resetDialog()
                                     }
@@ -188,45 +216,6 @@ fun NotificationItemCard(
         }
     }
 
-//    if (uiState.isDialogVisible) {
-//        AlertDialog(
-//            onDismissRequest = {
-//                commonViewModel.resetDialog()
-//            },
-//            title = {
-//                Text(text = uiState.status)
-//            },
-//            text = {
-//                Column {
-//                    Text(text = uiState.message)
-//
-//                    if (uiState.showHappyUnhappy) {
-//                        Spacer(modifier = Modifier.height(16.dp))
-//
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.SpaceEvenly
-//                        ) {
-//                            Button(onClick = {
-//                                commonViewModel.resetDialog()
-//                            }) {
-//                                Text("😊 Happy")
-//                            }
-//
-//                            Button(onClick = {
-//                                commonViewModel.resetDialog()
-//                            }) {
-//                                Text("😞 Unhappy")
-//                            }
-//                        }
-//                    }
-//                }
-//            },
-//            confirmButton = {}
-//        )
-//    }
-
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -235,6 +224,7 @@ fun NotificationItemCard(
                 if (item.invitationStatus == "A") {
                     Modifier.clickable {
                         commonViewModel.checkcandidate(item.candidateId.toString(),item.instituteId.toString())
+
                     }
                 } else Modifier
             ),

@@ -113,8 +113,10 @@ import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
 import com.kaushalpanjee.core.util.ApiConstant.API_CHECKCANDIDATE
+import com.kaushalpanjee.core.util.ApiConstant.API_MARKUNHAPPY
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.req.MarkUnhappyRequest
 import com.kaushalpanjee.notification.with_api.model.req.checkcandidateRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
@@ -467,6 +469,12 @@ interface AppLevelApi {
 
     @POST(API_CHECKCANDIDATE)
     suspend fun checkcandidate(@Body invitation: checkcandidateRequest): ResponseBody
+
+//    mark-unhappy
+
+    @POST(API_MARKUNHAPPY)
+    suspend fun markunhappy(@Body invitation: MarkUnhappyRequest): ResponseBody
+
 
 
 
