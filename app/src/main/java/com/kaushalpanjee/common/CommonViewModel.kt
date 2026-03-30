@@ -1330,6 +1330,7 @@ fun checkcandidate(candidateId: String, instituteId: String) {
                             } else {
                                 _checkcandidateRequestList.value =
                                     CheckCandidateUiState(isLoading = false)
+
                             }
 
                         } catch (e: Exception) {
@@ -1369,12 +1370,6 @@ fun checkcandidate(candidateId: String, instituteId: String) {
         _markunhappyRequestList
 fun markunhappy(candidateId: String, instituteId: String, remark: String) {
 
-
-//    val request = MarkUnhappyRequest(
-//        candidateId = "2509237607",
-//        instituteId = "113",
-//        remark = remark
-//    )
     val request = MarkUnhappyRequest(
         candidateId = candidateId,
         instituteId = instituteId,
@@ -1382,19 +1377,16 @@ fun markunhappy(candidateId: String, instituteId: String, remark: String) {
     )
 
 
-    viewModelScope.launch {
 
+
+    viewModelScope.launch {
         commonRepository.markunhappyRequest(request)
             .collect { result ->
-
                 when (result) {
-
                     is Resource.Loading -> {
-                        // 🔥 SHOW LOADER
                         _markunhappyRequestList.value =
                             CheckCandidateUiState(isLoading = true)
                     }
-
                     is Resource.Success -> {
                         try {
                             val raw = result.data?.string() ?: ""
@@ -1429,7 +1421,7 @@ fun markunhappy(candidateId: String, instituteId: String, remark: String) {
                     is Resource.Error -> {
                         _markunhappyRequestList.value =
                             CheckCandidateUiState(
-                                isLoading = false, // 🔥 HIDE LOADER
+                                isLoading = false,
                                 isDialogVisible = true,
                                 message = "Something went wrong",
                                 status = "ERROR"

@@ -70,7 +70,7 @@ fun NotificationItemCard(
     val uiState by commonViewModel.checkcandidateRequestList.collectAsState()
     val markUnhappyState by commonViewModel.markunhappy.collectAsState()
 
-    // 🔥 LOADER (ADDED - GLOBAL OVERLAY)
+
     if (uiState.isLoading || markUnhappyState.isLoading) {
         Box(
             modifier = Modifier
@@ -87,7 +87,7 @@ fun NotificationItemCard(
         }
     }
 
-    // ✅ EXISTING CODE (NO CHANGE)
+
     LaunchedEffect(markUnhappyState.status) {
         if (markUnhappyState.status == "SUCCESS") {
 
@@ -225,21 +225,21 @@ fun NotificationItemCard(
             commonViewModel.resetDialog()
         }
     }
-
-    // 🔥 CARD (NO CHANGE)
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .then(
                 if (item.invitationStatus == "A") {
+
                     Modifier.clickable {
                         commonViewModel.checkcandidate(
                             item.candidateId.toString(),
                             item.instituteId.toString()
                         )
                     }
-                } else Modifier
+                }
+                else Modifier
             ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(12.dp),
@@ -284,14 +284,35 @@ fun NotificationItemCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    OutlinedButton(onClick = onDisapprove) {
-                        Text(stringResource(R.string.reject))
+                    OutlinedButton(
+                        onClick = onDisapprove,
+                        border = BorderStroke(1.dp, Color.Red),
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.Red
+                        )
+                    ) {
+                        Icon(Icons.Default.Close, contentDescription = null)
+                        Spacer(Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(R.string.reject),
+                            color = Color.Red
+                        )
                     }
-
                     Spacer(modifier = Modifier.width(20.dp))
-
-                    Button(onClick = onApprove) {
-                        Text(stringResource(R.string.accept))
+                    Button(
+                        onClick = onApprove,
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF2E7D32)
+                        )
+                    ) {
+                        Icon(Icons.Default.Check, contentDescription = null)
+                        Spacer(Modifier.width(6.dp))
+                        Text(
+                            text = stringResource(R.string.accept),
+                            color = Color.White
+                        )
                     }
                 }
             }
