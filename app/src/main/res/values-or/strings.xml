@@ -284,4 +284,15 @@
 
     <string name="invitation_list" translatable="false">ନିମନ୍ତ୍ରଣ ତାଲିକା</string>
 
+
+
+
+    <string name="enter_remark">ଟିପ୍ପଣୀ ଲେଖନ୍ତୁ</string>
+    <string name="please_write_remark">ଦୟାକରି ଟିପ୍ପଣୀ ଲେଖନ୍ତୁ</string>
+    <string name="no_data_found">କୌଣସି ତଥ୍ୟ ମିଳିଲା ନାହିଁ</string>
+    <string name="happy">😊 ଖୁସି</string>
+    <string name="unhappy">😞 ଅସନ୍ତୁଷ୍ଟ</string>
+    <string name="something_went_wrong">କିଛି ଭୁଲ୍ ହୋଇଛି</string>
+    <string name="please_wait">ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ…</string>
+
 </resources>

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -34,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -48,9 +51,11 @@ import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.CommonViewModel
+import androidx.compose.ui.zIndex
+import com.kaushalpanjee.bhashini.helper.BhashiniHelper
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.core.util.AppConstant
-
+import kotlinx.coroutines.runBlocking
 
 
 @Composable
@@ -63,15 +68,26 @@ fun NotificationItemCard(
 
     val context = LocalContext.current
     val uiState by commonViewModel.checkcandidateRequestList.collectAsState()
-
-
-
-
-
-    // ✅ NEW state (API response ke liye)
     val markUnhappyState by commonViewModel.markunhappy.collectAsState()
 
-    // 🔥 👉 YAHAN USE KARNA HAI (Dialog se upar / outside)
+    // 🔥 LOADER (ADDED - GLOBAL OVERLAY)
+    if (uiState.isLoading || markUnhappyState.isLoading) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.3f))
+                .zIndex(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator()
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(stringResource(R.string.please_wait), color = Color.White)
+            }
+        }
+    }
+
+    // ✅ EXISTING CODE (NO CHANGE)
     LaunchedEffect(markUnhappyState.status) {
         if (markUnhappyState.status == "SUCCESS") {
 
@@ -85,9 +101,10 @@ fun NotificationItemCard(
         }
 
         if (markUnhappyState.status == "ERROR") {
+
             Toast.makeText(
                 context,
-                markUnhappyState.message ?: "Something went wrong",
+                markUnhappyState.message ?: context.getString(R.string.something_went_wrong),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -97,59 +114,48 @@ fun NotificationItemCard(
 
         if (uiState.status == "SUCCESS") {
 
-            // 🔥 Local state
             var isUnhappySelected by remember { mutableStateOf(false) }
             var remark by remember { mutableStateOf("") }
             var showError by remember { mutableStateOf(false) }
 
             AlertDialog(
-                onDismissRequest = {
-                    // ❌ disable outside dismiss
-                },
+                onDismissRequest = {},
 
-                // ❌ TITLE REMOVED
                 title = null,
 
                 text = {
                     Column {
-
-                        // ✅ MESSAGE
-                        Text(text = uiState.message)
+                        val translatedmessage = runBlocking {
+                            BhashiniHelper.translate(uiState.message)
+                        }
+                        Text(text = translatedmessage)
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // ✅ HAPPY / UNHAPPY BUTTONS
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
 
-                            // 🔴 Happy (LEFT)
                             Button(
                                 onClick = {
                                     commonViewModel.resetDialog()
                                 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color.Red
-                                )
+                                colors = ButtonDefaults.buttonColors(Color.Red)
                             ) {
-                                Text("😊 Happy", color = Color.White)
+                                Text(stringResource(R.string.happy), color = Color.White)
                             }
 
-                            // 🟢 Unhappy (RIGHT)
                             Button(
                                 onClick = {
                                     isUnhappySelected = true
                                 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFF2E7D32)
-                                )
+                                colors = ButtonDefaults.buttonColors(Color(0xFF2E7D32))
                             ) {
-                                Text("😞 Unhappy", color = Color.White)
+                                Text(stringResource(R.string.unhappy), color = Color.White)
                             }
                         }
 
-                        // ✅ SHOW ONLY WHEN UNHAPPY CLICKED
                         if (isUnhappySelected) {
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -160,14 +166,14 @@ fun NotificationItemCard(
                                     remark = it
                                     showError = false
                                 },
-                                label = { Text("Enter Remark") },
+                                label = { Text(stringResource(R.string.enter_remark)) },
                                 isError = showError,
                                 modifier = Modifier.fillMaxWidth()
                             )
 
                             if (showError) {
                                 Text(
-                                    text = "Please write remark",
+                                    text = stringResource(R.string.please_write_remark),
                                     color = Color.Red,
                                     style = MaterialTheme.typography.labelSmall
                                 )
@@ -181,16 +187,17 @@ fun NotificationItemCard(
                                         showError = true
                                     } else {
 
-
-                                    commonViewModel.markunhappy(item.candidateId.toString(),item.instituteId.toString(),"Remak Ajit Ranjan")
-
-
-                                        commonViewModel.resetDialog()
+                                        // 🔥 ONLY THIS FIX (removed resetDialog here)
+                                        commonViewModel.markunhappy(
+                                            item.candidateId.toString(),
+                                            item.instituteId.toString(),
+                                            remark
+                                        )
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("Submit")
+                                Text(stringResource(R.string.submit))
                             }
                         }
                     }
@@ -204,11 +211,14 @@ fun NotificationItemCard(
                 )
             )
 
-        } else {
+        }
+
+
+        else {
 
             Toast.makeText(
                 context,
-                "No Data Found",
+                stringResource(R.string.no_data_found),
                 Toast.LENGTH_SHORT
             ).show()
 
@@ -216,6 +226,7 @@ fun NotificationItemCard(
         }
     }
 
+    // 🔥 CARD (NO CHANGE)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -223,8 +234,10 @@ fun NotificationItemCard(
             .then(
                 if (item.invitationStatus == "A") {
                     Modifier.clickable {
-                        commonViewModel.checkcandidate(item.candidateId.toString(),item.instituteId.toString())
-
+                        commonViewModel.checkcandidate(
+                            item.candidateId.toString(),
+                            item.instituteId.toString()
+                        )
                     }
                 } else Modifier
             ),
@@ -240,7 +253,7 @@ fun NotificationItemCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = TimeUtils.getRelativeTime(item.createdAt.toMillis(),context),
+                    text = TimeUtils.getRelativeTime(item.createdAt.toMillis(), context),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -271,9 +284,7 @@ fun NotificationItemCard(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    OutlinedButton(
-                        onClick = onDisapprove
-                    ) {
+                    OutlinedButton(onClick = onDisapprove) {
                         Text(stringResource(R.string.reject))
                     }
 
@@ -287,6 +298,8 @@ fun NotificationItemCard(
         }
     }
 }
+
+
 @Composable
 fun StatusBadge(status: String) {
     val (text, color, bgColor) = when (status) {
@@ -314,101 +327,3 @@ fun StatusBadge(status: String) {
         )
     }
 }
-
-
-
-
-
-
-
-//@Composable
-//fun NotificationItemCard(
-//    item: NotificationUiModel,
-//    onApprove: () -> Unit,
-//    onDisapprove: () -> Unit,
-//    commonViewModel: CommonViewModel
-//) {
-//
-//    val context = LocalContext.current
-//
-//    // ✅ YOUR EXISTING STATE (FIX)
-//    val uiState = commonViewModel.checkcandidateRequestList.collectAsState().value
-//
-//    // ✅ DIALOG SHOW
-//    if (uiState.isDialogVisible) {
-//        AlertDialog(
-//            onDismissRequest = {
-//                // 🔥 IMPORTANT: dismiss manually reset karo
-//                commonViewModel.resetDialog()
-//            },
-//            title = {
-//                Text(text = uiState.status)
-//            },
-//            text = {
-//                Column {
-//                    Text(text = uiState.message)
-//
-//                    if (uiState.showHappyUnhappy) {
-//                        Spacer(modifier = Modifier.height(16.dp))
-//
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.SpaceEvenly
-//                        ) {
-//
-//                            Button(onClick = {
-//                                commonViewModel.resetDialog()
-//                            }) {
-//                                Text("😊 Happy")
-//                            }
-//
-//                            Button(onClick = {
-//                                commonViewModel.resetDialog()
-//                            }) {
-//                                Text("😞 Unhappy")
-//                            }
-//                        }
-//                    }
-//                }
-//            },
-//            confirmButton = {}
-//        )
-//    }
-//
-//    // ✅ YOUR CARD (UNCHANGED LOGIC)
-//    Card(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(horizontal = 16.dp, vertical = 8.dp)
-//            .then(
-//                if (item.invitationStatus == "A") {
-//                    Modifier.clickable {
-//                        commonViewModel.checkcandidate("2523464946", "2")
-//                    }
-//                } else Modifier
-//            ),
-//        shape = RoundedCornerShape(16.dp),
-//        elevation = CardDefaults.cardElevation(12.dp),
-//        colors = CardDefaults.cardColors(containerColor = Color.White)
-//    ) {
-//
-//        Column(modifier = Modifier.padding(16.dp)) {
-//
-//            Text(text = item.title)
-//
-//            Text(text = item.message)
-//
-//            if (item.invitationStatus == "P") {
-//                Row {
-//                    Button(onClick = onApprove) {
-//                        Text("Accept")
-//                    }
-//
-//                    Button(onClick = onDisapprove) {
-//                        Text("Reject")
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

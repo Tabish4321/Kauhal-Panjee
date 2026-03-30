@@ -281,4 +281,13 @@
     <string name="pending">ಬಾಕಿ</string>
     <string name="invitation_list">ಆಮಂತ್ರಣ ಪಟ್ಟಿ</string>
 
+    <string name="enter_remark">ಟಿಪ್ಪಣಿ ನಮೂದಿಸಿ</string>
+    <string name="please_write_remark">ದಯವಿಟ್ಟು ಟಿಪ್ಪಣಿ ಬರೆಯಿರಿ</string>
+    <string name="no_data_found">ಡೇಟಾ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="happy">😊 ಸಂತೋಷ</string>
+    <string name="unhappy">😞 ಅಸಂತೋಷ</string>
+    <string name="something_went_wrong">ಏನೋ ತಪ್ಪಾಗಿದೆ</string>
+    <string name="please_wait">ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ…</string>
+
+
 </resources>

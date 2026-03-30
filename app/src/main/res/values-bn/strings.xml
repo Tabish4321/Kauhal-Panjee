@@ -286,4 +286,14 @@
     <string name="invitation_list" translatable="false">আমন্ত্রণ তালিকা</string>
 
 
+
+
+    <string name="enter_remark">মন্তব্য লিখুন</string>
+    <string name="please_write_remark">অনুগ্রহ করে মন্তব্য লিখুন</string>
+    <string name="no_data_found">কোনো তথ্য পাওয়া যায়নি</string>
+    <string name="happy">😊 খুশি</string>
+    <string name="unhappy">😞 অসন্তুষ্ট</string>
+    <string name="something_went_wrong">কিছু ভুল হয়েছে</string>
+    <string name="please_wait">অনুগ্রহ করে অপেক্ষা করুন…</string>
+
 </resources>

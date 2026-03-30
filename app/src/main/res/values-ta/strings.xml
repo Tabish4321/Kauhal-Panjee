@@ -288,4 +288,15 @@
     <string name="pending">நிலுவையில்</string>
     <string name="invitation_list">அழைப்புப் பட்டியல்</string>
 
+
+
+
+    <string name="enter_remark">கருத்தை உள்ளிடவும்</string>
+    <string name="please_write_remark">தயவுசெய்து கருத்தை எழுதவும்</string>
+    <string name="no_data_found">தரவு கிடைக்கவில்லை</string>
+    <string name="happy">😊 மகிழ்ச்சி</string>
+    <string name="unhappy">😞 அதிருப்தி</string>
+    <string name="something_went_wrong">ஏதோ தவறு ஏற்பட்டது</string>
+    <string name="please_wait">தயவுசெய்து காத்திருக்கவும்...</string>
+
 </resources>

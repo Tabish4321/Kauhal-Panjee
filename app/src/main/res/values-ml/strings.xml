@@ -280,4 +280,15 @@
     <string name="pending">ബാക്കി</string>
     <string name="invitation_list">ആഹ്വാന പട്ടിക</string>
 
+
+
+    <string name="enter_remark">കുറിപ്പ് നൽകുക</string>
+    <string name="please_write_remark">ദയവായി കുറിപ്പ് എഴുതുക</string>
+    <string name="no_data_found">ഡാറ്റ ലഭ്യമല്ല</string>
+    <string name="happy">😊 സന്തോഷം</string>
+    <string name="unhappy">😞 അസന്തോഷം</string>
+    <string name="something_went_wrong">എന്തോ പിശക് സംഭവിച്ചു</string>
+    <string name="please_wait">ദയവായി കാത്തിരിക്കുക…</string>
+
+
 </resources>

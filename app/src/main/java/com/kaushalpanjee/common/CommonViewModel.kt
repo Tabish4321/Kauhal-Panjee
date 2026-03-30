@@ -1279,7 +1279,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-//      27/03/2026 Notification
+//      27/03/2026 Notification Ajit Ranjan Accepectace
 
     private val _checkcandidateRequestList =
         MutableStateFlow(CheckCandidateUiState())
@@ -1287,66 +1287,75 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val checkcandidateRequestList: StateFlow<CheckCandidateUiState> =
         _checkcandidateRequestList
 
-    fun checkcandidate(candidateId: String, instituteId: String) {
-        val request = checkcandidateRequest(
-            scheme = "RSETI",
-            candidateId = candidateId,
-            instituteId = instituteId
-        )
-        viewModelScope.launch {
+fun checkcandidate(candidateId: String, instituteId: String) {
 
-            commonRepository
-                .checkcandidate(request)
-                .collect { result ->
+    val request = checkcandidateRequest(
+        scheme = "RSETI",
+        candidateId = candidateId,
+        instituteId = instituteId
+    )
 
-                    when (result) {
+    viewModelScope.launch {
 
-                        is Resource.Loading -> Unit
+        commonRepository
+            .checkcandidate(request)
+            .collect { result ->
 
-                        is Resource.Success -> {
-                            try {
-                                val raw = result.data?.string() ?: ""
+                when (result) {
 
-                                val json = JSONObject(raw)
+                    is Resource.Loading -> {
+                        _checkcandidateRequestList.value =
+                            CheckCandidateUiState(isLoading = true)
+                    }
 
-                                val message = json.optString("message")
-                                val status = json.optString("status")
-                                val showDialog = json.optBoolean("showDialog")
-                                val showHappyUnhappy = json.optBoolean("showHappyUnhappy") // 🔥 ADD
+                    is Resource.Success -> {
+                        try {
+                            val raw = result.data?.string() ?: ""
+                            val json = JSONObject(raw)
 
-                                if (showDialog) {
-                                    _checkcandidateRequestList.value =
-                                        CheckCandidateUiState(
-                                            isDialogVisible = true,
-                                            message = message,
-                                            status = status,
-                                            showHappyUnhappy = showHappyUnhappy // 🔥 ADD
-                                        )
-                                }
+                            val message = json.optString("message")
+                            val status = json.optString("status")
+                            val showDialog = json.optBoolean("showDialog")
+                            val showHappyUnhappy = json.optBoolean("showHappyUnhappy")
 
-                            } catch (e: Exception) {
+                            if (showDialog) {
                                 _checkcandidateRequestList.value =
                                     CheckCandidateUiState(
+                                        isLoading = false, // 🔥 hide loader
                                         isDialogVisible = true,
-                                        message = "Parsing error",
-                                        status = "ERROR"
+                                        message = message,
+                                        status = status,
+                                        showHappyUnhappy = showHappyUnhappy
                                     )
+                            } else {
+                                _checkcandidateRequestList.value =
+                                    CheckCandidateUiState(isLoading = false)
                             }
-                        }
 
-                        is Resource.Error -> {
+                        } catch (e: Exception) {
                             _checkcandidateRequestList.value =
                                 CheckCandidateUiState(
+                                    isLoading = false,
                                     isDialogVisible = true,
-                                    message = "Something went wrong",
+                                    message = "Parsing error",
                                     status = "ERROR"
                                 )
                         }
                     }
-                }
-        }
 
+                    is Resource.Error -> {
+                        _checkcandidateRequestList.value =
+                            CheckCandidateUiState(
+                                isLoading = false, // 🔥 hide loader
+                                isDialogVisible = true,
+                                message = "Something went wrong",
+                                status = "ERROR"
+                            )
+                    }
+                }
+            }
     }
+}
 
     fun resetDialog() {
         _checkcandidateRequestList.value = CheckCandidateUiState()
@@ -1358,64 +1367,78 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     val markunhappy: StateFlow<CheckCandidateUiState> =
         _markunhappyRequestList
-    fun markunhappy(candidateId: String, instituteId: String,remark: String) {
-        val request = MarkUnhappyRequest(
-            candidateId = "2509237607",
-            instituteId = "113"
-        )
-        viewModelScope.launch {
-            commonRepository.markunhappyRequest(request)
-                .collect { result ->
+fun markunhappy(candidateId: String, instituteId: String, remark: String) {
 
-                    when (result) {
 
-                        is Resource.Loading -> Unit
+//    val request = MarkUnhappyRequest(
+//        candidateId = "2509237607",
+//        instituteId = "113",
+//        remark = remark
+//    )
+    val request = MarkUnhappyRequest(
+        candidateId = candidateId,
+        instituteId = instituteId,
+        remark = remark
+    )
 
-                        is Resource.Success -> {
-                            try {
-                                val raw = result.data?.string() ?: ""
 
-                                val response = Gson().fromJson(raw, MARKUNHAPPY::class.java)
+    viewModelScope.launch {
 
-                                val message = response.message ?: ""
-                                val status = response.status ?: ""
+        commonRepository.markunhappyRequest(request)
+            .collect { result ->
 
-                                // ✅ Direct Boolean usage
-                                val showDialog = response.showDialog ?: false
-                                val showHappyUnhappy = response.showHappyUnhappy ?: false
+                when (result) {
 
-                                // ❗ IMPORTANT: always update state (not only when showDialog)
-                                _markunhappyRequestList.value =
-                                    CheckCandidateUiState(
-                                        isDialogVisible = showDialog, // API se control
-                                        message = message,
-                                        status = status,
-                                        showHappyUnhappy = showHappyUnhappy
-                                    )
+                    is Resource.Loading -> {
+                        // 🔥 SHOW LOADER
+                        _markunhappyRequestList.value =
+                            CheckCandidateUiState(isLoading = true)
+                    }
 
-                            } catch (e: Exception) {
-                                _markunhappyRequestList.value =
-                                    CheckCandidateUiState(
-                                        isDialogVisible = true,
-                                        message = "Parsing error",
-                                        status = "ERROR"
-                                    )
-                            }
-                        }
+                    is Resource.Success -> {
+                        try {
+                            val raw = result.data?.string() ?: ""
+                            val response = Gson().fromJson(raw, MARKUNHAPPY::class.java)
 
-                        is Resource.Error -> {
+                            val message = response.message ?: ""
+                            val status = response.status ?: ""
+                            val showDialog = response.showDialog ?: false
+                            val showHappyUnhappy = response.showHappyUnhappy ?: false
+
+                            // 🔥 HIDE LOADER + SHOW DIALOG
                             _markunhappyRequestList.value =
                                 CheckCandidateUiState(
+                                    isLoading = false,
+                                    isDialogVisible = showDialog,
+                                    message = message,
+                                    status = status,
+                                    showHappyUnhappy = showHappyUnhappy
+                                )
+
+                        } catch (e: Exception) {
+                            _markunhappyRequestList.value =
+                                CheckCandidateUiState(
+                                    isLoading = false,
                                     isDialogVisible = true,
-                                    message = "Something went wrong",
+                                    message = "Parsing error",
                                     status = "ERROR"
                                 )
                         }
                     }
-                }
-        }
 
+                    is Resource.Error -> {
+                        _markunhappyRequestList.value =
+                            CheckCandidateUiState(
+                                isLoading = false, // 🔥 HIDE LOADER
+                                isDialogVisible = true,
+                                message = "Something went wrong",
+                                status = "ERROR"
+                            )
+                    }
+                }
+            }
     }
+}
 
 
 

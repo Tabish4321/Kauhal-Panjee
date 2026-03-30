@@ -282,4 +282,13 @@
     <string name="pending">অপেক্ষাৰত</string>
     <string name="invitation_list">আমন্ত্ৰণ তালিকা</string>
 
+
+    <string name="enter_remark">মন্তব্য লিখক</string>
+    <string name="please_write_remark">অনুগ্ৰহ কৰি মন্তব্য লিখক</string>
+    <string name="no_data_found">কোনো তথ্য পোৱা নগ\'ল</string>
+    <string name="happy">😊 সুখী</string>
+    <string name="unhappy">😞 অসন্তুষ্ট</string>
+    <string name="something_went_wrong">কিবা ভুল হ\'ল</string>
+    <string name="please_wait">অনুগ্ৰহ কৰি অপেক্ষা কৰক…</string>
+
 </resources>

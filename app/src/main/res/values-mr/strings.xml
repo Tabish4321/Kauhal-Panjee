@@ -284,4 +284,14 @@
     <string name="pending" translatable="false">प्रलंबित</string>
     <string name="invitation_list" translatable="false">आमंत्रण यादी</string>
 
+
+
+    <string name="enter_remark">टिप्पणी प्रविष्ट करा</string>
+    <string name="please_write_remark">कृपया टिप्पणी लिहा</string>
+    <string name="no_data_found">माहिती उपलब्ध नाही</string>
+    <string name="happy">😊 आनंदी</string>
+    <string name="unhappy">😞 नाराज</string>
+    <string name="something_went_wrong">काहीतरी चूक झाली</string>
+    <string name="please_wait">कृपया थांबा…</string>
+
 </resources>

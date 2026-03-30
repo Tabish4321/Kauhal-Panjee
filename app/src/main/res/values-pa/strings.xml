@@ -280,4 +280,14 @@
     <string name="rejected">ਅਸਵੀਕਾਰ ਕੀਤਾ</string>
     <string name="pending">ਬਾਕੀ</string>
     <string name="invitation_list">ਨਿਯੌਤਾ ਸੂਚੀ</string>
+
+
+
+    <string name="enter_remark">ਟਿੱਪਣੀ ਦਰਜ ਕਰੋ</string>
+    <string name="please_write_remark">ਕਿਰਪਾ ਕਰਕੇ ਟਿੱਪਣੀ ਲਿਖੋ</string>
+    <string name="no_data_found">ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਮਿਲਿਆ</string>
+    <string name="happy">😊 ਖੁਸ਼</string>
+    <string name="unhappy">😞 ਨਾਖੁਸ਼</string>
+    <string name="something_went_wrong">ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ</string>
+    <string name="please_wait">ਕਿਰਪਾ ਕਰਕੇ ਉਡੀਕ ਕਰੋ…</string>
 </resources>

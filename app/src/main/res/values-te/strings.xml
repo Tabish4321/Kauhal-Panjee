@@ -287,4 +287,15 @@
     <string name="rejected">తిరస్కరించబడింది</string>
     <string name="pending">పెండింగ్‌లో</string>
     <string name="invitation_list">ఆహ్వాన జాబితా</string>
+
+
+
+
+    <string name="enter_remark">వ్యాఖ్య నమోదు చేయండి</string>
+    <string name="please_write_remark">దయచేసి వ్యాఖ్య రాయండి</string>
+    <string name="no_data_found">డేటా కనుగొనబడలేదు</string>
+    <string name="happy">😊 సంతోషం</string>
+    <string name="unhappy">😞 అసంతృప్తి</string>
+    <string name="something_went_wrong">ఏదో తప్పు జరిగింది</string>
+    <string name="please_wait">దయచేసి వేచి ఉండండి…</string>
 </resources>

@@ -284,4 +284,15 @@
     <string name="pending" translatable="false">زیر التواء</string>
     <string name="invitation_list" translatable="false">دعوت نامہ کی فہرست</string>
 
+
+
+
+    <string name="enter_remark">تبصرہ درج کریں</string>
+    <string name="please_write_remark">براہ کرم تبصرہ لکھیں</string>
+    <string name="no_data_found">کوئی ڈیٹا نہیں ملا</string>
+    <string name="happy">😊 خوش</string>
+    <string name="unhappy">😞 ناخوش</string>
+    <string name="something_went_wrong">کچھ غلط ہو گیا</string>
+    <string name="please_wait">براہ کرم انتظار کریں…</string>
+
 </resources>

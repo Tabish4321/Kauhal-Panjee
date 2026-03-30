@@ -291,4 +291,13 @@
 
     <string name="pending" translatable="false">Pending</string>
 
+
+    <string name="enter_remark">Enter Remark</string>
+    <string name="please_write_remark">Please write remark</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="happy">😊 Happy</string>
+    <string name="unhappy">😞 Unhappy</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="please_wait">Please wait…</string>
+
 </resources>

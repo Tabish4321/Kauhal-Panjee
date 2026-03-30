@@ -283,4 +283,12 @@
     <string name="rejected">अस्वीकृत</string>
     <string name="pending">लंबित</string>
 
+    <string name="enter_remark">टिप्पणी दर्ज करें</string>
+    <string name="please_write_remark">कृपया टिप्पणी लिखें</string>
+    <string name="no_data_found">कोई डेटा नहीं मिला</string>
+    <string name="happy">😊 खुश</string>
+    <string name="unhappy">😞 नाखुश</string>
+    <string name="something_went_wrong">कुछ गलत हो गया</string>
+    <string name="please_wait">कृपया प्रतीक्षा करें…</string>
+
 </resources>

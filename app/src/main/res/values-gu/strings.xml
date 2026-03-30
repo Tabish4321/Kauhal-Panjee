@@ -279,5 +279,11 @@
     <string name="pending">બાકી</string>
     <string name="invitation_list">આમંત્રણ યાદી</string>
 
-
+    <string name="enter_remark">ટિપ્પણી દાખલ કરો</string>
+    <string name="please_write_remark">કૃપા કરીને ટિપ્પણી લખો</string>
+    <string name="no_data_found">ડેટા મળ્યો નથી</string>
+    <string name="happy">😊 ખુશ</string>
+    <string name="unhappy">😞 નારાજ</string>
+    <string name="something_went_wrong">કઈક ખોટું થયું</string>
+    <string name="please_wait">કૃપા કરીને રાહ જુઓ…</string>
 </resources>
