@@ -4,20 +4,20 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose")
+
     id("com.google.dagger.hilt.android")
-    id("kotlin-kapt")
+    //  use ksp
+    id("com.google.devtools.ksp")
+
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
-
 }
 
 android {
     namespace = "com.kaushalpanjee"
     compileSdk = 35
-
-
-
 
 
 
@@ -32,10 +32,10 @@ android {
         }
     }
 
-
+/*
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
-    }
+    }*/
 
 
     val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -146,27 +146,17 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
-//    flavorDimensions += listOf("app")
-//    productFlavors {
-//        create("dev") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
-//
-//        }
-//        create("prod") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
-//
-//        }
-//    }
+
 
     configurations.all {
         // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
@@ -188,7 +178,7 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 dependencies {
     // Local AAR Library
     implementation(files("libs/pehchaanlib.aar"))
-
+    implementation(files("libs/samiksha-release.aar"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material.v150)
@@ -213,7 +203,7 @@ dependencies {
 
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.viewpager2)
 
 
@@ -232,13 +222,9 @@ dependencies {
 
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
-
+    ksp(libs.compiler)
     implementation(libs.androidx.core.splashscreen)
 
-    //Xml
-    //implementation(libs.jackson.dataformat.xml)
-    // ✅ XML: Per-dep excludes (covers transitives)
     implementation(libs.jackson.dataformat.xml) {
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
@@ -260,15 +246,16 @@ dependencies {
     // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp("com.google.dagger:hilt-android-compiler:2.52")
 
-//    implementation (libs.simple.xml)\
+
+//    implementation (libs.simple.xml)
     implementation(libs.simple.xml) {  // ✅ UPDATED: Explicit exclude for Simple XML transitive
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
         exclude(group = "net.sf.kxml", module = "kxml2")
     }
-
+    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
     // Jetpack Compose
     implementation(platform("androidx.compose:compose-bom:2024.04.01"))
     implementation("androidx.compose.ui:ui")
@@ -340,6 +327,3 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 }
 
-kapt {
-    correctErrorTypes = true
-}

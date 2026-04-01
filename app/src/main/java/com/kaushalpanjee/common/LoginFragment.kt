@@ -15,7 +15,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.Firebase
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
@@ -33,7 +34,6 @@ import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
@@ -62,9 +62,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         commonViewModel.getUnnati(UnnatiRequest(AppUtil.getSavedLanguagePreference(requireContext())))
         collectUnnatiData()
-
         init()
         handleBackPress()
+
+
+
+
 
 
     }
@@ -101,12 +104,35 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         listeners()
         collectTokenResponse()
 
-
     }
 
 
     private fun listeners() {
 
+
+
+        binding.ivDDGKY.setOnClickListener {
+            val request = ConsentRequest(
+                mobileNo = "7763027544",
+                userId = "12345",
+                fipId = "ABC001",
+                email = "user@example.com",
+                pan = "ABCDE1234F",
+                candidateId = "1001",
+                aadharNo = "123412341234"
+            )
+
+            SamikshaSdk.submitConsent(
+                context = requireContext(),
+                request = request,
+                onSuccess = {
+                    Log.d("SDK", "Success: ${it.message}")
+                },
+                onError = {
+                    Log.e("SDK", "Error: ${it.message}")
+                }
+            )
+        }
 
 
 

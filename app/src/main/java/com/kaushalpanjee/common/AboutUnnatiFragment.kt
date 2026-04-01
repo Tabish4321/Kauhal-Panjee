@@ -3,22 +3,12 @@ package com.kaushalpanjee.common
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
-import com.kaushalpanjee.common.model.request.UnnatiRequest
 import com.kaushalpanjee.core.basecomponent.BaseFragment
-import com.kaushalpanjee.core.util.AESCryptography
-import com.kaushalpanjee.core.util.AppConstant
-import com.kaushalpanjee.core.util.AppUtil
-import com.kaushalpanjee.core.util.Resource
-import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.FragmentAboutUnnatiBinding
 import com.kaushalpanjee.model.Scheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AboutUnnatiFragment :
