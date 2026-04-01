@@ -439,15 +439,13 @@ interface AppLevelApi {
 
 
 
-
-
     @POST(ApiConstant.API_INSERT_TRAINING_CENTER)
     suspend fun insertTrainingCenter( @Header("Authorization") token: String,
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 
         /*@GET(API_NOTIFICATION)
-        suspend fun getNotifications(
+        suspend fun getNotifications( 
             @Query("page") page: Int,
             @Query("size") size: Int
         ): NotificationListResponse*/
@@ -455,7 +453,8 @@ interface AppLevelApi {
     @GET(API_NOTIFICATION)
     suspend fun getNotifications(
         @Query("candidateId") candidateId: String,
-        @Query("page") page: Int,
+        @Query("page") page
+        : Int,
         @Query("size") size: Int
     ): NotificationListResponse
 
