@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_loanFragment"
+            app:destination="@id/loanFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -254,4 +257,8 @@
 
 
     </fragment>
+    <fragment
+        android:id="@+id/loanFragment"
+        android:name="com.kaushalpanjee.common.LoanFragment"
+        android:label="LoanFragment" />
 </navigation>
