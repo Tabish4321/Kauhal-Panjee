@@ -199,6 +199,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.core.v300)
 
+
+
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -365,6 +368,9 @@ dependencies {
         // For ViewModel
         implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
         implementation ("androidx.compose.material:material-icons-extended")
+        implementation ("androidx.work:work-runtime-ktx:2.9.0")
+
+
 
 }
 

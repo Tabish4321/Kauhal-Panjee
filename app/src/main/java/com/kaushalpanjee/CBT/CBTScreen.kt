@@ -1,4 +1,5 @@
 package com.example.myapplication.CBT
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Image
 //import com.example.myapplication.R
@@ -140,8 +141,20 @@ import com.kaushalpanjee.R
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.kaushalpanjee.CBT.CBTExamViewModel
 
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.example.myapplication.CBT.api.CBTViewModel
+import com.kaushalpanjee.CBT.WorkManager.SubmitExamWorker
+import com.kaushalpanjee.CBT.WorkManager.startSubmitWorker
+
+@SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CBTExamScreen(
@@ -180,6 +193,12 @@ fun CBTExamScreen(
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
+
+
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+
 
     // 🔥 ORIENTATION DETECTION - Go back to home if device rotates to landscape
     val currentOrientation = configuration.orientation
@@ -739,8 +758,53 @@ fun CBTExamScreen(
                 }
             }
 
+
+
+
+
+            LaunchedEffect(Unit) {
+                WorkManager.getInstance(context)
+                    .getWorkInfosByTagLiveData("submit_exam")
+                    .observe(lifecycleOwner) { list ->
+
+                        list.forEach { workInfo ->
+
+                            Log.d("WORK_STATUS", workInfo.state.name)
+
+                            when (workInfo.state) {
+
+                                WorkInfo.State.RUNNING -> {
+                                    Log.d("WORK_STATUS", "API RUNNING")
+                                }
+
+                                WorkInfo.State.SUCCEEDED -> {
+                                    Log.d("WORK_STATUS", "API SUCCESS DONE")
+                                }
+
+                                WorkInfo.State.FAILED -> {
+                                    Log.d("WORK_STATUS", "API FAILED")
+                                }
+
+                                else -> {}
+                            }
+                        }
+                    }
+            }
             // 🔥 SUCCESS DIALOG - Show when exam submitted successfully
             if (showSuccessDialog) {
+                val repo = CBTViewModel()
+                repo.deleteOfflineJson(context)
+
+
+
+
+                // 🔥 ADD THIS LINE (IMPORTANT)
+                LaunchedEffect(showSuccessDialog) {
+                    if (showSuccessDialog) {
+                        startSubmitWorker(context, candidateId)
+                    }
+                }
+
                 AlertDialog(
                     onDismissRequest = { viewModel.closeSuccessDialog() },
                     title = {
@@ -763,9 +827,9 @@ fun CBTExamScreen(
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
-                            
+
                             Divider()
-                            
+
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -786,7 +850,7 @@ fun CBTExamScreen(
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
-                            
+
                             Text(
                                 text = "We're syncing your results in the background. You can close this app.",
                                 fontSize = 12.sp,
@@ -817,11 +881,88 @@ fun CBTExamScreen(
                         .clip(RoundedCornerShape(12.dp))
                 )
             }
+//            if (showSuccessDialog) {
+//                AlertDialog(
+//                    onDismissRequest = { viewModel.closeSuccessDialog() },
+//                    title = {
+//                        Text(
+//                            text = "✅ Success!",
+//                            fontSize = 20.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color(0xFF4CAF50)
+//                        )
+//                    },
+//                    text = {
+//                        Column(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(8.dp),
+//                            verticalArrangement = Arrangement.spacedBy(12.dp)
+//                        ) {
+//                            Text(
+//                                text = "Your exam has been submitted successfully!",
+//                                fontSize = 15.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//
+//                            Divider()
+//
+//                            Column(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
+//                                    .padding(12.dp)
+//                            ) {
+//                                Text(
+//                                    text = "Candidate ID:",
+//                                    fontSize = 12.sp,
+//                                    color = Color.Gray,
+//                                    fontWeight = FontWeight.Bold
+//                                )
+//                                Text(
+//                                    text = candidateId,
+//                                    fontSize = 14.sp,
+//                                    fontWeight = FontWeight.Bold,
+//                                    color = MaterialTheme.colorScheme.primary,
+//                                    modifier = Modifier.padding(top = 4.dp)
+//                                )
+//                            }
+//
+//                            Text(
+//                                text = "We're syncing your results in the background. You can close this app.",
+//                                fontSize = 12.sp,
+//                                color = Color.Gray,
+//                                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+//                            )
+//                        }
+//                    },
+//                    confirmButton = {
+//                        Button(
+//                            onClick = { viewModel.closeSuccessDialog() },
+//                            colors = ButtonDefaults.buttonColors(
+//                                containerColor = Color(0xFF4CAF50)
+//                            ),
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .height(45.dp)
+//                        ) {
+//                            Text(
+//                                text = "OK",
+//                                color = Color.White,
+//                                fontWeight = FontWeight.Bold,
+//                                fontSize = 14.sp
+//                            )
+//                        }
+//                    },
+//                    modifier = Modifier
+//                        .clip(RoundedCornerShape(12.dp))
+//                )
+//            }
 
             // 🔥 FAILURE DIALOG - Show when exam submission fails
             if (submissionError != null) {
                 AlertDialog(
-                    onDismissRequest = { },
+                    onDismissRequest = { viewModel.closeSuccessDialog() },
                     title = {
                         Text(
                             text = "❌ Submission Failed",
@@ -886,7 +1027,7 @@ fun CBTExamScreen(
                     },
                     confirmButton = {
                         Button(
-                            onClick = { 
+                            onClick = {  viewModel.clearSubmissionError()
                                 // Clear error and allow user to retry or go back
                                 // User can try submitting again
                             },
@@ -896,9 +1037,15 @@ fun CBTExamScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(45.dp)
-                        ) {
+                        )
+
+
+
+
+                        {
                             Text(
-                                text = "Retry",
+
+                                text = "Close",
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 14.sp

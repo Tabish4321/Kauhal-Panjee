@@ -80,7 +80,9 @@ class CBTExamViewModel : ViewModel() {
     fun goToQuestion(index: Int) {
         _currentIndex.value = index
     }
-
+    fun clearSubmissionError() {
+        _submissionError.value = null
+    }
     fun toggleReviewDialog() {
         _showReviewDialog.value = !_showReviewDialog.value
     }
