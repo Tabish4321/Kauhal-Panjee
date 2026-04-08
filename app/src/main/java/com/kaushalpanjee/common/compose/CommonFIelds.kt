@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.kaushalpanjee.core.util.AppUtil.base64ToBitmap
 
 // ================= PREMIUM CARD =================
 @Composable
@@ -77,6 +78,9 @@ fun CommonInput(
         Spacer(Modifier.height(12.dp))
     }
 }
+
+
+
 
 // ================= OLD INPUT (FOR BACKWARD) =================
 @Composable
@@ -403,4 +407,92 @@ fun BottomButtons(
             Text(if (step == 5) "Submit" else "Next")
         }
     }
+}
+
+
+@Composable
+fun PanInputField(
+    pan: String,
+    onChange: (String) -> Unit,
+    isValid: Boolean
+) {
+
+    Column {
+
+        Text(
+            "Enter PAN Number",
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(top = 6.dp, bottom = 4.dp)
+        )
+
+        OutlinedTextField(
+            value = pan,
+            onValueChange = onChange,
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text("ABCDE1234F") },
+            shape = RoundedCornerShape(14.dp),
+            singleLine = true,
+
+            trailingIcon = {
+                if (pan.isNotEmpty()) {
+                    Icon(
+                        imageVector = if (isValid)
+                            Icons.Default.CheckCircle
+                        else
+                            Icons.Default.Error,
+                        contentDescription = null,
+                        tint = if (isValid)
+                            Color(0xFF4CAF50)
+                        else
+                            Color.Red
+                    )
+                }
+            }
+        )
+
+        if (!isValid && pan.length >= 10) {
+            Text(
+                text = "Invalid PAN format",
+                color = Color.Red,
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+
+        Spacer(Modifier.height(12.dp))
+    }
+}
+
+
+@Composable
+fun ImagePreviewDialog(
+    base64Image: String,
+    onDismiss: () -> Unit
+) {
+
+    val bitmap = remember(base64Image) {
+        base64ToBitmap(base64Image)
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close")
+            }
+        },
+
+        text = {
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                )
+            } else {
+                Text("Image not available")
+            }
+        }
+    )
 }
