@@ -153,6 +153,9 @@ import androidx.work.workDataOf
 import com.example.myapplication.CBT.api.CBTViewModel
 import com.kaushalpanjee.CBT.WorkManager.SubmitExamWorker
 import com.kaushalpanjee.CBT.WorkManager.startSubmitWorker
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -200,6 +203,9 @@ fun CBTExamScreen(
 
 
 
+
+
+
     // 🔥 ORIENTATION DETECTION - Go back to home if device rotates to landscape
     val currentOrientation = configuration.orientation
     LaunchedEffect(currentOrientation) {
@@ -215,7 +221,6 @@ fun CBTExamScreen(
             viewModel.startTimer()
         }
     }
-
     // ---------------- START SCREEN ----------------
     if (!examStarted) {
         Box(
