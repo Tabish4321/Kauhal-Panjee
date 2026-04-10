@@ -2,36 +2,25 @@ package com.kaushalpanjee
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
-
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
-import android.Manifest
-import android.app.ComponentCaller
-import androidx.navigation.fragment.NavHostFragment
+import com.d2k.samiksha.SamikshaSdk
 
 
 @AndroidEntryPoint
@@ -50,6 +39,23 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
 
         // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
         AppUtil.changeAppLanguage(this, AppUtil.getSavedLanguagePreference(this))
+
+
+        SamikshaSdk.init(
+            context = this,
+            baseUrl = "https://samikshaapi.d2kindia.com/",
+            apiKey = "624f2281-b0f1-44e3-9d3e-24826a53e7a6",
+            calledFrom = "com.example.samiksha",
+            apiVersion = "1",
+
+            onSuccess = {
+                Log.d("SDK", "Init Success")
+            },
+
+            onFailure = { error ->
+                Log.e("SDK", "Init Failed: $error")
+            }
+        )
 
 
         lifecycleScope.launch {
