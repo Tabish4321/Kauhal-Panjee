@@ -9,12 +9,15 @@ import android.net.Uri
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.BuildConfig
@@ -106,6 +109,43 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
     private fun listeners() {
+
+
+        binding.ivDDGKY.setOnClickListener {
+            val request = ConsentRequest(
+                mobileNo = "7763027544",
+                userId = "12345",
+                fipId = "ABC001",
+                email = "user@example.com",
+                pan = "ABCDE1234F",
+                candidateId = "1001",
+                aadharNo = "123412341234"
+            )
+
+            SamikshaSdk.submitConsent(
+                context = requireContext(),
+                request = request,
+                onSuccess = { response ->
+
+
+                    Toast.makeText(
+                        context,
+                        "Success: ${response.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                },
+                onError = { error ->
+
+
+                    Toast.makeText(
+                        context,
+                        "Error: ${error.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
+        }
+
 
 
 
