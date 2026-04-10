@@ -320,6 +320,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation ("com.google.firebase:firebase-messaging")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("io.mockk:mockk:1.13.8")
