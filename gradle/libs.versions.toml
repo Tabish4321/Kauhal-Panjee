@@ -1,6 +1,6 @@
 [versions]
-agp = "8.7.0"
-kotlin = "2.1.0"
+agp = "8.2.2"
+kotlin = "2.0.0"
 bcprovJdk16 = "1.45"
 circleimageview = "3.1.0"
 compiler = "4.13.0"
@@ -11,7 +11,7 @@ datastore-preferences = "1.0.0"
 datastorePreferencesCore = "1.1.1"
 fragmentKtx = "1.8.5"
 glide = "4.13.2"
-hiltAndroid = "2.52"
+hiltAndroid = "2.48"
 jacksonDataformatXml = "2.17.0"
 jsr105Api = "1.0.1"
 

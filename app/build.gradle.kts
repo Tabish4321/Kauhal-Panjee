@@ -7,8 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 
     id("com.google.dagger.hilt.android")
-    //  use ksp
-    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
 
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
@@ -203,7 +202,7 @@ dependencies {
 
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.viewpager2)
 
 
@@ -222,7 +221,7 @@ dependencies {
 
     //Glide
     implementation(libs.glide)
-    ksp(libs.compiler)
+    kapt(libs.compiler)
     implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.jackson.dataformat.xml) {
@@ -246,8 +245,7 @@ dependencies {
     // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)
-    ksp("com.google.dagger:hilt-android-compiler:2.52")
-
+    kapt(libs.hilt.android.compiler)
 
 //    implementation (libs.simple.xml)
     implementation(libs.simple.xml) {  // ✅ UPDATED: Explicit exclude for Simple XML transitive
