@@ -335,7 +335,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         aadhaarValidate=true
 
                     } else {
-                        binding.etAadhaar.error = "❌ Invalid Aadhaar Number"  // ❌ Show error
+                        binding.etAadhaar.error = "❌ Invalid Aadhaar Number"  //  Show error
                         aadhaarValidate=false
                         binding.chipAware.gone()
                         binding.btnConscentAudio.gone()
@@ -445,7 +445,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 binding.chipAware.visible()
                 binding.btnConscentAudio.visible()
 
-              //  binding.aadhaarVerifyButton.root.visible()
+                //  binding.aadhaarVerifyButton.root.visible()
             } else{
                 binding.btnConscentAudio.gone()
                 binding.chipAware.gone()
@@ -492,7 +492,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             IntentModel::class.java
         )
 
-     //   collectFaceAuthResponse()
+        //   collectFaceAuthResponse()
         // setConsentText()
     }
 
@@ -547,49 +547,49 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             false // App installed nahi hai
         }
     }
-/*
-    private fun invokeCaptureIntent() {
+    /*
+        private fun invokeCaptureIntent() {
 
-        val packageName = "in.gov.uidai.facerd"
-        if (isAppInstalled(requireContext(), packageName)) {
-            try {
-                val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-                intent1.putExtra(
-                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                    createPidOptions(getTransactionID(), "auth")
-                )
-                startUidaiAuthResult.launch(intent1)
+            val packageName = "in.gov.uidai.facerd"
+            if (isAppInstalled(requireContext(), packageName)) {
+                try {
+                    val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
+                    intent1.putExtra(
+                        AppConstant.Constants.CAPTURE_INTENT_REQUEST,
+                        createPidOptions(getTransactionID(), "auth")
+                    )
+                    startUidaiAuthResult.launch(intent1)
 
-                // val packageName = "com.example.otherapp" // Replace with the target app's package name
-                val intent =
-                    requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-                intent?.putExtra(
-                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                    createPidOptions(getTransactionID(), "auth")
-                )
-                if (intent != null) {
-                    startActivity(intent)
+                    // val packageName = "com.example.otherapp" // Replace with the target app's package name
+                    val intent =
+                        requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
+                    intent?.putExtra(
+                        AppConstant.Constants.CAPTURE_INTENT_REQUEST,
+                        createPidOptions(getTransactionID(), "auth")
+                    )
+                    if (intent != null) {
+                        startActivity(intent)
+                    }
+                } catch (exp: Exception) {
+                    log("EKYCDATA", exp.toString())
                 }
-            } catch (exp: Exception) {
-                log("EKYCDATA", exp.toString())
             }
-        }
-        else {
+            else {
 
-            AlertDialog.Builder(requireContext())
-                .setTitle("Alert!")
-                .setMessage("It seems you don't have the AadhaarFaceRD App app installed in your phone.")
-                .setCancelable(false)
-                .setPositiveButton("Install") { _, _ ->
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    this.startActivity(intent)
-                }
-                .show()
-        }
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Alert!")
+                    .setMessage("It seems you don't have the AadhaarFaceRD App app installed in your phone.")
+                    .setCancelable(false)
+                    .setPositiveButton("Install") { _, _ ->
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        this.startActivity(intent)
+                    }
+                    .show()
+            }
 
-    }
-*/
+        }
+    */
 
     private fun invokeCaptureIntent() {
 
@@ -641,7 +641,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 )
 
                 // Define Pre-Production URL (use a constant or environment configuration in production)
-              //  val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain" //preProd
+                //  val authURL = "http://10.247.252.95:8080/NicASAServer/ASAMain" //preProd
                 val authURL = "http://10.247.252.93:8080/NicASAServer/ASAMain"  //Prod
 
                 // Record the start time for elapsed time computation
@@ -862,8 +862,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                             }
 
-                                          else
-                                              toastLong("Please select state")
+                                            else
+                                                toastLong("Please select state")
 
 
                                         }
@@ -914,81 +914,81 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         onBackPressedCallback.remove()
     }
 
-   @SuppressLint("SuspiciousIndentation")
-   private fun showBottomSheet(
-       image: Bitmap,
-       name: String,
-       gender: String,
-       dateOfBirth: String,
-       careOf: String
-   ) {
-       val bottomSheetDialog = BottomSheetDialog(requireContext())
+    @SuppressLint("SuspiciousIndentation")
+    private fun showBottomSheet(
+        image: Bitmap,
+        name: String,
+        gender: String,
+        dateOfBirth: String,
+        careOf: String
+    ) {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
 
-       // Inflate the layout
-       val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
-       bottomSheetDialog.setContentView(view)
+        // Inflate the layout
+        val view = layoutInflater.inflate(R.layout.bottom_sheet_layout, null)
+        bottomSheetDialog.setContentView(view)
 
-       // Prevent closing when tapping outside
-       bottomSheetDialog.setCanceledOnTouchOutside(false)
+        // Prevent closing when tapping outside
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
 
-       // Find views
-       val imageView = view.findViewById<ImageView>(R.id.circleImageView)
-       val nameView = view.findViewById<TextView>(R.id.eKYCCandidateName)
-       val genderView = view.findViewById<TextView>(R.id.eKYCGender)
-       val dobView = view.findViewById<TextView>(R.id.eKYCDob)
-       val careOfView = view.findViewById<TextView>(R.id.eKYCCareOf)
-       val okButton = view.findViewById<TextView>(R.id.tvLogin)
+        // Find views
+        val imageView = view.findViewById<ImageView>(R.id.circleImageView)
+        val nameView = view.findViewById<TextView>(R.id.eKYCCandidateName)
+        val genderView = view.findViewById<TextView>(R.id.eKYCGender)
+        val dobView = view.findViewById<TextView>(R.id.eKYCDob)
+        val careOfView = view.findViewById<TextView>(R.id.eKYCCareOf)
+        val okButton = view.findViewById<TextView>(R.id.tvLogin)
 
-       // Set data
-       imageView.setImageBitmap(image)
-       nameView.text = name
-       genderView.text = gender
-       dobView.text = dateOfBirth
-       careOfView.text = careOf
+        // Set data
+        imageView.setImageBitmap(image)
+        nameView.text = name
+        genderView.text = gender
+        dobView.text = dateOfBirth
+        careOfView.text = careOf
 
-       // Handle OK button click
-       okButton.setOnClickListener {
+        // Handle OK button click
+        okButton.setOnClickListener {
 
-           tokenGen= AppUtil.getSavedTokenPreference(requireContext())
+            tokenGen= AppUtil.getSavedTokenPreference(requireContext())
 
-          // if (tokenGen==(tokenViaCreate)){
-               AppUtil.saveLoginStatus(requireContext(), true)
+            // if (tokenGen==(tokenViaCreate)){
+            AppUtil.saveLoginStatus(requireContext(), true)
 
-               val navController = findNavController()
+            val navController = findNavController()
 
-               // Pop previous fragments and navigate to home
-               navController.popBackStack(R.id.loginFragment, true)
-               navController.popBackStack(R.id.registerFragment, true)
-               navController.popBackStack(R.id.ekycFragment, true)
-               navController.navigate(R.id.mainHomePage)
+            // Pop previous fragments and navigate to home
+            navController.popBackStack(R.id.loginFragment, true)
+            navController.popBackStack(R.id.registerFragment, true)
+            navController.popBackStack(R.id.ekycFragment, true)
+            navController.navigate(R.id.mainHomePage)
 
-               bottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
 
-           //}
-          // else toastShort("Please Wait")
+            //}
+            // else toastShort("Please Wait")
 
-       }
+        }
 
-       // Handle back button press
-       bottomSheetDialog.setOnKeyListener { dialog, keyCode, event ->
-           if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-               // Show a confirmation dialog before closing
-               AlertDialog.Builder(requireContext())
-                   .setTitle("Exit")
-                   .setMessage("Do you want to close this screen?")
-                   .setPositiveButton("Yes") { _, _ ->
-                       bottomSheetDialog.dismiss()
-                   }
-                   .setNegativeButton("No", null)
-                   .show()
-               return@setOnKeyListener true
-           }
-           false
-       }
+        // Handle back button press
+        bottomSheetDialog.setOnKeyListener { dialog, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                // Show a confirmation dialog before closing
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Exit")
+                    .setMessage("Do you want to close this screen?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        bottomSheetDialog.dismiss()
+                    }
+                    .setNegativeButton("No", null)
+                    .show()
+                return@setOnKeyListener true
+            }
+            false
+        }
 
-       // Show the BottomSheetDialog
-       bottomSheetDialog.show()
-   }
+        // Show the BottomSheetDialog
+        bottomSheetDialog.show()
+    }
     private fun collectAadharResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getAadhaarCheck) {

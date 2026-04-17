@@ -63,6 +63,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+
+
         commonViewModel.getUnnati(UnnatiRequest(AppUtil.getSavedLanguagePreference(requireContext())))
         collectUnnatiData()
 
@@ -112,40 +116,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
         binding.ivDDGKY.setOnClickListener {
-            val request = ConsentRequest(
-                mobileNo = "7763027544",
-                userId = "12345",
-                fipId = "ABC001",
-                email = "user@example.com",
-                pan = "ABCDE1234F",
-                candidateId = "1001",
-                aadharNo = "123412341234"
-            )
 
-            SamikshaSdk.submitConsent(
-                context = requireContext(),
-                request = request,
-                onSuccess = { response ->
-
-
-                    Toast.makeText(
-                        context,
-                        "Success: ${response.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                },
-                onError = { error ->
-
-
-                    Toast.makeText(
-                        context,
-                        "Error: ${error.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            )
+          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSubmitBankConcent())
         }
-
 
 
 
@@ -446,7 +419,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
     private fun showUpdateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        val builder = AlertDialog.Builder(requireContext()) //  use requireContext() inside Fragment
         builder.setTitle("Update Available")
         builder.setMessage("A new version of the app is available. Please update to continue.")
 

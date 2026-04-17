@@ -6,9 +6,11 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.compose")
 
 }
 
@@ -28,9 +30,9 @@ android {
     }
 
 
-    composeOptions {
+   /* composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
-    }
+    }*/
 
 
     val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -230,8 +232,7 @@ dependencies {
 
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
-
+    kapt("com.github.bumptech.glide:compiler:4.13.0")
     implementation(libs.androidx.core.splashscreen)
 
     //Xml

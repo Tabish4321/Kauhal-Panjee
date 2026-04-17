@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.common.CommonActivity
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
 import com.d2k.samiksha.SamikshaSdk
+import com.kaushalpanjee.core.util.toastShort
 
 
 @AndroidEntryPoint
@@ -31,6 +33,9 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
+
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
@@ -40,22 +45,6 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
         AppUtil.changeAppLanguage(this, AppUtil.getSavedLanguagePreference(this))
 
-
-        SamikshaSdk.init(
-            context = this,
-            baseUrl = "https://samikshaapi.d2kindia.com/",
-            apiKey = "624f2281-b0f1-44e3-9d3e-24826a53e7a6",
-            calledFrom = "com.example.samiksha",
-            apiVersion = "1",
-
-            onSuccess = {
-                Log.d("SDK", "Init Success")
-            },
-
-            onFailure = { error ->
-                Log.e("SDK", "Init Failed: $error")
-            }
-        )
 
 
         lifecycleScope.launch {
