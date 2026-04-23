@@ -20,7 +20,7 @@ fun SubmitBankConsentScreen() {
 
     val context = LocalContext.current
 
-    // 🔹 State
+    //  State
     var mobileNo by remember { mutableStateOf("9769652415") }
     var userId by remember { mutableStateOf("9769652415UID") }
     var fipId by remember { mutableStateOf("BOB") }
@@ -33,22 +33,6 @@ fun SubmitBankConsentScreen() {
     var dialogMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
-    // 🔹 SDK INIT (only once)
-/*    LaunchedEffect(Unit) {
-        SamikshaSdk.init(
-            context,
-            baseUrl = "https://samikshaapi.d2kindia.com/",
-            apiKey = "624f2281-b0f1-44e3-9d3e-24826a53e7a6",
-            calledFrom = "KAUSHAL PANJEE",
-            apiVersion = "2",
-            onFailure = {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            },
-            onSuccess = {
-                Toast.makeText(context, "SDK Initialized", Toast.LENGTH_SHORT).show()
-            }
-        )
-    }*/
 
     Box(modifier = Modifier.fillMaxSize()) {
 
