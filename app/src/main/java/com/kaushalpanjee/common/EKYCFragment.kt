@@ -82,6 +82,8 @@ import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 const val CAMERA_REQUEST = 101
@@ -535,8 +537,27 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     private fun getTransactionID(): String {
-        val secureRandom = SecureRandom()
-        return secureRandom.nextInt(9999).toString()
+        val prefix = "KaushalPanjee"
+        val suffix = "AEAD"
+
+        // 12 digit random number
+        val random = SecureRandom()
+        val n = (100000000000L + (random.nextDouble() * 900000000000L)).toLong()
+
+        val date = Date()
+
+        val yyyy = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
+        val mm = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+        val dd = SimpleDateFormat("dd", Locale.getDefault()).format(date)
+
+        val hh = SimpleDateFormat("HH", Locale.getDefault()).format(date) // 24-hour format better
+        val min = SimpleDateFormat("mm", Locale.getDefault()).format(date)
+        val ss = SimpleDateFormat("ss", Locale.getDefault()).format(date)
+
+        val strDate = yyyy + mm + dd
+        val strTime = hh + min + ss
+
+        return "$prefix$n$strDate$strTime$suffix"
     }
 
     fun isAppInstalled(context: Context, packageName: String): Boolean {
@@ -547,75 +568,23 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             false // App installed nahi hai
         }
     }
-/*
-    private fun invokeCaptureIntent() {
-
-        val packageName = "in.gov.uidai.facerd"
-        if (isAppInstalled(requireContext(), packageName)) {
-            try {
-                val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-                intent1.putExtra(
-                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                    createPidOptions(getTransactionID(), "auth")
-                )
-                startUidaiAuthResult.launch(intent1)
-
-                // val packageName = "com.example.otherapp" // Replace with the target app's package name
-                val intent =
-                    requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-                intent?.putExtra(
-                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                    createPidOptions(getTransactionID(), "auth")
-                )
-                if (intent != null) {
-                    startActivity(intent)
-                }
-            } catch (exp: Exception) {
-                log("EKYCDATA", exp.toString())
-            }
-        }
-        else {
-
-            AlertDialog.Builder(requireContext())
-                .setTitle("Alert!")
-                .setMessage("It seems you don't have the AadhaarFaceRD App app installed in your phone.")
-                .setCancelable(false)
-                .setPositiveButton("Install") { _, _ ->
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    this.startActivity(intent)
-                }
-                .show()
-        }
-
-    }
-*/
 
     private fun invokeCaptureIntent() {
-
         try {
-            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-            intent1.putExtra(
+            val intent = Intent(AppConstant.Constants.CAPTURE_INTENT)
+            intent.putExtra(
                 AppConstant.Constants.CAPTURE_INTENT_REQUEST,
                 createPidOptions(getTransactionID(), "auth")
             )
-            startUidaiAuthResult.launch(intent1)
 
-            val intent =
-                requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-            intent?.putExtra(
-                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                createPidOptions(getTransactionID(), "auth")
-            )
-            if (intent != null) {
-                startActivity(intent)
-            }
+            startUidaiAuthResult.launch(intent) //  only one call
+
         } catch (exp: Exception) {
             log("EKYCDATA", exp.toString())
+            hideProgressBar()
+            toastShort("Failed to open capture app")
         }
-
     }
-
 
     private fun createPidOptions(txnId: String, purpose: String): String {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
