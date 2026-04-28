@@ -110,6 +110,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
+    /*    binding.ivDDGKY.setOnClickListener {
+
+
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLoanFragment())
+
+        }*/
+
+
+
+
 
         binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
 

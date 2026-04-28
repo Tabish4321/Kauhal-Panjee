@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,12 +11,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.SystemClock
 import android.speech.tts.TextToSpeech
 import android.text.Editable
-import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextWatcher
@@ -30,19 +28,16 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -53,7 +48,9 @@ import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
-import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
+import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.IntentModel
 import com.kaushalpanjee.common.model.response.IntentResponse
@@ -65,7 +62,6 @@ import com.kaushalpanjee.core.util.AppConstant.Constants.PRODUCTION
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.DownloadHelper
 import com.kaushalpanjee.core.util.Resource
-import com.kaushalpanjee.core.util.copyToClipboard
 import com.kaushalpanjee.core.util.decodeBase64
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
@@ -82,6 +78,8 @@ import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 const val CAMERA_REQUEST = 101
@@ -113,6 +111,12 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var selectedStateCode = ""
     private var selectedStateLgdCode = ""
     private lateinit var tts: TextToSpeech
+    private var clickCount = 0
+    private var isBlocked = false
+    private var countDownTimer: CountDownTimer? = null
+    private var appTxn = ""
+
+
 
     private lateinit var layoutManager : LinearLayoutManager
 
@@ -176,6 +180,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         super.onViewCreated(view, savedInstanceState)
         binding.progressButton.root.gone()
         init()
+        collectInsertAadhaarTxnResponse()
 
 
     }
@@ -291,30 +296,49 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
         binding.aadhaarVerifyButton.centerButton.setOnClickListener {
 
-            if (aadhaarValidate) {
+            if (isBlocked) return@setOnClickListener
 
+            clickCount++
 
-                val encryptedAadhaarString =   AESCryptography.encryptIntoBase64String(binding.etAadhaar.text.toString(),
-                    AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                if (selectedStateCode!=""){
-
-
-                    commonViewModel.getAadhaarCheck(AadhaarCheckReq(BuildConfig.VERSION_NAME,encryptedAadhaarString))
-
-
-                }
-                else
-                    showSnackBar("Please Select State first")
-
-
-
-
-            } else {
-
-                showSnackBar("Please enter valid aadhaar number")
+            if (clickCount >= 3) {
+                startBlockTimer()
+                return@setOnClickListener
             }
 
+
+            if (aadhaarValidate) {
+
+                //  Disable button immediately
+                binding.aadhaarVerifyButton.centerButton.apply {
+                    isEnabled = false
+                    alpha = 0.5f
+                }
+
+                val encryptedAadhaarString = AESCryptography.encryptIntoBase64String(
+                    binding.etAadhaar.text.toString(),
+                    AppConstant.Constants.ENCRYPT_KEY,
+                    AppConstant.Constants.ENCRYPT_IV_KEY
+                )
+
+                if (selectedStateCode != "") {
+
+                    commonViewModel.getAadhaarCheck(
+                        AadhaarCheckReq(BuildConfig.VERSION_NAME, encryptedAadhaarString)
+                    )
+
+                } else {
+                    showSnackBar("Please Select State first")
+
+                    //  re-enable if validation fails
+                    binding.aadhaarVerifyButton.centerButton.apply {
+                        isEnabled = true
+                        alpha = 1f
+                    }
+                }
+
+            } else {
+                showSnackBar("Please enter valid aadhaar number")
+            }
         }
         binding.chipAware.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -535,8 +559,28 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     private fun getTransactionID(): String {
-        val secureRandom = SecureRandom()
-        return secureRandom.nextInt(9999).toString()
+        val prefix = "KaushalPanjee"
+        val suffix = "AEAD"
+
+        // 12 digit random number
+        val random = SecureRandom()
+        val n = (100000000000L + (random.nextDouble() * 900000000000L)).toLong()
+
+        val date = Date()
+
+        val yyyy = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
+        val mm = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+        val dd = SimpleDateFormat("dd", Locale.getDefault()).format(date)
+
+        val hh = SimpleDateFormat("HH", Locale.getDefault()).format(date) // 24-hour format better
+        val min = SimpleDateFormat("mm", Locale.getDefault()).format(date)
+        val ss = SimpleDateFormat("ss", Locale.getDefault()).format(date)
+
+        val strDate = yyyy + mm + dd
+        val strTime = hh + min + ss
+        appTxn = "$prefix$n$strDate$strTime$suffix"
+
+        return "$prefix$n$strDate$strTime$suffix"
     }
 
     fun isAppInstalled(context: Context, packageName: String): Boolean {
@@ -547,75 +591,28 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             false // App installed nahi hai
         }
     }
-/*
-    private fun invokeCaptureIntent() {
-
-        val packageName = "in.gov.uidai.facerd"
-        if (isAppInstalled(requireContext(), packageName)) {
-            try {
-                val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-                intent1.putExtra(
-                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                    createPidOptions(getTransactionID(), "auth")
-                )
-                startUidaiAuthResult.launch(intent1)
-
-                // val packageName = "com.example.otherapp" // Replace with the target app's package name
-                val intent =
-                    requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-                intent?.putExtra(
-                    AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                    createPidOptions(getTransactionID(), "auth")
-                )
-                if (intent != null) {
-                    startActivity(intent)
-                }
-            } catch (exp: Exception) {
-                log("EKYCDATA", exp.toString())
-            }
-        }
-        else {
-
-            AlertDialog.Builder(requireContext())
-                .setTitle("Alert!")
-                .setMessage("It seems you don't have the AadhaarFaceRD App app installed in your phone.")
-                .setCancelable(false)
-                .setPositiveButton("Install") { _, _ ->
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    this.startActivity(intent)
-                }
-                .show()
-        }
-
-    }
-*/
 
     private fun invokeCaptureIntent() {
+        binding.aadhaarVerifyButton.centerButton.apply {
+            isEnabled = true
+            alpha = 1f
+        }
 
         try {
-            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-            intent1.putExtra(
+            val intent = Intent(AppConstant.Constants.CAPTURE_INTENT)
+            intent.putExtra(
                 AppConstant.Constants.CAPTURE_INTENT_REQUEST,
                 createPidOptions(getTransactionID(), "auth")
             )
-            startUidaiAuthResult.launch(intent1)
 
-            val intent =
-                requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-            intent?.putExtra(
-                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                createPidOptions(getTransactionID(), "auth")
-            )
-            if (intent != null) {
-                startActivity(intent)
-            }
+            startUidaiAuthResult.launch(intent) //  only one call
+
         } catch (exp: Exception) {
             log("EKYCDATA", exp.toString())
+            hideProgressBar()
+            toastShort("Failed to open capture app")
         }
-
     }
-
 
     private fun createPidOptions(txnId: String, purpose: String): String {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"${PRODUCTION}\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
@@ -741,16 +738,27 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA) { resource ->
                     when (resource) {
                         is Resource.Loading -> {
+
                         }
 
                         is Resource.Error -> {
                             hideProgressBar()
                             resource.error?.let { errorResponse ->
+
                                 toastShort(errorResponse.message)
-                                log("EKYCDATA", errorResponse.message ?: "Unknown error message")
                             } ?: run {
                                 toastShort("Nothing to show pls try again")
                             }
+
+                            resource.data?.body()?.let { uidaiData: UidaiResp ->
+
+                                val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(
+                                    uidaiData.PostOnAUA_Face_authResult
+                                )
+
+                                commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
+                                }
+
                         }
 
                         is Resource.Success -> {
@@ -761,9 +769,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-                                    //  uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+                                     // uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
 
-                                    log("EKYCDATA", kycResp.toString())
+                                    commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
 
                                     if (kycResp.isSuccess) {
                                         val bytes: ByteArray =
@@ -871,7 +879,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         hideProgressBar()
 
                                         // toastShort("Ekyc Completed")
-                                    } else {
+                                    }
+                                    else {
                                         hideProgressBar()
                                         val decodedRar = decodeBase64(kycResp.rar)
                                         decodedRar?.let { decodedRarParsed ->
@@ -998,6 +1007,11 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         it.error?.let { baseErrorResponse ->
                             showSnackBar(baseErrorResponse.message)
                             toastShort("error in create Api")
+                            binding.aadhaarVerifyButton.centerButton.apply {
+                                isEnabled = true
+                                alpha = 1f
+                            }
+
                         }
                     }
 
@@ -1007,6 +1021,11 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 showSnackBar(getAadhaarCheck.responseDesc)
 
                                 invokeCaptureIntent()
+                                binding.aadhaarVerifyButton.centerButton.apply {
+                                    isEnabled = true
+                                    alpha = 1f
+                                }
+
 
                             }
                             else if (getAadhaarCheck.responseCode == 301) {
@@ -1018,8 +1037,16 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             }
 
                             else if (getAadhaarCheck.responseCode == 333) {
+                                binding.aadhaarVerifyButton.centerButton.apply {
+                                    isEnabled = true
+                                    alpha = 1f
+                                }
 
                                 showSnackBar(getAadhaarCheck.responseDesc)
+                            }
+                            else{
+                                showSnackBar(getAadhaarCheck.responseDesc)
+
                             }
                         } ?: showSnackBar("Internal Sever Error")
                     }
@@ -1221,5 +1248,78 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         checkBox.text = spannable
     }
 
+
+
+    private fun startBlockTimer() {
+
+        isBlocked = true
+        binding.aadhaarVerifyButton.centerButton.isEnabled = false
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_timer, null)
+        val tvTimer = dialogView.findViewById<TextView>(R.id.tvTimer)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("OK") { d, _ -> d.dismiss() }
+            .create()
+
+        dialog.show()
+
+        countDownTimer = object : CountDownTimer(10000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                val sec = millisUntilFinished / 1000
+                tvTimer.text = "Try again after $sec sec"
+            }
+
+            override fun onFinish() {
+                isBlocked = false
+                clickCount = 0
+
+                binding.aadhaarVerifyButton.centerButton.isEnabled = true
+
+                tvTimer.text = "You can try again now"
+            }
+        }.start()
+    }
+
+
+
+    private fun collectInsertAadhaarTxnResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertAadhaarTxn) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+                                }
+
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+
+                                else -> {
+                                    showSnackBar(insertPersResponse.responseDesc)
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
 
 }

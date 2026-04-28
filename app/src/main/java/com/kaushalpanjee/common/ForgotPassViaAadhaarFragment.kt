@@ -36,6 +36,7 @@ import com.kaushalpanjee.core.util.AppConstant.Constants.LANGUAGE
 import com.kaushalpanjee.core.util.AppConstant.Constants.PRODUCTION
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.copyToClipboard
 import com.kaushalpanjee.core.util.decodeBase64
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
@@ -52,6 +53,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBinding>(
@@ -81,6 +85,11 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
     private var confirmPassword = ""
     private var userPhotoUIADI: Bitmap? = null
     private var ekycImage: String = ""
+    private var txnAadhaar: String = ""
+    private var txnApp: String = ""
+    private var ret: String = ""
+    private var timeStamp: String = ""
+    private var aadhaarCode: String = ""
 
 
 
@@ -257,35 +266,48 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
     }
 
     private fun invokeCaptureIntent() {
-
         try {
-            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-            intent1.putExtra(
+            val intent = Intent(AppConstant.Constants.CAPTURE_INTENT)
+            intent.putExtra(
                 AppConstant.Constants.CAPTURE_INTENT_REQUEST,
                 createPidOptions(getTransactionID(), "auth")
             )
-            startUidaiAuthResult.launch(intent1)
 
-            // val packageName = "com.example.otherapp" // Replace with the target app's package name
-            val intent =
-                requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-            intent?.putExtra(
-                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                createPidOptions(getTransactionID(), "auth")
-            )
-            if (intent != null) {
-                startActivity(intent)
-            }
+            startUidaiAuthResult.launch(intent) //  only one call
+
         } catch (exp: Exception) {
             log("EKYCDATA", exp.toString())
+            hideProgressBar()
+            toastShort("Failed to open capture app")
         }
-
     }
 
     private fun getTransactionID(): String {
-        val secureRandom = SecureRandom()
-        return secureRandom.nextInt(9999).toString()
+        val prefix = "KaushalPanjee"
+        val suffix = "AEAD"
+
+        // 12 digit random number
+        val random = SecureRandom()
+        val n = (100000000000L + (random.nextDouble() * 900000000000L)).toLong()
+
+        val date = Date()
+
+        val yyyy = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
+        val mm = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+        val dd = SimpleDateFormat("dd", Locale.getDefault()).format(date)
+
+        val hh = SimpleDateFormat("HH", Locale.getDefault()).format(date) // 24-hour format better
+        val min = SimpleDateFormat("mm", Locale.getDefault()).format(date)
+        val ss = SimpleDateFormat("ss", Locale.getDefault()).format(date)
+
+        val strDate = yyyy + mm + dd
+        val strTime = hh + min + ss
+
+        txnApp= "$prefix$n$strDate$strTime$suffix"
+
+        return "$prefix$n$strDate$strTime$suffix"
     }
+
 
     private fun createPidOptions(txnId: String, purpose: String): String {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"$PRODUCTION\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
@@ -333,6 +355,9 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
 
             // Check if camera permission is granted
             checkCameraPermission()
+
+            //captureResponse.copyToClipboard(requireContext())
+
 
             // Parse the capture response XML to an object
             val response = CaptureResponse.fromXML(captureResponse)
@@ -464,10 +489,18 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
+                                    //uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+
 
                                     log("EKYCDATA", kycResp.toString())
 
                                     if (kycResp.isSuccess) {
+
+                                        ret =kycResp.ret
+                                        txnAadhaar =kycResp.txn
+                                        timeStamp = kycResp.ts
+                                        aadhaarCode = kycResp.code
+
                                         val bytes: ByteArray =
                                             Base64.decode(kycResp.uidData.pht, Base64.DEFAULT)
                                         var bitmap =

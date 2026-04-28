@@ -46,7 +46,7 @@ android {
         minSdk = 28
         targetSdk = 35
         versionCode = 45
-        versionName = "2.6.6"
+        versionName = "2.6.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -113,7 +113,8 @@ android {
         }
 
         debug {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable=true
             versionNameSuffix=""
             applicationIdSuffix=""
@@ -338,6 +339,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation ("com.google.firebase:firebase-messaging")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("io.mockk:mockk:1.13.8")

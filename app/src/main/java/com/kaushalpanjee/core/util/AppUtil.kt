@@ -30,6 +30,8 @@ import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.provider.Settings
 import android.widget.Toast
 import androidx.navigation.NavController
@@ -43,6 +45,12 @@ import java.security.SecureRandom
 
 
 object AppUtil {
+
+
+    fun validatePAN(pan: String): Boolean {
+        val regex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+        return regex.matches(pan)
+    }
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context) : String{
@@ -442,6 +450,17 @@ object AppUtil {
         }.start()
     }
 
+
+    fun base64ToBitmap(base64: String): Bitmap? {
+        return try {
+            val cleanBase64 = base64.substringAfter(",") // handles data:image/png;base64,...
+            val decodedBytes = Base64.decode(cleanBase64, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     }
 

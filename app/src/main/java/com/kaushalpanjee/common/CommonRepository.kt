@@ -41,6 +41,7 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -624,6 +625,13 @@ class CommonRepository @Inject constructor(
     suspend fun invitationApprove(invitation : InvitationApprovalRequest): Flow<Resource<out ResponseBody>> {
         return networkBoundResourceWithoutDbn {
             appLevelApi.invitationApproved(invitation)
+        }
+    }
+
+
+    fun insertAadhaarTxn(insertAadhaarTxnReq: InsertAadhaarTxnReq): Flow<Resource<out InsertRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertAadhaarTxn(insertAadhaarTxnReq)
         }
     }
 

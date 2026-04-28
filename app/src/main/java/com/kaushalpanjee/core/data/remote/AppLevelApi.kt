@@ -34,6 +34,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -439,15 +440,13 @@ interface AppLevelApi {
 
 
 
-
-
     @POST(ApiConstant.API_INSERT_TRAINING_CENTER)
     suspend fun insertTrainingCenter( @Header("Authorization") token: String,
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 
         /*@GET(API_NOTIFICATION)
-        suspend fun getNotifications(
+        suspend fun getNotifications( 
             @Query("page") page: Int,
             @Query("size") size: Int
         ): NotificationListResponse*/
@@ -455,11 +454,16 @@ interface AppLevelApi {
     @GET(API_NOTIFICATION)
     suspend fun getNotifications(
         @Query("candidateId") candidateId: String,
-        @Query("page") page: Int,
+        @Query("page") page
+        : Int,
         @Query("size") size: Int
     ): NotificationListResponse
 
     @POST(API_APPROVECONDIDATE)
     suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
+
+
+    @POST(ApiConstant.API_INSERT_AADHAAR_TXN)
+    suspend fun insertAadhaarTxn(@Body insertAadhaarTxnReq: InsertAadhaarTxnReq): InsertRes
 
 }
