@@ -34,6 +34,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -460,5 +461,9 @@ interface AppLevelApi {
 
     @POST(API_APPROVECONDIDATE)
     suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
+
+
+    @POST(ApiConstant.API_INSERT_AADHAAR_TXN)
+    suspend fun insertAadhaarTxn(@Body insertAadhaarTxnReq: InsertAadhaarTxnReq): InsertRes
 
 }

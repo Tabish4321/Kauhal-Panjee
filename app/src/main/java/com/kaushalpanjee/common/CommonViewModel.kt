@@ -38,6 +38,7 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -1264,4 +1265,21 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         isLastPage = false
         currentPage = 0
     }
+
+
+
+    private  var _insertAadhaarTxn =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertAadhaarTxn = _insertAadhaarTxn.asStateFlow()
+
+
+    fun insertAadhaarTxn(insertAadhaarTxnReq: InsertAadhaarTxnReq) {
+        viewModelScope.launch {
+            commonRepository.insertAadhaarTxn(insertAadhaarTxnReq).collectLatest {
+                _insertAadhaarTxn.emit(it)
+            }
+        }
+
+
+    }
+
 }
