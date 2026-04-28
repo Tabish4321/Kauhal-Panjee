@@ -62,6 +62,7 @@ import com.kaushalpanjee.core.util.AppConstant.Constants.PRODUCTION
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.DownloadHelper
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.copyToClipboard
 import com.kaushalpanjee.core.util.decodeBase64
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
@@ -531,28 +532,23 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             intent.getStringExtra(AppConstant.Constants.CAPTURE_INTENT_RESPONSE_DATA)
 
                         if (!captureResponse.isNullOrEmpty()) {
-                            log("handleCaptureResponse", captureResponse)
                             handleCaptureResponse(captureResponse)
                         } else {
-                            log("handleCaptureResponse", "Capture response data is null or empty.")
                             toastShort("Capture response is empty.")
                         }
                     } else {
-                        log("handleCaptureResponse", "Intent data is null.")
                         toastShort("Failed to get capture response data.")
                     }
                 } else {
                     toastLong("Failed to capture data.")
-                    log("handleCaptureResponse", "Activity result code: ${result.resultCode}")
                 }
             } catch (e: NullPointerException) {
                 e.printStackTrace()
                 toastShort("Error: Missing data in result.")
-                log("startUidaiAuthResult", "NullPointerException: ${e.message}")
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 toastShort("An error occurred while processing the result.")
-                log("startUidaiAuthResult", "Exception: ${e.message}")
             }
         }
 
@@ -626,6 +622,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
             // Parse the capture response XML to an object
             val response = CaptureResponse.fromXML(captureResponse)
+            //captureResponse.copyToClipboard(requireContext())
 
             if (response.isSuccess) {
                 showProgressBar()
@@ -675,8 +672,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             hideProgressBar()
             e.printStackTrace()
             toastShort("An error occurred while processing the response.")
-            log("EKYCDATA", "Exception: ${e.message}")
-            // e.message?.copyToClipboard(requireContext())
+            //commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
+        // e.message?.copyToClipboard(requireContext())
         }
     }
 
@@ -1293,6 +1290,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     is Resource.Loading -> showProgressBar()
                     is Resource.Error -> {
                         hideProgressBar()
+                        showSnackBar("Error in txn api")
                     }
 
                     is Resource.Success -> {

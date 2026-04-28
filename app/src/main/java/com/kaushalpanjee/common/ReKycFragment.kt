@@ -33,6 +33,7 @@ import com.kaushalpanjee.common.EKYCFragment.AadhaarValidator
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.IntentModel
 import com.kaushalpanjee.common.model.response.IntentResponse
@@ -456,7 +457,8 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             val response = CaptureResponse.fromXML(captureResponse)
 
 
-          //  captureResponse.copyToClipboard(requireContext())
+            captureResponse.copyToClipboard(requireContext())
+
 
             val decryptedAadhaar = AESCryptography.decryptIntoString(
                 AppUtil.getSavedAadhaarPreference(requireContext()),
@@ -508,6 +510,8 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             // Catch all other exceptions
             hideProgressBar()
             e.printStackTrace()
+            //commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
+
             toastShort("An error occurred while processing the response.")
             log("EKYCDATA", "Exception: ${e.message}")
             // e.message?.copyToClipboard(requireContext())
