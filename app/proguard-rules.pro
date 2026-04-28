@@ -12,6 +12,11 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -keepattributes InnerClasses
+-keepattributes EnclosingMethod
+
+-keepclassmembers class * {
+    public <init>(...);
+}
 
 ##############################################
 # 🧠 KOTLIN + METADATA
@@ -55,6 +60,20 @@
 ##############################################
 
 -keep interface retrofit2.http.* { *; }
+-dontwarn retrofit2.**
+-keep interface * {
+    @retrofit2.http.* <methods>;
+}
+
+-keep interface com.kaushalpanjee.** {
+    @retrofit2.http.* <methods>;
+}
+
+-keep,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+-keep class kotlin.coroutines.** { *; }
 
 # Keep API interfaces
 -keep interface com.kaushalpanjee.remote.** { *; }
@@ -227,6 +246,17 @@
     public void checkClientTrusted(...);
 }
 
+-keep class org.xmlpull.v1.** { *; }
+-keep interface org.xmlpull.v1.** { *; }
+
+# Ignore xmlpull (Android provides it)
+-dontwarn org.xmlpull.v1.**
+-dontwarn org.xmlpull.**
+
+# Ignore StAX warnings
+-dontwarn org.codehaus.stax2.**
+-dontwarn javax.xml.stream.**
+
 ##############################################
 # 🔐 PREVENT PIN STRING REMOVAL
 ##############################################
@@ -236,6 +266,34 @@
     java.lang.String *;
 }
 
+
+
+# ---- Ignore desktop Java classes (XStream issue) ----
+-dontwarn java.awt.**
+-dontwarn javax.swing.**
+
+# ---- Ignore OSGi / bnd annotations (Woodstox / XML libs) ----
+-dontwarn aQute.bnd.annotation.spi.**
+
+# ---- Ignore StAX / XML streaming warnings ----
+-dontwarn com.ctc.wstx.**
+-dontwarn org.codehaus.stax2.**
+-dontwarn javax.xml.stream.**
+
+# ---- Ignore missing Koin annotations (only if you are NOT using Koin runtime) ----
+-dontwarn org.koin.core.annotation.**
+
+# ---- Keep XStream core (avoid aggressive stripping) ----
+-keep class com.thoughtworks.xstream.** { *; }
+-dontwarn com.thoughtworks.xstream.**
+
+-keep class com.fasterxml.** { *; }
+-dontwarn com.fasterxml.**
+
+-keep class org.apache.xml.security.** { *; }
+-dontwarn org.apache.xml.security.**
+
+-keep class com.pehchaan.** { *; }
 
 ##############################################
 # 🚀 FINAL SHRINKING OPTIMIZATION
