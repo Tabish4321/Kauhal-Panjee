@@ -730,7 +730,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-                                    //  uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+                                     // uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
 
                                     log("EKYCDATA", kycResp.toString())
 

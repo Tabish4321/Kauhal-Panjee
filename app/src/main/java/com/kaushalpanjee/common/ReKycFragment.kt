@@ -43,6 +43,7 @@ import com.kaushalpanjee.core.util.AppConstant.Constants.LANGUAGE
 import com.kaushalpanjee.core.util.AppConstant.Constants.PRODUCTION
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.copyToClipboard
 import com.kaushalpanjee.core.util.decodeBase64
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
@@ -454,6 +455,9 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             // Parse the capture response XML to an object
             val response = CaptureResponse.fromXML(captureResponse)
 
+
+          //  captureResponse.copyToClipboard(requireContext())
+
             val decryptedAadhaar = AESCryptography.decryptIntoString(
                 AppUtil.getSavedAadhaarPreference(requireContext()),
                 AppConstant.Constants.ENCRYPT_KEY,
@@ -573,11 +577,11 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                     }
 
                     is Resource.Success -> {
+
                         it.data?.let { getAadhaarRekyc ->
-                            if (getAadhaarRekyc.responseCode == 200) {
 
 
-
+                                    if (getAadhaarRekyc.responseCode == 200) {
 
                                 showSnackBar(getAadhaarRekyc.responseDesc)
 
