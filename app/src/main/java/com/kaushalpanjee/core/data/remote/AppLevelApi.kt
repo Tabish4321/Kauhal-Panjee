@@ -20,6 +20,7 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankListReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
@@ -71,6 +72,7 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.BlockResponse
@@ -113,6 +115,7 @@ import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
+import com.kaushalpanjee.core.util.ApiConstant.API_GET_BANKLIST
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
@@ -465,5 +468,11 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_INSERT_AADHAAR_TXN)
     suspend fun insertAadhaarTxn(@Body insertAadhaarTxnReq: InsertAadhaarTxnReq): InsertRes
+
+    @POST(API_GET_BANKLIST)
+    suspend fun getBankListAPI(
+        @Header("Authorization") token: String,
+        @Body req: BankListReq
+    ): BankListResponse
 
 }

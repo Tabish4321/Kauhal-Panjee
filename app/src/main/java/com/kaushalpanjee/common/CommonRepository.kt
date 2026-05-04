@@ -30,6 +30,7 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.BankListReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
@@ -77,6 +78,7 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -632,6 +634,12 @@ class CommonRepository @Inject constructor(
     fun insertAadhaarTxn(insertAadhaarTxnReq: InsertAadhaarTxnReq): Flow<Resource<out InsertRes>> {
         return networkBoundResourceWithoutDb {
             appLevelApi.insertAadhaarTxn(insertAadhaarTxnReq)
+        }
+    }
+
+    suspend fun getBankListApi(header: String, loginId: String): Flow<Resource<out BankListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getBankListAPI(header, BankListReq(loginId, BuildConfig.VERSION_NAME))
         }
     }
 

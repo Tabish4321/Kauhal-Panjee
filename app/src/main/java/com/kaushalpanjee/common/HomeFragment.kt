@@ -72,6 +72,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.model.BankItem
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -541,7 +542,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectWardResponse()
         collectNregaValidateResponse()
         collectSendEmailOTPResponse()
-
+        bankDetails()
 
         allResponseintrade()
 
@@ -582,8 +583,102 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     )
                 }
             })
+        showBankListUI()
+        binding.bankingView.expandBanking.visible()
 
     }
+
+    fun bankDetails() {
+        commonViewModel.getBankList(
+            AppUtil.getSavedTokenPreference(requireContext()),
+            userPreferences.getUseID()
+        )
+
+        lifecycleScope.launch {
+            commonViewModel.bankList.collectLatest { resource ->
+
+                when (resource) {
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        val apiList = resource.data?.data ?: emptyList()
+
+                        binding.bankingView.llBankContainer.removeAllViews()
+
+
+                        if (apiList.isEmpty()) {
+                            binding.bankingView.tvNoBank.visible()
+                            //bankAdapter.setData(emptyList())
+                            return@collectLatest
+                        }
+                        binding.bankingView.tvNoBank.gone()
+
+//                        val finalList = listOf(
+//                            BankItem(1, "SBI", "XXXX1234", "SBIN0001234", "ABCDE1234F"),
+//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
+//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
+//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
+//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
+//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G")
+//                        )
+//
+//                        finalList.forEach { item ->
+                        apiList.map { item ->
+                            val itemView = layoutInflater.inflate(
+                                R.layout.item_bank,
+                                binding.bankingView.llBankContainer,
+                                false
+                            )
+                            itemView.findViewById<TextView>(R.id.tvIfsc).text = item.ifscCode
+                            itemView.findViewById<TextView>(R.id.tvBankName).text = item.bankName
+                            itemView.findViewById<TextView>(R.id.tvAccount).text = item.accountNumber
+                            itemView.findViewById<TextView>(R.id.tvPan).text = AESCryptography.decryptIntoString(item.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                            binding.bankingView.llBankContainer.addView(itemView)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        resource.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message ?: "Something went wrong")
+                        }
+                        hideProgressBar()
+                        binding.bankingView.tvNoBank.visible()
+                        //bankAdapter.setData(emptyList())
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showBankListUI() {
+        binding.bankingView.llBankContainer.visible()
+        binding.bankingView.btnAddBank.visible()
+        binding.bankingView.btnAddBank.text = "Add Bank Details"
+
+        binding.bankingView.llIfscCode.gone()
+        binding.bankingView.llBankName.gone()
+        binding.bankingView.llBranchName.gone()
+        binding.bankingView.llBankAcNo.gone()
+        binding.bankingView.llPanNumber.gone()
+    }
+
+    private fun showBankFormUI() {
+        binding.bankingView.llBankContainer.gone()
+        binding.bankingView.btnAddBank.text = "View Bank Details"
+        binding.bankingView.btnAddBank.visible()
+
+        binding.bankingView.llIfscCode.visible()
+        binding.bankingView.llBankName.visible()
+        binding.bankingView.llBranchName.visible()
+        binding.bankingView.llBankAcNo.visible()
+        binding.bankingView.llPanNumber.visible()
+    }
+
+
 
     private fun setupTradeSearch() {
         binding.searchTradeView.addTextChangedListener(object : TextWatcher {
@@ -778,6 +873,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 //            intent.putExtra("CERT_URL", "")
 //            startActivity(intent)
 //        }
+
+
+
 
 
 
@@ -2270,12 +2368,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+
+
         binding.bankingView.llTopBanking.setOnClickListener {
 
             if (isBankingInfoVisible && bankingStatus.contains("0")) {
                 isBankingInfoVisible = false
                 binding.bankingView.expandBanking.visible()
                 binding.bankingView.viewBanking.visible()
+                showBankListUI()
             } else {
 
                 isBankingInfoVisible = true
@@ -2292,6 +2393,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         binding.bankingView.expandBanking.visible()
                         binding.bankingView.viewBanking.visible()
                         //binding.btnBnakingSubmit.visible()
+                        showBankFormUI()
 
                         for (x in userCandidateBankDetailsList) {
 
@@ -3565,93 +3667,123 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+
+        // ✅ SET ADAPTER ONCE (IMPORTANT)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            branchListValue
+        )
+        binding.bankingView.spinnerBranchName.setAdapter(adapter)
+
+
+// ✅ ADD BUTTON (OUTSIDE spinner listener)
+      //  binding.bankingView.expandBanking.gone() // default hidden
+
+        binding.bankingView.btnAddBank.setOnClickListener {
+            if (binding.bankingView.llBankContainer.visibility == View.VISIBLE) {
+                showBankFormUI()
+            } else {
+                showBankListUI()
+            }
+        }
+
+
+// ✅ SINGLE ITEM CLICK LISTENER (FIXED)
         binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, branchListValue)
-            binding.bankingView.spinnerBranchName.setAdapter(adapter)
 
-            binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position).toString()
-                val originalPosition = branchListValue.indexOf(selectedItem)
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            val originalPosition = branchListValue.indexOf(selectedItem)
 
-                if (originalPosition != -1 && originalPosition in branchListValue.indices) {
-                    branchName = branchListValue[originalPosition]
-                    branchCode = branchCodeList[originalPosition]
-                    bankCode = bankCodeList[originalPosition]
-                    bankName1 = bankListValue[originalPosition]
-                    accLenghth = bankAccountLenghth[originalPosition]
+            if (originalPosition != -1 && originalPosition in branchListValue.indices) {
 
-                    binding.bankingView.etBankName.setText(bankName1)
-                    binding.bankingView.etBranchName.setText(branchName)
+                branchName = branchListValue[originalPosition]
+                branchCode = branchCodeList[originalPosition]
+                bankCode = bankCodeList[originalPosition]
+                bankName1 = bankListValue[originalPosition]
+                accLenghth = bankAccountLenghth[originalPosition]
 
-                    if (accLenghth.isNotBlank()) {
-                        val lengths = accLenghth.split(",")
-                            .mapNotNull { it.toIntOrNull() }
-                            .sorted()
+                binding.bankingView.etBankName.setText(bankName1)
+                binding.bankingView.etBranchName.setText(branchName)
 
-                        val maxLength = lengths.maxOrNull() ?: 0
+                // ✅ CLEAR OLD WATCHERS (IMPORTANT FIX)
+                binding.bankingView.etBankAcNo.addTextChangedListener(null)
 
-                        if (lengths.size == 1) {
-                            binding.bankingView.etBankAcNo.filters =
-                                arrayOf(InputFilter.LengthFilter(lengths.first()))
-                        } else if (lengths.isNotEmpty()) {
-                            binding.bankingView.etBankAcNo.filters =
-                                arrayOf(InputFilter.LengthFilter(maxLength))
+                if (accLenghth.isNotBlank()) {
 
-                            binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
-                                override fun afterTextChanged(s: Editable?) {
-                                    s?.let {
-                                        if (it.length in lengths || it.isEmpty()) {
-                                            binding.bankingView.etBankAcNo.error = null
-                                            binding.bankingView.btnBnakingSubmit.visible()
-                                        } else {
-                                            binding.bankingView.etBankAcNo.error =
-                                                "Account number must be ${lengths.joinToString(", ")} digits"
-                                        }
+                    val lengths = accLenghth.split(",")
+                        .mapNotNull { it.toIntOrNull() }
+                        .sorted()
+
+                    val maxLength = lengths.maxOrNull() ?: 0
+
+                    if (lengths.size == 1) {
+
+                        binding.bankingView.etBankAcNo.filters =
+                            arrayOf(InputFilter.LengthFilter(lengths.first()))
+
+                    } else if (lengths.isNotEmpty()) {
+
+                        binding.bankingView.etBankAcNo.filters =
+                            arrayOf(InputFilter.LengthFilter(maxLength))
+
+                        // ✅ ADD WATCHER ONLY ONCE
+                        binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
+
+                            override fun afterTextChanged(s: Editable?) {
+                                s?.let {
+                                    if (it.length in lengths || it.isEmpty()) {
+                                        binding.bankingView.etBankAcNo.error = null
+                                        binding.bankingView.btnBnakingSubmit.visible()
+                                    } else {
+                                        binding.bankingView.etBankAcNo.error =
+                                            "Account number must be ${lengths.joinToString(", ")} digits"
+                                        binding.bankingView.btnBnakingSubmit.gone()
                                     }
                                 }
+                            }
 
-                                override fun beforeTextChanged(
-                                    s: CharSequence?,
-                                    start: Int,
-                                    count: Int,
-                                    after: Int
-                                ) {
-                                }
+                            override fun beforeTextChanged(
+                                s: CharSequence?, start: Int, count: Int, after: Int
+                            ) {}
 
-                                override fun onTextChanged(
-                                    s: CharSequence?,
-                                    start: Int,
-                                    before: Int,
-                                    count: Int
-                                ) {
-                                }
-                            })
-                        }
-                    } else {
-                        binding.bankingView.etBankAcNo.filters = arrayOf()
+                            override fun onTextChanged(
+                                s: CharSequence?, start: Int, before: Int, count: Int
+                            ) {}
+                        })
                     }
+
                 } else {
-                    Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+                    binding.bankingView.etBankAcNo.filters = arrayOf()
+                }
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+// ✅ TEXT CHANGE VALIDATION (UNCHANGED LOGIC)
+        binding.bankingView.spinnerBranchName.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(
+                s: CharSequence?, start: Int, count: Int, after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?, start: Int, before: Int, count: Int
+            ) {
+                if (!branchListValue.contains(s.toString())) {
+                    branchName = ""
+                    branchCode = ""
+                    bankCode = ""
+                    bankName1 = ""
+                    accLenghth = ""
                 }
             }
-
-            binding.bankingView.spinnerBranchName.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                }
-
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (!branchListValue.contains(s.toString())) {
-                        branchName = ""
-                        branchCode = ""
-                        bankCode = ""
-                        bankName1 = ""
-                        accLenghth = ""
-                    }
-                }
-            })
-        }
+        })
 
 
         // If Present Address is same as permanent
