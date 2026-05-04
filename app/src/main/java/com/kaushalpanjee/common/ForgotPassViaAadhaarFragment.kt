@@ -496,10 +496,7 @@ class ForgotPassViaAadhaarFragment  : BaseFragment<FragmentForgotViaAadhaarBindi
 
                                     if (kycResp.isSuccess) {
 
-                                        ret =kycResp.ret
-                                        txnAadhaar =kycResp.txn
-                                        timeStamp = kycResp.ts
-                                        aadhaarCode = kycResp.code
+
 
                                         val bytes: ByteArray =
                                             Base64.decode(kycResp.uidData.pht, Base64.DEFAULT)

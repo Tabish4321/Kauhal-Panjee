@@ -77,14 +77,14 @@ android {
         }
     }
 
-    packaging {
+/*    packaging {
         resources {
             excludes += setOf(
                 "META-INF/services/org.xmlpull.v1.XmlPullParserFactory",
                 "META-INF/services/org.codehaus.stax2.validation.XMLValidationSchemaFactory.*"
             )
         }
-    }
+    }*/
 
     buildTypes {
         release     {
@@ -187,11 +187,12 @@ android {
 //        }
 //    }
 
-    configurations.configureEach {
-        exclude(group = "xmlpull")
-        exclude(group = "org.xmlpull")
-        exclude(group = "xpp3")
-        exclude(group = "net.sf.kxml")
+    configurations.all {
+        // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
+        exclude(group = "xpp3", module = "xpp3")
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
+        exclude(group = "pull-parser", module = "pull-parser")
     }
 
 
@@ -263,17 +264,17 @@ dependencies {
         exclude(group = "stax", module = "stax-api")
     }
 
-    implementation("com.thoughtworks.xstream:xstream:1.4.20") {
-        exclude(group = "xmlpull")
-        exclude(group = "xpp3")
+    implementation("com.thoughtworks.xstream:xstream:1.4.7") {
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
     }
 
     implementation(libs.bcprov.jdk16)
     implementation(libs.jsr105.api)
-    implementation("org.apache.santuario:xmlsec:3.0.2") {
+    implementation("org.apache.santuario:xmlsec:2.0.3") {
         exclude(group = "org.codehaus.woodstox")
-        exclude(group = "xmlpull")
-        exclude(group = "org.xmlpull")
+        exclude(group = "xmlpull", module = "xmlpull")
+        exclude(group = "org.xmlpull", module = "xmlpull")
     }
 
 

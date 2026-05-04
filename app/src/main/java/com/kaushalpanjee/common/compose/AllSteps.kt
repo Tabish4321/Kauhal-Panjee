@@ -28,7 +28,7 @@ fun PersonalStep() {
     var isPanValid by remember { mutableStateOf(false) }
 
     //  Auto-filled data (API se aayega)
-    val fatherName = "Mohd. Jamal"
+    val fatherName = "Jamal"
     val education = "Graduate"
     val category = "OBC"
 
@@ -42,7 +42,7 @@ fun PersonalStep() {
     PremiumCard("Personal Information") {
 
         InfoRow(Icons.Default.Person, "Full Name", "Tabish Jamal")
-        InfoRow(Icons.Default.DateRange, "Date of Birth", "01-01-1995")
+        InfoRow(Icons.Default.DateRange, "Date of Birth", "01-01-1997")
         InfoRow(Icons.Default.Person, "Gender", "Male")
 
         InfoRow(Icons.Default.Person, "Father / Guardian", fatherName)

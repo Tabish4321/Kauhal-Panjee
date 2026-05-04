@@ -7,8 +7,12 @@ import android.os.Build
 import android.util.Base64
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -181,37 +185,62 @@ fun DropdownField(
 }
 
 // ================= STEP HEADER =================
+
 @Composable
-fun StepHeader(step: Int) {
+fun StepHeader(
+    step: Int,
+    totalSteps: Int
+) {
 
-    val steps = 6
+    val listState = rememberLazyListState()
 
-    Row(
+    //  Auto scroll to current step
+    LaunchedEffect(step) {
+        listState.animateScrollToItem(step)
+    }
+
+    LazyRow(
+        state = listState,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 10.dp), // ✅ margin added
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(vertical = 10.dp),
+        contentPadding = PaddingValues(horizontal = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
-        repeat(steps) { index ->
+        items(totalSteps + 1) { index ->
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            val isDone = index < step
+            val isActive = index == step
 
-                val isDone = index < step
-                val isActive = index == step
-
-                val circleColor = when {
+            val color by animateColorAsState(
+                targetValue = when {
                     isDone -> Color(0xFF4CAF50)
                     isActive -> MaterialTheme.colorScheme.primary
                     else -> Color.LightGray
-                }
+                },
+                label = ""
+            )
+
+            val scale by animateFloatAsState(
+                targetValue = if (isActive) 1.2f else 1f,
+                label = ""
+            )
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
 
                 Surface(
                     shape = CircleShape,
-                    color = circleColor,
-                    modifier = Modifier.size(34.dp)
+                    color = color,
+                    modifier = Modifier
+                        .size(34.dp)
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                        }
                 ) {
                     Box(contentAlignment = Alignment.Center) {
+
                         if (isDone) {
                             Icon(Icons.Default.Check, null, tint = Color.White)
                         } else {
@@ -220,13 +249,15 @@ fun StepHeader(step: Int) {
                     }
                 }
 
-                // ✅ LINE PROGRESS FIX
-                if (index < steps - 1) {
+                //  connector line
+                if (index < totalSteps) {
 
-                    val lineColor = when {
-                        index < step -> Color(0xFF4CAF50) // ✅ fill line properly
-                        else -> Color.LightGray
-                    }
+                    val lineColor by animateColorAsState(
+                        targetValue = if (index < step)
+                            Color(0xFF4CAF50)
+                        else Color.LightGray,
+                        label = ""
+                    )
 
                     Box(
                         Modifier
@@ -301,7 +332,7 @@ fun UploadItem(title: String) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(Icons.Default.CloudUpload, null, tint = Color.Red)
                     Spacer(Modifier.height(8.dp))
-                    Text("Drag and drop")
+                    Text("Upload Photograph")
                 }
             }
         }
@@ -381,7 +412,7 @@ fun BottomButtons(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        // 🔙 Previous Button (Left)
+        //  Previous Button (Left)
         if (step > 0) {
             OutlinedButton(
                 onClick = onBack,
@@ -396,7 +427,7 @@ fun BottomButtons(
             Spacer(modifier = Modifier.width(130.dp))
         }
 
-        // 👉 Next Button (Right)
+        //  Next Button (Right)
         Button(
             onClick = onNext,
             modifier = Modifier
@@ -404,7 +435,7 @@ fun BottomButtons(
                 .width(150.dp),
             shape = RoundedCornerShape(14.dp)
         ) {
-            Text(if (step == 5) "Submit" else "Next")
+            Text(if (step == 9) "Submit" else "Next")
         }
     }
 }

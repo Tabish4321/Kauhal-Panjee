@@ -301,7 +301,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
             clickCount++
 
-            if (clickCount >= 3) {
+            if (clickCount >= 2) {
                 startBlockTimer()
                 return@setOnClickListener
             }
