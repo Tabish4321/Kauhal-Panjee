@@ -39,6 +39,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import okhttp3.OkHttpClient
 import java.security.MessageDigest
 import java.security.SecureRandom
 
@@ -427,6 +428,26 @@ object AppUtil {
         )
 
         isSessionDialogShown = false // Reset flag after navigation
+    }
+  //  sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c= , sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0=
+    fun printSslPin() {
+        val client = OkHttpClient()
+        val request = okhttp3.Request.Builder()
+            .url("https://kaushal.rural.gov.in/")
+            .build()
+        Thread {
+            try {
+            val response = client.newCall(request).execute()
+            val handshake = response.handshake
+            val certs = handshake?.peerCertificates
+            certs?.forEach {
+                val pin = okhttp3.CertificatePinner.pin(it)
+                println("SSL PIN 👉 $pin")
+                }
+            } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        }.start()
     }
 
 

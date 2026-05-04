@@ -20,6 +20,7 @@ import com.d2k.samiksha.SamikshaSdk
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.AppUtil.printSslPin
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.ActivityCommonBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +33,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+   //     printSslPin()
 
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =

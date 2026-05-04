@@ -2,7 +2,11 @@ package com.kaushalpanjee
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -11,10 +15,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
+
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -32,10 +40,6 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
@@ -44,7 +48,6 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
 
         // AppUtil.changeAppLanguage(this, userPreferences.getLanguage())
         AppUtil.changeAppLanguage(this, AppUtil.getSavedLanguagePreference(this))
-
 
 
         lifecycleScope.launch {

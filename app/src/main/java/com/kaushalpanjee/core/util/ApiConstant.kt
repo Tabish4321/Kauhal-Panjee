@@ -77,6 +77,9 @@ object ApiConstant {
     const val API_NOTIFICATION = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getNotificationList"
     const val API_APPROVECONDIDATE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}aprroveCandidate"
     const val API_INSERT_OJT_ATTENDANCE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertOjtCandidateAttendance"
+    const val API_INSERT_AADHAAR_TXN = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}saveAadhaarTxn"
+    const val API_GET_BANKLIST= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}bankList"
+
 
 
 }

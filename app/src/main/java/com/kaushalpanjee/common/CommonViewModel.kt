@@ -38,6 +38,7 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -71,6 +72,7 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
@@ -1264,4 +1266,31 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         isLastPage = false
         currentPage = 0
     }
+
+
+
+    private  var _insertAadhaarTxn =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertAadhaarTxn = _insertAadhaarTxn.asStateFlow()
+
+
+    fun insertAadhaarTxn(insertAadhaarTxnReq: InsertAadhaarTxnReq) {
+        viewModelScope.launch {
+            commonRepository.insertAadhaarTxn(insertAadhaarTxnReq).collectLatest {
+                _insertAadhaarTxn.emit(it)
+            }
+        }
+    }
+
+    private val _bankList = MutableSharedFlow<Resource<out BankListResponse>>()
+    val bankList = _bankList.asSharedFlow()
+
+    fun getBankList(header: String, loginId: String) {
+        viewModelScope.launch {
+            commonRepository.getBankListApi(header, loginId).collectLatest {
+                _bankList.emit(it)
+            }
+        }
+    }
+
+
 }

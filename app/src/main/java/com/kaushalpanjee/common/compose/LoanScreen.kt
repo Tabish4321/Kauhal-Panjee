@@ -19,7 +19,7 @@ fun LoanStepperScreen(onBack: () -> Unit) {
 
     val isBusinessUser = state.employmentType != "Salaried"
 
-    // 🔥 dynamic step list (BEST PRACTICE)
+    //  dynamic step list (BEST PRACTICE)
     val steps = remember(isBusinessUser) {
         if (isBusinessUser) {
             listOf(
@@ -60,8 +60,10 @@ fun LoanStepperScreen(onBack: () -> Unit) {
                         }
                     }
                 )
-                StepHeader(step)
-            }
+                StepHeader(
+                    step = step,
+                    totalSteps = totalSteps
+                )            }
         },
 
         bottomBar = {

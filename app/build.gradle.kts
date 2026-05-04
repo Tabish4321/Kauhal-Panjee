@@ -74,11 +74,20 @@ android {
         }
     }
 
+/*    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/services/org.xmlpull.v1.XmlPullParserFactory",
+                "META-INF/services/org.codehaus.stax2.validation.XMLValidationSchemaFactory.*"
+            )
+        }
+    }*/
+
     buildTypes {
         release     {
             isMinifyEnabled = false
             isShrinkResources = false
-            isDebuggable=false
+            isDebuggable=true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -103,15 +112,22 @@ android {
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+            buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
+            buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
 
-          //   signingConfig = signingConfigs.getByName("release")
+        //    signingConfig = signingConfigs.getByName("debug")
         }
 
         debug {
             isMinifyEnabled = false
+            isShrinkResources = false
             isDebuggable=true
             versionNameSuffix=""
             applicationIdSuffix=""
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             buildConfigField(
                 "String",
                 "CLIENT_SECRET_KEY",
@@ -132,6 +148,9 @@ android {
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+            buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
+            buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
+
 
         }
     }
@@ -256,6 +275,8 @@ dependencies {
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
     }
+
+
     // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)

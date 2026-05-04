@@ -20,6 +20,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
 import okhttp3.Cache
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -122,22 +123,24 @@ object AppModule {
     ): OkHttpClient {
         val cacheSize = (5 * 1024 * 1024).toLong()
         val myCache = Cache(context.cacheDir, cacheSize)
+
+        val certificatePinner = CertificatePinner.Builder()
+            .add(
+                "kaushal.rural.gov.in",
+                BuildConfig.SSL_PIN_1
+            )
+            .add(
+                "kaushal.rural.gov.in",
+                BuildConfig.SSL_PIN_2
+            ).build()
+
         return OkHttpClient.Builder().apply {
+            certificatePinner(certificatePinner)
             cache(myCache)
             connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
             writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
             readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
-          //  if (BuildConfig.DEBUG) {
-                //addNetworkInterceptor(ChuckerInterceptor(context))
-//                val logging = HttpLoggingInterceptor { message ->
-//                    Log.d("API_LOG---->", message)
-//                }.apply {
-//                    level = HttpLoggingInterceptor.Level.BODY
-//                }
-//                addNetworkInterceptor(logging)
-                addInterceptor(LoggingInterceptor())
-
-            //}
+            addInterceptor(LoggingInterceptor())
             addInterceptor(CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context))
             authenticator?.let { authenticator(it) }
         }.build()
