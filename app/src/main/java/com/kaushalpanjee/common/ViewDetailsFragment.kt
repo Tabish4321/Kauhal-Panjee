@@ -155,19 +155,13 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
         lifecycleScope.launch {
             commonViewModel.bankList.collectLatest { resource ->
-
                 when (resource) {
-
                     is Resource.Success -> {
                            hideProgressBar()
                         val apiList = resource.data?.data ?: emptyList()
-
                         binding.llBankContainer.removeAllViews()
-
-
                         if (apiList.isEmpty()) {
                             binding.tvNoBank.visible()
-                            //bankAdapter.setData(emptyList())
                             return@collectLatest
                         }
                         binding.tvNoBank.gone()
@@ -195,7 +189,6 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                         }
                         hideProgressBar()
                         binding.tvNoBank.visible()
-                        //bankAdapter.setData(emptyList())
                     }
 
                     is Resource.Loading -> {

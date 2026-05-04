@@ -596,33 +596,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         lifecycleScope.launch {
             commonViewModel.bankList.collectLatest { resource ->
-
                 when (resource) {
-
                     is Resource.Success -> {
                         hideProgressBar()
                         val apiList = resource.data?.data ?: emptyList()
 
                         binding.bankingView.llBankContainer.removeAllViews()
-
-
                         if (apiList.isEmpty()) {
                             binding.bankingView.tvNoBank.visible()
-                            //bankAdapter.setData(emptyList())
                             return@collectLatest
                         }
                         binding.bankingView.tvNoBank.gone()
-
-//                        val finalList = listOf(
-//                            BankItem(1, "SBI", "XXXX1234", "SBIN0001234", "ABCDE1234F"),
-//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
-//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
-//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
-//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G"),
-//                            BankItem(2, "HDFC", "XXXX5678", "HDFC0005678", "ABCDE5678G")
-//                        )
-//
-//                        finalList.forEach { item ->
                         apiList.map { item ->
                             val itemView = layoutInflater.inflate(
                                 R.layout.item_bank,
@@ -643,7 +627,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         }
                         hideProgressBar()
                         binding.bankingView.tvNoBank.visible()
-                        //bankAdapter.setData(emptyList())
                     }
 
                     is Resource.Loading -> {
