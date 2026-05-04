@@ -6,6 +6,7 @@
     <string name="welcome_back">Hey, Let\'s shine today!</string>
     <string name="welcome_msg">Hi there, You\'ve been missed.</string>
     <string name="register"><u>Register</u></string>
+    <string name="bankConsent" translatable="false"><u>Give Consent</u></string>
     <string name="forgot_password"><u>Forgot id and Password?</u></string>
     <string name="forgot_id"><u>Forgot id?</u></string>
     <string name="create_an_account">Create an account</string>
