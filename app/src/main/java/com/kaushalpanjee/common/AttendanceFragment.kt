@@ -91,13 +91,6 @@ class AttendanceFragment:
     private var street = ""
     private var village = ""
     private var photo = ""
-    private var candidateName = ""
-    private var imagePath = ""
-    private var candidateMobile = ""
-    private var candidateEmail = ""
-    private var candidateGender = ""
-    private var candidateDob = ""
-    private var candidateDp = ""
     private var batchId = ""
     private var workplaceId = ""
     private var employerId = ""
@@ -137,9 +130,8 @@ class AttendanceFragment:
             AppConstant.Constants.ENCRYPT_KEY,
             AppConstant.Constants.ENCRYPT_IV_KEY
         )
+
         listener()
-
-
 
         commonViewModel.getAadhaarListAPI(
             AdharDetailsReq
