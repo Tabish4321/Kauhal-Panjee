@@ -115,11 +115,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private fun listeners() {
 
 
-        binding.ivDDGKY.setOnClickListener {
+     /*   binding.ivDDGKY.setOnClickListener {
 
           findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSubmitBankConcent())
         }
-
+*/
 
 
 

@@ -41,26 +41,18 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
 
-        SamikshaSdk.init(
-            this,
-            baseUrl = "https://samikshaapi.d2kindia.com/",
+
+
+        SamikshaSdk.init( this,
+            baseUrl = "https://samikshaapi.nabard.org/",
             apiKey = "624f2281-b0f1-44e3-9d3e-24826a53e7a6",
             calledFrom = "NABSKILL",
             apiVersion = "2",
             onFailure = { msg ->
-                Toast.makeText(
-                    this@CommonActivity,
-                    msg,
-                    Toast.LENGTH_SHORT
-                ).show()
-            },
+                Toast.makeText( this@CommonActivity, msg, Toast.LENGTH_SHORT ).show() },
             onSuccess = {
-                Toast.makeText(
-                    this@CommonActivity,
-                    "Samiksha SDK initialized successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                Toast.makeText( this@CommonActivity, "Samiksha SDK initialized successfully", Toast.LENGTH_SHORT ).show()
+        }
         )
 
 
