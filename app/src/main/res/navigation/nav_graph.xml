@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_loginFragment_to_loanFragment"
             app:destination="@id/loanFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_submitBankConcent"
+            app:destination="@id/submitBankConcent" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -261,4 +264,8 @@
         android:id="@+id/loanFragment"
         android:name="com.kaushalpanjee.common.LoanFragment"
         android:label="LoanFragment" />
+    <fragment
+        android:id="@+id/submitBankConcent"
+        android:name="com.kaushalpanjee.common.SubmitBankConcent"
+        android:label="SubmitBankConcent" />
 </navigation>

@@ -29,9 +29,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
-import android.Manifest
-import android.app.ComponentCaller
-import androidx.navigation.fragment.NavHostFragment
+import com.d2k.samiksha.SamikshaSdk
+import com.kaushalpanjee.core.util.toastShort
 
 
 @AndroidEntryPoint

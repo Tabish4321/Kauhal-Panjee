@@ -6,20 +6,17 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.compose")
 
 }
 
 android {
     namespace = "com.kaushalpanjee"
     compileSdk = 35
-
-
-
-
-
 
     buildFeatures {
         compose = true
@@ -33,9 +30,9 @@ android {
     }
 
 
-    composeOptions {
+   /* composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
-    }
+    }*/
 
 
     val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -165,12 +162,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
 //    flavorDimensions += listOf("app")
@@ -207,6 +204,9 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 dependencies {
     // Local AAR Library
     implementation(files("libs/pehchaanlib.aar"))
+
+    implementation(files("libs/samiksha-release.aar"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -251,8 +251,7 @@ dependencies {
 
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
-
+    kapt("com.github.bumptech.glide:compiler:4.13.0")
     implementation(libs.androidx.core.splashscreen)
 
     //Xml
@@ -360,6 +359,14 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("junit:junit:4.13.2")
+
+
+
+
+    // Required Firebase libs (IMPORTANT)
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-config-ktx")
+
 }
 
 kapt {

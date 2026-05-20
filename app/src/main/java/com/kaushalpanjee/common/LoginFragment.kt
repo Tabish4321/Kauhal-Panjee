@@ -9,12 +9,15 @@ import android.net.Uri
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.BuildConfig
@@ -59,6 +62,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+
 
         commonViewModel.getUnnati(UnnatiRequest(AppUtil.getSavedLanguagePreference(requireContext())))
         collectUnnatiData()
@@ -108,14 +115,20 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private fun listeners() {
 
 
-
-
         binding.ivDDGKY.setOnClickListener {
+
+          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSubmitBankConcent())
+        }
+
+
+
+
+    /*    binding.ivDDGKY.setOnClickListener {
 
 
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLoanFragment())
 
-        }
+        }*/
 
 
 
@@ -406,7 +419,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
     private fun showUpdateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        val builder = AlertDialog.Builder(requireContext()) //  use requireContext() inside Fragment
         builder.setTitle("Update Available")
         builder.setMessage("A new version of the app is available. Please update to continue.")
 

@@ -99,6 +99,22 @@
             android:textColor="#000"
             android:textSize="14sp"/>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/tvRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_next_medium"
+        android:gravity="center"
+        android:text="@string/bankConsent"
+        android:textColor="@color/color_dark_green"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvAboutUnnati"
+        app:layout_constraintStart_toStartOf="parent"
+
+        />
+
+
+</LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
