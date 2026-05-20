@@ -20,8 +20,6 @@ import com.d2k.samiksha.SamikshaSdk
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
-import com.kaushalpanjee.core.util.AppUtil.printSslPin
-import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.ActivityCommonBinding
 import dagger.hilt.android.AndroidEntryPoint
 

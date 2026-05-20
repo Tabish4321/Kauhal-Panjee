@@ -111,6 +111,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
 
+
+
     }
 
 
@@ -153,22 +155,21 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          }
 
          binding.trainingRecyclerView.gone()
-
-
          listeners()
          autoScroll()
-         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
 
-         collectSetionAndPerResponse()
          collectTrainingSearchResponse()
 
      }
 
  private fun  listeners(){
 
+     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+     collectSetionAndPerResponse()
 
-    //Training Adapter Setting
+
+     //Training Adapter Setting
 
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
      trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
@@ -227,17 +228,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
-     if (attendanceFlag == "Y"){
-
-         binding.attendanceImageLogo.visible()
-         binding.attendanceTv.visible()
-
-     }
-     else
-     {
-         binding.attendanceImageLogo.gone()
-         binding.attendanceTv.gone()
-     }
 
 
      binding.attendanceImageLogo.setOnClickListener {
@@ -342,6 +332,21 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
                                     attendanceFlag= x.ojtFlag
+
+
+                                    if (attendanceFlag == "Y"){
+
+                                        binding.attendanceImageLogo.visible()
+                                        binding.attendanceTv.visible()
+
+                                    }
+                                    else
+                                    {
+                                        binding.attendanceImageLogo.gone()
+                                        binding.attendanceTv.gone()
+                                    }
+
+
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
                                     userPreferences.updateUserStateLgdCode(null)
