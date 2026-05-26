@@ -22,9 +22,13 @@ class LoanFragment : BaseFragment<LoanFragmentBinding>(LoanFragmentBinding::infl
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    LoanStepperScreen {
-                        requireActivity().finish()
-                    }
+                    LoanStepperScreen(
+                        onBack = {
+                          //  requireContext().finish()
+                        },
+                        viewModel = commonViewModel,
+                        requireContext()
+                    )
                 }
             }
         }

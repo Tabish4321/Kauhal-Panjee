@@ -16,8 +16,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.d2k.samiksha.SamikshaSdk
-import com.d2k.samiksha.model.ConsentRequest
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.BuildConfig

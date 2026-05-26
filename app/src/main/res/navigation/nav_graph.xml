@@ -53,12 +53,8 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_loanFragment"
-            app:destination="@id/loanFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_submitBankConcent"
-            app:destination="@id/submitBankConcent" />
+
+
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -118,6 +114,25 @@
         <action
             android:id="@+id/action_homeFragment_to_viewDetailsFragment"
             app:destination="@id/viewDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_submitBankConcent"
+            app:destination="@id/submitBankConcent" >
+
+            <argument
+                android:name="userId"
+                app:argType="string" />
+            <argument
+                android:name="mobile"
+                app:argType="string" />
+
+            <argument
+                android:name="email"
+                app:argType="string" />
+
+        </action>
+
+
+
     </fragment>
     <fragment
         android:id="@+id/mainHomePage"
@@ -170,6 +185,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_attendanceFragment"
             app:destination="@id/attendanceFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_loanFragment"
+            app:destination="@id/loanFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"

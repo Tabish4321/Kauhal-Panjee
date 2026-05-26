@@ -52,6 +52,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.NumberPicker
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -61,18 +62,16 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.common.model.BankItem
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -82,6 +81,7 @@ import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -136,6 +136,7 @@ import java.io.IOException
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import kotlin.collections.joinToString
+import kotlin.toString
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -276,6 +277,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var currentSalary = ""
     private var salaryExpectation = ""
     private var accLenghth = ""
+    private var decryptMobileNo = ""
+    private var decryptEmail = ""
 
 
 
@@ -455,6 +458,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedbVillagePresentLgdCodeItem = ""
     private var selectedVillagePresentItem = ""
     private var unnatiFlag = ""
+    private var consentHandleId: String? = ""
+    private var consentId: String? = ""
+    private var status: String? = ""
 
     private lateinit var TechEduAdapter: ArrayAdapter<String>
     private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
@@ -542,8 +548,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectWardResponse()
         collectNregaValidateResponse()
         collectSendEmailOTPResponse()
+        collectInsertConsentResponse()
         bankDetails()
-
         allResponseintrade()
 
 
@@ -618,6 +624,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             itemView.findViewById<TextView>(R.id.tvAccount).text = item.accountNumber
                             itemView.findViewById<TextView>(R.id.tvPan).text = AESCryptography.decryptIntoString(item.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
                             binding.bankingView.llBankContainer.addView(itemView)
+
+                            itemView.findViewById<TextView>(R.id.tvConsent).setOnClickListener {
+
+                                showConsentDialog(
+                                    userId = userPreferences.getUseID(),
+                                    mobile = decryptMobileNo,
+                                    email = decryptEmail
+                                )
+                            }
+
                         }
                     }
 
@@ -851,15 +867,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun listener() {
 
 
-//        binding.profileView.btnCertificate.setOnClickListener {
-//            val intent = Intent(requireContext(), CertificateActivity::class.java)
-//            intent.putExtra("CERT_URL", "")
-//            startActivity(intent)
-//        }
-
-
-
-
 
 
 
@@ -877,13 +884,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedWardNameItem = ""
             binding.spinnerWard.clearFocus()
             binding.spinnerWard.setText("", false)
-
-
-
-
-
-
-
 
 
 
@@ -6162,6 +6162,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     AppConstant.Constants.ENCRYPT_IV_KEY
                                                 ) ?: "N/A"
 
+                                            decryptMobileNo = decryptedMobileNo
+
                                             val decryptedDob = AESCryptography.decryptIntoString(
                                                 x.dateOfBirth,
                                                 AppConstant.Constants.ENCRYPT_KEY,
@@ -6180,6 +6182,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                 AppConstant.Constants.ENCRYPT_KEY,
                                                 AppConstant.Constants.ENCRYPT_IV_KEY
                                             ) ?: "N/A"
+
+                                            decryptEmail = decryptedEmail
+
 
                                             // Set Data to UI
                                             binding.profileView.tvAadhaarName.text =
@@ -8128,10 +8133,159 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
+
+
+    private fun collectInsertConsentResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertBankConsent) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertBankConsent ->
+                            if (insertBankConsent.responseCode == 200) {
+
+                               toastShort(insertBankConsent.responseMsg)
+
+                            }
+                            else {
+                                toastShort(insertBankConsent.responseMsg)
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     private fun getMissingFields(fields: Map<String, String>): List<String> {
         return fields.filter { it.value.isBlank() }.map { it.key }
     }
 
 
+
+
+    private fun showConsentDialog(
+        userId: String,
+        mobile: String,
+        email: String
+    ) {
+
+        val dialogView = layoutInflater.inflate(
+            R.layout.dialog_submit_consent,
+            null
+        )
+
+        val etMobile = dialogView.findViewById<EditText>(R.id.etMobile)
+        val btnSubmit =
+            dialogView.findViewById<TextView>(R.id.btnSubmitConsent)
+
+        val progressBar =
+            dialogView.findViewById<ProgressBar>(R.id.progressBar)
+
+        etMobile.setText(mobile)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.show()
+
+        btnSubmit.setOnClickListener {
+
+            val mobileNo = etMobile.text.toString().trim()
+
+            if (mobileNo.isEmpty()) {
+                etMobile.error = "Enter mobile number"
+                return@setOnClickListener
+            }
+
+            progressBar.visible()
+            btnSubmit.isEnabled = false
+
+            val request = ConsentRequest(
+                mobileNo = mobileNo,
+                userId = userId,
+                fipId = "",
+                email = email,
+                pan = "",
+                candidateId = userId,
+                aadharNo = ""
+            )
+
+            SamikshaSdk.submitConsent(
+                context = requireContext(),
+                request = request,
+
+                onSuccess = { response ->
+
+                    progressBar.gone()
+                    btnSubmit.isEnabled = true
+
+
+
+                    val consentList = response.data?.consentList
+                    val accountList = response.data?.accountList
+
+                    if (consentList != null) {
+                        for (x in consentList){
+
+                             consentId =x.consentId
+                             consentHandleId =x.consentHandleId
+                             status =x.status
+                        }
+                    }
+
+                    Toast.makeText(
+                        requireContext(),
+                        status,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+
+                    if (accountList != null) {
+                        for (x in accountList){
+
+
+                        }
+                    }
+
+                    commonViewModel.insertBankConsent(AppUtil.getSavedTokenPreference(requireContext()),
+                        InsertBankConsentReq(BuildConfig.VERSION_NAME,mobileNo,consentId?:"",consentHandleId?:"",status?:"",userPreferences.getUseID())
+                    )
+
+
+                    dialog.dismiss()
+                },
+
+                onError = { error ->
+
+                    progressBar.gone()
+                    btnSubmit.isEnabled = true
+
+                    Toast.makeText(
+                        requireContext(),
+                        error.message ?: "Something went wrong",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
+
+        }
+    }
 }
 

@@ -685,8 +685,7 @@ class AttendanceFragment:
                 // Process the response to generate the PoiType or other required fields
                 val poiType = XstreamCommonMethods.processPidBlockEkyc(
                     response.toXML(),
-                    //decryptedAadhaar,
-                    "939625617876",
+                    decryptedAadhaar,
                     false,
                     requireContext()
                 )

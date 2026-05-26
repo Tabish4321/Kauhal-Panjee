@@ -42,12 +42,12 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 45
+        versionCode = 49
         versionName = "2.6.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // ✅ Correct Kotlin DSL syntax for keeping all language resources
+        // Correct Kotlin DSL syntax for keeping all language resources
         resourceConfigurations += listOf(
             "en",
             "hi",
@@ -87,7 +87,7 @@ android {
         release     {
             isMinifyEnabled = false
             isShrinkResources = false
-            isDebuggable=true
+            isDebuggable=false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -170,19 +170,8 @@ android {
         jvmTarget = "17"
     }
 
-//    flavorDimensions += listOf("app")
-//    productFlavors {
-//        create("dev") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
-//
-//        }
-//        create("prod") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
-//
-//        }
-//    }
+
+
 
     configurations.all {
         // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)

@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaushalpanjee.BuildConfig
@@ -39,6 +40,8 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
+import com.kaushalpanjee.common.model.request.InsertBankLoanReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -79,6 +82,7 @@ import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
+import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
 import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
@@ -1293,4 +1297,76 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
+
+
+    private val _getBankLoanDetails =
+        MutableStateFlow<Resource<GetDetailsBankLoanRes>?>(null)
+
+    val getBankLoanDetails = _getBankLoanDetails.asStateFlow()
+
+    fun getBankLoanDetails(header: String) {
+
+
+        viewModelScope.launch {
+
+            commonRepository.getBankLoanDetails(
+                header,
+                userPreferences.getUseID()
+            ).collectLatest {
+
+          /*      when (it) {
+
+                    is Resource.Success -> {
+                        Log.d("LOAN_API", "SUCCESS : ${it.data}")
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("LOAN_API", "ERROR : ${it.error}")
+                        Log.d("LOAN_API", "ERROR DATA : ${it.data}")
+                    }
+
+                    is Resource.Loading -> {
+                        Log.d("LOAN_API", "LOADING")
+                    }
+                }*/
+
+                _getBankLoanDetails.value = it as Resource<GetDetailsBankLoanRes>?
+            }
+        }
+    }
+
+
+    private val _insertBankLoanDetails =
+        MutableStateFlow<Resource<GetDetailsBankLoanRes>?>(null)
+
+    val insertBankLoanDetails = _insertBankLoanDetails.asStateFlow()
+
+    fun insertBankLoanDetails(header: String, insertBankLoanReq: InsertBankLoanReq) {
+
+
+        viewModelScope.launch {
+
+            commonRepository.insertBankLoanDetails(
+                header,
+                insertBankLoanReq
+            ).collectLatest {
+
+                _insertBankLoanDetails.value = it as Resource<GetDetailsBankLoanRes>?
+            }
+        }
+    }
+
+
+
+    private  var _insertBankConsent =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertBankConsent = _insertBankConsent.asStateFlow()
+
+
+    fun insertBankConsent( header : String, insertBankConsentReq: InsertBankConsentReq) {
+        viewModelScope.launch {
+            commonRepository.insertBankConsent(header,insertBankConsentReq).collectLatest {
+                _insertBankConsent.emit(it)
+            }
+        }
+    }
 }

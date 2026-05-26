@@ -31,6 +31,7 @@ import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.BankListReq
+import com.kaushalpanjee.common.model.request.BankLoanReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
@@ -43,6 +44,8 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
+import com.kaushalpanjee.common.model.request.InsertBankLoanReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -85,6 +88,7 @@ import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
+import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
 import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
@@ -642,6 +646,29 @@ class CommonRepository @Inject constructor(
             appLevelApi.getBankListAPI(header, BankListReq(loginId, BuildConfig.VERSION_NAME))
         }
     }
+
+
+
+    suspend fun getBankLoanDetails(header: String,candidateId : String): Flow<Resource<out GetDetailsBankLoanRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getBankLoanDetails(header, BankLoanReq( BuildConfig.VERSION_NAME ,candidateId))
+        }
+    }
+
+
+
+    suspend fun insertBankLoanDetails(header: String, insertBankLoanReq: InsertBankLoanReq): Flow<Resource<out InsertRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertBankLoanDetails(header, insertBankLoanReq)
+        }
+    }
+
+    suspend fun insertBankConsent(header: String,  insertBankConsentReq: InsertBankConsentReq): Flow<Resource<out InsertRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertBankConsent(header, insertBankConsentReq)
+        }
+    }
+
 
 
 }

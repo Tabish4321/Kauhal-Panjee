@@ -16,18 +16,20 @@ import com.d2k.samiksha.SamikshaSdk
 import com.d2k.samiksha.model.ConsentRequest
 
 @Composable
-fun SubmitBankConsentScreen() {
+fun SubmitBankConsentScreen(
+    userId: String?,
+    mobile: String?,
+    email: String,
+) {
 
     val context = LocalContext.current
 
     //  State
-    var mobileNo by remember { mutableStateOf("9769652415") }
-    var userId by remember { mutableStateOf("9769652415UID") }
-    var fipId by remember { mutableStateOf("BOB") }
-    var email by remember { mutableStateOf("abc@gamil.com") }
-    var pan by remember { mutableStateOf("ABCDE1111F") }
-    var candidateId by remember { mutableStateOf("9769652415ID") }
-    var aadharNo by remember { mutableStateOf("111111111111") }
+   // var mobileNo by remember { mutableStateOf(mobile) }
+    var mobileNo by remember { mutableStateOf("7763027544") }
+    var userId by remember { mutableStateOf(userId) }
+    var email by remember { mutableStateOf(email) }
+    var candidateId by remember { mutableStateOf(userId) }
 
     var isLoading by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
@@ -46,13 +48,7 @@ fun SubmitBankConsentScreen() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            OutlinedTextField(mobileNo, { mobileNo = it }, label = { Text("Mobile No") })
-            OutlinedTextField(fipId, { fipId = it }, label = { Text("FIP ID") })
-            OutlinedTextField(email, { email = it }, label = { Text("Email") })
-            OutlinedTextField(pan, { pan = it }, label = { Text("PAN") })
-            OutlinedTextField(userId, { userId = it }, label = { Text("User ID") })
-            OutlinedTextField(candidateId, { candidateId = it }, label = { Text("Candidate ID") })
-            OutlinedTextField(aadharNo, { aadharNo = it }, label = { Text("Aadhar No") })
+            OutlinedTextField(mobileNo.toString(), { mobileNo = it }, label = { Text("Mobile No") })
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -62,13 +58,13 @@ fun SubmitBankConsentScreen() {
                     isLoading = true
 
                     val request = ConsentRequest(
-                        mobileNo = mobileNo,
-                        userId = userId,
-                        fipId = fipId,
+                        mobileNo = mobileNo.toString(),
+                        userId = userId.toString(),
+                        fipId = "",
                         email = email,
-                        pan = pan,
-                        candidateId = candidateId,
-                        aadharNo = aadharNo
+                        pan = "",
+                        candidateId = candidateId.toString(),
+                        aadharNo = ""
                     )
 
                     SamikshaSdk.submitConsent(
@@ -77,7 +73,6 @@ fun SubmitBankConsentScreen() {
 
                         onSuccess = { response ->
                             isLoading = false
-                            dialogMessage = "Consent submitted successfully\n$response"
                             showDialog = true
                         },
 
@@ -110,7 +105,7 @@ fun SubmitBankConsentScreen() {
             }
         }
 
-        // 🔹 Dialog
+        // Dialog
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },

@@ -15,6 +15,9 @@ import com.kaushalpanjee.databinding.SubmitconscentFragmentBinding
 
 class SubmitBankConcent : BaseFragment<SubmitconscentFragmentBinding>(SubmitconscentFragmentBinding::inflate) {
 
+    var mobile : String? = ""
+    var email : String? = ""
+    var candidateId : String? = ""
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
@@ -28,10 +31,14 @@ class SubmitBankConcent : BaseFragment<SubmitconscentFragmentBinding>(Submitcons
         )
 
 
+        mobile = arguments?.getString("mobile")
+        email = arguments?.getString("email")
+        candidateId = arguments?.getString("userId")
+
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    SubmitBankConsentScreen()
+                    SubmitBankConsentScreen(candidateId,mobile,email.toString())
                 }
             }
         }

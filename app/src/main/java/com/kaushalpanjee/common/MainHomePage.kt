@@ -140,6 +140,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                      findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
 
                  }
+
+
+                /* R.id.bankLoan -> {
+
+                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToLoanFragment())
+
+                 }*/
+
                  R.id.rekyc -> {
 
                      //For Re-KYC

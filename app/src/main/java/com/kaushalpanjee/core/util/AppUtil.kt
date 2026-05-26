@@ -38,14 +38,70 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import java.security.MessageDigest
 import java.security.SecureRandom
 
-
 object AppUtil {
 
+    fun showUpdateDialog(
+        context: Context
+    ) {
+
+        val builder =
+            android.app.AlertDialog.Builder(context)
+
+        builder.setTitle("Update Available")
+
+        builder.setMessage(
+            "A new version of the app is available. Please update to continue."
+        )
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+
+            val appPackageName =
+                "com.kaushalpanjee"
+
+            try {
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "market://details?id=$appPackageName"
+                    )
+                )
+
+                intent.setPackage("com.android.vending")
+
+                context.startActivity(intent)
+
+            } catch (e: Exception) {
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"
+                    )
+                )
+
+                context.startActivity(intent)
+            }
+
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+
+        builder.create().show()
+    }
 
     fun validatePAN(pan: String): Boolean {
         val regex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")

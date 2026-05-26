@@ -29,7 +29,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
-import com.d2k.samiksha.SamikshaSdk
 import com.kaushalpanjee.core.util.toastShort
 
 

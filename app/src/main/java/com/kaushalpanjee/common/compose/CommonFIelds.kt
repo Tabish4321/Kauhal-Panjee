@@ -1,10 +1,13 @@
 package com.kaushalpanjee.common.compose
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Base64
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -28,7 +31,15 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.CommonViewModel
+import com.kaushalpanjee.common.model.request.InsertBankLoanReq
+import com.kaushalpanjee.common.model.response.CandidateBankLoan
+import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
+import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.AppUtil.base64ToBitmap
+import com.kaushalpanjee.core.util.Resource
 
 // ================= PREMIUM CARD =================
 @Composable
@@ -272,72 +283,149 @@ fun StepHeader(
 }
 // ================= UPLOAD =================
 @Composable
-fun UploadItem(title: String) {
+fun UploadItem(
+    title: String,
+    onFileSelected: (String) -> Unit
+) {
 
     val context = LocalContext.current
-    var bitmap by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
+
+    var bitmap by remember {
+        mutableStateOf<Bitmap?>(null)
+    }
+
+    // ================= IMAGE PICKER =================
 
     val picker = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
+
         uri?.let {
-            val bytes = context.contentResolver.openInputStream(it)?.readBytes()
-            Base64.encodeToString(bytes, Base64.DEFAULT)
-            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes!!.size)
+
+            val bytes =
+                context.contentResolver
+                    .openInputStream(it)
+                    ?.readBytes()
+
+            bytes?.let { imageBytes ->
+
+                // ================= BASE64 =================
+
+                val base64 =
+                    Base64.encodeToString(
+                        imageBytes,
+                        Base64.NO_WRAP
+                    )
+
+                // CALLBACK
+                onFileSelected(base64)
+
+                // PREVIEW
+                bitmap = BitmapFactory.decodeByteArray(
+                    imageBytes,
+                    0,
+                    imageBytes.size
+                )
+            }
         }
     }
 
+    // ================= PERMISSION =================
+
     val permission = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) {
-        if (it) picker.launch("image/*")
+    ) { granted ->
+
+        if (granted) {
+
+            picker.launch("image/*")
+        }
     }
+
+    // ================= UI =================
 
     Column {
 
         Text("Upload $title")
 
         Box(
+
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)
                 .padding(vertical = 8.dp)
-                .background(Color.White, RoundedCornerShape(12.dp))
-                .border(1.dp, Color.Red, RoundedCornerShape(12.dp))
+                .background(
+                    Color.White,
+                    RoundedCornerShape(12.dp)
+                )
+                .border(
+                    1.dp,
+                    Color.Red,
+                    RoundedCornerShape(12.dp)
+                )
                 .clickable {
 
-                    val perm = if (Build.VERSION.SDK_INT >= 33)
-                        Manifest.permission.READ_MEDIA_IMAGES
-                    else
-                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    val perm =
 
-                    if (ContextCompat.checkSelfPermission(context, perm)
-                        == PackageManager.PERMISSION_GRANTED
+                        if (Build.VERSION.SDK_INT >= 33) {
+
+                            Manifest.permission.READ_MEDIA_IMAGES
+
+                        } else {
+
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        }
+
+                    if (
+                        ContextCompat.checkSelfPermission(
+                            context,
+                            perm
+                        ) == PackageManager.PERMISSION_GRANTED
                     ) {
+
                         picker.launch("image/*")
+
                     } else {
+
                         permission.launch(perm)
                     }
                 },
+
             contentAlignment = Alignment.Center
         ) {
 
             if (bitmap != null) {
+
                 Image(
                     bitmap = bitmap!!.asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier.fillMaxSize()
                 )
+
             } else {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(Icons.Default.CloudUpload, null, tint = Color.Red)
-                    Spacer(Modifier.height(8.dp))
-                    Text("Upload Photograph")
+
+                Column(
+                    horizontalAlignment =
+                        Alignment.CenterHorizontally
+                ) {
+
+                    Icon(
+                        Icons.Default.CloudUpload,
+                        contentDescription = null,
+                        tint = Color.Red
+                    )
+
+                    Spacer(
+                        Modifier.height(8.dp)
+                    )
+
+                    Text("Upload $title")
                 }
             }
         }
     }
 }
+
 @Composable
 fun InfoRow(
     icon: ImageVector,
@@ -397,49 +485,446 @@ fun InfoRow(
 
 
 
+// ================= BOTTOM BUTTONS =================
+
+// ================= BOTTOM BUTTONS =================
+
 @Composable
 fun BottomButtons(
+
     step: Int,
-    onNext: () -> Unit,
+    totalSteps: Int,
+
+    state: LoanFormState,
+
+    candidateData: CandidateBankLoan?,
+
+    viewModel: CommonViewModel,
+
+    context: Context,
+
+    onNextStep: () -> Unit,
+
     onBack: () -> Unit
 ) {
 
+    // ================= INSERT API STATE =================
+
+    val insertApiState by
+    viewModel.insertBankLoanDetails.collectAsState()
+
+    // ================= LOADER =================
+
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    // ================= API RESPONSE HANDLE =================
+
+    LaunchedEffect(insertApiState) {
+
+        when (insertApiState) {
+
+            is Resource.Loading -> {
+
+                isLoading = true
+            }
+
+            is Resource.Success -> {
+
+                isLoading = false
+
+                val response =
+                    (insertApiState as Resource.Success<InsertRes>)
+                        .data
+
+                // ================= RESPONSE CODE CHECK =================
+
+                if (response?.responseCode == 200) {
+
+                    if (step < totalSteps) {
+
+                        onNextStep()
+                    }
+
+                }
+
+                else if (response?.responseCode == 301) {
+
+                    AppUtil.showUpdateDialog(context)
+                }
+
+                else {
+
+                    Toast.makeText(
+
+                        context,
+
+                        response?.responseMsg
+                            ?: "Something went wrong",
+
+                        Toast.LENGTH_SHORT
+
+                    ).show()
+                }
+            }
+
+            is Resource.Error -> {
+
+                isLoading = false
+
+                val error =
+                    (insertApiState as Resource.Error)
+
+                Toast.makeText(
+
+                    context,
+
+                    error.data?.responseMsg ?: "API Error",
+
+                    Toast.LENGTH_SHORT
+
+                ).show()
+            }
+
+            else -> {
+                isLoading = false
+            }
+        }
+    }
+
+    // ================= UI =================
+
     Row(
+
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+
+        horizontalArrangement =
+            Arrangement.SpaceBetween,
+
+        verticalAlignment =
+            Alignment.CenterVertically
     ) {
 
-        //  Previous Button (Left)
+        // ================= PREVIOUS =================
+
         if (step > 0) {
+
             OutlinedButton(
+
                 onClick = onBack,
+
                 modifier = Modifier
                     .height(52.dp)
                     .width(130.dp),
+
                 shape = RoundedCornerShape(14.dp)
             ) {
+
                 Text("Previous")
             }
+
         } else {
-            Spacer(modifier = Modifier.width(130.dp))
+
+            Spacer(
+                modifier = Modifier.width(130.dp)
+            )
         }
 
-        //  Next Button (Right)
+        // ================= NEXT =================
+
         Button(
-            onClick = onNext,
+
+            enabled = !isLoading,
+
+            onClick = {
+
+
+                // ================= REQUEST =================
+
+                val request = InsertBankLoanReq(
+
+                    appVersion = BuildConfig.VERSION_NAME,
+
+                    candidateId =
+                        candidateData?.candidateId ?: "",
+
+                    panNo =
+                        state.panNo.ifEmpty { "" },
+
+                    durationAtCurrentAddress =
+                        state.durationAtCurrentAddress
+                            .ifEmpty { "" },
+
+                    // ================= OCCUPATION =================
+
+                    occupationType =
+                        state.employmentType
+                            .ifEmpty { "" },
+
+                    // =========================================================
+                    // ================= SALARIED DATA =========================
+                    // =========================================================
+
+                    monthlySalary =
+
+                        if (state.employmentType == "Salaried") {
+
+                            state.monthlySalary
+                                .toDoubleOrNull() ?: 0.0
+
+                        } else {
+
+                            0.0
+                        },
+
+                    employerName =
+
+                        if (state.employmentType == "Salaried") {
+
+                            state.employerName
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    workExperience =
+
+                        if (state.employmentType == "Salaried") {
+
+                            state.workExperience
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    // =========================================================
+                    // ============== SELF EMPLOYED DATA =======================
+                    // =========================================================
+
+                    profession =
+
+                        if (state.employmentType == "Self Employed") {
+
+                            state.profession
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    annualIncome =
+
+                        if (state.employmentType == "Self Employed") {
+
+                            state.annualIncome
+                                .toIntOrNull() ?: 0
+
+                        } else {
+
+                            0
+                        },
+
+                    experience =
+
+                        if (state.employmentType == "Self Employed") {
+
+                            state.experience
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    // =========================================================
+                    // ================= BUSINESS DETAILS ======================
+                    // =========================================================
+
+                    businessName =
+
+                        if (
+                            state.employmentType == "Business" ||
+                            state.employmentType == "Self Employed"
+                        ) {
+
+                            state.businessName
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    natureOfBusiness =
+
+                        if (
+                            state.employmentType == "Business" ||
+                            state.employmentType == "Self Employed"
+                        ) {
+
+                            state.natureOfBusiness
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    businessAddress =
+
+                        if (
+                            state.employmentType == "Business" ||
+                            state.employmentType == "Self Employed"
+                        ) {
+
+                            state.businessAddress
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    entityType =
+
+                        if (
+                            state.employmentType == "Business" ||
+                            state.employmentType == "Self Employed"
+                        ) {
+
+                            state.entityType
+                                .ifEmpty { "" }
+
+                        } else {
+
+                            ""
+                        },
+
+                    projectCost =
+
+                        if (
+                            state.employmentType == "Business" ||
+                            state.employmentType == "Self Employed"
+                        ) {
+
+                            state.projectCost
+                                .toIntOrNull() ?: 0
+
+                        } else {
+
+                            0
+                        },
+
+                    marginMoney =
+
+                        if (
+                            state.employmentType == "Business" ||
+                            state.employmentType == "Self Employed"
+                        ) {
+
+                            state.marginMoney
+                                .toIntOrNull() ?: 0
+
+                        } else {
+
+                            0
+                        },
+
+                    // =========================================================
+                    // ================= LOAN DETAILS ==========================
+                    // =========================================================
+
+                    loanAmount =
+                        state.loanAmount
+                            .toIntOrNull() ?: 0,
+
+                    purpose =
+                        state.purpose
+                            .ifEmpty { "" },
+
+                    tenure =
+                        state.tenure
+                            .ifEmpty { "" },
+
+                    // =========================================================
+                    // ================= BANK DETAILS ==========================
+                    // =========================================================
+
+                    accountNo =
+                        state.accountNo
+                            .ifEmpty { "" },
+
+                    bankName =
+                        state.bankName
+                            .ifEmpty { "" },
+
+                    accountType =
+                        state.accountType
+                            .ifEmpty { "" },
+
+                    // =========================================================
+                    // ================= DOCUMENTS =============================
+                    // =========================================================
+
+                    uploadPhotograph =
+                        state.uploadPhotograph
+                            .ifEmpty { "" },
+
+                    uploadAadhaar =
+                        state.uploadAadhaar
+                            .ifEmpty { "" },
+
+                    uploadPan =
+                        state.uploadPan
+                            .ifEmpty { "" }
+                )
+
+                // ================= API HIT =================
+
+                viewModel.insertBankLoanDetails(
+
+                    header =
+                        AppUtil.getSavedTokenPreference(context),
+
+                    insertBankLoanReq = request
+                )
+            },
+
             modifier = Modifier
                 .height(52.dp)
                 .width(150.dp),
+
             shape = RoundedCornerShape(14.dp)
         ) {
-            Text(if (step == 9) "Submit" else "Next")
+
+            if (isLoading) {
+
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp
+                )
+
+            } else {
+
+                Text(
+
+                    if (step == totalSteps)
+                        "Submit"
+                    else
+                        "Next"
+                )
+            }
         }
     }
 }
-
 
 @Composable
 fun PanInputField(
