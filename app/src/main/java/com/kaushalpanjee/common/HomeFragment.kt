@@ -8239,7 +8239,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
                     val consentList = response.data?.consentList
-                    val accountList = response.data?.accountList
+                    val accountList = response.data?.acountListStatus
 
                     if (consentList != null) {
                         for (x in consentList){
