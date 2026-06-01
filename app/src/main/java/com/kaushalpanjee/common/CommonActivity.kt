@@ -47,7 +47,8 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
             calledFrom = "NABSKILL",
             apiVersion = "2",
             onFailure = { msg ->
-                Toast.makeText( this@CommonActivity, msg, Toast.LENGTH_SHORT ).show() },
+              //  Toast.makeText( this@CommonActivity, msg, Toast.LENGTH_SHORT ).show()
+                        },
             onSuccess = {
               //  Toast.makeText( this@CommonActivity, "Samiksha SDK initialized successfully", Toast.LENGTH_SHORT ).show()
         }

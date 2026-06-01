@@ -8220,7 +8220,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val request = ConsentRequest(
                 mobileNo = mobileNo,
                 userId = userId,
-                fipId = "",
+                fipId = "Bank Of India",
                 email = email,
                 pan = "",
                 candidateId = userId,
