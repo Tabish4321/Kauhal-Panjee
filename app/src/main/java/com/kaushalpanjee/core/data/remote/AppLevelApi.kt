@@ -20,6 +20,7 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
 import com.kaushalpanjee.common.model.request.BankListReq
 import com.kaushalpanjee.common.model.request.BankLoanReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -75,6 +76,7 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.AebasRes
 import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
@@ -497,6 +499,11 @@ interface AppLevelApi {
     suspend fun insertBankConsent( @Header("Authorization") token: String,
                                        @Body insertBankConsentReq: InsertBankConsentReq  ) : InsertRes
 
+
+
+    @POST(ApiConstant.API_CANDIDATE_AEBAS_DETAIL)
+    suspend fun getAebasDetails( @Header("Authorization") token: String,
+                                   @Body aebasReq: AebasReq  ) : AebasRes
 
 
 }

@@ -106,7 +106,7 @@
         android:fontFamily="@font/avenir_next_medium"
         android:gravity="center"
         android:layout_gravity="end"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginTop="15dp"
         android:text="@string/bankConsent"
         android:textColor="@color/color_dark_green"

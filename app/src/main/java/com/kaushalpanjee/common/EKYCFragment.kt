@@ -1003,7 +1003,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                     is Resource.Error -> {
                         it.error?.let { baseErrorResponse ->
                             showSnackBar(baseErrorResponse.message)
-                            toastShort("error in create Api")
+
                             binding.aadhaarVerifyButton.centerButton.apply {
                                 isEnabled = true
                                 alpha = 1f

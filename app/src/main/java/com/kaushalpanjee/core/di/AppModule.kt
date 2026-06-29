@@ -30,6 +30,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -124,7 +129,7 @@ object AppModule {
         val cacheSize = (5 * 1024 * 1024).toLong()
         val myCache = Cache(context.cacheDir, cacheSize)
 
-        val certificatePinner = CertificatePinner.Builder()
+      /*  val certificatePinner = CertificatePinner.Builder()
             .add(
                 "kaushal.rural.gov.in",
                 BuildConfig.SSL_PIN_1
@@ -132,10 +137,10 @@ object AppModule {
             .add(
                 "kaushal.rural.gov.in",
                 BuildConfig.SSL_PIN_2
-            ).build()
+            ).build()*/
 
         return OkHttpClient.Builder().apply {
-            certificatePinner(certificatePinner)
+           // certificatePinner(certificatePinner)
             cache(myCache)
             connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
             writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
@@ -145,6 +150,69 @@ object AppModule {
             authenticator?.let { authenticator(it) }
         }.build()
     }
+
+
+  /*  private fun getRetrofitClient(
+        authenticator: Authenticator? = null,
+        userPreferences: UserPreferences,
+        isPostLogin: Boolean = true,
+        isAuthenticationRequired: Boolean = true,
+        context: Context
+    ): OkHttpClient {
+
+        val trustAllCerts = arrayOf<TrustManager>(
+            object : X509TrustManager {
+                override fun checkClientTrusted(
+                    chain: Array<X509Certificate>,
+                    authType: String
+                ) {
+                }
+
+                override fun checkServerTrusted(
+                    chain: Array<X509Certificate>,
+                    authType: String
+                ) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> {
+                    return arrayOf()
+                }
+            }
+        )
+
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(null, trustAllCerts, SecureRandom())
+
+        val sslSocketFactory = sslContext.socketFactory
+
+        return OkHttpClient.Builder().apply {
+
+            sslSocketFactory(
+                sslSocketFactory,
+                trustAllCerts[0] as X509TrustManager
+            )
+
+            hostnameVerifier { _, _ -> true }
+
+            connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
+            readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
+
+            addInterceptor(LoggingInterceptor())
+
+            addInterceptor(
+                CustomInterceptor(
+                    isPostLogin,
+                    userPreferences,
+                    isAuthenticationRequired,
+                    context
+                )
+            )
+
+            authenticator?.let { authenticator(it) }
+
+        }.build()
+    }*/
 
 
     @Provides

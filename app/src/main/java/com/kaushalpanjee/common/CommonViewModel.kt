@@ -28,6 +28,7 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
@@ -75,6 +76,7 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.AebasRes
 import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
@@ -1369,4 +1371,20 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             }
         }
     }
+
+
+
+    private val _getAebasDetails = MutableSharedFlow<Resource<out AebasRes>>()
+    val getAebasDetails = _getAebasDetails.asSharedFlow()
+
+    fun getAebasDetails( header : String, aebasReq: AebasReq) {
+        viewModelScope.launch {
+            commonRepository.getAebasDetails(header, aebasReq).collectLatest {
+                _getAebasDetails.emit(it)
+            }
+        }
+    }
+
+
+
 }

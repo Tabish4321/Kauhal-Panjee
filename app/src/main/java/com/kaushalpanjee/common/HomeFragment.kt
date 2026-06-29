@@ -12,6 +12,9 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import android.graphics.Color
+import android.text.style.AbsoluteSizeSpan
+import android.graphics.drawable.ColorDrawable
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.common.model.response.BlockList
 import com.kaushalpanjee.common.model.response.DistrictList
@@ -27,13 +30,14 @@ import java.util.Calendar
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
-import android.R.attr.resource
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager // For checking permissions
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -74,6 +78,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.CandidateReq
@@ -98,6 +103,7 @@ import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.Address
 import com.kaushalpanjee.common.model.response.AddressDetail
+import com.kaushalpanjee.common.model.response.AttendanceDetails
 import com.kaushalpanjee.common.model.response.Bank
 import com.kaushalpanjee.common.model.response.Educational
 import com.kaushalpanjee.common.model.response.Employment
@@ -117,22 +123,16 @@ import com.kaushalpanjee.core.util.onDone
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.setRightDrawablePassword
-import com.kaushalpanjee.core.util.showKeyboard
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import kotlin.collections.joinToString
@@ -274,6 +274,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var userCandidateEmploymentDetailsList: List<Employment> = mutableListOf()
     private var userCandidateTrainingDetailsList: List<Training> = mutableListOf()
     private var userCandidateBankDetailsList: List<Bank> = mutableListOf()
+    private var aebasDetailsList: List<AttendanceDetails> = mutableListOf()
     private var currentSalary = ""
     private var salaryExpectation = ""
     private var accLenghth = ""
@@ -832,7 +833,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+        commonViewModel.getAebasDetails(AppUtil.getSavedTokenPreference(requireContext()),
+            AebasReq(
+                BuildConfig.VERSION_NAME,
+                //userPreferences.getUseID()
+                "2506415871"
+            ))
 
+       collectAebasDetailsResponse()
+
+
+
+        binding.profileView.viewAttendanceDetails.setOnClickListener {
+
+            showAttendanceDetailsDialog()
+        }
 
 
 
@@ -854,9 +869,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 userPreferences.getUseID()
             ), AppUtil.getSavedTokenPreference(requireContext())
         )
-
-
-
 
 
 
@@ -4885,8 +4897,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         /*  binding.btnPmayValidate.setOnClickListener {
 
-          */
-        /* commonViewModel.shgValidateAPI(
+           commonViewModel.shgValidateAPI(
                 ShgValidateReq(
                     binding.etShgValidate.text.toString(),
                     userPreferences.getUserStateLgdCode()
@@ -4902,7 +4913,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     shgCode = binding.etShgValidate.text.toString()
                     binding.tvShgValidate.text = "Validate Successfully: $shgName"
                 } else toastLong("Validation Failed please check your SHG Code")
-            }*//*
+            }
         }*/
 
 
@@ -8220,7 +8231,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             val request = ConsentRequest(
                 mobileNo = mobileNo,
                 userId = userId,
-                fipId = "Bank Of India",
+                fipId = "",
                 email = email,
                 pan = "",
                 candidateId = userId,
@@ -8264,9 +8275,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         }
                     }
 
-                    commonViewModel.insertBankConsent(AppUtil.getSavedTokenPreference(requireContext()),
+                    Toast.makeText(
+                        requireContext(),
+                        consentId,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    log("", consentId?:"")
+
+                   /* commonViewModel.insertBankConsent(AppUtil.getSavedTokenPreference(requireContext()),
                         InsertBankConsentReq(BuildConfig.VERSION_NAME,mobileNo,consentId?:"",consentHandleId?:"",status?:"",userPreferences.getUseID())
-                    )
+                    )*/
 
 
                     dialog.dismiss()
@@ -8287,5 +8306,123 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
     }
+
+
+
+    private fun collectAebasDetailsResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getAebasDetails) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getAebasDetails ->
+                            if (getAebasDetails.responseCode == 200) {
+
+                                aebasDetailsList = getAebasDetails.wrappedList
+                                for (x in getAebasDetails.wrappedList) {
+
+                                    binding.profileView.tvAttendanceId.text = x.attendanceId.toString()
+
+                                }
+                            }
+
+                            else if (getAebasDetails.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            }
+
+                            else if (getAebasDetails.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(
+                                    findNavController(),
+                                    requireContext()
+                                )
+
+                            } else {
+                                showSnackBar(getAebasDetails.responseMsg)
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showAttendanceDetailsDialog() {
+        if (aebasDetailsList.isEmpty()) {
+            toastLong("No attendance details found")
+            return
+        }
+        val details = aebasDetailsList[0]
+
+        val spannable = SpannableStringBuilder()
+
+        fun addRow(label: String, value: String?) {
+            val start = spannable.length
+
+            spannable.append(label)
+
+            // Bold
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                start,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            // Label size 18sp
+            spannable.setSpan(
+                AbsoluteSizeSpan(16, true),
+                start,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            val valueStart = spannable.length
+            spannable.append(" ${value ?: "-"}\n\n")
+
+            // Value size 16sp
+            spannable.setSpan(
+                AbsoluteSizeSpan(14, true),
+                valueStart,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        addRow("Employee Status :", details.empStatus)
+        addRow("Employee Location :", details.empLocation)
+        addRow("Registration Date :", details.regDate)
+        addRow("Attendance ID :", details.attendanceId.toString())
+        addRow("Previous Employee Code :", details.previousEmpCode)
+
+        val trimmed = spannable.trimEnd()
+
+        val titleView = TextView(requireContext()).apply {
+            text = "Attendance Details :"
+            textSize = 22f   // Title size
+            setTypeface(typeface, Typeface.BOLD)
+            setPadding(50, 40, 50, 20)
+        }
+
+
+        val dialog = MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.RoundedDialog
+        )
+            .setCustomTitle(titleView)
+            .setMessage(trimmed)
+            .setPositiveButton("OK", null)
+            .create()
+
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_bg)
+    }
+
 }
 

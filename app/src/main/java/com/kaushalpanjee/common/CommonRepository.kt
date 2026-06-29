@@ -30,6 +30,7 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
 import com.kaushalpanjee.common.model.request.BankListReq
 import com.kaushalpanjee.common.model.request.BankLoanReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
@@ -81,6 +82,7 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.AebasRes
 import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
@@ -668,6 +670,14 @@ class CommonRepository @Inject constructor(
             appLevelApi.insertBankConsent(header, insertBankConsentReq)
         }
     }
+
+
+    suspend fun getAebasDetails(header: String,  aebasReq: AebasReq): Flow<Resource<out  AebasRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getAebasDetails(header, aebasReq)
+        }
+    }
+
 
 
 

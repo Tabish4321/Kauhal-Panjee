@@ -42,8 +42,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 50
-        versionName = "2.6.7"
+        versionCode = 54
+        versionName = "2.6.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -272,7 +272,7 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
 //    implementation (libs.simple.xml)\
-    implementation(libs.simple.xml) {  // ✅ UPDATED: Explicit exclude for Simple XML transitive
+    implementation(libs.simple.xml) {  //  UPDATED: Explicit exclude for Simple XML transitive
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
         exclude(group = "net.sf.kxml", module = "kxml2")

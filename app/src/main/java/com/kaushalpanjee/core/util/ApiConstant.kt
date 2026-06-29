@@ -82,6 +82,7 @@ object ApiConstant {
     const val API_GET_DETAILS_FOR_BANK_LOAN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}personalInformation"
     const val API_INSERT_FOR_BANK_LOAN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateLoanApplication"
     const val API_INSERT_FOR_BANK_Consent= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateAcConsent"
+    const val API_CANDIDATE_AEBAS_DETAIL= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}candidateAebasDetails"
 
 
 
