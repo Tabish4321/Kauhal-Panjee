@@ -603,7 +603,8 @@ fun CBTExamScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp, vertical = 4.dp)
-            ) {
+            )
+            {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),

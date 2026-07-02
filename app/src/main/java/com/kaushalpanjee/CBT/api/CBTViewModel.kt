@@ -281,7 +281,7 @@ class CBTViewModel : ViewModel() {
 
                 val body = """
                 {
-                  "candidateId": "$loginId",
+                  "candidateId": "2537374209",
                   "languageId": "$language"
                 }
                 """.trimIndent().toRequestBody(mediaType)

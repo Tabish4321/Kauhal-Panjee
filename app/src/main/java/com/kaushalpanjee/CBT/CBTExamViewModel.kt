@@ -221,6 +221,7 @@ class CBTExamViewModel : ViewModel() {
         try {
             val examSyncData = workDataOf(
                 "candidateId" to candidateId,
+                "candidateId" to candidateId,
                 "examId" to examId
             )
 

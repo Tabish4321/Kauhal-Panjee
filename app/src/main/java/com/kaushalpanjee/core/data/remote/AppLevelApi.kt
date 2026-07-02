@@ -438,6 +438,17 @@ interface AppLevelApi {
         ): NotificationListResponse
 
 
+    @POST(ApiConstant.API_CBTQUESTION)
+    suspend fun getCBTQUESTIONAPI(@Header("Authorization") token: String,
+                                      @Body districtReq: DistrictReq):DistrictResponse
+
+
+//        https://kaushal.dord.gov.in/demobackend/kaushalpanjee/panjeeapi/getQS
+
+
+
+
+
     @POST(API_APPROVECONDIDATE)
     suspend fun updateNotificationStatus(
         @Body request: InvitationApprovalRequest
