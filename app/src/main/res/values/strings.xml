@@ -6,6 +6,7 @@
     <string name="welcome_back">Hey, Let\'s shine today!</string>
     <string name="welcome_msg">Hi there, You\'ve been missed.</string>
     <string name="register"><u>Register</u></string>
+    <string name="bankConsent" translatable="false"><u>Give Consent</u></string>
     <string name="forgot_password"><u>Forgot id and Password?</u></string>
     <string name="forgot_id"><u>Forgot id?</u></string>
     <string name="create_an_account">Create an account</string>
@@ -255,7 +256,14 @@
     <string name="pmkvy_8">Training includes soft skills, digital literacy, and financial literacy to enhance overall employability.</string>
     <string name="pmkvy_9">The scheme places special focus on youth, including women, SC/ST communities, minorities and persons with disabilities.</string>
     <string name="pmkvy_10">Skill development is linked with industry needs, supporting opportunities for wage employment and self-employment.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark OJT Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.kaushalpanjee.core.basecomponent
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -30,6 +31,7 @@ import javax.inject.Inject
 
 abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (inflater: LayoutInflater) -> VB) :
     Fragment() {
+    private var progress1: Dialog? = null
 
     private var _binding: VB? = null
     val binding: VB get() = _binding as VB
@@ -67,7 +69,7 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         this.baseActivity = activity as BaseActivity<VB>
     }
 
-    fun showProgressBar() {
+ /*   fun showProgressBar() {
         if (context != null && isAdded && progress?.isShowing == false) {
             progress?.show()
         }
@@ -77,15 +79,46 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
         if (progress?.isShowing == true) {
             progress?.dismiss()
         }
+    }*/
+
+
+    fun showProgressBar() {
+        if (!isAdded) return
+        val act = activity ?: return
+        if (act.isFinishing || act.isDestroyed) return
+
+        initProgress()
+
+        if (progress?.isShowing != true) {
+            act.runOnUiThread {
+                progress?.show()
+            }
+        }
+    }
+    fun hideProgressBar() {
+        val act = activity ?: return
+        if (act.isFinishing || act.isDestroyed) return
+
+        if (progress?.isShowing == true) {
+            act.runOnUiThread {
+                progress?.dismiss()
+            }
+        }
     }
 
+
     fun showSnackBar(message: String) {
-        val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-        snackBar.view.setPadding(0, 0, 0, 0)
-        snackBar.view.elevation = 0f
-        snackBar.view.background =
-            ContextCompat.getDrawable(requireContext(), R.drawable.shape_rectangle_grey)
-        snackBar.show()
+        try {
+            val safeMessage = message ?: return
+
+            val snackBar = Snackbar.make(binding.root, safeMessage, Snackbar.LENGTH_SHORT)
+            snackBar.view.setPadding(0, 0, 0, 0)
+            snackBar.view.elevation = 0f
+            snackBar.view.background =
+                ContextCompat.getDrawable(requireContext(), R.drawable.shape_rectangle_grey)
+            snackBar.show()
+        }catch (e: Exception){}
+
     }
 
     fun hideSoftKeyboard() {
@@ -161,4 +194,17 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
 
         return Bitmap.createScaledBitmap(bitmap, width, height, true)
     }
+
+
+
+
+    private fun initProgress() {
+        if (progress1 == null && activity != null) {
+            progress1 = Dialog(requireActivity()).apply {
+                setContentView(R.layout.layout_progress)
+                setCancelable(false)
+            }
+        }
+    }
+
 }

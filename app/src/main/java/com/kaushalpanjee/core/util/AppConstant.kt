@@ -13,13 +13,12 @@ object AppConstant {
         const val BUCKET_PROFILE= "profile/"
         const val BUCKET_DOCUMENTS= "documents/"
         const val BUCKET_CATEGORY= "category/"
-       // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/Netnrega/StateServices/Uid_Face_Auth.svc/PostOnAUA_Face_auth"
-        const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid/stateservices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
+       // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid/stateservices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
+        const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid_gramg/stateservices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
+       // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid_gramg/stateservices/nrega_face_auth.svc/PostOnAUA_Face_auth"
        //const val baseUrl= "http://10.197.183.177:8001/"                        //local
-        const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
-        // const val baseUrl= "https://kaushal.rural.gov.in/demobackend/"             //demo
-       // const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"             //demo
-
+       //  const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
+        const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"      //demo
     }
 
     object Constants{
@@ -58,6 +57,5 @@ object AppConstant {
         const val RESULT_STATUS = "status"
         const val RESULT_MESSAGE = "message"
         const val YOUR_CLIENT_ID = "RD_0725"
-
     }
 }

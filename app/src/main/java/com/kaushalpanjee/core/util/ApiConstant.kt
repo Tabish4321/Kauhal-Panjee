@@ -43,6 +43,9 @@ object ApiConstant {
      const val  API_LOGIN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}login"
      const val  API_SECTOR= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}sectorList"
      const val  API_TRADE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}tradeList"
+    const val  API_SEARCH_TRADE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}searchTrade"
+
+
      const val  API_TRAINING_SEARCH= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}searchCenter"
      const val  API_TRAINING_LIST= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}trainingCenter"
     const val  API_GET_SEARCH_TRAINING= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getCenter"
@@ -71,5 +74,16 @@ object ApiConstant {
     const val  API_INSTITUTE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}kpOrgTrainingCenters"
     const val  API_INSTITUTE_COURSE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}instituteCourse"
     const val  API_INSERT_TRAINING_CENTER = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateTrainingCenter"
+    const val API_NOTIFICATION = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getNotificationList"
+    const val API_APPROVECONDIDATE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}aprroveCandidate"
+    const val API_INSERT_OJT_ATTENDANCE = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertOjtCandidateAttendance"
+    const val API_INSERT_AADHAAR_TXN = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}saveAadhaarTxn"
+    const val API_GET_BANKLIST= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}bankList"
+    const val API_GET_DETAILS_FOR_BANK_LOAN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}personalInformation"
+    const val API_INSERT_FOR_BANK_LOAN= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateLoanApplication"
+    const val API_INSERT_FOR_BANK_Consent= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertCandidateAcConsent"
+    const val API_CANDIDATE_AEBAS_DETAIL= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}candidateAebasDetails"
+
+
 
 }

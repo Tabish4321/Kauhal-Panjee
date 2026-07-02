@@ -30,23 +30,93 @@ import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.provider.Settings
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.gson.Gson
+import okhttp3.OkHttpClient
 import java.security.MessageDigest
 import java.security.SecureRandom
 
-
 object AppUtil {
+
+    fun showUpdateDialog(
+        context: Context
+    ) {
+
+        val builder =
+            android.app.AlertDialog.Builder(context)
+
+        builder.setTitle("Update Available")
+
+        builder.setMessage(
+            "A new version of the app is available. Please update to continue."
+        )
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+
+            val appPackageName =
+                "com.kaushalpanjee"
+
+            try {
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "market://details?id=$appPackageName"
+                    )
+                )
+
+                intent.setPackage("com.android.vending")
+
+                context.startActivity(intent)
+
+            } catch (e: Exception) {
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"
+                    )
+                )
+
+                context.startActivity(intent)
+            }
+
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+
+        builder.create().show()
+    }
+
+    fun validatePAN(pan: String): Boolean {
+        val regex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+        return regex.matches(pan)
+    }
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context) : String{
 
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+    }
+    fun getCurrentDateForAttendance(): String {
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy, EEEE", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
 
     fun sha512Hash(input: String): String {
@@ -415,7 +485,38 @@ object AppUtil {
 
         isSessionDialogShown = false // Reset flag after navigation
     }
+  //  sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c= , sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0=
+    fun printSslPin() {
+        val client = OkHttpClient()
+        val request = okhttp3.Request.Builder()
+            .url("https://kaushal.rural.gov.in/")
+            .build()
+        Thread {
+            try {
+            val response = client.newCall(request).execute()
+            val handshake = response.handshake
+            val certs = handshake?.peerCertificates
+            certs?.forEach {
+                val pin = okhttp3.CertificatePinner.pin(it)
+                println("SSL PIN 👉 $pin")
+                }
+            } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        }.start()
+    }
 
+
+    fun base64ToBitmap(base64: String): Bitmap? {
+        return try {
+            val cleanBase64 = base64.substringAfter(",") // handles data:image/png;base64,...
+            val decodedBytes = Base64.decode(cleanBase64, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
     }
 

@@ -7,13 +7,17 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -57,8 +61,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        commonViewModel.getUnnati(UnnatiRequest(AppUtil.getSavedLanguagePreference(requireContext())))
-        collectUnnatiData()
+
+
+
+
+
 
         init()
         handleBackPress()
@@ -66,32 +73,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     }
 
-    private fun collectUnnatiData() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getUnnati) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                    }
-                    is Resource.Success -> {
-                        hideProgressBar()
-
-                        it.data.let { response ->
-
-                            ddugky = response?.data?.DDUGKY
-                            rseti = response?.data?.RSETI
-                            nrlm = response?.data?.NRLM
-                            pmvishwakarma = response?.data?.PM_VISHWAKARMA
-                            pmkvy = response?.data?.PMKVY
-
-                        }
-
-                    }
-                }
-            }
-        }
-    }
 
 
     private fun init() {
@@ -105,17 +86,33 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private fun listeners() {
 
 
+     /*   binding.ivDDGKY.setOnClickListener {
+
+          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSubmitBankConcent())
+        }
+*/
+
+
+
+    /*    binding.ivDDGKY.setOnClickListener {
+
+
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLoanFragment())
+
+        }*/
+
+
 
 
 
         binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
 
-        binding.etEmail.addTextChangedListener(object : TextWatcher {
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
                     if (it.isNotEmpty() && !isApiCalled) {
                         isApiCalled = true
-                        commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME)
+                        commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME,binding.etEmail.text.toString())
                     }
                 }
             }
@@ -191,35 +188,43 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     )
 
 
-                if (binding.etEmail.text.isNotEmpty() && binding.etPassword.text.isNotEmpty()) {
-                    userName = binding.etEmail.text.toString()
-                    password = binding.etPassword.text.toString()
-                    val shaPass = AppUtil.sha512Hash(password)
-                 //   toastLong("saltPass $saltPassword")
-                    val saltPass = shaPass+saltPassword
-                    val finalPass = AppUtil.sha512Hash(saltPass)
-
-
-                    //commonViewModel.getLoginAPI(LoginReq("2505000001","Ya$@x7Q#mv",AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
-                    commonViewModel.getLoginAPI(
-                        LoginReq(
-                            userName,
-                            finalPass,
-                            AppUtil.getAndroidId(requireContext()),
-                            BuildConfig.VERSION_NAME,
-                            ""
-                        ))
-                    //   commonViewModel.getLoginAPI(LoginReq(userName,password,AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME,""))
-
-                    collectLoginResponse()
-
-                } else
+                if (binding.etEmail.text.isEmpty() || binding.etPassword.text.isEmpty()) {
                     showSnackBar("Please enter id and password")
+                    return@launch
+                }
+                userName = binding.etEmail.text.toString()
+                password = binding.etPassword.text.toString()
+                val shaPass = AppUtil.sha512Hash(password)
+                //   toastLong("saltPass $saltPassword")
+                Log.d("saltPass", "saltPass:  "+ saltPassword)
 
+                val saltPass = saltPassword + shaPass
+                val finalPass = AppUtil.sha512Hash(saltPass)
 
+                FirebaseMessaging.getInstance().token
+                    .addOnCompleteListener { task ->
+                        val fcmToken = if (task.isSuccessful) {
+                            task.result ?: ""
+                        } else {
+                            ""
+                        }
+
+                        Log.d("--FCM_TOKEN-", fcmToken)
+                        commonViewModel.getLoginAPI(
+                            LoginReq(
+                                userName,
+                                finalPass,
+                                AppUtil.getAndroidId(requireContext()),
+                                BuildConfig.VERSION_NAME,
+                                "",
+                                fcmToken = fcmToken
+                            ))
+                        collectLoginResponse()
+                    }
             }
-
         }
+
+
 
         binding.tvForgotPassword.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToForgotPassViaAadhaarFragment())
@@ -257,7 +262,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
+                            toastShort("Server error")
                         }
                     }
 
@@ -270,12 +275,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
-                                    val token1 = AESCryptography.decryptIntoString(getLoginResponse.appCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-
                                     // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
 
-                                    if (token == token1){
-                                        AppUtil.saveTokenPreference(requireContext(),"Bearer "+getLoginResponse.appCode)
+                                        AppUtil.saveTokenPreference(requireContext(),"Bearer "+getLoginResponse.accessToken)
                                         userPreferences.updateUserId(null)
                                         userPreferences.updateUserId(userName)
                                         AppUtil.saveLoginStatus(requireContext(), true)  // true means user is logged in
@@ -287,16 +289,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                                 .setPopUpTo(R.id.loginFragment, true)
                                                 .build()
                                         )
-
-                                    }
-                                    else toastShort("Session expired")
-
                                 }
 
                                 203 -> {
                                     toastShort(getLoginResponse.responseDesc)
                                     toastShort(getLoginResponse.responseMsg)
-                                    commonViewModel.getToken(AppUtil.getAndroidId(requireContext()),BuildConfig.VERSION_NAME)
+                                    isApiCalled = false
 
                                 }
 
@@ -309,6 +307,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                 else -> {
                                     showSnackBar(getLoginResponse.responseDesc)
+
+                                    isApiCalled = false
 
                                 }
                             }
@@ -360,10 +360,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             when (getToken.responseCode) {
                                 200 -> {
 
-                                   token= AESCryptography.decryptIntoString(getToken.authToken,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-                                   saltPassword= AESCryptography.decryptIntoString(getToken.passString,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                            //        Log.d("saltPass", "saltPass:  "+ saltPassword)
+                                   //token= AESCryptography.decryptIntoString(getToken.authToken,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                                   saltPassword= getToken.passString
+                                   Log.d("saltPass", "saltPass:  "+ saltPassword)
 
 
                                 }
@@ -375,6 +374,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                 else -> {
                                     showSnackBar(getToken.responseDesc)
+                                    isApiCalled = false
+
 
                                 }
                             }
@@ -387,7 +388,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
     private fun showUpdateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        val builder = AlertDialog.Builder(requireContext()) //  use requireContext() inside Fragment
         builder.setTitle("Update Available")
         builder.setMessage("A new version of the app is available. Please update to continue.")
 
@@ -411,8 +412,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         builder.setCancelable(false)
         builder.create().show()
     }
-
-
 
 }
 

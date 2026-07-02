@@ -20,6 +20,7 @@ val appVersion: String,
 val aadharImage: String,
 val imeiNo: String,
 val stateLgdCode: String,
-val userConsent: Boolean
+val userConsent: Boolean,
+val fcmToken: String=""
 )
 

@@ -1,11 +1,13 @@
 package com.kaushalpanjee.common
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -36,13 +38,13 @@ import dagger.hilt.android.AndroidEntryPoint
 ////https://github.com/Tabish4321/Kauhal-Panjee/settings/access
 ////code commit 150120261453
 @AndroidEntryPoint
-class TrainingCenterAssign :
-    BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
+class TrainingCenterAssign : BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by viewModels()
     private var selectedScheme: String? = ""
     private var stateCode: String? = ""
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -101,6 +103,8 @@ fun TrainingCenterScreen(
     )
 
     /* ---------------- PIA / BANK ---------------- */
+
+
     val piaResponse by commonViewModel.getPiaOrgList.collectAsState()
     val isPiaCalled by commonViewModel.isPiaCalled.collectAsState()
     var selectedPia by remember { mutableStateOf<PiaOrg?>(null) }
@@ -250,12 +254,7 @@ fun TrainingCenterScreen(
                     }
             )
 
-
-
             Spacer(modifier = Modifier.width(20.dp))
-
-
-
             TopLogoRow()
 
             Text("Assign Training Center", style = MaterialTheme.typography.headlineMedium,
@@ -283,13 +282,12 @@ fun TrainingCenterScreen(
                     selectedCourse = null
 
                     commonViewModel.resetAllDependentApis()
-
                     commonViewModel.getPiaOrgList(
                         PiaListReq(
                             BuildConfig.VERSION_NAME,
                             selectedScheme!!,
                             district.districtCode
-                        )
+                        ), AppUtil.getSavedTokenPreference(context)
                     )
                 }
             )
@@ -298,7 +296,6 @@ fun TrainingCenterScreen(
 
             /* ================= DDUGKY FLOW ================= */
             if (selectedScheme == "DDUGKY") {
-
                 SimpleDropdown(
                     label = "Select PIA",
                     selectedItem = selectedPia,
@@ -308,15 +305,13 @@ fun TrainingCenterScreen(
                         selectedPia = pia
                         selectedTraining = null
                         selectedTrade = null
-
                         commonViewModel.resetPiaTraining()
                         commonViewModel.resetPiaTrade()
-
                         commonViewModel.getPiaTrainingList(
                             PiaTrainingCenterReq(
                                 BuildConfig.VERSION_NAME,
                                 pia.piaOrgCode
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -338,7 +333,7 @@ fun TrainingCenterScreen(
                             PiaTradeReq(
                                 BuildConfig.VERSION_NAME,
                                 training.trainingCenterId.toString()
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -376,7 +371,7 @@ fun TrainingCenterScreen(
                             OrgInstituteReq(
                                 BuildConfig.VERSION_NAME,
                                 bank.piaOrgCode
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -398,7 +393,7 @@ fun TrainingCenterScreen(
                             InstituteCourseReq(
                                 BuildConfig.VERSION_NAME,
                                 institute.instituteId.toString()
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -606,6 +601,7 @@ fun <T, R> rememberApiList(
 
     LaunchedEffect(response) {
         if (response is Resource.Success &&
+
             response.data?.let { getCode(it) } in listOf(201, 202)
         ) {
             Toast.makeText(context, emptyMessage, Toast.LENGTH_SHORT).show()

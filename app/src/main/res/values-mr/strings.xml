@@ -257,5 +257,13 @@
     <string name="pmkvy_8">प्रशिक्षणात सौम्य कौशल्ये, डिजिटल साक्षरता आणि आर्थिक साक्षरता यांचा समावेश असतो, ज्यामुळे एकूण रोजगारक्षमतेत वाढ होते.</string>
     <string name="pmkvy_9">या योजनेत विशेषतः युवक, महिला, एससी/एसटी समुदाय, अल्पसंख्याक आणि दिव्यांग व्यक्तींवर विशेष लक्ष केंद्रित केले जाते.</string>
     <string name="pmkvy_10">कौशल्य विकासाला उद्योगाच्या गरजांशी जोडण्यात आले आहे, ज्यामुळे वेतनाधारित रोजगार आणि स्वयंरोजगाराच्या संधी वाढतात.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

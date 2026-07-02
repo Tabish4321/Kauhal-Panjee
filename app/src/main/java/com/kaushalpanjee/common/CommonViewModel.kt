@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaushalpanjee.BuildConfig
@@ -27,6 +28,7 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
@@ -38,6 +40,10 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
+import com.kaushalpanjee.common.model.request.InsertBankLoanReq
+import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
@@ -55,6 +61,7 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
@@ -69,12 +76,16 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.AebasRes
+import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
+import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
+import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
 import com.kaushalpanjee.common.model.response.InstituteCourseRes
@@ -95,6 +106,7 @@ import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
 import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
 import com.kaushalpanjee.common.model.response.UnnatiListResponse
@@ -103,11 +115,28 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.core.util.AppConstant
+import com.kaushalpanjee.core.util.UserPreferences
+import com.kaushalpanjee.notification.with_api.LoadingView
+import com.kaushalpanjee.notification.with_api.NotificationStatus
+import com.kaushalpanjee.notification.with_api.NotificationUiEvent
+import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
+import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import com.kaushalpanjee.notification.with_api.model.res.UserNotification
+import com.kaushalpanjee.notification.with_api.model.toUiModel
+import com.utilize.core.domain.model.response.BaseErrorResponse
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
-class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository) :ViewModel() {
+class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository,
+                                          private val userPreferences: UserPreferences
+) :ViewModel() {
+
+
+
 
     fun resetPia() {
         _getPiaOrgList.value = Resource.Loading()
@@ -157,9 +186,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getToken = _getToken.asSharedFlow()
 
 
-    fun getToken(imeiNo:String , appVersion:String){
+    fun getToken(imeiNo:String , appVersion:String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getToken(imeiNo,appVersion).collectLatest {
+            commonRepository.getToken(imeiNo,appVersion,loginId).collectLatest {
                 _getToken.emit(it)
             }
         }
@@ -586,8 +615,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _getPiaOrgList =
-        MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
+    private val _getPiaOrgList = MutableStateFlow<Resource<out PiaListResponse>>(Resource.Loading())
 
     private val _isPiaCalled = MutableStateFlow(false)
 
@@ -595,11 +623,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isPiaCalled = _isPiaCalled
 
 
-    fun getPiaOrgList(piaListReq: PiaListReq) {
+    fun getPiaOrgList(piaListReq: PiaListReq,header :String) {
         _isPiaCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getPiaOrgList(piaListReq)
+            commonRepository.getPiaOrgList(piaListReq,header)
                 .collectLatest {
                     _getPiaOrgList.value = it
                 }
@@ -625,11 +653,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isPiaTrainingCalled = _isPiaTrainingCalled
 
 
-    fun getPiaTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq) {
+    fun getPiaTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq,header :String) {
         _isPiaCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getTrainingList(piaTrainingCenterReq)
+            commonRepository.getTrainingList(piaTrainingCenterReq,header)
                 .collectLatest {
                     _getTrainingList.value = it
                 }
@@ -648,11 +676,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isPiaTradeCalled = _isPiaTradeCalled
 
 
-    fun getPiaTradeList(piaTradeReq: PiaTradeReq) {
+    fun getPiaTradeList(piaTradeReq: PiaTradeReq,header :String) {
         _isPiaTradeCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getTradeList(piaTradeReq)
+            commonRepository.getTradeList(piaTradeReq,header)
                 .collectLatest {
                     _getTradeList.value = it
                 }
@@ -662,8 +690,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
-    private val _getInstituteList =
-        MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
+    private val _getInstituteList = MutableStateFlow<Resource<out OrgInstituteRes>>(Resource.Loading())
 
     private val _isInstituteCalled = MutableStateFlow(false)
     val isInstituteCalled = _isInstituteCalled
@@ -671,11 +698,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getInstituteList = _getInstituteList
 
 
-    fun getInstituteList(orgInstituteReq: OrgInstituteReq) {
+    fun getInstituteList(orgInstituteReq: OrgInstituteReq,header :String) {
         _isInstituteCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getInstituteList(orgInstituteReq)
+            commonRepository.getInstituteList(orgInstituteReq,header)
                 .collectLatest {
                     _getInstituteList.value = it
                 }
@@ -695,11 +722,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isInstituteCourseCalled = _isInstituteCourseCalled
 
 
-    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq) {
+    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq,header :String) {
         _isInstituteCourseCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getInstituteCourseList(instituteCourseReq)
+            commonRepository.getInstituteCourseList(instituteCourseReq,header)
                 .collectLatest {
                     _getInstituteCourseList.value = it
                 }
@@ -709,6 +736,24 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
+
+
+
+
+
+    private  var _insertOjtAttendance =  MutableStateFlow<Resource<out InsertOjtRes>>(Resource.Loading())
+    val insertOjtAttendance = _insertOjtAttendance.asStateFlow()
+
+
+    fun insertOjtAttendance(insertOjtReq: InsertOjtReq,header :String) {
+        viewModelScope.launch {
+            commonRepository.insertOjtAttendance(insertOjtReq,header).collectLatest {
+                _insertOjtAttendance.emit(it)
+            }
+        }
+
+
+    }
 
 
 
@@ -785,9 +830,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private  var _updateFaceApi =  MutableStateFlow<Resource<out FaceResponse>>(Resource.Loading())
     val updateFaceApi = _updateFaceApi.asSharedFlow()
 
-    fun updateFaceApi(faceCheckReq: FaceCheckReq){
+    fun updateFaceApi(faceCheckReq: FaceCheckReq,header :String){
         viewModelScope.launch {
-            commonRepository.updateFaceApi(faceCheckReq).collectLatest {
+            commonRepository.updateFaceApi(faceCheckReq,header).collectLatest {
                 _updateFaceApi.emit(it)
             }
         }
@@ -826,19 +871,22 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-    private  var _getTradeListAPI =  MutableStateFlow<Resource<out TradeResponse>>(Resource.Loading())
+    private  var _getTradeListAPI =  MutableStateFlow<Resource<out TradeSearchRes>>(Resource.Loading())
     val getTradeListAPI = _getTradeListAPI.asSharedFlow()
 
 
-    fun getTradeListAPI(tradeReq: TradeReq,header :String){
+    fun getTradeListAPI(tradeReq: TradeSearchReq,header :String){
         viewModelScope.launch {
             commonRepository.getTradeListAPI(tradeReq,header).collectLatest {
                 _getTradeListAPI.emit(it)
             }
         }
 
-
     }
+
+
+
+    //getTradeSearchListAPI
 
     private  var _getTrainingSearchAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
     val getTrainingSearchAPI = _getTrainingSearchAPI.asSharedFlow()
@@ -865,9 +913,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                 _getTrainingListAPI.emit(it)
             }
         }
-
-
     }
+
+
 
 
     private  var _getSelectedTrainingListAPI =  MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
@@ -1039,13 +1087,304 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     fun getCheckJobCardAPI( url: String,username: String, password: String,jobcardNo: String){
         viewModelScope.launch {
-
             commonRepository.getCheckJobCardAPI(url,username,password,jobcardNo).collectLatest {
                 _nRegaValidate.emit(it)
             }
         }
     }
 
+
+
+    public val _notificationList =
+        MutableStateFlow<Resource<List<NotificationUiModel>>>(Resource.Loading())
+
+    val notificationList: StateFlow<Resource<List<NotificationUiModel>>> =
+        _notificationList
+
+    private var currentPage = 0
+    private var isLastPage = false
+    private var isLoading = false
+
+
+/*
+    fun loadNotifications(loadMore: Boolean = false) {
+        if (isLoading || isLastPage) return
+
+        isLoading = true
+
+        if (!loadMore) {
+            currentPage = 0
+            isLastPage = false
+            _notificationList.value = Resource.Loading()
+        }
+
+        viewModelScope.launch {
+            commonRepository.getNotifications(currentPage, 10)
+                .collectLatest { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            val newItems =
+                                result.data?.content
+                                    ?.map { it.toUiModel() }
+                                    ?: emptyList()
+
+                            isLastPage = newItems.isEmpty()
+                            currentPage++
+
+                            val oldList = (_notificationList.value as? Resource.Success)?.data.orEmpty()
+
+                            _notificationList.value =
+                                Resource.Success(
+                                    if (loadMore) oldList + newItems else newItems
+                                )
+                        }
+                        is Resource.Error -> {
+                            _notificationList.value = Resource.Error(BaseErrorResponse(0,"Something Went wrong to get list",false,""))
+                        }
+
+                        is Resource.Loading -> Unit
+                    }
+                    isLoading = false
+                }
+        }
+    }
+*/
+
+
+
+    fun loadNotifications(loadMore: Boolean = false) {
+
+        val candidateId = userPreferences.getUseID()
+
+        if (candidateId.isEmpty()) {
+            _notificationList.value =
+                Resource.Error(BaseErrorResponse(0,"Candidate ID not found",false,""))
+            return
+        }
+
+        if (isLoading || isLastPage) return
+
+        isLoading = true
+
+        if (!loadMore) {
+            currentPage = 0
+            isLastPage = false
+            _notificationList.value = Resource.Loading()
+        }
+
+        viewModelScope.launch {
+
+            commonRepository.getNotifications(candidateId, currentPage, 10)
+                .collectLatest { result ->
+
+                    when (result) {
+
+                        is Resource.Success -> {
+
+                            val newItems =
+                                result.data?.content
+                                    ?.map { it.toUiModel() }
+                                    ?: emptyList()
+
+                            isLastPage = newItems.size < 10   // ⭐ pagination fix
+                            currentPage++
+
+                            val oldList =
+                                (_notificationList.value as? Resource.Success)?.data.orEmpty()
+
+                            _notificationList.value =
+                                Resource.Success(
+                                    if (loadMore) oldList + newItems else newItems
+                                )
+                        }
+
+                        is Resource.Error -> {
+                            _notificationList.value =
+                                Resource.Error(BaseErrorResponse(0,"Something Went wrong",false,""))
+                        }
+
+                        is Resource.Loading -> Unit
+                    }
+
+                    isLoading = false
+                }
+        }
+    }
+
+    public val _actionLoading = MutableStateFlow<String?>(null)
+
+    private val _uiEvent = MutableSharedFlow<NotificationUiEvent?>()
+    val uiEvent: SharedFlow<NotificationUiEvent?> = _uiEvent
+
+    fun updateNotificationStatus(
+        notificationId: String,
+        status: String,
+        header :String
+    ) {
+        val currentList =
+            (_notificationList.value as? Resource.Success)?.data ?: return
+
+        val notification =
+            currentList.find { it.id == notificationId } ?: return
+
+        val request = InvitationApprovalRequest(
+            scheme = "RSETI",
+            candidateId = notification.candidateId,
+            status = status,
+            instituteId = notification.instituteId,
+            instituteName = "",
+            instituteTrade = "",
+            centerName = "",
+            centerTrade = "",
+            entryCode = ""
+        )
+        viewModelScope.launch {
+            _actionLoading.value = notificationId
+            val result = commonRepository
+                .invitationApprove(request,header)
+                .first { it !is Resource.Loading }
+
+            when (result) {
+                is Resource.Success -> {
+                    val raw = result.data?.string() ?: ""
+                        _uiEvent.emit(NotificationUiEvent.ShowToast(raw))
+                        resetPagination()
+                        loadNotifications(
+                        )
+                    }
+
+                is Resource.Error -> {
+                  //  resetPagination()
+                  //  loadNotifications()
+                    _uiEvent.emit(NotificationUiEvent.ShowToast(
+                             "Something went wrong In status Api"
+                        )
+                    )
+                }
+                is Resource.Loading<*> -> Unit
+            }
+            _actionLoading.value = null
+        }
+    }
+
+
+    private fun resetPagination() {
+        isLoading = false
+        isLastPage = false
+        currentPage = 0
+    }
+
+
+
+    private  var _insertAadhaarTxn =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertAadhaarTxn = _insertAadhaarTxn.asStateFlow()
+
+
+    fun insertAadhaarTxn(insertAadhaarTxnReq: InsertAadhaarTxnReq) {
+        viewModelScope.launch {
+            commonRepository.insertAadhaarTxn(insertAadhaarTxnReq).collectLatest {
+                _insertAadhaarTxn.emit(it)
+            }
+        }
+    }
+
+    private val _bankList = MutableSharedFlow<Resource<out BankListResponse>>()
+    val bankList = _bankList.asSharedFlow()
+
+    fun getBankList(header: String, loginId: String) {
+        viewModelScope.launch {
+            commonRepository.getBankListApi(header, loginId).collectLatest {
+                _bankList.emit(it)
+            }
+        }
+    }
+
+
+
+
+    private val _getBankLoanDetails =
+        MutableStateFlow<Resource<GetDetailsBankLoanRes>?>(null)
+
+    val getBankLoanDetails = _getBankLoanDetails.asStateFlow()
+
+    fun getBankLoanDetails(header: String) {
+
+
+        viewModelScope.launch {
+
+            commonRepository.getBankLoanDetails(
+                header,
+                userPreferences.getUseID()
+            ).collectLatest {
+
+          /*      when (it) {
+
+                    is Resource.Success -> {
+                        Log.d("LOAN_API", "SUCCESS : ${it.data}")
+                    }
+
+                    is Resource.Error -> {
+                        Log.d("LOAN_API", "ERROR : ${it.error}")
+                        Log.d("LOAN_API", "ERROR DATA : ${it.data}")
+                    }
+
+                    is Resource.Loading -> {
+                        Log.d("LOAN_API", "LOADING")
+                    }
+                }*/
+
+                _getBankLoanDetails.value = it as Resource<GetDetailsBankLoanRes>?
+            }
+        }
+    }
+
+
+    private val _insertBankLoanDetails =
+        MutableStateFlow<Resource<GetDetailsBankLoanRes>?>(null)
+
+    val insertBankLoanDetails = _insertBankLoanDetails.asStateFlow()
+
+    fun insertBankLoanDetails(header: String, insertBankLoanReq: InsertBankLoanReq) {
+
+
+        viewModelScope.launch {
+
+            commonRepository.insertBankLoanDetails(
+                header,
+                insertBankLoanReq
+            ).collectLatest {
+
+                _insertBankLoanDetails.value = it as Resource<GetDetailsBankLoanRes>?
+            }
+        }
+    }
+
+
+
+    private  var _insertBankConsent =  MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertBankConsent = _insertBankConsent.asStateFlow()
+
+
+    fun insertBankConsent( header : String, insertBankConsentReq: InsertBankConsentReq) {
+        viewModelScope.launch {
+            commonRepository.insertBankConsent(header,insertBankConsentReq).collectLatest {
+                _insertBankConsent.emit(it)
+            }
+        }
+    }
+
+
+
+    private val _getAebasDetails = MutableSharedFlow<Resource<out AebasRes>>()
+    val getAebasDetails = _getAebasDetails.asSharedFlow()
+
+    fun getAebasDetails( header : String, aebasReq: AebasReq) {
+        viewModelScope.launch {
+            commonRepository.getAebasDetails(header, aebasReq).collectLatest {
+                _getAebasDetails.emit(it)
+            }
+        }
+    }
 
 
 

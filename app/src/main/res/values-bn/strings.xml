@@ -262,5 +262,13 @@
     <string name="pmkvy_8">প্রশিক্ষণে সফট স্কিল, ডিজিটাল সাক্ষরতা এবং আর্থিক সাক্ষরতা অন্তর্ভুক্ত থাকে, যা সামগ্রিক কর্মসংস্থান সক্ষমতা বাড়ায়।</string>
     <string name="pmkvy_9">এই যোজনা বিশেষভাবে যুবক-যুবতী, মহিলা, এসসি/এসটি সম্প্রদায়, সংখ্যালঘু এবং প্রতিবন্ধী ব্যক্তিদের উপর গুরুত্ব দেয়।</string>
     <string name="pmkvy_10">দক্ষতা উন্নয়নকে শিল্পের প্রয়োজনের সঙ্গে যুক্ত করা হয়েছে, যার ফলে বেতনের চাকরি এবং স্বনিযুক্তির সুযোগ বৃদ্ধি পায়।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

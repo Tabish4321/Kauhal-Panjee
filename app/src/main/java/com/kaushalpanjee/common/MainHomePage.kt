@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -13,7 +12,6 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
@@ -73,6 +71,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var candidateName = ""
     private var totalPercentange =0.0f
     private var certUrl = ""
+    private var attendanceFlag = ""
     private var schemeType = ""
     private var stateCode = ""
 
@@ -90,7 +89,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                 if (status == "success") {
 
-                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()))
+                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectFaceUpdateResponse()
 
@@ -111,6 +110,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         init()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
+
+
 
     }
 
@@ -139,6 +140,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                      findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
 
                  }
+
+
+                /* R.id.bankLoan -> {
+
+                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToLoanFragment())
+
+                 }*/
+
                  R.id.rekyc -> {
 
                      //For Re-KYC
@@ -154,22 +163,21 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
          }
 
          binding.trainingRecyclerView.gone()
-
-
          listeners()
          autoScroll()
-         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
 
-         collectSetionAndPerResponse()
          collectTrainingSearchResponse()
 
      }
 
  private fun  listeners(){
 
+     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+     collectSetionAndPerResponse()
 
-    //Training Adapter Setting
+
+     //Training Adapter Setting
 
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
      trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
@@ -185,7 +193,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
-
+     binding.circleINotification.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment())
+     }
 
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
 
@@ -223,10 +233,13 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
-     if (certUrl == "N"){
 
-         binding.certificateImageLogo.gone()
-         binding.certificateImageText.gone()
+
+
+
+
+     binding.attendanceImageLogo.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToAttendanceFragment())
 
      }
 
@@ -326,6 +339,22 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     bankingStatus= x.bankingStatus.toString()
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
+                                    attendanceFlag= x.ojtFlag
+
+
+                                    if (attendanceFlag == "Y"){
+
+                                        binding.attendanceImageLogo.visible()
+                                        binding.attendanceTv.visible()
+
+                                    }
+                                    else
+                                    {
+                                        binding.attendanceImageLogo.gone()
+                                        binding.attendanceTv.gone()
+                                    }
+
+
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
                                     userPreferences.updateUserStateLgdCode(null)
@@ -339,6 +368,15 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     AppUtil.saveAadhaarPreference(requireContext(),x.aadhaarEnc
                                     )
+
+                                    if (certUrl == "N"){
+
+                                        binding.certificateImageLogo.gone()
+                                        binding.certificateImageText.gone()
+
+                                    }
+
+
 
                                     if (x.firstLogin == "N"){
                                         showForcePasswordDialog()
@@ -537,7 +575,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                             .setPopUpTo(R.id.mainHomePage, true)
                                             .build()
                                     )
-                                    toastLong(logoutResponse.responseMsg)
+                                    toastLong(logoutResponse.responseDesc)
                                 }
                                 301 -> {
 

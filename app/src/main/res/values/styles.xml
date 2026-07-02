@@ -32,5 +32,10 @@
     </style>
 
 
+    <style name="RoundedDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="cornerRadius">16dp</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
 
 </resources>

@@ -11,3 +11,4 @@ data class Trade(
     val trade: String,
     val tradeCode: String
 )
+

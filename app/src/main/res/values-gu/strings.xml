@@ -256,6 +256,14 @@
     <string name="pmkvy_8">તાલીમમાં સોફ્ટ સ્કિલ્સ, ડિજિટલ સાક્ષરતા અને આર્થિક સાક્ષરતા સમાવવામાં આવે છે, જેથી સમગ્ર રોજગારક્ષમતા વધે.</string>
     <string name="pmkvy_9">આ યોજના ખાસ કરીને યુવાનો, મહિલાઓ, એસસી/એસટી સમાજ, અલ્પસંખ્યકો અને દિવ્યાંગ વ્યક્તિઓ પર વિશેષ ધ્યાન કેન્દ્રિત કરે છે.</string>
     <string name="pmkvy_10">કૌશલ વિકાસને ઉદ્યોગની જરૂરિયાતો સાથે જોડવામાં આવ્યું છે, જેના કારણે પગાર આધારિત નોકરીઓ અને સ્વરોજગારીની તકોમાં વધારો થાય છે.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 
 </resources>

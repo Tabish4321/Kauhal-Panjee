@@ -19,6 +19,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        flatDir {
+            dirs("libs")
+        }
 
         maven { url = uri("https://jitpack.io")
 

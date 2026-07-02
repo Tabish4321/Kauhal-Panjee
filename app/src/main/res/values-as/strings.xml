@@ -259,5 +259,13 @@
     <string name="pmkvy_8">প্ৰশিক্ষণৰ অন্তৰ্ভুক্ত হৈছে ছফ্ট স্কিল, ডিজিটেল সাক্ষৰতা আৰু অৰ্থনৈতিক সাক্ষৰতা, যাৰ ফলত সামগ্ৰিক নিয়োগযোগ্যতা বৃদ্ধি পায়।</string>
     <string name="pmkvy_9">এই যোজনাই বিশেষভাৱে যুৱক-যুৱতী, মহিলা, SC/ST সমাজ, সংখ্যালঘু আৰু বি.ডি. (দিৱ্যাং) ব্যক্তিৰ ওপৰত বিশেষ গুরুত্ব দিয়ে।</string>
     <string name="pmkvy_10">কৌশল উন্নয়নক শিল্পৰ প্ৰয়োজনীয়তাৰ সৈতে সংযুক্ত কৰা হৈছে, যাৰ ফলত মজুৰিৰ চাকৰি আৰু আত্ম-ৰোজগাৰৰ সুযোগ বৃদ্ধি হয়।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

@@ -71,7 +71,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llTopBanking" />
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/expandBanking"
             android:layout_width="match_parent"
@@ -81,6 +80,40 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llTopBanking">
+
+            <!-- ADD BUTTON -->
+            <TextView
+                android:id="@+id/btnAddBank"
+                style="@style/Button"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content"
+                android:text="Add Bank"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <!-- NO DATA TEXT -->
+            <TextView
+                android:id="@+id/tvNoBank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No bank details available"
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:padding="10dp"
+                app:layout_constraintTop_toBottomOf="@id/btnAddBank"/>
+
+            <LinearLayout
+                android:id="@+id/llBankContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tvNoBank"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,7 +121,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:id="@+id/llIfscCode"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/viewBanking"
+                app:layout_constraintTop_toBottomOf="@+id/llBankContainer"
                 tools:ignore="NotSibling">
 
                 <!-- Label -->
@@ -139,21 +172,13 @@
                         android:id="@+id/spinnerBranchName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
                         android:textColor="@color/color_dark_green"
                         android:textSize="15sp"
-                        android:focusable="false"
+                        android:inputType="text"
+                        android:focusable="true"
                         tools:ignore="LabelFor" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
             </LinearLayout>
-
-
-
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"

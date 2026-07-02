@@ -6,6 +6,10 @@
         android:title="@string/changePass"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/bankLoan"
+        android:icon="@drawable/loan"
+        android:title="Apply Loan" />
+
     <item android:id="@+id/rekyc"
         android:icon="@drawable/rekyc"
         android:title="@string/re_kyc" />

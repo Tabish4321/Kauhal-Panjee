@@ -1,5 +1,6 @@
 package com.kaushalpanjee.core.di
 
+import LoggingInterceptor
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
@@ -19,6 +20,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
 import okhttp3.Cache
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -28,6 +30,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -121,24 +128,91 @@ object AppModule {
     ): OkHttpClient {
         val cacheSize = (5 * 1024 * 1024).toLong()
         val myCache = Cache(context.cacheDir, cacheSize)
+
+      /*  val certificatePinner = CertificatePinner.Builder()
+            .add(
+                "kaushal.rural.gov.in",
+                BuildConfig.SSL_PIN_1
+            )
+            .add(
+                "kaushal.rural.gov.in",
+                BuildConfig.SSL_PIN_2
+            ).build()*/
+
         return OkHttpClient.Builder().apply {
+           // certificatePinner(certificatePinner)
             cache(myCache)
             connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
             writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
             readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
-            if (BuildConfig.DEBUG) {
-                //addNetworkInterceptor(ChuckerInterceptor(context))
-                val logging = HttpLoggingInterceptor { message ->
-                    Log.d("API_LOG---->", message)
-                }.apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-                addNetworkInterceptor(logging)
-            }
+            addInterceptor(LoggingInterceptor())
             addInterceptor(CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context))
             authenticator?.let { authenticator(it) }
         }.build()
     }
+
+
+  /*  private fun getRetrofitClient(
+        authenticator: Authenticator? = null,
+        userPreferences: UserPreferences,
+        isPostLogin: Boolean = true,
+        isAuthenticationRequired: Boolean = true,
+        context: Context
+    ): OkHttpClient {
+
+        val trustAllCerts = arrayOf<TrustManager>(
+            object : X509TrustManager {
+                override fun checkClientTrusted(
+                    chain: Array<X509Certificate>,
+                    authType: String
+                ) {
+                }
+
+                override fun checkServerTrusted(
+                    chain: Array<X509Certificate>,
+                    authType: String
+                ) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> {
+                    return arrayOf()
+                }
+            }
+        )
+
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(null, trustAllCerts, SecureRandom())
+
+        val sslSocketFactory = sslContext.socketFactory
+
+        return OkHttpClient.Builder().apply {
+
+            sslSocketFactory(
+                sslSocketFactory,
+                trustAllCerts[0] as X509TrustManager
+            )
+
+            hostnameVerifier { _, _ -> true }
+
+            connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
+            readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
+
+            addInterceptor(LoggingInterceptor())
+
+            addInterceptor(
+                CustomInterceptor(
+                    isPostLogin,
+                    userPreferences,
+                    isAuthenticationRequired,
+                    context
+                )
+            )
+
+            authenticator?.let { authenticator(it) }
+
+        }.build()
+    }*/
 
 
     @Provides

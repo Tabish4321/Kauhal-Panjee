@@ -257,5 +257,13 @@
     <string name="pmkvy_8">ਟ੍ਰੇਨਿੰਗ ਵਿੱਚ ਸੌਫਟ ਸਕਿਲਜ਼, ਡਿਜ਼ਿਟਲ ਸਾਖਰਤਾ ਅਤੇ ਵਿੱਤੀ ਸਾਖਰਤਾ ਸ਼ਾਮਲ ਹੈ, ਜੋ ਕੁੱਲ ਰੋਜ਼ਗਾਰ ਯੋਗਤਾ ਨੂੰ ਵਧਾਉਂਦਾ ਹੈ।</string>
     <string name="pmkvy_9">ਇਹ ਯੋਜਨਾ ਖਾਸ ਤੌਰ ’ਤੇ ਨੌਜਵਾਨਾਂ, ਮਹਿਲਾਵਾਂ, ਐਸਸੀ/ਐਸਟ (ਸ਼ੈਡਿਊਲ ਕਾਸਟ/ਸ਼ੈਡਿਊਲ ਟ੍ਰਾਈਬ) ਸਮੂਹਾਂ, ਘੱਟ ਗਿਣਤੀ ਅਤੇ ਵਿਸ਼ੇਸ਼ ਯੋਗਤਾ ਵਾਲੇ ਵਿਅਕਤੀਆਂ ’ਤੇ ਧਿਆਨ ਕੇਂਦਰਿਤ ਕਰਦੀ ਹੈ।</string>
     <string name="pmkvy_10">ਕੌਸ਼ਲ ਵਿਕਾਸ ਨੂੰ ਉਦਯੋਗ ਦੀਆਂ ਲੋੜਾਂ ਨਾਲ ਜੋੜਿਆ ਗਿਆ ਹੈ, ਜਿਸ ਨਾਲ ਤਨਖਾਹ ਵਾਲੀਆਂ ਨੌਕਰੀਆਂ ਅਤੇ ਸਵੈ-ਰੋਜ਼ਗਾਰ ਦੇ ਮੌਕੇ ਵਧਦੇ ਹਨ।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>
