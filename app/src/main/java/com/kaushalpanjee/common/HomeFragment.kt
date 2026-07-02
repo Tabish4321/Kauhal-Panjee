@@ -190,6 +190,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var antoyadaImage = ""
     private var selectedCategoryItem = ""
     private var selectedMaritalItem = ""
+    private var selectedPwdTypeItem = ""
     private var selectedHighestEducationItem = ""
     private var selectedSchemeItem = ""
     private var selectedHighestEducationItemNew = ""
@@ -332,6 +333,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private lateinit var categoryAdapter: ArrayAdapter<String>
     private lateinit var maritalAdapter: ArrayAdapter<String>
+    private lateinit var pwdTypeAdapter: ArrayAdapter<String>
     private lateinit var highestEducationAdapter: ArrayAdapter<String>
     private lateinit var highestEducationAdapterNew: ArrayAdapter<String>
     private lateinit var schemeListAdapter: ArrayAdapter<String>
@@ -493,20 +495,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     private val maritalList = listOf("Married", "Unmarried", "Divorce")
+    private val pwdTypeList = listOf("Physically Handicapped", "Visual/Hearing Impaired", "Mentally Disability")
     private val highestEducationList =
         mutableListOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
-    private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
 
     private val highestEducationListNew = listOf("Schooling", "Diploma", "Graduation", "Post Graduation")
 
     private var schemesList: MutableList<String> = mutableListOf()
     private var sectorList = ArrayList<String>()
     private var sectorCode = ArrayList<String>()
-    private var tradeName = ArrayList<String>()
-    private var tradeCode = ArrayList<String>()
 
-    private var selectedSectorIndices: MutableList<Int> = mutableListOf()
-    private var selectedTradeIndices: MutableList<Int> = mutableListOf()
     private val searchQuery = MutableLiveData<String>()
 
     private val tradeNameList = mutableListOf<String>()
@@ -863,13 +861,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSetionAndPerResponse()
 
         commonViewModel.getStateListApi()
-        commonViewModel.getSectorListAPI(
+   /*     commonViewModel.getSectorListAPI(
             SectorRequest(
                 BuildConfig.VERSION_NAME,
                 userPreferences.getUseID()
             ), AppUtil.getSavedTokenPreference(requireContext())
         )
-
+*/
 
 
     }
@@ -1225,6 +1223,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.SpinnerMarital.setAdapter(maritalAdapter)
 
 
+
+
+
+
+        pwdTypeAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            pwdTypeList
+        )
+
+        binding.SpinnerPwdType.setAdapter(pwdTypeAdapter)
+
+
+
+
         gpPresentAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
@@ -1565,8 +1578,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     maritalList
                                 )
 
+                                if (x.isDisablity == "Yes")
+                                {
+                                    binding.tvPwdType.visible()
+                                    binding.llPwdType.visible()
+                                }
 
-                                //  binding.SpinnerMarital.setText(x.maritalStatus)
+                                setDropdownValue(
+                                    binding.SpinnerPwdType,
+                                    x.disabilityType?:"N/A",
+                                    pwdTypeList
+                                )
+
                                 binding.etShgValidate.setText(x.shgNo)
 
                                 val minorityStatusn = x.isMinority
@@ -1641,6 +1664,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 drivingLicenceNumber = x.dlNo
                                 selectedCategoryItem = x.castCategory
                                 selectedMaritalItem = x.maritalStatus
+                                selectedPwdTypeItem = x.disabilityType?:"N/A"
                                 minorityStatus = x.isMinority
                                 pwdStatus = x.isDisablity
                                 nregaStatus = x.isNarega
@@ -2568,6 +2592,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.SpinnerMarital.setOnItemClickListener { parent, view, position, id ->
             selectedMaritalItem = parent.getItemAtPosition(position).toString()
+
+
+        }
+
+
+        // pwdType selection
+
+        binding.SpinnerPwdType.setOnItemClickListener { parent, view, position, id ->
+            selectedPwdTypeItem = parent.getItemAtPosition(position).toString()
 
 
         }
@@ -4138,6 +4171,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             pwdStatus = "Yes"
             binding.pwdImageUpload.visible()
+            binding.llPwdType.visible()
+            binding.tvPwdType.visible()
 
 
         }
@@ -4149,6 +4184,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             pwdStatus = "No"
 
             binding.pwdImageUpload.gone()
+            binding.llPwdType.gone()
+            binding.tvPwdType.gone()
 
 
         }
@@ -4920,10 +4957,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnjobcardnoValidate.setOnClickListener {
 
-            val username = HashUtils.sha512("Nrega")
-            val password = HashUtils.sha512("Nrg2k18")
+          //  val username = HashUtils.sha512("Nrega")
+          //  val password = HashUtils.sha512("Nrg2k18")
+            val username = HashUtils.sha512("GRAMG")
+            val password = HashUtils.sha512("GRAMG@2026")
             jobCardNo = binding.etNregaValidate.text.toString()
-            val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
+          //  val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
+            val fullUrl = "https://vbgramgweb4.dord.gov.in/GRAMG_webAPI/api/checkjobcard"
 
             if (jobCardNo.isNotEmpty()) {
 
@@ -5258,7 +5298,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         pipImage,
                         pmayStatus,
                         pmaygImage,
-                        shgImage
+                        shgImage,
+                        selectedPwdTypeItem
                     ), AppUtil.getSavedTokenPreference(requireContext())
                 )
 
@@ -5268,7 +5309,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         }
-
 
         // External Validation
 
@@ -6718,7 +6758,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
     private fun collectBankResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getBankDetailsAPI) {
@@ -6892,55 +6931,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-    @SuppressLint("SuspiciousIndentation")
-    private fun collectSectorResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { getSectorList ->
-                            if (getSectorList.responseCode == 200) {
-                                val sectorList1 = getSectorList.wrappedList
-
-                                sectorCode.clear()
-                                sectorList.clear()
-                                for (x in sectorList1) {
-                                    sectorList.add(x.sectorName)
-                                    sectorCode.add(x.sectorId)
-
-                                }
-
-
-                            } else if (getSectorList.responseCode == 301) {
-                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
-                            } else if (getSectorList.responseCode == 302) {
-                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
-                            } else if (getSectorList.responseCode == 401) {
-                                AppUtil.showSessionExpiredDialog(
-                                    findNavController(),
-                                    requireContext()
-                                )
-                            } else {
-                                showSnackBar("Something went wrong")
-                            }
-                        } ?: showSnackBar("Internal Server Error")
-                    }
-                }
-            }
-        }
-    }
-
-
-
 
     private fun setDropdownValue(
         autoCompleteTextView: AutoCompleteTextView,
@@ -6989,7 +6979,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     private fun checkAndRequestPermissionsForEveryPurpose(purpose: String) {
         currentRequestPurpose = purpose
@@ -7072,7 +7061,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
     // Select Image from Gallery
     private fun openGalleryForDocument(purpose: String) {
         val intent = Intent(Intent.ACTION_PICK)
@@ -7110,7 +7098,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     private fun handleImageSelection(uri: Uri?, fileName: String?) {
         val base64Image = uri?.let { compressAndConvertImageToBase64(it) } ?: ""
@@ -7297,7 +7284,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
     }
 
-
     // Convert PDF to Base64
     private fun convertPdfToBase64(pdfUri: Uri): String {
         val inputStream = requireContext().contentResolver.openInputStream(pdfUri)
@@ -7357,7 +7343,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     }
-
 
     // This map will hold the checkbox states, ensuring persistent selection across dialog opens
     private val selectedLanguageStates = mutableMapOf<String, MutableMap<String, Boolean>>()
@@ -7442,7 +7427,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         dialog.show()
     }
 
-
     private fun showYesNoDialog(
         context: Context,
         title: String,
@@ -7476,7 +7460,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         val dialog = builder.create()
         dialog.show()
     }
-
 
     object HashUtils {
         fun sha512(input: String): String {
@@ -7947,7 +7930,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
     private fun collectUpdateEmailResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getUpdateEmailAPI) {
@@ -7998,7 +7980,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     @SuppressLint("SuspiciousIndentation")
     private fun collectUlbResponse() {
@@ -8144,9 +8125,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
-
-
     private fun collectInsertConsentResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.insertBankConsent) {
@@ -8179,15 +8157,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
-
-
     private fun getMissingFields(fields: Map<String, String>): List<String> {
         return fields.filter { it.value.isBlank() }.map { it.key }
     }
-
-
-
 
     private fun showConsentDialog(
         userId: String,
@@ -8344,8 +8316,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     requireContext()
                                 )
 
-                            } else {
-                                showSnackBar(getAebasDetails.responseMsg)
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }

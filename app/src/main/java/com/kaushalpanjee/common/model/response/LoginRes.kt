@@ -5,6 +5,6 @@ data class LoginRes(
     val responseCode: Int,
     val responseDesc: String,
     val responseMsg: String,
-    val appCode: String
+    val accessToken: String
 )
 

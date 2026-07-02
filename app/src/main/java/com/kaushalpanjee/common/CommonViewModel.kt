@@ -186,9 +186,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getToken = _getToken.asSharedFlow()
 
 
-    fun getToken(imeiNo:String , appVersion:String){
+    fun getToken(imeiNo:String , appVersion:String,loginId :String){
         viewModelScope.launch {
-            commonRepository.getToken(imeiNo,appVersion).collectLatest {
+            commonRepository.getToken(imeiNo,appVersion,loginId).collectLatest {
                 _getToken.emit(it)
             }
         }
@@ -623,11 +623,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isPiaCalled = _isPiaCalled
 
 
-    fun getPiaOrgList(piaListReq: PiaListReq) {
+    fun getPiaOrgList(piaListReq: PiaListReq,header :String) {
         _isPiaCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getPiaOrgList(piaListReq)
+            commonRepository.getPiaOrgList(piaListReq,header)
                 .collectLatest {
                     _getPiaOrgList.value = it
                 }
@@ -653,11 +653,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isPiaTrainingCalled = _isPiaTrainingCalled
 
 
-    fun getPiaTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq) {
+    fun getPiaTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq,header :String) {
         _isPiaCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getTrainingList(piaTrainingCenterReq)
+            commonRepository.getTrainingList(piaTrainingCenterReq,header)
                 .collectLatest {
                     _getTrainingList.value = it
                 }
@@ -676,11 +676,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isPiaTradeCalled = _isPiaTradeCalled
 
 
-    fun getPiaTradeList(piaTradeReq: PiaTradeReq) {
+    fun getPiaTradeList(piaTradeReq: PiaTradeReq,header :String) {
         _isPiaTradeCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getTradeList(piaTradeReq)
+            commonRepository.getTradeList(piaTradeReq,header)
                 .collectLatest {
                     _getTradeList.value = it
                 }
@@ -698,11 +698,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val getInstituteList = _getInstituteList
 
 
-    fun getInstituteList(orgInstituteReq: OrgInstituteReq) {
+    fun getInstituteList(orgInstituteReq: OrgInstituteReq,header :String) {
         _isInstituteCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getInstituteList(orgInstituteReq)
+            commonRepository.getInstituteList(orgInstituteReq,header)
                 .collectLatest {
                     _getInstituteList.value = it
                 }
@@ -722,11 +722,11 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     val isInstituteCourseCalled = _isInstituteCourseCalled
 
 
-    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq) {
+    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq,header :String) {
         _isInstituteCourseCalled.value = true   // mark API started
 
         viewModelScope.launch {
-            commonRepository.getInstituteCourseList(instituteCourseReq)
+            commonRepository.getInstituteCourseList(instituteCourseReq,header)
                 .collectLatest {
                     _getInstituteCourseList.value = it
                 }
@@ -830,9 +830,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private  var _updateFaceApi =  MutableStateFlow<Resource<out FaceResponse>>(Resource.Loading())
     val updateFaceApi = _updateFaceApi.asSharedFlow()
 
-    fun updateFaceApi(faceCheckReq: FaceCheckReq){
+    fun updateFaceApi(faceCheckReq: FaceCheckReq,header :String){
         viewModelScope.launch {
-            commonRepository.updateFaceApi(faceCheckReq).collectLatest {
+            commonRepository.updateFaceApi(faceCheckReq,header).collectLatest {
                 _updateFaceApi.emit(it)
             }
         }
@@ -1218,7 +1218,8 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     fun updateNotificationStatus(
         notificationId: String,
-        status: String
+        status: String,
+        header :String
     ) {
         val currentList =
             (_notificationList.value as? Resource.Success)?.data ?: return
@@ -1240,7 +1241,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         viewModelScope.launch {
             _actionLoading.value = notificationId
             val result = commonRepository
-                .invitationApprove(request)
+                .invitationApprove(request,header)
                 .first { it !is Resource.Loading }
 
             when (result) {

@@ -33,6 +33,7 @@ val isPip: String,
 val pipCert: String,
 val isPmayg: String,
 val pmaygAttachment: String,
-val shgImage: String
+val shgImage: String,
+val disabilityType: String
 
 )

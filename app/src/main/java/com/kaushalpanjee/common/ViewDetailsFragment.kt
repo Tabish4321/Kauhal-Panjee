@@ -98,6 +98,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var pmaygImage=  ""
     private var pipImage=  ""
     private var dlImage=  ""
+    private var pwdType=  ""
     private var categoryImage=  ""
     private var minorityImage =  ""
     private var pwdImage =  ""
@@ -629,6 +630,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                                  dlImage = x.dlImagePath
 
+
                                                  nregaImage = x.naregaCardPath
                                                  shgImage = x.shgImage
 
@@ -658,6 +660,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 binding.etdrivingId.setText(x.dlNo)
                                                 binding.llCategory.setText(x.castCategory)
                                                 binding.llMarital.setText(x.maritalStatus)
+                                                binding.llPwdType.setText(x.disabilityType)
                                                 binding.etShgValidate.setText(x.shgNo)
 
                                                 val minorityStatus = x.isMinority

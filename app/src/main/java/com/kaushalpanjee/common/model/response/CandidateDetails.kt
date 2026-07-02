@@ -47,8 +47,9 @@ data class PersonalDetail(
     val voterId: String,
     val guardianMobilNo: String,
     val isDisablity: String,
-    val maritalStatus: String
-)
+    val disabilityType: String?,
+    val maritalStatus: String,
+    )
 
 data class Address(
     val residenceCertPath: String,

@@ -89,7 +89,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                 if (status == "success") {
 
-                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()))
+                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectFaceUpdateResponse()
 
@@ -575,7 +575,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                             .setPopUpTo(R.id.mainHomePage, true)
                                             .build()
                                     )
-                                    toastLong(logoutResponse.responseMsg)
+                                    toastLong(logoutResponse.responseDesc)
                                 }
                                 301 -> {
 

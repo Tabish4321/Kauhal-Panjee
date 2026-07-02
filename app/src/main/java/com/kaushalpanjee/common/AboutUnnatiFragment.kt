@@ -4,27 +4,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.UnnatiRequest
 import com.kaushalpanjee.core.basecomponent.BaseFragment
-import com.kaushalpanjee.core.util.AESCryptography
-import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
-import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.FragmentAboutUnnatiBinding
 import com.kaushalpanjee.model.Scheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlin.getValue
+
 
 @AndroidEntryPoint
 class AboutUnnatiFragment :
     BaseFragment<FragmentAboutUnnatiBinding>(FragmentAboutUnnatiBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by activityViewModels()
+    private lateinit var schemeAdapter: SchemeAdapter
 
     var ddugky : String? = ""
     var rseti : String? = ""
@@ -32,13 +30,12 @@ class AboutUnnatiFragment :
     var pmvishwakarma : String? = ""
     var pmkvy : String? = ""
 
-    private val schemeAdapter: SchemeAdapter by lazy {
-        SchemeAdapter(getUnnatiSchemes())
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        commonViewModel.getUnnati(UnnatiRequest(AppUtil.getSavedLanguagePreference(requireContext())))
+        collectUnnatiData()
+        listeners()
     }
 
     override fun onStop() {
@@ -46,17 +43,7 @@ class AboutUnnatiFragment :
         schemeAdapter.releaseAllPlayers()
     }
 
-    private fun init() {
-        // Retrieve arguments
-         ddugky = arguments?.getString("ddugky")
-         rseti = arguments?.getString("rseti")
-         nrlm = arguments?.getString("nrlm")
-        pmvishwakarma = arguments?.getString("pmvishwakarma")
-        pmkvy = arguments?.getString("pmkvy")
-        binding.rvScheme.adapter = schemeAdapter
 
-        listeners()
-    }
 
     private fun listeners() {
         binding.progressBackButton.setOnClickListener {
@@ -122,4 +109,33 @@ class AboutUnnatiFragment :
 
         )
     }
+    private fun collectUnnatiData() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getUnnati) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                    }
+                    is Resource.Success -> {
+                        hideProgressBar()
+
+                        it.data.let { response ->
+
+                            ddugky = response?.data?.DDUGKY
+                            rseti = response?.data?.RSETI
+                            nrlm = response?.data?.NRLM
+                            pmvishwakarma = response?.data?.PM_VISHWAKARMA
+                            pmkvy = response?.data?.PMKVY
+                            schemeAdapter = SchemeAdapter(getUnnatiSchemes())
+                            binding.rvScheme.adapter = schemeAdapter
+
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
 }

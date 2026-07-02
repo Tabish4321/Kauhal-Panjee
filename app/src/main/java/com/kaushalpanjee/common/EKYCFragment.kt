@@ -198,8 +198,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
 
         listener()
-        commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME)
-        collectTokenResponse()
+     /* commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME,userPreferences.getUseID())
+        collectTokenResponse()*/
         setUI()
         collectStateResponse()
         collectAadharResponse()
@@ -301,7 +301,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
             clickCount++
 
-            if (clickCount >= 2) {
+            if (clickCount >= 4) {
                 startBlockTimer()
                 return@setOnClickListener
             }
@@ -417,10 +417,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
     }
-
-
-
-
 
     private fun speakOut(text: String) {
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
@@ -752,6 +748,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(
                                     uidaiData.PostOnAUA_Face_authResult
                                 )
+                               // toastShort("Hit trans 1.")
 
                                 commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
                                 }
@@ -766,8 +763,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-                                     // uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+                                  //    uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
 
+                                   // toastShort("Hit trans 2.")
                                     commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
 
                                     if (kycResp.isSuccess) {
@@ -841,6 +839,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
                                             if (selectedStateCode!=""){
+
+                                             //   toastShort("Hit Create.")
 
                                                 commonViewModel.getCreateUserAPI(UserCreationReq(
                                                     encryptedAadhaarString,
@@ -1123,7 +1123,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 for (x in getUserCreationRes.wrappedList) {
                                     userPreferences.updateUserId(null)
                                     userPreferences.updateUserId(x.userId)
-                                    tokenViaCreate= x.appCode
+                                    AppUtil.saveTokenPreference(requireContext(),"Bearer "+x.appCode)
+
 
                                 }
                                 userPhotoUIADI?.let { it1 -> showBottomSheet(it1, name, gender, dob, careOf) }
@@ -1185,44 +1186,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                 checksum = multiplicationTable[checksum][permutationTable[index % 8][char - '0']]
             }
             return checksum == 0
-        }
-    }
-    private fun collectTokenResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getToken) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { getToken ->
-                            when (getToken.responseCode) {
-                                200 -> {
-
-                                    AppUtil.saveTokenPreference(requireContext(),"Bearer "+getToken.authToken)
-
-
-                                }
-
-
-                                301-> {
-                                    showSnackBar("Please Update from PlayStore")
-
-                                }
-                                else -> {
-                                    showSnackBar("Something went wrong")
-                                }
-                            }
-                        } ?: showSnackBar("Internal Server Error")
-                    }
-                }
-            }
         }
     }
 
@@ -1298,6 +1261,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                         it.data?.let { insertPersResponse ->
                             when (insertPersResponse.responseCode) {
                                 200 -> {
+
+
 
                                     showSnackBar(insertPersResponse.responseMsg)
 

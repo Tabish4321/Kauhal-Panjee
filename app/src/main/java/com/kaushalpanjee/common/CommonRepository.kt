@@ -132,9 +132,9 @@ class CommonRepository @Inject constructor(
     private val database: AppDatabase
     ){
 
-    suspend fun getToken(imeiNo : String, appVersion :String): Flow<Resource<out TokenRes>> {
+    suspend fun getToken(imeiNo : String, appVersion :String ,loginId :String): Flow<Resource<out TokenRes>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getToken(TokenReq(appVersion,imeiNo))
+            appLevelApi.getToken(TokenReq(appVersion,imeiNo,loginId))
         }
     }
 
@@ -388,10 +388,10 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun updateFaceApi(faceCheckReq: FaceCheckReq): Flow<Resource<out FaceResponse>>{
+    suspend fun updateFaceApi(faceCheckReq: FaceCheckReq,header :String): Flow<Resource<out FaceResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.updateFaceApi(faceCheckReq)
+            appLevelApi.updateFaceApi(header,faceCheckReq)
         }
     }
 
@@ -555,38 +555,38 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    fun getPiaOrgList(piaListReq: PiaListReq): Flow<Resource<out PiaListResponse>> {
+    fun getPiaOrgList(piaListReq: PiaListReq,header :String): Flow<Resource<out PiaListResponse>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getPiaOrgList(piaListReq)
+            appLevelApi.getPiaOrgList(header,piaListReq)
         }
     }
 
 
-    fun getTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq): Flow<Resource<out PiaTrainingCenterRes>> {
+    fun getTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq,header :String): Flow<Resource<out PiaTrainingCenterRes>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getTrainingList(piaTrainingCenterReq)
+            appLevelApi.getTrainingList(header,piaTrainingCenterReq)
         }
     }
 
 
 
-    fun getTradeList(piaTradeReq: PiaTradeReq): Flow<Resource<out PiaTrainingRes>> {
+    fun getTradeList(piaTradeReq: PiaTradeReq,header :String): Flow<Resource<out PiaTrainingRes>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getTrainingList(piaTradeReq)
+            appLevelApi.getTrainingList(header,piaTradeReq)
         }
     }
 
 
-    fun getInstituteList(orgInstituteReq: OrgInstituteReq): Flow<Resource<out OrgInstituteRes>> {
+    fun getInstituteList(orgInstituteReq: OrgInstituteReq,header :String): Flow<Resource<out OrgInstituteRes>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getInstituteList(orgInstituteReq)
+            appLevelApi.getInstituteList(header,orgInstituteReq)
         }
     }
 
 
-    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq): Flow<Resource<out InstituteCourseRes>> {
+    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq,header :String): Flow<Resource<out InstituteCourseRes>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getInstituteCourseList(instituteCourseReq)
+            appLevelApi.getInstituteCourseList(header,instituteCourseReq)
         }
     }
 
@@ -630,9 +630,9 @@ class CommonRepository @Inject constructor(
     }
 
 
-    suspend fun invitationApprove(invitation : InvitationApprovalRequest): Flow<Resource<out ResponseBody>> {
+    suspend fun invitationApprove(invitation : InvitationApprovalRequest,header :String): Flow<Resource<out ResponseBody>> {
         return networkBoundResourceWithoutDbn {
-            appLevelApi.invitationApproved(invitation)
+            appLevelApi.invitationApproved(header,invitation)
         }
     }
 

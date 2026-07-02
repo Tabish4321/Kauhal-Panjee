@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.kaushalpanjee.common.CommonViewModel
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.notification.with_api.NotificationStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,8 +63,8 @@ fun NotificationListScreenN(
             modifier = Modifier.padding(padding),
             state = notificationState,
             onLoadMore = { commonViewModel.loadNotifications(loadMore = true) },
-            onApprove = { commonViewModel.updateNotificationStatus(it,status= "APPROVED") },
-            onDisapprove = { commonViewModel.updateNotificationStatus(it,status= "REJECTED") }
+            onApprove = { commonViewModel.updateNotificationStatus(it,status= "APPROVED",AppUtil.getSavedTokenPreference(context)) },
+            onDisapprove = { commonViewModel.updateNotificationStatus(it,status= "REJECTED",AppUtil.getSavedTokenPreference(context)) }
         )
     }
 }

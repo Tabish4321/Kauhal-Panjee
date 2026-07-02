@@ -133,6 +133,18 @@ import retrofit2.http.Headers
 
 interface AppLevelApi {
 
+
+    @POST(ApiConstant.API_LOGIN)
+    suspend fun getLoginAPI(@Body loginReq: LoginReq):LoginRes
+
+
+    @POST(ApiConstant.API_CREATE_USER)
+    suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
+
+    @POST(ApiConstant.API_STATE)
+    suspend fun getStateListAPI(
+        @Body stateListReq: StateListReq):StateDataResponse
+
     @POST(ApiConstant.GET_TOKEN_GENERATE)
     suspend fun getToken(@Body tokenReq: TokenReq):TokenRes
 
@@ -149,6 +161,78 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_EMAIL_OTP)
     suspend fun sendEmailTP(@Body sendOtpEmailReq: SendOtpEmailReq):SendMobileOTPResponse
+
+
+    @POST(ApiConstant.API_UNNATI)
+    suspend fun getUnnati(@Body languageString: UnnatiRequest): Unnati
+
+    @POST(ApiConstant.Forgot_PASSWORD_OTP)
+    suspend fun getChangePassOtp(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):ForgotIdOtpRes
+
+
+
+    @POST(ApiConstant.GET_LOGINID_PASS)
+    suspend fun getLoginIdPass(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):InsertRes
+
+
+    @POST(ApiConstant.LANGUAGE_LIST)
+    suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
+
+    @POST(ApiConstant.API_OTP_VALIDATE)
+    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq): OtpValidateResponse
+
+    @POST(ApiConstant.API_OTP_checkUserExistance)
+    suspend fun getAadhaarCheck(@Body aadhaarCheckReq: AadhaarCheckReq):AadhaarCheckRes
+
+
+
+    @POST(ApiConstant.API_PIA_LIST)
+    suspend fun getPiaOrgList(@Header("Authorization") token: String,
+                              @Body piaListReq: PiaListReq): PiaListResponse
+
+
+
+    @POST(ApiConstant.API_PIA_TRAINING_CENTER)
+    suspend fun getTrainingList(@Header("Authorization") token: String,
+                                @Body piaTrainingCenterReq: PiaTrainingCenterReq): PiaTrainingCenterRes
+
+
+
+
+    @POST(ApiConstant.API_PIA_TRADE)
+    suspend fun getTrainingList(@Header("Authorization") token: String,
+                                @Body piaTradeReq: PiaTradeReq): PiaTrainingRes
+
+
+
+
+    @POST(ApiConstant.API_INSTITUTE)
+    suspend fun getInstituteList(@Header("Authorization") token: String,
+                                 @Body orgInstituteReq: OrgInstituteReq): OrgInstituteRes
+
+
+    @POST(ApiConstant.API_INSTITUTE_COURSE)
+    suspend fun getInstituteCourseList(@Header("Authorization") token: String,
+                                       @Body instituteCourseReq: InstituteCourseReq): InstituteCourseRes
+
+
+    @GET(API_NOTIFICATION)
+    suspend fun getNotifications(
+        @Query("candidateId") candidateId: String,
+        @Query("page") page
+        : Int,
+        @Query("size") size: Int
+    ): NotificationListResponse
+
+    @POST(API_APPROVECONDIDATE)
+    suspend fun invitationApproved(@Header("Authorization") token: String,
+                                   @Body invitation: InvitationApprovalRequest): ResponseBody
+
+
+    @POST(ApiConstant.API_INSERT_AADHAAR_TXN)
+    suspend fun insertAadhaarTxn(@Body insertAadhaarTxnReq: InsertAadhaarTxnReq): InsertRes
+
+
 
 
     @POST(ApiConstant.API_TECH_EDUCATION)
@@ -177,9 +261,7 @@ interface AppLevelApi {
 
                                         @Body stateListReq: StateListReq ):WhereHaveYouHeardRes
 
-    @POST(ApiConstant.API_STATE)
-    suspend fun getStateListAPI(
-                                @Body stateListReq: StateListReq):StateDataResponse
+
 
     @POST(ApiConstant.API_DISTRICT)
     suspend fun getDistrictListAPI(@Header("Authorization") token: String,
@@ -190,8 +272,7 @@ interface AppLevelApi {
                                       @Body districtReq: DistrictReq):DistrictResponse
 
 
-    @POST(ApiConstant.API_CREATE_USER)
-    suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
+
 
 
 
@@ -294,9 +375,6 @@ interface AppLevelApi {
 
 
 
-    @POST(ApiConstant.API_LOGIN)
-    suspend fun getLoginAPI(@Body loginReq: LoginReq):LoginRes
-
 
 
 
@@ -349,30 +427,11 @@ interface AppLevelApi {
     suspend fun getLogout(@Header("Authorization") token: String,
                           @Body logoutRequest: LogoutRequest): LogoutResponse
 
-    @POST(ApiConstant.API_UNNATI)
-    suspend fun getUnnati(@Body languageString: UnnatiRequest): Unnati
-
-    @POST(ApiConstant.Forgot_PASSWORD_OTP)
-    suspend fun getChangePassOtp(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):ForgotIdOtpRes
-
-
-
-    @POST(ApiConstant.GET_LOGINID_PASS)
-    suspend fun getLoginIdPass(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):InsertRes
-
-
-    @POST(ApiConstant.LANGUAGE_LIST)
-    suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
-
-    @POST(ApiConstant.API_OTP_VALIDATE)
-    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq): OtpValidateResponse
-
-    @POST(ApiConstant.API_OTP_checkUserExistance)
-    suspend fun getAadhaarCheck(@Body aadhaarCheckReq: AadhaarCheckReq):AadhaarCheckRes
 
 
     @POST(ApiConstant.API_UPDATE_FACE)
-    suspend fun updateFaceApi(@Body faceCheckReq: FaceCheckReq):FaceResponse
+    suspend fun updateFaceApi(@Header("Authorization") token: String,
+                              @Body faceCheckReq: FaceCheckReq):FaceResponse
 
     @POST(ApiConstant.API_UPDATE_Aadhaar)
     suspend fun aadhaarRekycApi(@Header("Authorization") token: String,
@@ -415,32 +474,6 @@ interface AppLevelApi {
 
 
 
-    @POST(ApiConstant.API_PIA_LIST)
-    suspend fun getPiaOrgList(@Body piaListReq: PiaListReq): PiaListResponse
-
-
-
-    @POST(ApiConstant.API_PIA_TRAINING_CENTER)
-    suspend fun getTrainingList(@Body piaTrainingCenterReq: PiaTrainingCenterReq): PiaTrainingCenterRes
-
-
-
-
-    @POST(ApiConstant.API_PIA_TRADE)
-    suspend fun getTrainingList(@Body piaTradeReq: PiaTradeReq): PiaTrainingRes
-
-
-
-
-    @POST(ApiConstant.API_INSTITUTE)
-    suspend fun getInstituteList(@Body orgInstituteReq: OrgInstituteReq): OrgInstituteRes
-
-
-    @POST(ApiConstant.API_INSTITUTE_COURSE)
-    suspend fun getInstituteCourseList(@Body instituteCourseReq: InstituteCourseReq): InstituteCourseRes
-
-
-
 
     @POST(ApiConstant.API_INSERT_OJT_ATTENDANCE)
     suspend fun insertOjtAttendance( @Header("Authorization") token: String,
@@ -460,20 +493,6 @@ interface AppLevelApi {
             @Query("size") size: Int
         ): NotificationListResponse*/
 
-    @GET(API_NOTIFICATION)
-    suspend fun getNotifications(
-        @Query("candidateId") candidateId: String,
-        @Query("page") page
-        : Int,
-        @Query("size") size: Int
-    ): NotificationListResponse
-
-    @POST(API_APPROVECONDIDATE)
-    suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
-
-
-    @POST(ApiConstant.API_INSERT_AADHAAR_TXN)
-    suspend fun insertAadhaarTxn(@Body insertAadhaarTxnReq: InsertAadhaarTxnReq): InsertRes
 
     @POST(API_GET_BANKLIST)
     suspend fun getBankListAPI(

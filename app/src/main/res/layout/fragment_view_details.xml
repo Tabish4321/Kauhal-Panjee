@@ -514,6 +514,34 @@
                         android:background="@drawable/card_background"
                         android:layout_margin="8dp" />
                 </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/tvPwdType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PWD Type"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llpwd"/>
+
+
+                <TextView
+                    style="@style/EditText"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="@dimen/dp_3"
+                    android:hint="PWD Type"
+                    android:id="@+id/llPwdType"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPwdType"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -526,7 +554,7 @@
                     android:textSize="@dimen/sp_20"
                     android:id="@+id/pwdImageUpload"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llpwd"/>
+                    app:layout_constraintTop_toBottomOf="@+id/llPwdType"/>
 
 
                 <LinearLayout
