@@ -1,5 +1,6 @@
 package com.kaushalpanjee.core.data.remote
 
+import com.example.myapplication.CBT.api.QuestionSet
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -28,6 +29,7 @@ import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
@@ -523,6 +525,12 @@ interface AppLevelApi {
     @POST(ApiConstant.API_CANDIDATE_AEBAS_DETAIL)
     suspend fun getAebasDetails( @Header("Authorization") token: String,
                                    @Body aebasReq: AebasReq  ) : AebasRes
+
+
+    @POST(ApiConstant.CBTGETQUESTION)
+    suspend fun getCBTGETQUESTION( @Header("Authorization") token: String,
+                                 @Body cbtquestionReq: CbtQuestionsReq) : QuestionSet
+
 
 
 }

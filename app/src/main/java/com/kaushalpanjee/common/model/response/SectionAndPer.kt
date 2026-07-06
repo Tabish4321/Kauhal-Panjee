@@ -25,6 +25,7 @@ data class StatusItem(
     val stateLgdCode: String,
     val schemeType: String,
     val stateCode: String,
-    val ojtFlag: String
+    val ojtFlag: String,
+    val cbtExam: String
 
 )

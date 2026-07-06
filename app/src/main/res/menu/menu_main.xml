@@ -14,7 +14,15 @@
         android:icon="@drawable/rekyc"
         android:title="@string/re_kyc" />
 
+    <item android:id="@+id/cbt"
+        android:icon="@drawable/cbt_icon"
+        android:title="@string/cbt_exam" />
     <item android:id="@+id/logout"
         android:icon="@drawable/baseline_logout_24"
         android:title="@string/logout" />
+
+
+
+
+
 </menu>
