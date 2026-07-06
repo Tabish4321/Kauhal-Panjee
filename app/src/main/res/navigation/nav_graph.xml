@@ -188,6 +188,15 @@
         <action
             android:id="@+id/action_mainHomePage_to_loanFragment"
             app:destination="@id/loanFragment" />
+
+
+
+        <action
+            android:id="@+id/action_mainHomePage_to_CbtDetailFragment"
+            app:destination="@id/cbtFragment" />
+
+
+
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -286,4 +295,17 @@
         android:id="@+id/submitBankConcent"
         android:name="com.kaushalpanjee.common.SubmitBankConcent"
         android:label="SubmitBankConcent" />
+
+
+
+
+
+
+    <fragment
+        android:id="@+id/cbtFragment"
+        android:name="com.kaushalpanjee.CBT.CbtDetailFragment"
+        android:label="LanguageChangeFragment"
+        tools:layout="@layout/fragment_c_b_t_detail">
+
+    </fragment>
 </navigation>

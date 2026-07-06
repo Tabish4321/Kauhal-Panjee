@@ -834,8 +834,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         commonViewModel.getAebasDetails(AppUtil.getSavedTokenPreference(requireContext()),
             AebasReq(
                 BuildConfig.VERSION_NAME,
-                //userPreferences.getUseID()
-                "2506415871"
+                userPreferences.getUseID()
+//                "2506415871"
             ))
 
        collectAebasDetailsResponse()

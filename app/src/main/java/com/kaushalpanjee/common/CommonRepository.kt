@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common
 
+import com.example.myapplication.CBT.api.QuestionSet
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
@@ -37,6 +38,7 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
@@ -125,6 +127,7 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
+import retrofit2.http.Body
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -678,6 +681,11 @@ class CommonRepository @Inject constructor(
         }
     }
 
+    suspend fun getCBTGETQUESTION(header: String,  cbtquestionReq: CbtQuestionsReq): Flow<Resource<out QuestionSet>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getCBTGETQUESTION(header, cbtquestionReq)
+        }
+    }
 
 
 

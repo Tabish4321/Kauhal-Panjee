@@ -3,6 +3,8 @@ package com.kaushalpanjee.common
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.CBT.api.QuestionSet
+import com.google.gson.Gson
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.StateDataResponse
@@ -33,6 +35,7 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
@@ -1387,5 +1390,117 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
+//    private val _cbtquestion = MutableSharedFlow<Resource<QuestionSet>>()
+//    val cbtquestion = _cbtquestion.asSharedFlow()
+//
+//    fun getCBTGETQUESTION(
+//        header: String,
+//        cbtquestionReq: CbtQuestionsReq
+//    ) {
+//
+//        viewModelScope.launch {
+//
+//            commonRepository
+//                .getCBTGETQUESTION(header, cbtquestionReq)
+//                .collectLatest { result ->
+//
+//                    when (result) {
+//
+//                        is Resource.Loading -> {
+//
+//                            Log.d("CBT_API", "==============================")
+//                            Log.d("CBT_API", "API STATUS : LOADING")
+//                            Log.d("CBT_API", "Request : $cbtquestionReq")
+//                            Log.d("CBT_API", "==============================")
+//
+//                            _cbtquestion.emit(Resource.Loading())
+//                        }
+//
+//                        is Resource.Success -> {
+//
+//                            val data = result.data
+//
+//                            Log.d("CBT_API", "==============================")
+//                            Log.d("CBT_API", "API STATUS : SUCCESS")
+//                            Log.d("CBT_API", "==============================")
+//
+//                            Log.d("CBT_API", "Complete Response : ${Gson().toJson(data)}")
+//
+//                            if (data == null) {
+//
+//                                Log.e("CBT_API", "Response is NULL")
+//
+//                                _cbtquestion.emit(
+//                                    Resource.Error(
+//                                        BaseErrorResponse(
+//                                            code = 500,
+//                                            message = "Response is Null",
+//                                            success = false,
+//                                            data = ""
+//                                        )
+//                                    )
+//                                )
+//
+//                                return@collectLatest
+//                            }
+//
+//                            Log.d("CBT_API", "Exam Id : ${data.exam_id}")
+//                            Log.d("CBT_API", "Candidate Id : ${data.candidate_id}")
+//                            Log.d("CBT_API", "Question Set Id : ${data.question_set_id}")
+//                            Log.d("CBT_API", "Batch Id : ${data.batch_id}")
+//                            Log.d("CBT_API", "Exam Date : ${data.exam_date_time}")
+//                            Log.d("CBT_API", "Total Questions : ${data.question.size}")
+//
+//                            data.question.forEachIndexed { index, question ->
+//
+//                                Log.d(
+//                                    "CBT_API",
+//                                    "Question ${index + 1} : ${question.question_value}"
+//                                )
+//
+//                                question.option.forEach { option ->
+//
+//                                    Log.d(
+//                                        "CBT_API",
+//                                        "Option ${option.option_key} : ${option.option_value}"
+//                                    )
+//                                }
+//                            }
+//
+//                            _cbtquestion.emit(Resource.Success(data))
+//                        }
+//
+//                        is Resource.Error -> {
+//
+//                            Log.e("CBT_API", "Code : ${result.error?.code}")
+//                            Log.e("CBT_API", "Message : ${result.error?.message}")
+//
+//                            _cbtquestion.emit(
+//                                Resource.Error(
+//                                    errorResponse = result.error
+//                                        ?: BaseErrorResponse(
+//                                            code = 500,
+//                                            message = "Unknown Error",
+//                                            success = false,
+//                                            data = ""
+//                                        )
+//                                )
+//                            )
+//                        }
+//                    }
+//                }
+//        }
+//    }
+
+    private val _cbtquestion = MutableSharedFlow<Resource<out QuestionSet>>()
+    val cbtquestion = _cbtquestion.asSharedFlow()
+
+    fun getCBTGETQUESTION( header : String, cbtquestionReq: CbtQuestionsReq) {
+        viewModelScope.launch {
+            commonRepository.getCBTGETQUESTION(header, cbtquestionReq).collectLatest {
+                _cbtquestion.emit(it)
+            }
+        }
+    }
 
 }
