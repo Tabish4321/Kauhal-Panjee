@@ -89,7 +89,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 val message = data?.getStringExtra(AppConstant.Constants.RESULT_MESSAGE) ?: "Unknown error"
 
                 if (status == "success") {
-
                   commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectFaceUpdateResponse()
