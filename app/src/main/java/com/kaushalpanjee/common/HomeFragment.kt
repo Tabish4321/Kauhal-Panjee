@@ -59,6 +59,8 @@ import android.widget.NumberPicker
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -150,8 +152,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var countDownTimer: CountDownTimer? = null
 
     private val REQUEST_CAPTURE_IMAGE = 203
-    private var cameraImageUri: Uri? = null
-
+    private lateinit var cameraImageUri: Uri
 
     //Boolean Values
     private var isPersonalVisible = true
@@ -525,6 +526,47 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+    private val takePicture =
+        registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        ) { success ->
+
+            if (success) {
+
+                val fileName = getFileName(requireContext(), cameraImageUri)
+
+                handleImageSelection(cameraImageUri, fileName)
+            }
+        }
+
+
+
+    private val pickMedia =
+        registerForActivityResult(
+            ActivityResultContracts.PickVisualMedia()
+        ) { uri ->
+
+            uri?.let {
+
+                val fileName = getFileName(requireContext(), it)
+
+                handleImageSelection(it, fileName)
+            }
+        }
+
+
+    private val pickPdf =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocument()
+        ) { uri ->
+
+            uri?.let {
+
+                val fileName = getFileName(requireContext(), it)
+
+                handlePdfSelection(it, fileName)
+            }
+        }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -548,10 +590,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectNregaValidateResponse()
         collectSendEmailOTPResponse()
         collectInsertConsentResponse()
-        bankDetails()
+      //  bankDetails()
         allResponseintrade()
-
-
 
        // collectSectorResponse()
 
@@ -653,6 +693,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun showBankListUI() {
+        bankDetails()
         binding.bankingView.llBankContainer.visible()
         binding.bankingView.btnAddBank.visible()
         binding.bankingView.btnAddBank.text = "Add Bank Details"
@@ -675,8 +716,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.bankingView.llBankAcNo.visible()
         binding.bankingView.llPanNumber.visible()
     }
-
-
 
     private fun setupTradeSearch() {
         binding.searchTradeView.addTextChangedListener(object : TextWatcher {
@@ -834,8 +873,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         commonViewModel.getAebasDetails(AppUtil.getSavedTokenPreference(requireContext()),
             AebasReq(
                 BuildConfig.VERSION_NAME,
-                //userPreferences.getUseID()
-                "2506415871"
+                userPreferences.getUseID()
+              //"2506415871"
             ))
 
        collectAebasDetailsResponse()
@@ -875,9 +914,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     @SuppressLint("SetTextI18n", "CheckResult", "SuspiciousIndentation")
     private fun listener() {
-
-
-
 
 
         binding.spinnerType.setOnItemClickListener { parent, view, position, id ->
@@ -1142,9 +1178,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.profileView.editImageButton.setOnClickListener {
 
-
-            checkAndRequestPermissionsForEveryPurpose("PROFILE_PIC")
-
+            showFileSelectionDialog("PROFILE_PIC")
 
         }
 
@@ -2414,6 +2448,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         //binding.btnBnakingSubmit.visible()
                         showBankFormUI()
 
+/*
                         for (x in userCandidateBankDetailsList) {
 
 
@@ -2456,6 +2491,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             PanNumber = DecpanNo
 
                         }
+*/
 
 
                     },
@@ -5316,54 +5352,65 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         //image Upload
 
         binding.voterIdUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("VOTER_ID")
+            showFileSelectionDialog("VOTER_ID")
+
         }
         binding.nregaJobUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("NREGA_ID")
+            showFileSelectionDialog("NREGA_ID")
+
 
         }
 
         binding.pipdUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("PIP_ID")
+            showFileSelectionDialog("PIP_ID")
 
         }
 
         binding.pmaygUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("Pmayg_ID")
+            showFileSelectionDialog("Pmayg_ID")
+
 
         }
 
         binding.drivingLicenceUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("DRIVING_LICENSE")
+            showFileSelectionDialog("DRIVING_LICENSE")
+
         }
 
         binding.minorityImageUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("MINORITY_CERTIFICATE")
+            showFileSelectionDialog("MINORITY_CERTIFICATE")
+
         }
         binding.categoryCertificateUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("CATEGORY_CERTIFICATE")
+            showFileSelectionDialog("CATEGORY_CERTIFICATE")
+
         }
 
         binding.shgCertificateUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("SHG_CERTIFICATE")
+            showFileSelectionDialog("SHG_CERTIFICATE")
+
         }
 
         binding.pwdImageUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("PWD_CERTIFICATE")
+            showFileSelectionDialog("PWD_CERTIFICATE")
+
         }
 
         binding.antyodayaCardUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("ANTOYADA_CERTIFICATE")
+            showFileSelectionDialog("ANTOYADA_CERTIFICATE")
+
         }
         binding.rsbyUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("RSBY_CERTIFICATE")
+            showFileSelectionDialog("RSBY_CERTIFICATE")
+
         }
 
         binding.uploadResidenceImage.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("RESIDENCE_CERTIFICATE")
+            showFileSelectionDialog("RESIDENCE_CERTIFICATE")
+
         }
     }
 
@@ -5838,6 +5885,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { insertPersResponse ->
                             when (insertPersResponse.responseCode) {
                                 200 -> {
+
+                                    bankDetails()
 
                                     showSnackBar(insertPersResponse.responseMsg)
                                     commonViewModel.getCandidateDetailsAPI(
@@ -6958,64 +7007,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == PERMISSION_READ_MEDIA_IMAGES) {
-            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                // ✅ All permissions granted, proceed with file selection
-                showFileSelectionDialog(currentRequestPurpose ?: "")
-            } else {
-                // ❌ Permission denied, show a message
-                Toast.makeText(
-                    requireContext(),
-                    "Permission denied. Please enable it in Settings.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
 
-    private fun checkAndRequestPermissionsForEveryPurpose(purpose: String) {
-        currentRequestPurpose = purpose
-
-        val permissions = mutableListOf<String>()
-
-        // Check and add necessary permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
-        } else {
-            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        // 🔴 Add CAMERA permission
-        permissions.add(Manifest.permission.CAMERA)
-
-        // Add WRITE_EXTERNAL_STORAGE for Android < 10 (API 29)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        // Get the permissions that are NOT granted
-        val notGrantedPermissions = permissions.filter {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                it
-            ) != PackageManager.PERMISSION_GRANTED
-        }.toTypedArray()
-
-        if (notGrantedPermissions.isNotEmpty()) {
-            // 🔴 Request all required permissions at once
-            requestPermissions(notGrantedPermissions, PERMISSION_READ_MEDIA_IMAGES)
-        } else {
-            // 🔵 All permissions are granted, proceed
-            showFileSelectionDialog(purpose)
-        }
-    }
 
     private fun showFileSelectionDialog(purpose: String) {
         if (purpose == "PROFILE_PIC") {
@@ -7038,66 +7031,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun openCameraForDocument(purpose: String) {
-        val context = requireContext()
-
-        val file =
-            File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_image.jpg")
-        cameraImageUri =
-            FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
-
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri) // Store image in file
-        }
 
         currentRequestPurpose = purpose
 
+        val file = File(
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "captured_image.jpg"
+        )
 
-        // Check if there's a camera app available
+        cameraImageUri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            file
+        )
 
-        if (intent.resolveActivity(context.packageManager) != null) {
-            startActivityForResult(intent, REQUEST_CAPTURE_IMAGE)
-        } else {
-            Toast.makeText(context, "No Camera App Found", Toast.LENGTH_SHORT).show()
-        }
+        takePicture.launch(cameraImageUri)
     }
 
     // Select Image from Gallery
     private fun openGalleryForDocument(purpose: String) {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_IMAGE)
+
         currentRequestPurpose = purpose
+
+        pickMedia.launch(
+            PickVisualMediaRequest(
+                ActivityResultContracts.PickVisualMedia.ImageOnly
+            )
+        )
     }
 
     // Select PDF from File Picker
+
     private fun openPdfPickerForDocument(purpose: String) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "application/pdf"
-        startActivityForResult(intent, REQUEST_PICK_PDF)
+
         currentRequestPurpose = purpose
+
+        pickPdf.launch(arrayOf("application/pdf"))
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-            var selectedUri: Uri? = data?.data
-
-            if (requestCode == REQUEST_CAPTURE_IMAGE) {
-                selectedUri = cameraImageUri // Use the stored URI
-            }
-
-            val fileName: String? =
-                selectedUri?.let { getFileName(requireContext(), it) } ?: "Captured_Image.jpg"
-
-            when (requestCode) {
-                REQUEST_CAPTURE_IMAGE -> handleImageSelection(selectedUri, fileName)
-                REQUEST_PICK_IMAGE -> handleImageSelection(selectedUri, fileName)
-                REQUEST_PICK_PDF -> handlePdfSelection(selectedUri, fileName)
-            }
-        }
-    }
 
     private fun handleImageSelection(uri: Uri?, fileName: String?) {
         val base64Image = uri?.let { compressAndConvertImageToBase64(it) } ?: ""

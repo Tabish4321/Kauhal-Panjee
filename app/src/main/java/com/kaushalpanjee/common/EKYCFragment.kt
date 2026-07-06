@@ -748,7 +748,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(
                                     uidaiData.PostOnAUA_Face_authResult
                                 )
-                               // toastShort("Hit trans 1.")
+                                toastShort("Hit trans 1.")
 
                                 commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
                                 }
@@ -763,9 +763,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-                                  //    uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+                                      uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
 
-                                   // toastShort("Hit trans 2.")
+                                    toastShort("Hit trans 2.")
                                     commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
 
                                     if (kycResp.isSuccess) {
@@ -840,7 +840,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                             if (selectedStateCode!=""){
 
-                                             //   toastShort("Hit Create.")
+                                                toastShort("Hit Create.")
 
                                                 commonViewModel.getCreateUserAPI(UserCreationReq(
                                                     encryptedAadhaarString,
@@ -1110,16 +1110,36 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             collectLatestLifecycleFlow(commonViewModel.getuserCreation) {
                 when (it) {
                     is Resource.Loading -> {}
+
+
                     is Resource.Error -> {
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                            toastShort("error in create Api")
+
+                        toastShort("CreateUser ${it.error.toString()}")
+
+                        when (it.error?.code) {
+
+                            500 -> {
+                                showSnackBar(it.error.message)
+                            }
+
+                            401 -> {
+                                showSnackBar("Session Expired")
+                            }
+
+                            404 -> {
+                                showSnackBar("API Not Found")
+                            }
+
+                            else -> {
+                                showSnackBar(it.error?.message ?: "Unknown Error")
+                            }
                         }
                     }
 
                     is Resource.Success -> {
                         it.data?.let { getUserCreationRes ->
                             if (getUserCreationRes.responseCode == 200) {
+
                                 for (x in getUserCreationRes.wrappedList) {
                                     userPreferences.updateUserId(null)
                                     userPreferences.updateUserId(x.userId)
@@ -1144,6 +1164,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             }
                             else
                                 showSnackBar(getUserCreationRes.responseDesc)
+                            toastShort("error in create Api")
 
                         } ?: showSnackBar("Internal Sever Error")
                     }

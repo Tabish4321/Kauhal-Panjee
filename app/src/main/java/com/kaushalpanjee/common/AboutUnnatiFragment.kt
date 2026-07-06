@@ -22,8 +22,7 @@ class AboutUnnatiFragment :
     BaseFragment<FragmentAboutUnnatiBinding>(FragmentAboutUnnatiBinding::inflate) {
 
     private val commonViewModel: CommonViewModel by activityViewModels()
-    private lateinit var schemeAdapter: SchemeAdapter
-
+    private var schemeAdapter: SchemeAdapter? = null
     var ddugky : String? = ""
     var rseti : String? = ""
     var nrlm : String? = ""
@@ -40,9 +39,8 @@ class AboutUnnatiFragment :
 
     override fun onStop() {
         super.onStop()
-        schemeAdapter.releaseAllPlayers()
+        schemeAdapter?.releaseAllPlayers()
     }
-
 
 
     private fun listeners() {
@@ -129,7 +127,6 @@ class AboutUnnatiFragment :
                             pmkvy = response?.data?.PMKVY
                             schemeAdapter = SchemeAdapter(getUnnatiSchemes())
                             binding.rvScheme.adapter = schemeAdapter
-
                         }
 
                     }

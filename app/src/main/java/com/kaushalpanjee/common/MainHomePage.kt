@@ -443,6 +443,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     binding.tvBankingDetails.setCompoundDrawablePadding(16)
                                 }
 
+                                val headerView = binding.navigationView.getHeaderView(0)
+                                val headerBinding = NavigationHeaderBinding.bind(headerView)
+                                val headerIdView: TextView = headerBinding.kpId
+                                headerIdView.text = userPreferences.getUseID()
+
 
                                 if (imagePath!=null){
 
@@ -460,11 +465,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     // Access the ImageView from the header layout
                                     val headerImageView: ImageView = headerBinding.circleImageView
-                                    val headerIdView: TextView = headerBinding.kpId
-
                                     headerImageView.setImageBitmap(bitmap)
-                                    headerIdView.text = userPreferences.getUseID()
-
 
                                 }
 

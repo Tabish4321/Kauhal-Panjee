@@ -263,6 +263,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
                             toastShort("Server error")
+                            isApiCalled = false
                         }
                     }
 
