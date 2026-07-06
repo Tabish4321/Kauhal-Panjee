@@ -371,19 +371,9 @@ dependencies {
     implementation("com.google.firebase:firebase-config-ktx")
 
 //     Ajit Ranjan Implimentation
-
-
-
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    // Hilt Navigation Compose
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
-    // For ViewModel
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation ("androidx.compose.material:material-icons-extended")
-
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
 
 }
