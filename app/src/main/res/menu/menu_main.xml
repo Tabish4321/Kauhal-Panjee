@@ -5,7 +5,7 @@
         android:icon="@drawable/changepass"
         android:title="@string/changePass"
         app:showAsAction="ifRoom"/>
-
+7
     <item android:id="@+id/bankLoan"
         android:icon="@drawable/loan"
         android:title="Apply Loan" />
