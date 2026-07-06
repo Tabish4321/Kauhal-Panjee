@@ -33,7 +33,7 @@ object AppConstant {
         const val WADH_KEY = BuildConfig.WADH_KEY   //"sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
-        var ENCRYPT_IV_KEY =BuildConfig.ENCRYPT_IV_KEY;
+        var ENCRYPT_IV_KEY =BuildConfig.ENCRYPT_IV_KEY
         var ENCRYPT_KEY =BuildConfig.ENCRYPT_KEY;
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"
