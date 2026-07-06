@@ -157,6 +157,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                 collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA) { resource ->
                     when (resource) {
                         is Resource.Loading -> {
+                            hideProgressBar()
                         }
 
                         is Resource.Error -> {
