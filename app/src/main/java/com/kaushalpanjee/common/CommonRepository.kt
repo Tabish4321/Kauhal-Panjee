@@ -1,7 +1,15 @@
 package com.kaushalpanjee.common
 
+import android.util.Log
+import com.example.myapplication.CBT.api.CbtQuestionsResponse
 import com.example.myapplication.CBT.api.QuestionSet
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.CBT.api.CbtQuestionResult
+import com.kaushalpanjee.CBT.api.answers.CbtAnsersSubmit
+import com.kaushalpanjee.CBT.api.answers.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -126,8 +134,13 @@ import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import com.utilize.core.domain.model.response.BaseErrorResponse
+import kotlinx.coroutines.flow.flow
 import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.HttpException
 import retrofit2.http.Body
+import java.io.IOException
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -681,12 +694,23 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun getCBTGETQUESTION(header: String,  cbtquestionReq: CbtQuestionsReq): Flow<Resource<out QuestionSet>> {
+    suspend fun getCBTQuestions(
+        header: String,
+        cbtQuestionsReq: CbtQuestionsReq
+    ): Flow<Resource<CbtQuestionsResponse>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getCBTGETQUESTION(header, cbtquestionReq)
+            appLevelApi.getCBTQuestions(header, cbtQuestionsReq)
         }
     }
 
 
 
+    suspend fun submitExam(
+        header: String,
+        cbtQuestionsReq: CbtAnsersSubmit
+    ): Flow<Resource<SubmitExamResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.submitExam(header, cbtQuestionsReq)
+        }
+    }
 }

@@ -374,13 +374,13 @@ class CBTViewModel : ViewModel() {
         val qs = apiResponse.questionset
 
         withContext(Dispatchers.Main) {
-            _questionList.value = qs.question
-            _examId.value = qs.exam_id
-            _questionSetId.value = qs.question_set_id
-            _batchId.value = qs.batch_id
-            _candidateId.value = qs.candidate_id
+            _questionList.value = qs.question?.filterNotNull() ?: emptyList()
+            _examId.value = qs.exam_id?.toString() ?: ""
+            _questionSetId.value = qs.question_set_id.toString()
+            _batchId.value = qs.batch_id.toString()
+            _candidateId.value = qs.candidate_id.toString()
 
-            _message.value = "Total Questions: ${qs.question.size}"
+            _message.value = "Total Questions: ${qs.question?.size}"
         }
     }
 }

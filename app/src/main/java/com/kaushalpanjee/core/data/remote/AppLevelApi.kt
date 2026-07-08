@@ -1,6 +1,9 @@
 package com.kaushalpanjee.core.data.remote
 
+import com.example.myapplication.CBT.api.CbtQuestionsResponse
 import com.example.myapplication.CBT.api.QuestionSet
+import com.kaushalpanjee.CBT.api.answers.CbtAnsersSubmit
+import com.kaushalpanjee.CBT.api.answers.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -527,10 +530,23 @@ interface AppLevelApi {
                                    @Body aebasReq: AebasReq  ) : AebasRes
 
 
+
     @POST(ApiConstant.CBTGETQUESTION)
-    suspend fun getCBTGETQUESTION( @Header("Authorization") token: String,
-                                 @Body cbtquestionReq: CbtQuestionsReq) : QuestionSet
+    suspend fun getCBTQuestions(
+        @Header("Authorization") token: String,
+        @Body cbtQuestionsReq: CbtQuestionsReq
+    ): CbtQuestionsResponse
 
 
+    @POST(ApiConstant.CBTSUBMITANSWERS)
+    suspend fun submitExam(
+        @Header("Authorization") token: String,
+        @Body cbtAnsersSubmit: CbtAnsersSubmit
+    ): SubmitExamResponse
 
+//    @POST(ApiConstant.CBTGETQUESTION)
+//    suspend fun getCBTGETQUESTION(
+//        @Header("Authorization") token: String,
+//        @Body cbtquestionReq: CbtQuestionsReq
+//    ): Response<ResponseBody>
 }

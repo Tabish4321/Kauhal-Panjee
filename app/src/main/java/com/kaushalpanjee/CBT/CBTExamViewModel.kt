@@ -1,12 +1,14 @@
 package com.kaushalpanjee.CBT
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
 import com.example.myapplication.CBT.api.Question
 import com.google.gson.Gson
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.CBT.submit.RetrofitClient
 import com.kaushalpanjee.CBT.submit.SubmitExamItem
 import com.kaushalpanjee.CBT.submit.SubmitExamRequest
@@ -154,7 +156,8 @@ class CBTExamViewModel : ViewModel() {
         batchId: String,
         examId: String,
         questionSetId: String,
-        context: Context
+        context: Context,
+
     ) {
         viewModelScope.launch {
             _submissionLoading.value = true
@@ -167,23 +170,28 @@ class CBTExamViewModel : ViewModel() {
                     val category = when {
                         _markedQuestions.value.contains(question.question_id) -> "Mark & Review"
                         answerGiven.isNotEmpty() -> "Save & Next"
-                        else -> "Not Answered"
+                        else -> "Save & Next"
                     }
 
-                    SubmitExamItem(
-                        question_id = question.question_id,
-                        answer_given = answerGiven,
-                        category = category,
-                        marks_per_qs = question.marks_per_qs
-                    )
+                    question.question_id?.let {
+                        question.marks_per_qs?.let { marks_per_qs ->
+                            SubmitExamItem(
+                                question_id = it,
+                                answer_given = answerGiven,
+                                category = category,
+                                marks_per_qs = marks_per_qs
+                            )
+                        }
+                    }
                 }
 
                 val request = SubmitExamRequest(
+                    appVersion = BuildConfig.VERSION_NAME,
                     cand_id = candidateId,
                     batch_id = batchId,
                     exam_id = examId,
                     question_set_id = questionSetId,
-                    Ques_and_ans = submitList
+                    Ques_and_ans = submitList as List<SubmitExamItem>
                 )
 
                 val gson = Gson()
@@ -194,7 +202,7 @@ class CBTExamViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     _examFinished.value = true
                     _showSuccessDialog.value = true
-                    
+
                     // Schedule background sync with WorkManager
                     scheduleExamSyncWork(candidateId, examId, context)
                 } else {

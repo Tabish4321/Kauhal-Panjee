@@ -1,8 +1,5 @@
 package com.example.myapplication.CBT
 
-import com.example.myapplication.CBT.api.Option
-
-
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -23,6 +20,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.myapplication.CBT.api.Option
+
 @Composable
 fun OptionItem(
     option: Option,

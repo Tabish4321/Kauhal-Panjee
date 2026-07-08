@@ -1,8 +1,5 @@
-package com.example.myapplication.CBT
+package com.kaushalpanjee.common
 import android.annotation.SuppressLint
-import android.content.Context
-import androidx.compose.foundation.Image
-//import com.example.myapplication.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,21 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -39,35 +29,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
-
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.myapplication.CBT.api.Option
-import com.example.myapplication.CBT.api.Question
-
 
 
 // 🔹 Android
 import android.util.Log
 import android.widget.Toast
-import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-
-// 🔹 Compose Core
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -80,82 +55,34 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.myapplication.CBT.api.ApiResponse
-import com.example.myapplication.CBT.api.QuestionSet
-import com.google.gson.Gson
-
-// 🔹 Coroutines
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-// 🔹 Retrofit
-import retrofit2.Retrofit
-import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.POST
-
-// 🔹 Gson
-import com.google.gson.JsonObject
-import com.kaushalpanjee.CBT.ActionButton
-import com.kaushalpanjee.CBT.OutlineBtn
-import com.kaushalpanjee.CBT.AppDimens
-
-import com.kaushalpanjee.CBT.submit.RetrofitClient
-import com.kaushalpanjee.CBT.submit.SubmitExamItem
-import com.kaushalpanjee.CBT.submit.SubmitExamRequest
-import com.kaushalpanjee.core.util.AppUtil
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import kotlin.compareTo
-import kotlin.dec
-import kotlin.inc
-import kotlin.text.compareTo
 import com.kaushalpanjee.R
 
-// ViewModel and SavedState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.collectAsState
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.kaushalpanjee.CBT.CBTExamViewModel
 
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.workDataOf
+import com.example.myapplication.CBT.CircularTimer
 import com.example.myapplication.CBT.api.CBTViewModel
-import com.kaushalpanjee.CBT.WorkManager.SubmitExamWorker
+import com.example.myapplication.CBT.api.Question
+import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.CBT.WorkManager.startSubmitWorker
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.kaushalpanjee.CBT.api.answers.CbtAnsersSubmit
+import com.kaushalpanjee.CBT.submit.SubmitExamItem
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
+import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.Resource
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.getValue
 
 @SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -168,6 +95,7 @@ fun CBTExamScreen(
     questionSetId: String,
     batchId: String,
     viewModel: CBTExamViewModel = viewModel(),
+    commonViewModel: CommonViewModel = viewModel(),
     onOrientationChange: (() -> Unit)? = null
 ) {
 
@@ -180,6 +108,8 @@ fun CBTExamScreen(
 
     // Collect ViewModel StateFlows
     val examStarted by viewModel.examStarted.collectAsState()
+//    val commonViewModel: CommonViewModel = viewModel()
+
     val currentIndex by viewModel.currentIndex.collectAsState()
     val timeLeft by viewModel.timeLeft.collectAsState()
     val examFinished by viewModel.examFinished.collectAsState()
@@ -188,7 +118,6 @@ fun CBTExamScreen(
     val showSuccessDialog by viewModel.showSuccessDialog.collectAsState()
     val submissionLoading by viewModel.submissionLoading.collectAsState()
     val submissionError by viewModel.submissionError.collectAsState()
-
     val answers by viewModel.answers.collectAsState()
     val markedQuestions by viewModel.markedQuestions.collectAsState()
     val questionStatus by viewModel.questionStatus.collectAsState()
@@ -204,7 +133,40 @@ fun CBTExamScreen(
 
 
 
+    LaunchedEffect(Unit) {
+        commonViewModel.submitAnswers.collectLatest { state ->
+            when (state) {
 
+                is Resource.Loading -> {
+                    Log.d("CBT_SUBMIT", "Loading...")
+                }
+
+                is Resource.Success -> {
+                    val response = state.data
+                    Log.d("CBT_SUBMIT", "Success Response = $response")
+
+                    Toast.makeText(
+                        context,
+                        response?.message ?: "Submitted successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // Agar submit ke baad back jana hai ya next screen open karni hai
+                    // onOrientationChange?.invoke()
+                }
+
+                is Resource.Error -> {
+                    Log.e("CBT_SUBMIT", "Error = ${state.error?.message}")
+
+                    Toast.makeText(
+                        context,
+                        state.error?.message ?: "Something went wrong",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
 
     // 🔥 ORIENTATION DETECTION - Go back to home if device rotates to landscape
     val currentOrientation = configuration.orientation
@@ -394,13 +356,13 @@ fun CBTExamScreen(
 
                 Spacer(Modifier.height(10.dp))
 
-                currentQuestion.option.forEach { option ->
+                currentQuestion.option?.forEach { option ->
 
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                viewModel.selectAnswer(currentQuestion.question_id, option.option_key)
+                                viewModel.selectAnswer(currentQuestion.question_id.toString(), option.option_key.toString())
                             }
                             .padding(vertical = 6.dp)
                             .background(
@@ -417,11 +379,11 @@ fun CBTExamScreen(
                         RadioButton(
                             selected = answers[currentQuestion.question_id] == option.option_key,
                             onClick = {
-                                viewModel.selectAnswer(currentQuestion.question_id, option.option_key)
+                                viewModel.selectAnswer(currentQuestion.question_id.toString(), option.option_key.toString())
                             }
                         )
 
-                        Text(option.option_value, modifier = Modifier.padding(start = 10.dp), fontSize = 13.sp)
+                        Text(option.option_value.toString(), modifier = Modifier.padding(start = 10.dp), fontSize = 13.sp)
                     }
                 }
 
@@ -597,7 +559,7 @@ fun CBTExamScreen(
                     }
                 }
             }
-            
+
             // 🔥 ACTION BUTTONS (Save & Next, Save Review, Mark, Clear)
             Column(
                 modifier = Modifier
@@ -630,17 +592,17 @@ fun CBTExamScreen(
 
                                     when (textRes) {
                                         R.string.clear -> {
-                                            viewModel.clearAnswer(id)
+                                            viewModel.clearAnswer(id.toString())
                                         }
                                         R.string.save_review -> {
-                                            viewModel.markQuestion(id)
-                                            viewModel.saveAndNext(id, text, questionList.size)
+                                            viewModel.markQuestion(id.toString())
+                                            viewModel.saveAndNext(id.toString(), text, questionList.size)
                                         }
                                         R.string.mark -> {
-                                            viewModel.markQuestion(id)
+                                            viewModel.markQuestion(id.toString())
                                         }
                                         else -> {
-                                            viewModel.saveAndNext(id, text, questionList.size)
+                                            viewModel.saveAndNext(id.toString(), text, questionList.size)
                                         }
                                     }
                                 }
@@ -734,16 +696,83 @@ fun CBTExamScreen(
                         if (submissionLoading) MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                         else MaterialTheme.colorScheme.primary
                     )
+
                     .clickable(enabled = !submissionLoading) {
-                        viewModel.submitExam(
-                            questionList,
-                            candidateId,
-                            batchId,
-                            examId,
-                            questionSetId,
-                            context
-                        )
+//                        commonViewModel
+                        commonViewModel.submitExam(
+                            AppUtil.getSavedTokenPreference(context),
+//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
+//                            CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
+                            CbtAnsersSubmit("2603404318",batchId,examId,questionSetId,questionList.map { question ->
+                                val answerGiven = answers[question.question_id] ?: ""
+                                val category = when {
+                                    markedQuestions.contains(question.question_id) -> "Mark & Review"
+                                    answerGiven.isNotEmpty() -> "Save & Next"
+                                    else -> "Save & Next"
+//                                    else -> "Not Answered"
+                                }
+                                SubmitExamItem(
+                                    question_id = question.question_id ?: "",
+                                    answer_given = answerGiven,
+                                    category = category,
+                                    marks_per_qs = question.marks_per_qs ?: .0
+                                )
+                            }
+                            ))
+//                        lifecycleScope.launchWhenStarted {
+//                            commonViewModel.submitAnswers.collectLatest { state ->
+//
+//                                when (state) {
+//                                    is Resource.Loading -> {
+//                                        Log.d("CBT_QS", "Loading...")
+//                                    }
+//
+//                                    is Resource.Success -> {
+//                                        val response = state.data
+//                                        Log.d("CBT_QS", "Full Response = $response")
+//
+//                                        val questionSet = response?.responseCode
+//
+//                                        Toast.makeText(
+//                                            context,
+//                                            response?.message,
+//                                            Toast.LENGTH_SHORT
+//                                        ).show()
+////                                        val questionList = questionSet?.question ?: emptyList()
+//
+//
+//
+//
+//
+//                                    }
+//
+//                                    is Resource.Error -> {
+////                        Log.e("CBT_QS", "Error = ${state.message}")
+////                        Toast.makeText(
+////                            requireContext(),
+////                            state.message ?: "Something went wrong",
+////                            Toast.LENGTH_SHORT
+////                        ).show()
+//                                    }
+//                                }
+//                            }
+//                        }
+
+
+
                     }
+//                    .clickable(enabled = !submissionLoading) {
+//
+//
+//                        viewModel.submitExam(
+//                            questionList,
+//                            candidateId,
+//                            batchId,
+//                            examId,
+//                            questionSetId,
+//                            context
+//                        )
+//                    }
                     .padding(vertical = 11.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -867,7 +896,10 @@ fun CBTExamScreen(
                     },
                     confirmButton = {
                         Button(
-                            onClick = { viewModel.closeSuccessDialog() },
+                            onClick = {
+                                viewModel.closeSuccessDialog()
+                                repo.deleteOfflineJson(context)
+                                      },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFF4CAF50)
                             ),
@@ -990,7 +1022,7 @@ fun CBTExamScreen(
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFFE53935)
                             )
-                            
+
                             Text(
                                 text = submissionError ?: "Unknown error occurred",
                                 fontSize = 13.sp,
@@ -1000,9 +1032,9 @@ fun CBTExamScreen(
                                     .background(Color(0xFFFFEBEE), RoundedCornerShape(6.dp))
                                     .padding(10.dp)
                             )
-                            
+
                             Divider()
-                            
+
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -1023,7 +1055,7 @@ fun CBTExamScreen(
                                     modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
-                            
+
                             Text(
                                 text = "Please check your internet connection and try again.",
                                 fontSize = 12.sp,
