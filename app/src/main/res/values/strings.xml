@@ -285,5 +285,6 @@
     <string name="answered">Answered</string>
     <string name="not_answered">Not Answered</string>
     <string name="loading_questions">Loading Questions...</string>
+    <string name="review">Review</string>
 
 </resources>

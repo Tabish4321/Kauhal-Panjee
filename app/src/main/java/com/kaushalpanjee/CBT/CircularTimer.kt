@@ -17,18 +17,16 @@ fun CircularTimer(
     timeLeft: Int,
     totalTime: Int
 ) {
-
     val minutes = timeLeft / 60
     val seconds = timeLeft % 60
     val progress = timeLeft.toFloat() / totalTime.toFloat()
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.size(45.dp) // 🔥 small size
+        modifier = Modifier.size(45.dp)
     ) {
-
         CircularProgressIndicator(
-            progress = progress,
+            progress = { progress },
             strokeWidth = 4.dp,
             color = Color.White,
             trackColor = Color.White.copy(alpha = 0.2f),
@@ -43,6 +41,43 @@ fun CircularTimer(
         )
     }
 }
+
+
+
+
+
+
+//@Composable
+//fun CircularTimer(
+//    timeLeft: Int,
+//    totalTime: Int
+//) {
+//
+//    val minutes = timeLeft / 60
+//    val seconds = timeLeft % 60
+//    val progress = timeLeft.toFloat() / totalTime.toFloat()
+//
+//    Box(
+//        contentAlignment = Alignment.Center,
+//        modifier = Modifier.size(45.dp) // 🔥 small size
+//    ) {
+//
+//        CircularProgressIndicator(
+//            progress = progress,
+//            strokeWidth = 4.dp,
+//            color = Color.White,
+//            trackColor = Color.White.copy(alpha = 0.2f),
+//            modifier = Modifier.fillMaxSize()
+//        )
+//
+//        Text(
+//            text = String.format("%02d:%02d", minutes, seconds),
+//            color = Color.White,
+//            fontSize = 9.sp,
+//            fontWeight = FontWeight.Bold
+//        )
+//    }
+//}
 
 
 //@Composable

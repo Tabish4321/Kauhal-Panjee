@@ -32,13 +32,18 @@ class CBTExamViewModel : ViewModel() {
     val currentIndex: StateFlow<Int> = _currentIndex
 
     private val _timeLeft = MutableStateFlow(1800) // 30 minutes in seconds
+//     private val _timeLeft = MutableStateFlow(60)
+//      private val _timeLeft = MutableStateFlow(15)
     val timeLeft: StateFlow<Int> = _timeLeft
 
     private val _examFinished = MutableStateFlow(false)
     val examFinished: StateFlow<Boolean> = _examFinished
 
     private val _showReviewDialog = MutableStateFlow(false)
+
     val showReviewDialog: StateFlow<Boolean> = _showReviewDialog
+    private val _reviewQuestions = MutableStateFlow(false)
+    val reviewQuestions: StateFlow<Boolean> = _reviewQuestions
 
     private val _showSuccessDialog = MutableStateFlow(false)
     val showSuccessDialog: StateFlow<Boolean> = _showSuccessDialog
@@ -135,6 +140,7 @@ class CBTExamViewModel : ViewModel() {
     }
 
     // Timer Management
+
     fun startTimer() {
         viewModelScope.launch(Dispatchers.Default) {
             while (!_examFinished.value && _timeLeft.value > 0) {
@@ -148,6 +154,19 @@ class CBTExamViewModel : ViewModel() {
             }
         }
     }
+//    fun startTimer() {
+//        viewModelScope.launch(Dispatchers.Default) {
+//            while (!_examFinished.value && _timeLeft.value > 0) {
+//                kotlinx.coroutines.delay(1000)
+//                _timeLeft.value = _timeLeft.value - 1
+//            }
+//
+//            if (_timeLeft.value == 0) {
+//                _examFinished.value = true
+//                _showSuccessDialog.value = true
+//            }
+//        }
+//    }
 
     // Exam Submission
     fun submitExam(
