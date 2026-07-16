@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT.submit
+package com.kaushalpanjee.cbt.submit
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

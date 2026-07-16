@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT.api.answers
+package com.kaushalpanjee.cbt.api.answers
 
 import com.google.gson.annotations.SerializedName
 

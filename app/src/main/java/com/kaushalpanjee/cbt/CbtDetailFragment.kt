@@ -1,38 +1,25 @@
-package com.kaushalpanjee.CBT
+package com.kaushalpanjee.cbt
 
 // Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.viewModels
-import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 
 //import com.example.myapplication.CBT.CBTExamScreen
-import com.example.myapplication.CBT.api.CBTViewModel
 import com.example.myapplication.CBT.api.Question
-import com.example.myapplication.CBT.api.QuestionSet
 
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.CBT.api.CbtQuestionResult
-import com.kaushalpanjee.common.CBTExamScreen
 import com.kaushalpanjee.common.CommonViewModel
-import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.CbtQuestionsReq
-import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
-import com.kaushalpanjee.core.util.gone
-import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentCBTDetailBinding
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import kotlin.getValue
 
 class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(

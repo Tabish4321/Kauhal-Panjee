@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT.submit
+package com.kaushalpanjee.cbt.submit
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT.api
+package com.kaushalpanjee.cbt.api
 
 data class ApiErrorModel(
     val statusCode: Int? = null,

@@ -1,12 +1,9 @@
-package com.kaushalpanjee.CBT
+package com.kaushalpanjee.cbt
 
-import androidx.compose.runtime.*
-import androidx.compose.ui.unit.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.unit.*
+
 data class AppDimens(
     val paddingSmall: Dp,
     val paddingMedium: Dp,

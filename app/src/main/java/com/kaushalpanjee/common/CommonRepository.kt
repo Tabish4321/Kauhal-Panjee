@@ -1,15 +1,9 @@
 package com.kaushalpanjee.common
 
-import android.util.Log
 import com.example.myapplication.CBT.api.CbtQuestionsResponse
-import com.example.myapplication.CBT.api.QuestionSet
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.CBT.api.CbtQuestionResult
-import com.kaushalpanjee.CBT.api.answers.CbtAnsersSubmit
-import com.kaushalpanjee.CBT.api.answers.SubmitExamResponse
+import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
+import com.kaushalpanjee.cbt.api.answers.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -74,7 +68,6 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
-import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
@@ -120,7 +113,6 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
-import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
@@ -129,17 +121,10 @@ import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
-import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
-import com.utilize.core.domain.model.response.BaseErrorResponse
-import kotlinx.coroutines.flow.flow
 import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.HttpException
-import retrofit2.http.Body
-import java.io.IOException
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(

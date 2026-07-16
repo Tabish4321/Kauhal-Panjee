@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT.WorkManager
+package com.kaushalpanjee.cbt.WorkManager
 
 import android.content.Context
 import android.util.Log
@@ -9,8 +9,6 @@ import kotlinx.coroutines.delay
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-
-import kotlinx.coroutines.delay
 
 //SubmitExamWorker add SubmitExamWorker
 class SubmitExamWorker(

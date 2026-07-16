@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT
+package com.kaushalpanjee.cbt
 
 
 import androidx.compose.foundation.background

@@ -1,6 +1,5 @@
-package com.kaushalpanjee.CBT.api
+package com.kaushalpanjee.cbt.api
 
-import com.google.gson.annotations.SerializedName
 //data class Option(
 //    @SerializedName("option_key")
 //    val option_key: String? = null,

@@ -1,4 +1,5 @@
-package com.kaushalpanjee.common
+package com.kaushalpanjee.cbt
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.draw.clip
@@ -44,20 +44,14 @@ import android.util.Log
 import android.widget.Toast
 import android.content.res.Configuration
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -69,7 +63,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaushalpanjee.R
 
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -77,29 +70,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.zIndex
-import androidx.fragment.app.activityViewModels
+import androidx.compose.ui.text.font.FontStyle
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.kaushalpanjee.CBT.CBTExamViewModel
 
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.example.esop.quetions_esop.SummaryCard
 import com.example.myapplication.CBT.CircularTimer
 import com.example.myapplication.CBT.api.CBTViewModel
 import com.example.myapplication.CBT.api.Question
-import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.CBT.LegendItem
-import com.kaushalpanjee.CBT.WorkManager.startSubmitWorker
-import com.kaushalpanjee.CBT.api.answers.CbtAnsersSubmit
-import com.kaushalpanjee.CBT.interctions.CBTInstructionStartScreen
-import com.kaushalpanjee.CBT.submit.SubmitExamItem
-import com.kaushalpanjee.CBT.submit.SubmitExamRequest
-import com.kaushalpanjee.common.model.request.CbtQuestionsReq
+import com.kaushalpanjee.cbt.WorkManager.startSubmitWorker
+import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
+import com.kaushalpanjee.cbt.interctions.CBTInstructionStartScreen
+import com.kaushalpanjee.cbt.submit.SubmitExamItem
+import com.kaushalpanjee.common.CommonViewModel
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import kotlinx.coroutines.flow.collectLatest
-import kotlin.getValue
+import kotlin.collections.get
 
 
 //code commit and use 13 july 2026 time 10:04 PM
@@ -1393,7 +1380,7 @@ fun CBTExamScreen(
                                 text = "We're syncing your results in the background. You can close this app.",
                                 fontSize = 12.sp,
                                 color = Color.Gray,
-                                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                                fontStyle = FontStyle.Italic
                             )
                         }
                     },

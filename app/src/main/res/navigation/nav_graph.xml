@@ -303,7 +303,7 @@
 
     <fragment
         android:id="@+id/cbtFragment"
-        android:name="com.kaushalpanjee.CBT.CbtDetailFragment"
+        android:name="com.kaushalpanjee.cbt.CbtDetailFragment"
         android:label="LanguageChangeFragment"
         tools:layout="@layout/fragment_c_b_t_detail">
 

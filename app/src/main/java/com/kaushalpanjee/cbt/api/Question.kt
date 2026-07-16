@@ -1,7 +1,4 @@
-package com.kaushalpanjee.CBT.api
-
-
-import com.google.gson.annotations.SerializedName
+package com.kaushalpanjee.cbt.api
 
 
 //data class Question(

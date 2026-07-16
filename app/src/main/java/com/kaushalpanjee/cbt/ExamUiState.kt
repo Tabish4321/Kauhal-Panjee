@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT
+package com.kaushalpanjee.cbt
 
 
 data class ExamUiState(

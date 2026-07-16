@@ -1,4 +1,4 @@
-package com.kaushalpanjee.CBT.submit
+package com.kaushalpanjee.cbt.submit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

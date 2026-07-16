@@ -1,7 +1,6 @@
-package com.kaushalpanjee.CBT
+package com.kaushalpanjee.cbt
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,9 +8,9 @@ import androidx.work.*
 import com.example.myapplication.CBT.api.Question
 import com.google.gson.Gson
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.CBT.submit.RetrofitClient
-import com.kaushalpanjee.CBT.submit.SubmitExamItem
-import com.kaushalpanjee.CBT.submit.SubmitExamRequest
+import com.kaushalpanjee.cbt.submit.RetrofitClient
+import com.kaushalpanjee.cbt.submit.SubmitExamItem
+import com.kaushalpanjee.cbt.submit.SubmitExamRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
