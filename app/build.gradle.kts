@@ -40,12 +40,14 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 60
-        versionName = "2.7.1"
+        versionCode = 61
+        versionName = "2.7.2"
+       // versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Correct Kotlin DSL syntax for keeping all language resources
+
         resourceConfigurations += listOf(
             "en",
             "hi",

@@ -78,8 +78,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private fun init() {
         listeners()
         collectTokenResponse()
-
-
     }
 
 
@@ -122,13 +120,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-
-
-
         binding.tvRegister.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
 
         }
+
         binding.tvAboutUnnati.setOnClickListener {
             val action = LoginFragmentDirections.actionLoginFragmentToAboutUnnatiFragment(
                 ddugky!!,
@@ -263,6 +259,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
                             toastShort("Server error")
+
+
                             isApiCalled = false
                         }
                     }
@@ -272,9 +270,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                         it.data?.let { getLoginResponse ->
                             when (getLoginResponse.responseCode) {
+
                                 200 -> {
-
-
 
                                     // findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToMainHomePage())
 
@@ -293,6 +290,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                                 }
 
                                 203 -> {
+
                                     toastShort(getLoginResponse.responseDesc)
                                     toastShort(getLoginResponse.responseMsg)
                                     isApiCalled = false
