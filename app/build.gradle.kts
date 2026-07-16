@@ -192,7 +192,7 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 }
 
 dependencies {
-    // Local AAR Library
+    // Local AAR Librarys
     implementation(files("libs/pehchaanlib.aar"))
 
     implementation(files("libs/samiksha-release.aar"))
