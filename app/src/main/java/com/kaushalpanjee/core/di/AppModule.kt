@@ -84,20 +84,6 @@ object AppModule {
             .build()
     }
 
-/*    @Provides
-    @PostLoginOkHttpClient
-    fun providesRetrofitForPostLogin(
-        userPreferences: UserPreferences,
-        @ApplicationContext context: Context
-    ): Retrofit {
-        return Retrofit.Builder()
-           .baseUrl(AppConstant.StaticURL.baseUrl)
-          // .baseUrl(AppConstant.StaticURL.localUrl)
-            .client(getRetrofitClient(null, userPreferences = userPreferences, context = context))
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }*/
 
     @Provides
     @Singleton
@@ -129,15 +115,6 @@ object AppModule {
         val cacheSize = (5 * 1024 * 1024).toLong()
         val myCache = Cache(context.cacheDir, cacheSize)
 
-      /*  val certificatePinner = CertificatePinner.Builder()
-            .add(
-                "kaushal.rural.gov.in",
-                BuildConfig.SSL_PIN_1
-            )
-            .add(
-                "kaushal.rural.gov.in",
-                BuildConfig.SSL_PIN_2
-            ).build()*/
 
         return OkHttpClient.Builder().apply {
            // certificatePinner(certificatePinner)
@@ -151,68 +128,6 @@ object AppModule {
         }.build()
     }
 
-
-  /*  private fun getRetrofitClient(
-        authenticator: Authenticator? = null,
-        userPreferences: UserPreferences,
-        isPostLogin: Boolean = true,
-        isAuthenticationRequired: Boolean = true,
-        context: Context
-    ): OkHttpClient {
-
-        val trustAllCerts = arrayOf<TrustManager>(
-            object : X509TrustManager {
-                override fun checkClientTrusted(
-                    chain: Array<X509Certificate>,
-                    authType: String
-                ) {
-                }
-
-                override fun checkServerTrusted(
-                    chain: Array<X509Certificate>,
-                    authType: String
-                ) {
-                }
-
-                override fun getAcceptedIssuers(): Array<X509Certificate> {
-                    return arrayOf()
-                }
-            }
-        )
-
-        val sslContext = SSLContext.getInstance("SSL")
-        sslContext.init(null, trustAllCerts, SecureRandom())
-
-        val sslSocketFactory = sslContext.socketFactory
-
-        return OkHttpClient.Builder().apply {
-
-            sslSocketFactory(
-                sslSocketFactory,
-                trustAllCerts[0] as X509TrustManager
-            )
-
-            hostnameVerifier { _, _ -> true }
-
-            connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
-            readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
-
-            addInterceptor(LoggingInterceptor())
-
-            addInterceptor(
-                CustomInterceptor(
-                    isPostLogin,
-                    userPreferences,
-                    isAuthenticationRequired,
-                    context
-                )
-            )
-
-            authenticator?.let { authenticator(it) }
-
-        }.build()
-    }*/
 
 
     @Provides

@@ -748,7 +748,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                 val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(
                                     uidaiData.PostOnAUA_Face_authResult
                                 )
-                                toastShort("Hit trans 1.")
 
                                 commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
                                 }
@@ -763,9 +762,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-                                      uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
+                                     // uidaiData.PostOnAUA_Face_authResult.copyToClipboard(requireContext())
 
-                                    toastShort("Hit trans 2.")
                                     commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
 
                                     if (kycResp.isSuccess) {
@@ -840,7 +838,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                             if (selectedStateCode!=""){
 
-                                                toastShort("Hit Create.")
 
                                                 commonViewModel.getCreateUserAPI(UserCreationReq(
                                                     encryptedAadhaarString,

@@ -463,8 +463,6 @@ class AttendanceFragment:
                                                 AppConstant.Constants.ENCRYPT_IV_KEY
                                             ) ?: "N/A"
 
-
-
                                             // Set Data to UI
 
                                             binding.tvAaadharMobile.text =
@@ -892,9 +890,6 @@ class AttendanceFragment:
 
             }
         }
-
-
-
 
     }
 
