@@ -37,9 +37,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.draw.clip
-
-
-// 🔹 Android
 import android.util.Log
 import android.widget.Toast
 import android.content.res.Configuration
@@ -61,7 +58,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaushalpanjee.R
-
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -72,7 +68,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.FontStyle
 import androidx.lifecycle.compose.LocalLifecycleOwner
-
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.myapplication.CBT.CircularTimer
@@ -89,7 +84,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlin.collections.get
 
 
-//code commit and use 13 july 2026 time 10:04 PM
+// new commit code commit and use 13 july 2026 time 10:04 PM
 @SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
