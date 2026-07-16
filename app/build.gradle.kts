@@ -40,12 +40,14 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 60
-        versionName = "2.6.6"
+        versionCode = 62
+        versionName = "2.7.2"
+       // versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Correct Kotlin DSL syntax for keeping all language resources
+
         resourceConfigurations += listOf(
             "en",
             "hi",
@@ -190,8 +192,7 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 }
 
 dependencies {
-
-    // Local AAR Library
+    // Local AAR Librarys
     implementation(files("libs/pehchaanlib.aar"))
 
     implementation(files("libs/samiksha-release.aar"))
@@ -289,17 +290,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-
-
-
-
-
-
-
-
-
-
-
     // CardView
     implementation("androidx.cardview:cardview:1.0.0")
 
@@ -369,12 +359,6 @@ dependencies {
     // Required Firebase libs (IMPORTANT)
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-config-ktx")
-
-//     Ajit Ranjan Implimentation
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
-
 
 }
 

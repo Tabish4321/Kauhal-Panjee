@@ -492,12 +492,6 @@ interface AppLevelApi {
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 
-        /*@GET(API_NOTIFICATION)
-        suspend fun getNotifications( 
-            @Query("page") page: Int,
-            @Query("size") size: Int
-        ): NotificationListResponse*/
-
 
     @POST(API_GET_BANKLIST)
     suspend fun getBankListAPI(
