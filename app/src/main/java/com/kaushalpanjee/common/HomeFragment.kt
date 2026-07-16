@@ -572,6 +572,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.etNregaValidate.apply {
+            filters = arrayOf(InputFilter.AllCaps())
+        }
+
 
         init()
         collectStateResponse()
@@ -4991,7 +4995,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-        binding.btnjobcardnoValidate.setOnClickListener {
+      /*  binding.btnjobcardnoValidate.setOnClickListener {
 
           //  val username = HashUtils.sha512("Nrega")
           //  val password = HashUtils.sha512("Nrg2k18")
@@ -5007,6 +5011,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 //    commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
 
             } else toastShort("Please enter jobCard")
+        }*/
+
+        binding.btnjobcardnoValidate.setOnClickListener {
+
+            val username = HashUtils.sha512("GRAMG")
+            val password = HashUtils.sha512("GRAMG@2026")
+            val jobCardNo = binding.etNregaValidate.text.toString().trim()
+
+            val fullUrl = "https://vbgramgweb4.dord.gov.in/GRAMG_webAPI/api/checkjobcard"
+
+            when {
+                jobCardNo.isEmpty() -> {
+                    binding.etNregaValidate.error = "Please enter Job Card No."
+                }
+
+                !isValidJobCard(jobCardNo) -> {
+                    binding.etNregaValidate.error = "Enter valid format (e.g. HR-12345)"
+
+                    toastLong("Enter valid format (e.g. HR-12345)")
+                }
+
+                else -> {
+                    binding.etNregaValidate.error = null
+                    commonViewModel.getCheckJobCardAPI(
+                        fullUrl,
+                        username,
+                        password,
+                        jobCardNo
+                    )
+                }
+            }
         }
 
         binding.btnAddressSubmit.setOnClickListener {
@@ -6795,7 +6830,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
                                 nregaValidateStatus = getValidateStatus.body()?.Status ?: ""
-                                showSnackBar(getValidateStatus.body()?.Remarks.toString())
+
+                                if (getValidateStatus.body()?.Remarks.toString()=="Some error occurred")
+                                showSnackBar("Please enter a valid Job Card Number (e.g., HR-00-000-000-000/0000).")
                                 nregaJobCard = binding.etNregaValidate.text.toString()
 
 
@@ -8364,6 +8401,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         dialog.show()
         dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_bg)
+    }
+
+
+    private fun isValidJobCard(jobCard: String): Boolean {
+        val regex = Regex("^[A-Z]{2}-\\d+$")
+        return regex.matches(jobCard)
     }
 
 }
