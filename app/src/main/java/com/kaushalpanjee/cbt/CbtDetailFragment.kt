@@ -1,16 +1,19 @@
 package com.kaushalpanjee.cbt
 
 // Fragment
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 //import com.example.myapplication.CBT.CBTExamScreen
 import com.example.myapplication.CBT.api.Question
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.cbt.interctions.CBTDeclarationSection
@@ -30,24 +33,33 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
 
     private val commonViewModel: CommonViewModel by activityViewModels()
 
-    private var questionListData: List<Question> = emptyList()
-    private var questionList: List<Question> = emptyList()
-    private var examId: String = ""
-    private var questionSetId: String = ""
-    private var batchId: String = ""
-    private var candidateId: String = ""
-    private var examDateTime: String = ""
+
+
+
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            showExitExamDialog()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            backPressedCallback
+        )
         userPreferences = UserPreferences(requireContext())
 
         commonViewModel.getCBTGETQUESTION(
             AppUtil.getSavedTokenPreference(requireContext()),
-            CbtQuestionsReq(BuildConfig.VERSION_NAME, "2603404318", "en")
+            CbtQuestionsReq(BuildConfig.VERSION_NAME, "2603404318", AppUtil.getSavedLanguagePreference(requireContext()))
+//            CbtQuestionsReq(BuildConfig.VERSION_NAME, userPreferences.getUseID(), AppUtil.getSavedLanguagePreference(requireContext()))
         )
 
         collectTrainingCenterResponse()
+
+
     }
 
     private fun collectTrainingCenterResponse() {
@@ -102,129 +114,33 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
             }
         }
     }
+    private fun showExitExamDialog() {
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Exit Exam")
+            .setMessage("Do you want to exit exam?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+
+                backPressedCallback.isEnabled = false
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+    override fun onResume() {
+        super.onResume()
+
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        requireActivity().requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
-//    bindingInflater = FragmentCBTDetailBinding::inflate
-//) {
-//
-//    private val viewModel: CBTViewModel by viewModels()
-//
-////    lateinit var userPreferences: UserPreferences
-//
-//    private var questionListData: List<Question> = emptyList()
-//
-//    override fun initializeViews() {
-//
-//        userPreferences = UserPreferences(requireContext())
-//
-//        // ✅ 1. FIRST LOAD OFFLINE DATA
-//        viewModel.loadOfflineFirst(requireContext())
-//
-//        // ✅ 2. THEN HIT API (refresh data)
-//        viewModel.fetchExam(requireContext(), userPreferences.getUseID())
-//
-//        binding.composeView.setContent {
-//
-//            val questionList by viewModel.questionList.observeAsState(emptyList())
-//            val examId by viewModel.examId.observeAsState("")
-//            val questionSetId by viewModel.questionSetId.observeAsState("")
-//            val batchId by viewModel.batchId.observeAsState("")
-//
-//            LaunchedEffect(questionList) {
-//                questionListData = questionList
-//
-//                activity?.requestedOrientation =
-//                    android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//            }
-//
-//            CBTExamScreen(
-//                questionList = questionList,
-//                userPreferences.getUseID(),
-//                userPreferences.getUserName(),
-//                examId = examId,
-//                questionSetId = questionSetId,
-//                batchId = batchId,
-//                onOrientationChange = {
-//                    activity?.supportFragmentManager?.popBackStack()
-//                }
-//            )
-//        }
-//    }
-//
-//
-//}
-
-
-
-
-
-//class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
-//    bindingInflater = FragmentCBTDetailBinding::inflate
-//) {
-//
-//    private val viewModel: CBTViewModel by viewModels()
-//
-//    lateinit var userPreferences: UserPreferences
-//
-//    private var questionListData: List<Question> = emptyList()
-//
-//    override fun initializeViews() {
-//
-//        userPreferences = UserPreferences(requireContext())
-//
-//        viewModel.fetchExam(requireContext(), userPreferences.getUseID())
-//        binding.composeView.setContent {
-//
-//            val questionList by viewModel.questionList.observeAsState(emptyList())
-//            val examId by viewModel.examId.observeAsState("")
-//            val questionSetId by viewModel.questionSetId.observeAsState("")
-//            val batchId by viewModel.batchId.observeAsState("")
-//
-//            LaunchedEffect(questionList) {
-//                questionListData = questionList
-//                // Lock activity to portrait orientation during exam
-//                activity?.requestedOrientation =
-//                    android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-//            }
-//
-//            // ✅ ONLY USE CBTTheme (REMOVE MaterialTheme)
-////            CBTTheme {
-//
-//            CBTExamScreen(
-//                questionList = questionList,
-//                userPreferences.getUseID(),
-//                userPreferences.getUserName(),
-//                examId = examId,
-//                questionSetId = questionSetId,
-//                batchId = batchId,
-//                onOrientationChange = {
-//                    // Navigate back to home page when orientation changes
-//                    activity?.supportFragmentManager?.popBackStack()
-//                }
-//            )
-//        }
-//    }
-//
-//    override fun setupObservers() {}
-//    override fun setupClickListeners() {}
-//    override fun loadInitialData() {}
-//}

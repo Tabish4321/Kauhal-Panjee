@@ -14,12 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.kaushalpanjee.R
 
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -33,24 +34,40 @@ fun CBTInstructionStartScreen(
     onBackClick: () -> Unit,
     onStartClick: () -> Unit
 ) {
-    val instructions = remember {
-        listOf(
-            "The Computer Based Test consists of 50 Multiple Choice Questions (MCQs). Each question carries 2 marks.",
-            "Total duration of the test is 60 minutes.",
-            "The test will be automatically submitted after 60 minutes or earlier if the candidate submits the test.",
-            "There is no negative marking.",
-            "Each question has four options. Only one option is correct.",
-            "Candidates can navigate to any question by clicking on the question number. Questions need not be attempted sequentially.",
-            "Use the Next and Previous buttons to move between questions.",
-            "Unanswered questions will be displayed in white or red color on the right-hand panel.",
-            "Answered questions will be displayed in green color.",
-            "Answered and marked for review questions will be displayed in orange color.",
-            "Questions marked for review will be displayed in blue color.",
-            "If a question is marked for review and an option is selected, it will be treated as attempted at final submission or on expiry of time.",
-            "The remaining time is displayed at the top-left corner of the screen besides candidate's details.",
-            "Don’t press ESC button during exam, after 2 attempts exam will be submitted forcefully and user will be logged out."
+//    val instructions = remember {
+        val instructions = listOf(
+            stringResource(R.string.instruction_1),
+            stringResource(R.string.instruction_2),
+            stringResource(R.string.instruction_3),
+            stringResource(R.string.instruction_4),
+            stringResource(R.string.instruction_5),
+            stringResource(R.string.instruction_6),
+            stringResource(R.string.instruction_7),
+            stringResource(R.string.instruction_8),
+            stringResource(R.string.instruction_9),
+            stringResource(R.string.instruction_10),
+            stringResource(R.string.instruction_11),
+            stringResource(R.string.instruction_12),
+            stringResource(R.string.instruction_13),
+            stringResource(R.string.instruction_14)
         )
-    }
+//        listOf(
+//            "The Computer Based Test consists of 50 Multiple Choice Questions (MCQs). Each question carries 2 marks.",
+//            "Total duration of the test is 60 minutes.",
+//            "The test will be automatically submitted after 60 minutes or earlier if the candidate submits the test.",
+//            "There is no negative marking.",
+//            "Each question has four options. Only one option is correct.",
+//            "Candidates can navigate to any question by clicking on the question number. Questions need not be attempted sequentially.",
+//            "Use the Next and Previous buttons to move between questions.",
+//            "Unanswered questions will be displayed in white or red color on the right-hand panel.",
+//            "Answered questions will be displayed in green color.",
+//            "Answered and marked for review questions will be displayed in orange color.",
+//            "Questions marked for review will be displayed in blue color.",
+//            "If a question is marked for review and an option is selected, it will be treated as attempted at final submission or on expiry of time.",
+//            "The remaining time is displayed at the top-left corner of the screen besides candidate's details.",
+//            "Don’t press ESC button during exam, after 2 attempts exam will be submitted forcefully and user will be logged out."
+//        )
+//    }
 
     Scaffold(
         containerColor = Color(0xFFF5F7FA),
@@ -119,7 +136,7 @@ fun CBTInstructionStartScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = "Exam Instructions",
+                            text = stringResource(R.string.exam_instructions),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.SemiBold,
@@ -130,7 +147,7 @@ fun CBTInstructionStartScreen(
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
-                            text = "Please read the instructions carefully before starting the exam.",
+                            text = stringResource(R.string.please_read_the_instructions_carefully_before_starting_the_exam),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold,
@@ -148,7 +165,7 @@ fun CBTInstructionStartScreen(
                         Spacer(modifier = Modifier.height(30.dp))
 
                         Text(
-                            text = "DECLARATION",
+                            text = stringResource(R.string.declaration),
                             fontWeight = FontWeight.Bold,
                             fontSize = if (isLargeScreen) 21.sp else 16.sp,
                             color = Color(0xFF222222)
@@ -159,14 +176,17 @@ fun CBTInstructionStartScreen(
                         CBTDeclarationSection(
                             checked = isDeclarationChecked,
                             onCheckedChange = onDeclarationChecked,
-                            text = "I have read and understood the instructions and wish to proceed with the test.",
+                            text = stringResource(R.string.i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test),
                             isLargeScreen = isLargeScreen
                         )
 
                         Spacer(modifier = Modifier.height(26.dp))
 
                         Text(
-                            text = "Exam starts in: ${formatExamStartTime(remainingSeconds)}",
+                            text = stringResource(
+                                R.string.exam_starts_in,
+                                formatExamStartTime(remainingSeconds)
+                            ),
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             fontSize = if (isLargeScreen) 20.sp else 15.sp,
@@ -196,7 +216,7 @@ fun CBTInstructionStartScreen(
                             )
                         ) {
                             Text(
-                                text = "Start Now",
+                                text = stringResource(R.string.start_now),
                                 fontSize = if (isLargeScreen) 18.sp else 15.sp,
                                 fontWeight = FontWeight.Medium
                             )

@@ -163,10 +163,10 @@ fun CBTExamScreen(
                     val response = state.data
                     Log.d("CBT_SUBMIT", "Success Response = $response")
                             MaterialAlertDialogBuilder(context)
-                        .setTitle("Message")
+                        .setTitle(context.getString(R.string.success))
                         .setMessage(response?.message)
                         .setCancelable(false)
-                        .setPositiveButton("OK") { dialog, _ ->
+                        .setPositiveButton(context.getString(R.string.ok)) { dialog, _ ->
                             dialog.dismiss()
                             onSubmitSuccess()
                         }
@@ -198,7 +198,7 @@ fun CBTExamScreen(
     val currentOrientation = configuration.orientation
     LaunchedEffect(currentOrientation) {
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.w("CBTExamScreen", "Device rotated to landscape - navigating back to home")
+//            Log.w("CBTExamScreen", "Device rotated to landscape - navigating back to home")
             onOrientationChange?.invoke()
         }
     }
@@ -213,7 +213,7 @@ fun CBTExamScreen(
 
     if (!examStarted) {
         CBTInstructionStartScreen(
-            title = "CBT Exam",
+            title = context.getString(R.string.cbt_exam),
             remainingSeconds = timeLeft,
             isDeclarationChecked = isDeclarationChecked,
             onDeclarationChecked = { isDeclarationChecked = it },
@@ -235,22 +235,6 @@ fun CBTExamScreen(
         containerColor = Color(0x33F2F2F2),
 
         topBar = {
-//            Surface(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .statusBarsPadding()
-//                    .height((screenHeight * 0.08f).dp)   // 8% of screen height
-//                    .background(
-//                        Brush.horizontalGradient(
-//                            listOf(
-//                                MaterialTheme.colorScheme.primary,
-//                                MaterialTheme.colorScheme.primaryContainer,
-//                                MaterialTheme.colorScheme.secondary
-//                            )
-//                        )
-//                    ),
-//                color = Color.Transparent
-//            )
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -267,14 +251,6 @@ fun CBTExamScreen(
                     ),
                 color = Color.Transparent
             )
-//            Surface(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .statusBarsPadding()
-//                    .height((screenHeight * 0.08f).dp),
-//                color = Color.Transparent
-//            )
-
             {
 
                 Row(
@@ -293,7 +269,7 @@ fun CBTExamScreen(
                             .padding(12.dp)
                     ) {
                         Text(
-                            text = "Candidate ID : ${candidateId?.takeIf { it.isNotBlank() } ?: "NA"}",
+                            text = "${context.getString(R.string.candidate_id)}: ${candidateId?.takeIf { it.isNotBlank() } ?: "NA"}",
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
@@ -318,7 +294,7 @@ fun CBTExamScreen(
                         IconButton(onClick = { showReviewDialog=true }) {
                             Icon(
                                 imageVector = Icons.Default.RateReview,
-                                contentDescription = "Review",
+                                contentDescription = context.getString(R.string.review),
                                 tint = Color.White
                             )
                         }
@@ -462,7 +438,7 @@ fun CBTExamScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.ArrowBack,
-                                        contentDescription = "Back"
+                                        contentDescription = stringResource(R.string.back)
                                     )
                                 }
 
@@ -518,7 +494,7 @@ fun CBTExamScreen(
                                 )
 
                                 Text(
-                                    text = "Review",
+                                    text = context.getString(R.string.review),
                                     fontSize = 11.sp
                                 )
 
@@ -605,7 +581,7 @@ fun CBTExamScreen(
 //                                        .background(Color(0xFFB8B8B8))
                                         .background(Color(0xFFE53935))
                                         .clickable {
-                                            showReviewDialog=false
+                                            showReviewDialog = false
                                         }
                                         .padding(vertical = 12.dp),
                                     contentAlignment = Alignment.Center
@@ -637,12 +613,13 @@ fun CBTExamScreen(
                                                 showReviewDialog = false
                                             }
 
-                                            val currentQuestion = questionList.getOrNull(currentQuestionIndex)
+                                            val currentQuestion =
+                                                questionList.getOrNull(currentQuestionIndex)
                                             currentQuestion?.question_id?.let { id ->
                                                 viewModel.markQuestion(id.toString())
                                                 viewModel.saveAndNext(
                                                     id.toString(),
-                                                    "Next & Review",
+                                                    context.getString(R.string.next_review),
                                                     questionList.size
                                                 )
                                             }
@@ -652,7 +629,7 @@ fun CBTExamScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = "Next & Review",
+                                        text = context.getString(R.string.next_review),
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 13.sp
@@ -702,7 +679,7 @@ fun CBTExamScreen(
                     ) {
 
                         Text(
-                            text = "Review Your Test",
+                            text = stringResource(R.string.review_your_test),
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -713,10 +690,13 @@ fun CBTExamScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            SummaryCard("Answered", answeredCount.toString(), Color(0xFF4CAF50))
-                            SummaryCard("Not Answered", notAnsweredCount.toString(), Color(0xFFF44336))
+                            context.getString(R.string.candidate_id)
+//                            SummaryCard("Answered", answeredCount.toString(), Color(0xFF4CAF50))
+                            SummaryCard(stringResource(R.string.answered), answeredCount.toString(), Color(0xFF4CAF50))
+//                            SummaryCard("Not Answered", notAnsweredCount.toString(), Color(0xFFF44336))
+                            SummaryCard(stringResource(R.string.not_answered), notAnsweredCount.toString(), Color(0xFFF44336))
 //                            SummaryCard("Marked", markedCount.toString(), Color(0xFFFFC107))
-                            SummaryCard("Total", questionList.size.toString(), Color(0xFF2196F3))
+                            SummaryCard(stringResource(R.string.total), questionList.size.toString(), Color(0xFF2196F3))
                         }
 
                         Spacer(modifier = Modifier.height(20.dp))
@@ -731,16 +711,18 @@ fun CBTExamScreen(
                                 val status = when {
 
                                     reviewQuestions.contains(questionId) ->
-                                        "Marked for Review"
+                                        stringResource(R.string.marked_for_review)
 
 //                                    markedQuestions.contains(questionId) ->
 //                                        "Marked"
 
                                     answers.containsKey(questionId) ->
-                                        "Answered"
+                                        stringResource(R.string.answered)
+//                                        "Answered"
 
                                     else ->
-                                        "Not Answered"
+                                        stringResource(R.string.not_answered)
+//                                        "Not Answered"
                                 }
 //
 //                                val status = when {
@@ -777,7 +759,7 @@ fun CBTExamScreen(
                                     showQuestionPalette=false
                                 }
                             ) {
-                                Text("Back to Test")
+                                Text(stringResource(R.string.back_to_test))
                             }
 
                             Button(
@@ -814,7 +796,7 @@ fun CBTExamScreen(
 
                                 }
                             ) {
-                                Text("Submit Test")
+                                Text(stringResource(R.string.submit_test))
                             }
                         }
                     }
@@ -829,20 +811,20 @@ fun CBTExamScreen(
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Warning,
-                            contentDescription = "Warning",
+                            contentDescription = stringResource(R.string.warning),
                             tint = Color(0xFFFF9800),
                             modifier = Modifier.size(40.dp)
                         )
                     },
                     title = {
                         Text(
-                            text = "Submit Test",
+                            text =stringResource(R.string.submit_test),
                             fontWeight = FontWeight.Bold
                         )
                     },
                     text = {
                         Text(
-                            text = "Do you want to submit the questions?"
+                            text = stringResource(R.string.do_you_want_to_submit_the_questions)
                         )
                     },
                     confirmButton = {
@@ -852,23 +834,33 @@ fun CBTExamScreen(
                                 // -----------------------------
                                 // API CALL
                                 // -----------------------------
+
+//                                CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
                                 commonViewModel.submitExam(
                                     AppUtil.getSavedTokenPreference(context),
 //                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
-//                                    CbtAnsersSubmit(
-//                                        "2603404318",
-//                                        batchId,
-//                                        examId,
-//                                        questionSetId,
-//                                        questionList.map { question ->
-                            CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
+                                    CbtAnsersSubmit(
+                                        "2603404318",
+                                        batchId,
+                                        examId,
+                                        questionSetId,
+                                        questionList.map { question ->
+
 
                                             val answerGiven = answers[question.question_id] ?: ""
                                             val category = when {
-                                                markedQuestions.contains(question.question_id) -> "Mark & Review"
-                                                answerGiven.isNotEmpty() -> "Save & Next"
+                                                markedQuestions.contains(question.question_id) -> context.getString(
+                                                    R.string.mark_review
+                                                )
+                                                answerGiven.isNotEmpty() -> context.getString(
+                                                    R.string.save_next
+                                                )
+//                                                answerGiven.isNotEmpty() -> "Save & Next"
 //                                    answerGiven.isNotEmpty() -> "NA"
-                                                else -> "Save & Next"
+                                                else -> context.getString(
+                                                    R.string.save_next
+                                                )
+//                                                else -> "Save & Next"
 //                                    else -> "Not Answered"
                                             }
                                             SubmitExamItem(
@@ -881,7 +873,7 @@ fun CBTExamScreen(
                                     ))
                             }
                         ) {
-                            Text("Yes")
+                            Text(stringResource(R.string.yes))
                         }
                     },
                     dismissButton = {
@@ -890,7 +882,7 @@ fun CBTExamScreen(
                                 showSubmitDialog = false
                             }
                         ) {
-                            Text("No")
+                            Text(stringResource(R.string.no))
                         }
                     }
                 )
@@ -1047,7 +1039,7 @@ fun CBTExamScreen(
                         else Color(0xFF173430)
                     )
                     .clickable(enabled = !submissionLoading) {
-                       showReviewDialog=true
+                        showReviewDialog = true
                     }
                     .padding(vertical = 11.dp),
                 contentAlignment = Alignment.Center
@@ -1062,7 +1054,7 @@ fun CBTExamScreen(
                     )
                 } else {
                     Text(
-                        text = if (editMode) "Update & Submit" else "Submit Exam",
+                        text = if (editMode) "Update & Submit" else stringResource(R.string.submit_exam),
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp
