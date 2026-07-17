@@ -7,11 +7,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 
 //import com.example.myapplication.CBT.CBTExamScreen
 import com.example.myapplication.CBT.api.Question
 
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.cbt.interctions.CBTDeclarationSection
 import com.kaushalpanjee.common.CommonViewModel
 import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.core.basecomponent.BaseFragment
@@ -26,11 +28,7 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
     bindingInflater = FragmentCBTDetailBinding::inflate
 ) {
 
-
     private val commonViewModel: CommonViewModel by activityViewModels()
-
-
-//    lateinit var userPreferences: UserPreferences
 
     private var questionListData: List<Question> = emptyList()
     private var questionList: List<Question> = emptyList()
@@ -40,26 +38,17 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
     private var candidateId: String = ""
     private var examDateTime: String = ""
 
-//    override fun initializeViews() {
-override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    userPreferences = UserPreferences(requireContext())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userPreferences = UserPreferences(requireContext())
 
-//    BuildConfig.VERSION_NAME,
+        commonViewModel.getCBTGETQUESTION(
+            AppUtil.getSavedTokenPreference(requireContext()),
+            CbtQuestionsReq(BuildConfig.VERSION_NAME, "2603404318", "en")
+        )
 
-
-
-    commonViewModel.getCBTGETQUESTION(
-        AppUtil.getSavedTokenPreference(requireContext()),
-        CbtQuestionsReq(BuildConfig.VERSION_NAME,"2603404318","en")
-    )
-
-
-    collectTrainingCenterResponse()
-
-//    init()
-
-}
+        collectTrainingCenterResponse()
+    }
 
     private fun collectTrainingCenterResponse() {
         lifecycleScope.launchWhenStarted {
@@ -72,54 +61,32 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
                     is Resource.Success -> {
                         val response = state.data
-                        Log.d("CBT_QS", "Full Response = $response")
-
                         val questionSet = response?.questionset
                         val questionList = questionSet?.question ?: emptyList()
 
-                        Log.d("CBT_QS", "QuestionSet = $questionSet")
-                        Log.d("CBT_QS", "QuestionList = $questionList")
-
-
-
-
                         if (questionList.isNotEmpty()) {
 
-                            Log.d("CBT_QS", "Exam Id = ${questionSet?.exam_id}")
-                            Log.d("CBT_QS", "Candidate Id = ${questionSet?.candidate_id}")
-                            Log.d("CBT_QS", "Question Set Id = ${questionSet?.question_set_id}")
-                            Log.d("CBT_QS", "Batch Id = ${questionSet?.batch_id}")
-                            Log.d("CBT_QS", "Exam Date Time = ${questionSet?.exam_date_time}")
-
-                            questionList.forEachIndexed { index, question ->
-                                Log.d("CBT_QS", "Question ${index + 1} Id = ${question.question_id}")
-                                Log.d("CBT_QS", "Question ${index + 1} Value = ${question.question_value}")
-                                Log.d("CBT_QS", "Question ${index + 1} Marks = ${question.marks_per_qs}")
-
-                                question.option?.forEach { option ->
-                                    Log.d(
-                                        "CBT_QS",
-                                        "Option ${option.option_key} = ${option.option_value}"
-                                    )
-                                }
-
-
-
-                                binding.composeView.setContent {
-                                    CBTExamScreen(
-                                        questionList = questionList,
-                                        userPreferences.getUseID(),
-                                        userPreferences.getUserName(),
-                                        examId = questionSet?.exam_id.toString(),
-                                        questionSetId = questionSet?.question_set_id.toString(),
-                                        batchId = questionSet?.batch_id.toString(),
-                                        commonViewModel = commonViewModel,
-                                        onOrientationChange = {
-                                            activity?.supportFragmentManager?.popBackStack()
-                                        }
-                                    )
-                                }
-
+                            // 👇 setContent ko forEachIndexed loop ke BAAHAR rakho
+                            // (loop ke andar hone se ye baar baar Compose set kar raha tha)
+                            binding.composeView.setContent {
+                                CBTExamScreen(
+                                    questionList = questionList,
+                                    candidateId = userPreferences.getUseID(),
+                                    candidatName = userPreferences.getUserName(),
+                                    examId = questionSet?.exam_id.toString(),
+                                    questionSetId = questionSet?.question_set_id.toString(),
+                                    batchId = questionSet?.batch_id.toString(),
+                                    commonViewModel = commonViewModel,
+                                    onOrientationChange = {
+                                        activity?.supportFragmentManager?.popBackStack()
+                                    },
+                                    onSubmitSuccess = {
+                                        // 👇 yaha navigation call karo
+                                        findNavController().navigate(
+                                            CbtDetailFragmentDirections.actionCbtDetailFragmentToMainHomePage()
+                                        )
+                                    }
+                                )
                             }
 
                         } else {
@@ -129,24 +96,12 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                     }
 
                     is Resource.Error -> {
-//                        Log.e("CBT_QS", "Error = ${state.message}")
-//                        Toast.makeText(
-//                            requireContext(),
-//                            state.message ?: "Something went wrong",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
+                        // handle error
                     }
                 }
             }
         }
     }
-
-
-
-
-//    }
-
-
 }
 
 

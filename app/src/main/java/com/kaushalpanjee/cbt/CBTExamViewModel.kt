@@ -41,8 +41,12 @@ class CBTExamViewModel : ViewModel() {
     private val _showReviewDialog = MutableStateFlow(false)
 
     val showReviewDialog: StateFlow<Boolean> = _showReviewDialog
-    private val _reviewQuestions = MutableStateFlow(false)
-    val reviewQuestions: StateFlow<Boolean> = _reviewQuestions
+//    private val _reviewQuestions = MutableStateFlow(false)
+//    val reviewQuestions: StateFlow<Boolean> = _reviewQuestions
+
+    private val _reviewQuestions = MutableStateFlow<Set<String>>(emptySet())
+
+    val reviewQuestions: StateFlow<Set<String>> = _reviewQuestions
 
     private val _showSuccessDialog = MutableStateFlow(false)
     val showSuccessDialog: StateFlow<Boolean> = _showSuccessDialog
@@ -128,6 +132,21 @@ class CBTExamViewModel : ViewModel() {
         _markedQuestions.value = currentMarked
     }
 
+
+    fun ReviewQuestion(questionId: String) {
+
+        val currentReview = _reviewQuestions.value.toMutableSet()
+
+        if (currentReview.contains(questionId)) {
+            currentReview.remove(questionId)
+        } else {
+            currentReview.add(questionId)
+        }
+
+        _reviewQuestions.value = currentReview
+    }
+
+
     fun saveAndNext(questionId: String, actionText: String, maxQuestions: Int) {
         val currentStatus = _questionStatus.value.toMutableMap()
         currentStatus[questionId] = actionText
@@ -153,6 +172,19 @@ class CBTExamViewModel : ViewModel() {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    fun startTimer() {
 //        viewModelScope.launch(Dispatchers.Default) {
 //            while (!_examFinished.value && _timeLeft.value > 0) {
