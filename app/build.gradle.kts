@@ -28,11 +28,6 @@ android {
     }
 
 
-   /* composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }*/
-
-
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     val projectProperties = readProperties(keystorePropertiesFile)
 
@@ -40,8 +35,8 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 62
-        versionName = "2.7.2 "
+        versionCode = 63
+        versionName = "2.7.3"
        // versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

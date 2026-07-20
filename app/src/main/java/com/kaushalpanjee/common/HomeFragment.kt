@@ -4972,46 +4972,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        /*  binding.btnPmayValidate.setOnClickListener {
 
-           commonViewModel.shgValidateAPI(
-                ShgValidateReq(
-                    binding.etShgValidate.text.toString(),
-                    userPreferences.getUserStateLgdCode()
-                )
-            )  //41358
-
-            lifecycleScope.launch {
-                delay(1000)
-                if (shgValidateStatus == "Y") {
-
-                    binding.tvShgValidate.visible()
-                    binding.btnShgValidate.gone()
-                    shgCode = binding.etShgValidate.text.toString()
-                    binding.tvShgValidate.text = "Validate Successfully: $shgName"
-                } else toastLong("Validation Failed please check your SHG Code")
-            }
-        }*/
-
-
-
-      /*  binding.btnjobcardnoValidate.setOnClickListener {
-
-          //  val username = HashUtils.sha512("Nrega")
-          //  val password = HashUtils.sha512("Nrg2k18")
-            val username = HashUtils.sha512("GRAMG")
-            val password = HashUtils.sha512("GRAMG@2026")
-            jobCardNo = binding.etNregaValidate.text.toString()
-          //  val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
-            val fullUrl = "https://vbgramgweb4.dord.gov.in/GRAMG_webAPI/api/checkjobcard"
-
-            if (jobCardNo.isNotEmpty()) {
-
-                commonViewModel.getCheckJobCardAPI(fullUrl, username, password, jobCardNo)
-                //    commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
-
-            } else toastShort("Please enter jobCard")
-        }*/
 
         binding.btnjobcardnoValidate.setOnClickListener {
 
@@ -7049,7 +7010,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun showFileSelectionDialog(purpose: String) {
         if (purpose == "PROFILE_PIC") {
-            // Directly open the gallery for profile picture
+
             openGalleryForDocument(purpose)
             return
         }
