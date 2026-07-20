@@ -4758,6 +4758,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             when {
                 jobCardNo.isEmpty() -> {
                     binding.etNregaValidate.error = "Please enter Job Card No."
+                    toastLong("Please enter Job Card No.")
                 }
 
                 !isValidJobCard(jobCardNo) -> {
@@ -6564,7 +6565,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
                                 nregaValidateStatus = getValidateStatus.body()?.Status ?: ""
-
                                 if (getValidateStatus.body()?.Remarks.toString()=="Some error occurred")
                                 showSnackBar("Please enter a valid Job Card Number (e.g., HR-00-000-000-000/0000).")
                                 nregaJobCard = binding.etNregaValidate.text.toString()
@@ -6779,7 +6779,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun showFileSelectionDialog(purpose: String) {
         if (purpose == "PROFILE_PIC") {
-            // Directly open the gallery for profile picture
+
             openGalleryForDocument(purpose)
             return
         }

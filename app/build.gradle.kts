@@ -28,11 +28,6 @@ android {
     }
 
 
-   /* composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }*/
-
-
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     val projectProperties = readProperties(keystorePropertiesFile)
 
@@ -40,9 +35,9 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 62
-       // versionName = "2.7.2"
-        versionName = "2.6.6"
+        versionCode = 63
+        versionName = "2.7.3"
+       // versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -192,7 +187,7 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 }
 
 dependencies {
-    // Local AAR Librarys
+    // Local AAR Library
     implementation(files("libs/pehchaanlib.aar"))
 
     implementation(files("libs/samiksha-release.aar"))
@@ -290,10 +285,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
-
     // CardView
     implementation("androidx.cardview:cardview:1.0.0")
 
@@ -356,8 +347,6 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("junit:junit:4.13.2")
-
-
 
 
 
