@@ -160,15 +160,15 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
                  R.id.cbt ->{
-                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
+//                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
 
-//                     if (cbtExam == "N"){
-//                         findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
-//
-//                     }
-//                     else{
-//                         showSnackBar("CBT Exam is not available for you")
-//                     }
+                     if (cbtExam == "Y"){
+                         findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
+
+                     }
+                     else{
+                         showSnackBar("Exam is not available for you")
+                     }
 
                  }
 

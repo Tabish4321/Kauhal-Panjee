@@ -304,8 +304,14 @@
     <fragment
         android:id="@+id/cbtFragment"
         android:name="com.kaushalpanjee.cbt.CbtDetailFragment"
-        android:label="LanguageChangeFragment"
+        android:label="CbtDetailFragment"
         tools:layout="@layout/fragment_c_b_t_detail">
+
+        <action
+            android:id="@+id/action_cbtDetailFragment_to_mainHomePage"
+            app:destination="@id/mainHomePage"
+            app:popUpTo="@id/mainHomePage"
+            app:popUpToInclusive="true" />
 
     </fragment>
 </navigation>

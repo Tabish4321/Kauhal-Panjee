@@ -42,13 +42,21 @@ import android.widget.Toast
 import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.RateReview
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -67,24 +75,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import com.example.esop.quetions_esop.SummaryCard
 import com.example.myapplication.CBT.CircularTimer
 import com.example.myapplication.CBT.api.CBTViewModel
 import com.example.myapplication.CBT.api.Question
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.cbt.WorkManager.startSubmitWorker
 import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
 import com.kaushalpanjee.cbt.interctions.CBTInstructionStartScreen
 import com.kaushalpanjee.cbt.submit.SubmitExamItem
 import com.kaushalpanjee.common.CommonViewModel
+import com.kaushalpanjee.common.MainHomePageDirections
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.collections.get
 
-
-// new commit code commit and use 13 july 2026 time 10:04 PM
 @SuppressLint("ViewModelConstructorInComposable")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,7 +110,9 @@ fun CBTExamScreen(
     batchId: String,
     viewModel: CBTExamViewModel = viewModel(),
     commonViewModel: CommonViewModel = viewModel(),
-    onOrientationChange: (() -> Unit)? = null
+    onOrientationChange: (() -> Unit)? = null,
+    onSubmitSuccess: () -> Unit
+
 )
 {
     var isDeclarationChecked by rememberSaveable { mutableStateOf(false) }
@@ -114,61 +128,28 @@ fun CBTExamScreen(
 //    val commonViewModel: CommonViewModel = viewModel()
 
     val currentIndex by viewModel.currentIndex.collectAsState()
+//    var currentIndex by remember { mutableStateOf(0) }
     val timeLeft by viewModel.timeLeft.collectAsState()
     val examFinished by viewModel.examFinished.collectAsState()
     val editMode by viewModel.editMode.collectAsState()
     var showReviewDialog by remember { mutableStateOf(false) }
     var showQuestionPalette by remember { mutableStateOf(false) }
-    var showDialogTime by remember { mutableStateOf(false) }
-//    val showReviewDialog by viewModel.showReviewDialog.collectAsState()
-    val showSuccessDialog by viewModel.showSuccessDialog.collectAsState()
+    var showSubmitDialog by remember { mutableStateOf(false) }
     val submissionLoading by viewModel.submissionLoading.collectAsState()
     val submissionError by viewModel.submissionError.collectAsState()
     val answers by viewModel.answers.collectAsState()
     val markedQuestions by viewModel.markedQuestions.collectAsState()
-//    val markedQuestions = remember {
-//        mutableStateListOf<Int>()
-//    }
-
-//    val markedQuestions = remember {
-//        mutableStateListOf<Int>()
-//    }
-
-    val reviewQuestions = remember {
-        mutableStateListOf<Int>()
-    }
+    val reviewQuestions by viewModel.markedQuestions.collectAsState()
     var currentQuestionIndex by remember {
         mutableIntStateOf(0)
     }
-
-    val questionStatus by viewModel.questionStatus.collectAsState()
     val DarkGreen = Color(0xFF173430)
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
-
-
-
     val lifecycleOwner = LocalLifecycleOwner.current
-
-//    var showQuestionPalette by remember { mutableStateOf(false) }
-//    var showDialogTime by remember { mutableStateOf(false) }
-    var showReviewScreen by remember { mutableStateOf(false) }
-
-    // Answer States
-    val answeredQuestions = remember {
-        mutableStateMapOf<Int, String>()
-    }
-
-
-
-//    val reviewQuestions = remember { mutableStateSetOf<Int>() }
-
-    // Summary Counts
-    val answeredCount = answeredQuestions.size
-    val markedCount = markedQuestions.size
+    val answeredCount = questionList.count { answers.containsKey(it.question_id) }
     val notAnsweredCount = questionList.size - answeredCount
-
 
     LaunchedEffect(Unit) {
         commonViewModel.submitAnswers.collectLatest { state ->
@@ -181,12 +162,20 @@ fun CBTExamScreen(
                 is Resource.Success -> {
                     val response = state.data
                     Log.d("CBT_SUBMIT", "Success Response = $response")
-
-                    Toast.makeText(
-                        context,
-                        response?.message ?: "Submitted successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                            MaterialAlertDialogBuilder(context)
+                        .setTitle(context.getString(R.string.success))
+                        .setMessage(response?.message)
+                        .setCancelable(false)
+                        .setPositiveButton(context.getString(R.string.ok)) { dialog, _ ->
+                            dialog.dismiss()
+                            onSubmitSuccess()
+                        }
+                        .show()
+//                    Toast.makeText(
+//                        context,
+//                        response?.message ?: "Submitted successfully",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
 
                     // Agar submit ke baad back jana hai ya next screen open karni hai
                     // onOrientationChange?.invoke()
@@ -209,7 +198,7 @@ fun CBTExamScreen(
     val currentOrientation = configuration.orientation
     LaunchedEffect(currentOrientation) {
         if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.w("CBTExamScreen", "Device rotated to landscape - navigating back to home")
+//            Log.w("CBTExamScreen", "Device rotated to landscape - navigating back to home")
             onOrientationChange?.invoke()
         }
     }
@@ -224,7 +213,7 @@ fun CBTExamScreen(
 
     if (!examStarted) {
         CBTInstructionStartScreen(
-            title = "CBT Exam",
+            title = context.getString(R.string.cbt_exam),
             remainingSeconds = timeLeft,
             isDeclarationChecked = isDeclarationChecked,
             onDeclarationChecked = { isDeclarationChecked = it },
@@ -246,22 +235,6 @@ fun CBTExamScreen(
         containerColor = Color(0x33F2F2F2),
 
         topBar = {
-//            Surface(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .statusBarsPadding()
-//                    .height((screenHeight * 0.08f).dp)   // 8% of screen height
-//                    .background(
-//                        Brush.horizontalGradient(
-//                            listOf(
-//                                MaterialTheme.colorScheme.primary,
-//                                MaterialTheme.colorScheme.primaryContainer,
-//                                MaterialTheme.colorScheme.secondary
-//                            )
-//                        )
-//                    ),
-//                color = Color.Transparent
-//            )
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -278,14 +251,6 @@ fun CBTExamScreen(
                     ),
                 color = Color.Transparent
             )
-//            Surface(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .statusBarsPadding()
-//                    .height((screenHeight * 0.08f).dp),
-//                color = Color.Transparent
-//            )
-
             {
 
                 Row(
@@ -304,7 +269,7 @@ fun CBTExamScreen(
                             .padding(12.dp)
                     ) {
                         Text(
-                            text = "Candidate ID : ${candidateId?.takeIf { it.isNotBlank() } ?: "NA"}",
+                            text = "${context.getString(R.string.candidate_id)}: ${candidateId?.takeIf { it.isNotBlank() } ?: "NA"}",
                             fontWeight = FontWeight.Bold,
                             color = Color.Black
                         )
@@ -325,10 +290,11 @@ fun CBTExamScreen(
                         )
 
                         Spacer(Modifier.width(10.dp))
-                        IconButton(onClick = { viewModel.toggleReviewDialog() }) {
+//                        IconButton(onClick = { showQuestionPalette=true }) {
+                        IconButton(onClick = { showReviewDialog=true }) {
                             Icon(
                                 imageVector = Icons.Default.RateReview,
-                                contentDescription = "Review",
+                                contentDescription = context.getString(R.string.review),
                                 tint = Color.White
                             )
                         }
@@ -437,8 +403,9 @@ fun CBTExamScreen(
                 Spacer(Modifier.height(12.dp))
             }
 
-                if (showReviewDialog)
-            {
+
+
+            if (showReviewDialog) {
 
                 Dialog(
                     onDismissRequest = { },
@@ -467,11 +434,11 @@ fun CBTExamScreen(
                             ) {
 
                                 IconButton(
-                                    onClick = { viewModel.closeReviewDialog() }
+                                    onClick = { showReviewDialog=false }
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.ArrowBack,
-                                        contentDescription = "Back"
+                                        contentDescription = stringResource(R.string.back)
                                     )
                                 }
 
@@ -498,8 +465,8 @@ fun CBTExamScreen(
                                 Box(
                                     modifier = Modifier
                                         .size(14.dp)
-                                        .background(Color(0xFFB8B8B8), RoundedCornerShape(3.dp))
 //                                        .background(Color(0xFFF44336), RoundedCornerShape(3.dp))
+                                        .background(Color(0xFFB8B8B8), RoundedCornerShape(3.dp))
                                 )
 
                                 Text(
@@ -527,14 +494,75 @@ fun CBTExamScreen(
                                 )
 
                                 Text(
-                                    text = stringResource(R.string.review),
+                                    text = context.getString(R.string.review),
                                     fontSize = 11.sp
                                 )
+
+
+//                                Box(
+//                                    modifier = Modifier
+//                                        .size(14.dp)
+//                                        .background(Color(0xFF4FC3F7), RoundedCornerShape(3.dp))
+//                                )
+
+//                                Text(
+//                                    text = "Mark",
+//                                    fontSize = 11.sp
+//                                )
                             }
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            Spacer(modifier = Modifier.height(10.dp))
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(5),
+                                modifier = Modifier.weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            )
+                            {
+
+                                items(questionList.size) { index ->
+
+                                    val question = questionList[index]
+                                    val id = question.question_id
+
+                                    val bgColor = when {
+
+                                        answers.containsKey(id) && markedQuestions.contains(id) ->
+                                            Color(0xFFFFC107)   // Answered & Review
+
+//                                        !answers.containsKey(id) && markedQuestions.contains(id) ->
+//                                            Color(0xFF4FC3F7)   // Review Later
+
+                                        answers.containsKey(id) ->
+                                            Color(0xFF4CAF50)   // Answered
+
+                                        else ->
+                                            Color(0xFFB8B8B8)   // Not Answered
+//                                            Color(0xFFF44336)   // Not Answered
+                                    }
+
+                                    Box(
+                                        modifier = Modifier
+                                            .size(50.dp)
+                                            .clip(RoundedCornerShape(8.dp))
+                                            .background(bgColor)
+                                            .clickable {
+                                                viewModel.goToQuestion(index)
+//                                                currentIndex = index
+                                                showReviewDialog = false
+                                            },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+
+                                        Text(
+                                            text = "${index + 1}",
+                                            color = Color.White,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                    }
+                                }
+                            }
 
                             // ---------------------------
                             // Bottom Buttons
@@ -550,11 +578,10 @@ fun CBTExamScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .clip(RoundedCornerShape(8.dp))
-                                        .background(Color(0xFFB8B8B8))
-//                                        .background(Color(0xFFE53935))
+//                                        .background(Color(0xFFB8B8B8))
+                                        .background(Color(0xFFE53935))
                                         .clickable {
-                                            viewModel.previousQuestion()
-                                            viewModel.closeReviewDialog()
+                                            showReviewDialog = false
                                         }
                                         .padding(vertical = 12.dp),
                                     contentAlignment = Alignment.Center
@@ -580,35 +607,35 @@ fun CBTExamScreen(
                                             showReviewDialog = false
 
                                             showQuestionPalette = true
-                                                if (currentQuestionIndex < questionList.lastIndex) {
+                                            if (currentQuestionIndex < questionList.lastIndex) {
 
-                                                    currentQuestionIndex++
-                                                    showReviewDialog = false
-                                                }
+                                                currentQuestionIndex++
+                                                showReviewDialog = false
+                                            }
 
-//                                            val currentQuestion = questionList.getOrNull(currentQuestionIndex)
-//                                            currentQuestion?.question_id?.let { id ->
-//                                                viewModel.markQuestion(id.toString())
-//                                                viewModel.saveAndNext(
-//                                                    id.toString(),
-//                                                    "Next & Review",
-//                                                    questionList.size
-//                                                )
-//                                            }
-//                                            viewModel.closeReviewDialog()
+                                            val currentQuestion =
+                                                questionList.getOrNull(currentQuestionIndex)
+                                            currentQuestion?.question_id?.let { id ->
+                                                viewModel.markQuestion(id.toString())
+                                                viewModel.saveAndNext(
+                                                    id.toString(),
+                                                    context.getString(R.string.next_review),
+                                                    questionList.size
+                                                )
+                                            }
+                                            viewModel.closeReviewDialog()
                                         }
                                         .padding(vertical = 12.dp),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = "Next & Review",
+                                        text = context.getString(R.string.next_review),
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 13.sp
                                     )
                                 }
                             }
-
                             Spacer(modifier = Modifier.height(8.dp))
 
                             // Close Button
@@ -626,50 +653,77 @@ fun CBTExamScreen(
                                     fontSize = 13.sp
                                 )
                             }
+
                         }
                     }
                 }
             }
 
-//            if (showQuestionPalette) {
-//                showDialogTime = false
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .background(Color.White)
-//                        .zIndex(20f)
-//                ) {
-//
-//                    Column(
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .padding(16.dp)
-//                    ) {
-//
-//                        Text(
-//                            text = "Review Your Test",
-//                            fontSize = 22.sp,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//
-//                        Spacer(modifier = Modifier.height(16.dp))
-//
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.SpaceEvenly
-//                        ) {
+
+
+
+
+            if (showQuestionPalette) {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White)
+                        .zIndex(20f)
+                ) {
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+
+                        Text(
+                            text = stringResource(R.string.review_your_test),
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            context.getString(R.string.candidate_id)
 //                            SummaryCard("Answered", answeredCount.toString(), Color(0xFF4CAF50))
+                            SummaryCard(stringResource(R.string.answered), answeredCount.toString(), Color(0xFF4CAF50))
 //                            SummaryCard("Not Answered", notAnsweredCount.toString(), Color(0xFFF44336))
+                            SummaryCard(stringResource(R.string.not_answered), notAnsweredCount.toString(), Color(0xFFF44336))
 //                            SummaryCard("Marked", markedCount.toString(), Color(0xFFFFC107))
-//                            SummaryCard("Total", questionList.size.toString(), Color(0xFF2196F3))
-//                        }
-//
-//                        Spacer(modifier = Modifier.height(20.dp))
-//
-//                        LazyColumn(
-//                            modifier = Modifier.weight(1f)
-//                        ) {
-//                            items(questionList.size) { index ->
+                            SummaryCard(stringResource(R.string.total), questionList.size.toString(), Color(0xFF2196F3))
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        LazyColumn(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            items(questionList.size) { index ->
+
+                                val questionId = questionList[index].question_id ?: ""
+
+                                val status = when {
+
+                                    reviewQuestions.contains(questionId) ->
+                                        stringResource(R.string.marked_for_review)
+
+//                                    markedQuestions.contains(questionId) ->
+//                                        "Marked"
+
+                                    answers.containsKey(questionId) ->
+                                        stringResource(R.string.answered)
+//                                        "Answered"
+
+                                    else ->
+                                        stringResource(R.string.not_answered)
+//                                        "Not Answered"
+                                }
 //
 //                                val status = when {
 //                                    reviewQuestions.contains(index) -> "Marked for Review"
@@ -677,40 +731,42 @@ fun CBTExamScreen(
 //                                    answeredQuestions.containsKey(index) -> "Answered"
 //                                    else -> "Not Answered"
 //                                }
-//
-//                                Row(
-//                                    modifier = Modifier
-//                                        .fillMaxWidth()
-//                                        .padding(8.dp),
-//                                    horizontalArrangement = Arrangement.SpaceBetween
-//                                ) {
-//                                    Text(text = "Q. ${index + 1}")
-//                                    Text(text = status)
-//                                }
-//
-//                                Divider()
-//                            }
-//                        }
-//
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-//                        ) {
-//
-//                            OutlinedButton(
-//                                modifier = Modifier.weight(1f),
-//                                onClick = {
-//                                    // Previous = dismiss
-//                                    showReviewScreen = false
-//                                }
-//                            ) {
-//                                Text("Back to Test")
-//                            }
-//
-//                            Button(
-//                                modifier = Modifier.weight(1f),
-//                                onClick = {
-//
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(text = "Q. ${index + 1}")
+                                    Text(text = status)
+                                }
+
+                                Divider()
+                            }
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+
+                            OutlinedButton(
+                                modifier = Modifier.weight(1f),
+                                onClick = {
+                                    // Previous = dismiss
+                                    showReviewDialog = true
+                                    showQuestionPalette=false
+                                }
+                            ) {
+                                Text(stringResource(R.string.back_to_test))
+                            }
+
+                            Button(
+                                modifier = Modifier.weight(1f),
+                                onClick = {
+                                    showSubmitDialog = true
+
 //                                    val submitList = questionList.map { question ->
 //                                        val answerGiven = answers[question.question_id] ?: ""
 //                                        val category = when {
@@ -736,46 +792,101 @@ fun CBTExamScreen(
 //                                            submitList
 //                                        )
 //                                    )
-//                                }
-//                            ) {
-//                                Text("Submit Test")
-//                            }
-//                        }
-//                    }
-//                }
-//            }
 
 
+                                }
+                            ) {
+                                Text(stringResource(R.string.submit_test))
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (showSubmitDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        showSubmitDialog = false
+                    },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Warning,
+                            contentDescription = stringResource(R.string.warning),
+                            tint = Color(0xFFFF9800),
+                            modifier = Modifier.size(40.dp)
+                        )
+                    },
+                    title = {
+                        Text(
+                            text =stringResource(R.string.submit_test),
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(R.string.do_you_want_to_submit_the_questions)
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                showSubmitDialog = false
+                                // -----------------------------
+                                // API CALL
+                                // -----------------------------
+
+//                                CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
+                                commonViewModel.submitExam(
+                                    AppUtil.getSavedTokenPreference(context),
+//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
+                                    CbtAnsersSubmit(
+                                        "2603404318",
+                                        batchId,
+                                        examId,
+                                        questionSetId,
+                                        questionList.map { question ->
 
 
-
-
-// commonViewModel.submitExam(
-//                            AppUtil.getSavedTokenPreference(context),
-////                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
-////                            CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
-//                            CbtAnsersSubmit(
-//                                "2603404318",
-//                                batchId,
-//                                examId,
-//                                questionSetId,
-//                                questionList.map { question ->
-//                                    val answerGiven = answers[question.question_id] ?: ""
-//                                    val category = when {
-//                                        markedQuestions.contains(question.question_id) -> "Mark & Review"
-//                                        answerGiven.isNotEmpty() -> "Save & Next"
-////                                    answerGiven.isNotEmpty() -> "NA"
-//                                        else -> "Save & Next"
-////                                    else -> "Not Answered"
-//                                    }
-//                                    SubmitExamItem(
-//                                        question_id = question.question_id ?: "",
-//                                        answer_given = if (answerGiven.isEmpty()) "NA" else answerGiven,
-//                                        category = category,
-//                                        marks_per_qs = question.marks_per_qs ?: 0.0
-//                                    )
-//                                }
-//                            ))
+                                            val answerGiven = answers[question.question_id] ?: ""
+                                            val category = when {
+                                                markedQuestions.contains(question.question_id) -> context.getString(
+                                                    R.string.mark_review
+                                                )
+                                                answerGiven.isNotEmpty() -> context.getString(
+                                                    R.string.save_next
+                                                )
+//                                                answerGiven.isNotEmpty() -> "Save & Next"
+//                                    answerGiven.isNotEmpty() -> "NA"
+                                                else -> context.getString(
+                                                    R.string.save_next
+                                                )
+//                                                else -> "Save & Next"
+//                                    else -> "Not Answered"
+                                            }
+                                            SubmitExamItem(
+                                                question_id = question.question_id ?: "",
+                                                answer_given = if (answerGiven.isEmpty()) "NA" else answerGiven,
+                                                category = category,
+                                                marks_per_qs = question.marks_per_qs ?: 0.0
+                                            )
+                                        }
+                                    ))
+                            }
+                        ) {
+                            Text(stringResource(R.string.yes))
+                        }
+                    },
+                    dismissButton = {
+                        OutlinedButton(
+                            onClick = {
+                                showSubmitDialog = false
+                            }
+                        ) {
+                            Text(stringResource(R.string.no))
+                        }
+                    }
+                )
+            }
 
 
 
@@ -794,7 +905,7 @@ fun CBTExamScreen(
                     val buttonList = listOf(
                         R.string.save_next to Color(0xFF4CAF50),
                         R.string.save_review to Color(0xFFFFC107),
-                        R.string.mark to Color(0xFF03A9F4),
+//                        R.string.mark to Color(0xFF03A9F4),
                         R.string.clear to Color.Gray
                     )
 
@@ -823,9 +934,9 @@ fun CBTExamScreen(
                                             )
                                         }
 
-                                        R.string.mark -> {
-                                            viewModel.markQuestion(id.toString())
-                                        }
+//                                        R.string.mark -> {
+//                                            viewModel.markQuestion(id.toString())
+//                                        }
 
                                         else -> {
                                             viewModel.saveAndNext(
@@ -928,52 +1039,8 @@ fun CBTExamScreen(
                         else Color(0xFF173430)
                     )
                     .clickable(enabled = !submissionLoading) {
-
-                        viewModel.toggleReviewDialog()
-                        commonViewModel.submitExam(
-                            AppUtil.getSavedTokenPreference(context),
-//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
-//                            CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
-                            CbtAnsersSubmit(
-                                "2603404318",
-                                batchId,
-                                examId,
-                                questionSetId,
-                                questionList.map { question ->
-                                    val answerGiven = answers[question.question_id] ?: ""
-                                    val category = when {
-                                        markedQuestions.contains(question.question_id) -> "Mark & Review"
-                                        answerGiven.isNotEmpty() -> "Save & Next"
-//                                    answerGiven.isNotEmpty() -> "NA"
-                                        else -> "Save & Next"
-//                                    else -> "Not Answered"
-                                    }
-                                    SubmitExamItem(
-                                        question_id = question.question_id ?: "",
-                                        answer_given = if (answerGiven.isEmpty()) "NA" else answerGiven,
-                                        category = category,
-                                        marks_per_qs = question.marks_per_qs ?: 0.0
-                                    )
-                                }
-                            ))
-                        showQuestionPalette = true
+                        showReviewDialog = true
                     }
-//                    }
-
-
-
-//                    }
-
-//                    .clickable(enabled = !submissionLoading) {
-//                        viewModel.submitExam(
-//                            questionList,
-//                            candidateId,
-//                            batchId,
-//                            examId,
-//                            questionSetId,
-//                            context
-//                        )
-//                    }
                     .padding(vertical = 11.dp),
                 contentAlignment = Alignment.Center
             )
@@ -987,7 +1054,7 @@ fun CBTExamScreen(
                     )
                 } else {
                     Text(
-                        text = if (editMode) "Update & Submit" else "Submit Exam",
+                        text = if (editMode) "Update & Submit" else stringResource(R.string.submit_exam),
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp
@@ -1028,99 +1095,7 @@ fun CBTExamScreen(
                     }
             }
             // 🔥 SUCCESS DIALOG - Show when exam submitted successfully
-            if (showSuccessDialog) {
-                val repo = CBTViewModel()
-                repo.deleteOfflineJson(context)
 
-
-
-
-                // 🔥 ADD THIS LINE (IMPORTANT)
-                LaunchedEffect(showSuccessDialog) {
-                    if (showSuccessDialog) {
-                        startSubmitWorker(context, candidateId)
-                    }
-                }
-
-                AlertDialog(
-                    onDismissRequest = { viewModel.closeSuccessDialog() },
-                    title = {
-                        Text(
-                            text = "✅ Success!",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF4CAF50)
-                        )
-                    },
-                    text = {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Text(
-                                text = "Your exam has been submitted successfully!",
-                                fontSize = 15.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-
-                            Divider()
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
-                                    .padding(12.dp)
-                            ) {
-                                Text(
-                                    text = "Candidate ID:",
-                                    fontSize = 12.sp,
-                                    color = Color.Gray,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = candidateId,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-
-                            Text(
-                                text = "We're syncing your results in the background. You can close this app.",
-                                fontSize = 12.sp,
-                                color = Color.Gray,
-                                fontStyle = FontStyle.Italic
-                            )
-                        }
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                viewModel.closeSuccessDialog()
-                                repo.deleteOfflineJson(context)
-                                      },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFF4CAF50)
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(45.dp)
-                        ) {
-                            Text(
-                                text = "OK",
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp
-                            )
-                        }
-                    },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                )
-            }
 
             // 🔥 FAILURE DIALOG - Show when exam submission fails
             if (submissionError != null) {

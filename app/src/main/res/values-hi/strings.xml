@@ -266,4 +266,72 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+
+
+
+
+
+
+    <string name="cbt_exam">सीबीटी परीक्षा</string>
+    <string name="candidate_id">उम्मीदवार आईडी :</string>
+    <string name="candidate_name_cbt">उम्मीदवार का नाम</string>
+    <string name="question">प्रश्न</string>
+    <string name="save_next">सेव करें और अगला</string>
+    <string name="save_review">सेव करें और समीक्षा</string>
+    <string name="mark">मार्क करें</string>
+    <string name="clear">साफ़ करें</string>
+    <string name="previous">पिछला</string>
+    <string name="next">अगला</string>
+    <string name="question_index">प्रश्न सूची</string>
+    <string name="answered">उत्तर दिया गया</string>
+    <string name="not_answered">उत्तर नहीं दिया गया</string>
+    <string name="loading_questions">प्रश्न लोड हो रहे हैं...</string>
+    <string name="review">समीक्षा</string>
+    <string name="back">वापस</string>
+    <string name="next_review"><![CDATA[अगला और समीक्षा]]></string>
+    <string name="review_your_test">अपनी परीक्षा की समीक्षा करें</string>
+    <string name="total">कुल</string>
+    <string name="marked_for_review">समीक्षा के लिए चिह्नित</string>
+    <string name="back_to_test">परीक्षा पर वापस जाएं</string>
+    <string name="submit_test">परीक्षा सबमिट करें</string>
+    <string name="warning">चेतावनी</string>
+    <string name="do_you_want_to_submit_the_questions">क्या आप प्रश्न सबमिट करना चाहते हैं?</string>
+    <string name="mark_review"><![CDATA[चिह्नित करें और समीक्षा]]></string>
+
+
+
+
+
+    <string name="instruction_1">कंप्यूटर आधारित परीक्षा में 50 बहुविकल्पीय प्रश्न (MCQs) होते हैं। प्रत्येक प्रश्न 2 अंकों का होता है।</string>
+    <string name="instruction_2">परीक्षा की कुल अवधि 60 मिनट है।</string>
+    <string name="instruction_3">60 मिनट के बाद परीक्षा स्वतः सबमिट हो जाएगी, या यदि उम्मीदवार पहले परीक्षा सबमिट कर देता है तो उससे पहले।</string>
+    <string name="instruction_4">इसमें कोई नकारात्मक अंकन (negative marking) नहीं है।</string>
+    <string name="instruction_5">प्रत्येक प्रश्न में चार विकल्प होते हैं। केवल एक विकल्प सही होता है।</string>
+    <string name="instruction_6">उम्मीदवार प्रश्न संख्या पर क्लिक करके किसी भी प्रश्न पर जा सकते हैं। प्रश्नों को क्रमानुसार हल करना आवश्यक नहीं है।</string>
+    <string name="instruction_7">प्रश्नों के बीच जाने के लिए Next और Previous बटन का उपयोग करें।</string>
+    <string name="instruction_8">अनुत्तरित प्रश्न दाईं ओर के पैनल पर सफेद या लाल रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_9">उत्तर दिए गए प्रश्न हरे रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_10">उत्तर दिए गए और समीक्षा के लिए चिह्नित प्रश्न नारंगी रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_11">समीक्षा के लिए चिह्नित प्रश्न नीले रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_12">यदि किसी प्रश्न को समीक्षा के लिए चिह्नित किया गया है और कोई विकल्प चुना गया है, तो अंतिम सबमिशन या समय समाप्त होने पर उसे हल किया हुआ माना जाएगा।</string>
+    <string name="instruction_13">शेष समय स्क्रीन के ऊपरी-बाएं कोने में उम्मीदवार के विवरण के पास प्रदर्शित होता है।</string>
+    <string name="instruction_14">परीक्षा के दौरान ESC बटन न दबाएं, 2 प्रयासों के बाद परीक्षा जबरन सबमिट हो जाएगी और उपयोगकर्ता को लॉग आउट कर दिया जाएगा।</string>
+
+
+
+
+
+
+
+    <string name="exam_instructions">परीक्षा निर्देश</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">परीक्षा शुरू करने से पहले निर्देशों को ध्यानपूर्वक पढ़ें।</string>
+    <string name="declaration">घोषणा</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">मैंने निर्देश पढ़ और समझ लिए हैं और परीक्षा जारी रखना चाहता/चाहती हूं।</string>
+    <string name="exam_starts_in">परीक्षा शुरू होगी: %1$s</string>
+    <string name="start_now">अभी शुरू करें</string>
+    <string name="submit_exam">परीक्षा सबमिट करें</string>
+    <string name="success">सफलता</string>
 </resources>
