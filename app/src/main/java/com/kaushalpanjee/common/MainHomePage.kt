@@ -161,7 +161,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                  R.id.cbt ->{
 
-                     if (cbtExam == "Y"){
+                     if (cbtExam == "N"){
                          findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
 
                      }
