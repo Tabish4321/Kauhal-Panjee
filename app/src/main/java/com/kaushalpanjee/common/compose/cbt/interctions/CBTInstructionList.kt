@@ -1,4 +1,4 @@
-package com.kaushalpanjee.cbt.interctions
+package com.kaushalpanjee.common.compose.cbt.interctions
 
 
 

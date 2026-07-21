@@ -2,8 +2,8 @@ package com.kaushalpanjee.common
 
 import com.example.myapplication.CBT.api.CbtQuestionsResponse
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
-import com.kaushalpanjee.cbt.api.answers.SubmitExamResponse
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -678,12 +678,12 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun getCBTQuestions(
+    suspend fun getCbtExam(
         header: String,
         cbtQuestionsReq: CbtQuestionsReq
     ): Flow<Resource<CbtQuestionsResponse>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getCBTQuestions(header, cbtQuestionsReq)
+            appLevelApi.getCbtExam(header, cbtQuestionsReq)
         }
     }
 

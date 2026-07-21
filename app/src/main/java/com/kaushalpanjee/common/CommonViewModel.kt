@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.CBT.api.CbtQuestionsResponse
 import com.kaushalpanjee.BuildConfig
-import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
-import com.kaushalpanjee.cbt.api.answers.SubmitExamResponse
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.StateDataResponse
 import com.kaushalpanjee.common.model.UidaiKycRequest
@@ -1367,12 +1367,12 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     val getCBTQuestions = _getCBTQuestions.asSharedFlow()
 
-    fun getCBTGETQUESTION(
+    fun getCbtExam(
         header: String,
         cbtQuestionsReq: CbtQuestionsReq
     ) {
         viewModelScope.launch {
-            commonRepository.getCBTQuestions(header, cbtQuestionsReq).collectLatest {
+            commonRepository.getCbtExam(header, cbtQuestionsReq).collectLatest {
                 _getCBTQuestions.emit(it)
             }
         }

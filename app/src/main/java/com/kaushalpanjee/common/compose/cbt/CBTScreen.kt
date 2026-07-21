@@ -1,4 +1,4 @@
-package com.kaushalpanjee.cbt
+package com.kaushalpanjee.common.compose.cbt
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -42,14 +42,11 @@ import android.widget.Toast
 import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ButtonDefaults
@@ -68,30 +65,22 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaushalpanjee.R
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.esop.quetions_esop.SummaryCard
 import com.example.myapplication.CBT.CircularTimer
-import com.example.myapplication.CBT.api.CBTViewModel
 import com.example.myapplication.CBT.api.Question
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.kaushalpanjee.cbt.WorkManager.startSubmitWorker
-import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
-import com.kaushalpanjee.cbt.interctions.CBTInstructionStartScreen
-import com.kaushalpanjee.cbt.submit.SubmitExamItem
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.compose.cbt.interctions.CBTInstructionStartScreen
+import com.kaushalpanjee.common.model.request.SubmitExamItem
 import com.kaushalpanjee.common.CommonViewModel
-import com.kaushalpanjee.common.MainHomePageDirections
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import kotlinx.coroutines.flow.collectLatest
@@ -108,7 +97,7 @@ fun CBTExamScreen(
     examId: String,
     questionSetId: String,
     batchId: String,
-    viewModel: CBTExamViewModel = viewModel(),
+
     commonViewModel: CommonViewModel = viewModel(),
     onOrientationChange: (() -> Unit)? = null,
     onSubmitSuccess: () -> Unit
@@ -123,23 +112,27 @@ fun CBTExamScreen(
         return
     }
 
+
+//       viewModel: App = viewModel()
+      val viewModel: AppUtil
+
     // Collect ViewModel StateFlows
-    val examStarted by viewModel.examStarted.collectAsState()
+    val examStarted   by  AppUtil.examStarted.collectAsState()
 //    val commonViewModel: CommonViewModel = viewModel()
 
-    val currentIndex by viewModel.currentIndex.collectAsState()
+    val currentIndex by AppUtil.currentIndex.collectAsState()
 //    var currentIndex by remember { mutableStateOf(0) }
-    val timeLeft by viewModel.timeLeft.collectAsState()
-    val examFinished by viewModel.examFinished.collectAsState()
-    val editMode by viewModel.editMode.collectAsState()
+    val timeLeft by AppUtil.timeLeft.collectAsState()
+    val examFinished by AppUtil.examFinished.collectAsState()
+    val editMode by AppUtil.editMode.collectAsState()
     var showReviewDialog by remember { mutableStateOf(false) }
     var showQuestionPalette by remember { mutableStateOf(false) }
     var showSubmitDialog by remember { mutableStateOf(false) }
-    val submissionLoading by viewModel.submissionLoading.collectAsState()
-    val submissionError by viewModel.submissionError.collectAsState()
-    val answers by viewModel.answers.collectAsState()
-    val markedQuestions by viewModel.markedQuestions.collectAsState()
-    val reviewQuestions by viewModel.markedQuestions.collectAsState()
+    val submissionLoading by AppUtil.submissionLoading.collectAsState()
+    val submissionError by AppUtil.submissionError.collectAsState()
+    val answers by AppUtil.answers.collectAsState()
+    val markedQuestions by AppUtil.markedQuestions.collectAsState()
+    val reviewQuestions by AppUtil.markedQuestions.collectAsState()
     var currentQuestionIndex by remember {
         mutableIntStateOf(0)
     }
@@ -171,14 +164,6 @@ fun CBTExamScreen(
                             onSubmitSuccess()
                         }
                         .show()
-//                    Toast.makeText(
-//                        context,
-//                        response?.message ?: "Submitted successfully",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-
-                    // Agar submit ke baad back jana hai ya next screen open karni hai
-                    // onOrientationChange?.invoke()
                 }
 
                 is Resource.Error -> {
@@ -206,7 +191,13 @@ fun CBTExamScreen(
     // Start timer once when exam begins
     LaunchedEffect(examStarted) {
         if (examStarted && !examFinished) {
-            viewModel.startTimer()
+            AppUtil.startTimer(
+                scope = this,
+                timeLeft = AppUtil.timeLeft,
+                examFinished = AppUtil.examFinished,
+                showSuccessDialog = AppUtil.showSuccessDialog
+            )
+
         }
     }
 
@@ -221,7 +212,7 @@ fun CBTExamScreen(
                 onOrientationChange?.invoke()
             },
             onStartClick = {
-                viewModel.startExam()
+                AppUtil.startExam()
             }
         )
         return
@@ -372,7 +363,7 @@ fun CBTExamScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                viewModel.selectAnswer(
+                                AppUtil.selectAnswer(
                                     currentQuestion.question_id.toString(),
                                     option.option_key.toString()
                                 )
@@ -392,7 +383,7 @@ fun CBTExamScreen(
                         RadioButton(
                             selected = answers[currentQuestion.question_id] == option.option_key,
                             onClick = {
-                                viewModel.selectAnswer(currentQuestion.question_id.toString(), option.option_key.toString())
+                                AppUtil.selectAnswer(currentQuestion.question_id.toString(), option.option_key.toString())
                             }
                         )
 
@@ -497,18 +488,6 @@ fun CBTExamScreen(
                                     text = context.getString(R.string.review),
                                     fontSize = 11.sp
                                 )
-
-
-//                                Box(
-//                                    modifier = Modifier
-//                                        .size(14.dp)
-//                                        .background(Color(0xFF4FC3F7), RoundedCornerShape(3.dp))
-//                                )
-
-//                                Text(
-//                                    text = "Mark",
-//                                    fontSize = 11.sp
-//                                )
                             }
 
                             Spacer(modifier = Modifier.height(10.dp))
@@ -548,7 +527,7 @@ fun CBTExamScreen(
                                             .clip(RoundedCornerShape(8.dp))
                                             .background(bgColor)
                                             .clickable {
-                                                viewModel.goToQuestion(index)
+                                                AppUtil.goToQuestion(index)
 //                                                currentIndex = index
                                                 showReviewDialog = false
                                             },
@@ -616,14 +595,14 @@ fun CBTExamScreen(
                                             val currentQuestion =
                                                 questionList.getOrNull(currentQuestionIndex)
                                             currentQuestion?.question_id?.let { id ->
-                                                viewModel.markQuestion(id.toString())
-                                                viewModel.saveAndNext(
+                                                AppUtil.markQuestion(id.toString())
+                                                AppUtil.saveAndNext(
                                                     id.toString(),
                                                     context.getString(R.string.next_review),
                                                     questionList.size
                                                 )
                                             }
-                                            viewModel.closeReviewDialog()
+                                            AppUtil.closeReviewDialog()
                                         }
                                         .padding(vertical = 12.dp),
                                     contentAlignment = Alignment.Center
@@ -766,34 +745,6 @@ fun CBTExamScreen(
                                 modifier = Modifier.weight(1f),
                                 onClick = {
                                     showSubmitDialog = true
-
-//                                    val submitList = questionList.map { question ->
-//                                        val answerGiven = answers[question.question_id] ?: ""
-//                                        val category = when {
-//                                            markedQuestions.contains(question.question_id)-> "Mark & Review"
-//                                            answerGiven.isNotEmpty() -> "Save & Next"
-//                                            else -> "Save & Next"
-//                                        }
-//                                        SubmitExamItem(
-//                                            question_id = question.question_id ?: "",
-//                                            answer_given = if (answerGiven.isEmpty()) "NA" else answerGiven,
-//                                            category = category,
-//                                            marks_per_qs = question.marks_per_qs ?: 0.0
-//                                        )
-//                                    }
-//
-//                                    commonViewModel.submitExam(
-//                                        AppUtil.getSavedTokenPreference(context),
-//                                        CbtAnsersSubmit(
-//                                            candidateId,
-//                                            batchId,
-//                                            examId,
-//                                            questionSetId,
-//                                            submitList
-//                                        )
-//                                    )
-
-
                                 }
                             ) {
                                 Text(stringResource(R.string.submit_test))
@@ -922,12 +873,12 @@ fun CBTExamScreen(
 
                                     when (textRes) {
                                         R.string.clear -> {
-                                            viewModel.clearAnswer(id.toString())
+                                            AppUtil.clearAnswer(id.toString())
                                         }
 
                                         R.string.save_review -> {
-                                            viewModel.markQuestion(id.toString())
-                                            viewModel.saveAndNext(
+                                            AppUtil.markQuestion(id.toString())
+                                            AppUtil.saveAndNext(
                                                 id.toString(),
                                                 text,
                                                 questionList.size
@@ -939,7 +890,7 @@ fun CBTExamScreen(
 //                                        }
 
                                         else -> {
-                                            viewModel.saveAndNext(
+                                            AppUtil.saveAndNext(
                                                 id.toString(),
                                                 text,
                                                 questionList.size
@@ -982,7 +933,7 @@ fun CBTExamScreen(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.previousQuestion()
+                                AppUtil.previousQuestion()
                             }
                             .padding(vertical = 8.dp),
                         contentAlignment = Alignment.Center
@@ -1012,7 +963,7 @@ fun CBTExamScreen(
                                 shape = RoundedCornerShape(8.dp)
                             )
                             .clickable {
-                                viewModel.nextQuestion(questionList.size)
+                                AppUtil.nextQuestion(questionList.size)
                             }
                             .padding(vertical = 8.dp),
                         contentAlignment = Alignment.Center
@@ -1100,7 +1051,7 @@ fun CBTExamScreen(
             // 🔥 FAILURE DIALOG - Show when exam submission fails
             if (submissionError != null) {
                 AlertDialog(
-                    onDismissRequest = { viewModel.closeSuccessDialog() },
+                    onDismissRequest = { AppUtil.closeSuccessDialog() },
                     title = {
                         Text(
                             text = "❌ Submission Failed",
@@ -1165,7 +1116,7 @@ fun CBTExamScreen(
                     },
                     confirmButton = {
                         Button(
-                            onClick = {  viewModel.clearSubmissionError()
+                            onClick = { AppUtil.clearSubmissionError()
                                 // Clear error and allow user to retry or go back
                                 // User can try submitting again
                             },
@@ -1207,5 +1158,9 @@ fun CBTExamScreen(
             }
         }
     }
+
+
+
 }
+
 

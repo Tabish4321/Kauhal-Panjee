@@ -1,4 +1,4 @@
-package com.kaushalpanjee.cbt.api.answers
+package com.kaushalpanjee.common.model.response
 
 import com.google.gson.annotations.SerializedName
 

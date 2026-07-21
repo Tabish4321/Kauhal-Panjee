@@ -1,4 +1,4 @@
-package com.kaushalpanjee.cbt.submit
+package com.kaushalpanjee.common.model.request
 
 import com.google.gson.annotations.SerializedName
 
@@ -22,11 +22,3 @@ data class SubmitExamRequest(
     @SerializedName("Ques_and_ans")
     val Ques_and_ans: List<SubmitExamItem>
 )
-//data class SubmitExamRequest(
-//    val appVersion: String,
-//    val cand_id: String,
-//    val batch_id: String,
-//    val exam_id: String,
-//    val question_set_id: String,
-//    val Ques_and_ans: List<SubmitExamItem>
-//)

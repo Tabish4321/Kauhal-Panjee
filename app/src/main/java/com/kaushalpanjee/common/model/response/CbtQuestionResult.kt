@@ -1,4 +1,4 @@
-package com.kaushalpanjee.cbt.api
+package com.kaushalpanjee.common.model.response
 
 import com.example.myapplication.CBT.api.QuestionSet
 

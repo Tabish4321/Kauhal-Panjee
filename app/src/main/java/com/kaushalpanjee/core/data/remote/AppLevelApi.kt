@@ -1,8 +1,8 @@
 package com.kaushalpanjee.core.data.remote
 
 import com.example.myapplication.CBT.api.CbtQuestionsResponse
-import com.kaushalpanjee.cbt.api.answers.CbtAnsersSubmit
-import com.kaushalpanjee.cbt.api.answers.SubmitExamResponse
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -521,7 +521,7 @@ interface AppLevelApi {
 
 
     @POST(ApiConstant.CBTGETQUESTION)
-    suspend fun getCBTQuestions(
+    suspend fun getCbtExam(
         @Header("Authorization") token: String,
         @Body cbtQuestionsReq: CbtQuestionsReq
     ): CbtQuestionsResponse
@@ -533,9 +533,4 @@ interface AppLevelApi {
         @Body cbtAnsersSubmit: CbtAnsersSubmit
     ): SubmitExamResponse
 
-//    @POST(ApiConstant.CBTGETQUESTION)
-//    suspend fun getCBTGETQUESTION(
-//        @Header("Authorization") token: String,
-//        @Body cbtquestionReq: CbtQuestionsReq
-//    ): Response<ResponseBody>
 }

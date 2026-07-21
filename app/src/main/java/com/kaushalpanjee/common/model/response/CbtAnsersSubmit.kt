@@ -1,7 +1,7 @@
-package com.kaushalpanjee.cbt.api.answers
+package com.kaushalpanjee.common.model.response
 
 import com.google.gson.annotations.SerializedName
-import com.kaushalpanjee.cbt.submit.SubmitExamItem
+import com.kaushalpanjee.common.model.request.SubmitExamItem
 
 data class CbtAnsersSubmit(
 

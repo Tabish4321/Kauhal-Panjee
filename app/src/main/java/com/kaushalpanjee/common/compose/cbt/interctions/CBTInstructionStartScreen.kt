@@ -1,4 +1,4 @@
-package com.kaushalpanjee.cbt.interctions
+package com.kaushalpanjee.common.compose.cbt.interctions
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,23 +50,6 @@ fun CBTInstructionStartScreen(
             stringResource(R.string.instruction_13),
             stringResource(R.string.instruction_14)
         )
-//        listOf(
-//            "The Computer Based Test consists of 50 Multiple Choice Questions (MCQs). Each question carries 2 marks.",
-//            "Total duration of the test is 60 minutes.",
-//            "The test will be automatically submitted after 60 minutes or earlier if the candidate submits the test.",
-//            "There is no negative marking.",
-//            "Each question has four options. Only one option is correct.",
-//            "Candidates can navigate to any question by clicking on the question number. Questions need not be attempted sequentially.",
-//            "Use the Next and Previous buttons to move between questions.",
-//            "Unanswered questions will be displayed in white or red color on the right-hand panel.",
-//            "Answered questions will be displayed in green color.",
-//            "Answered and marked for review questions will be displayed in orange color.",
-//            "Questions marked for review will be displayed in blue color.",
-//            "If a question is marked for review and an option is selected, it will be treated as attempted at final submission or on expiry of time.",
-//            "The remaining time is displayed at the top-left corner of the screen besides candidate's details.",
-//            "Don’t press ESC button during exam, after 2 attempts exam will be submitted forcefully and user will be logged out."
-//        )
-//    }
 
     Scaffold(
         containerColor = Color(0xFFF5F7FA),
