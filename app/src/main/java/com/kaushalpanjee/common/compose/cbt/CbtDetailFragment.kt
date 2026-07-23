@@ -62,7 +62,7 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
 
     private fun collectTrainingCenterResponse() {
         lifecycleScope.launchWhenStarted {
-            commonViewModel.getCBTQuestions.collectLatest { state ->
+            commonViewModel.getCbtQuetios.collectLatest { state ->
 
                 when (state) {
                     is Resource.Loading -> {

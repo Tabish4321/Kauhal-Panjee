@@ -77,6 +77,7 @@ import com.example.esop.quetions_esop.SummaryCard
 import com.example.myapplication.CBT.CircularTimer
 import com.example.myapplication.CBT.api.Question
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kaushalpanjee.cbt.TimeViewModel
 import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
 import com.kaushalpanjee.common.compose.cbt.interctions.CBTInstructionStartScreen
 import com.kaushalpanjee.common.model.request.SubmitExamItem
@@ -99,6 +100,7 @@ fun CBTExamScreen(
     batchId: String,
 
     commonViewModel: CommonViewModel = viewModel(),
+//    timeViewmodel: TimeViewModel = viewModel(),
     onOrientationChange: (() -> Unit)? = null,
     onSubmitSuccess: () -> Unit
 
@@ -117,12 +119,14 @@ fun CBTExamScreen(
       val viewModel: AppUtil
 
     // Collect ViewModel StateFlows
-    val examStarted   by  AppUtil.examStarted.collectAsState()
+//    val examStarted  by timeViewmodel.examStarted.collectAsState()
+    val examStarted  by AppUtil.examStarted.collectAsState()
 //    val commonViewModel: CommonViewModel = viewModel()
 
     val currentIndex by AppUtil.currentIndex.collectAsState()
 //    var currentIndex by remember { mutableStateOf(0) }
     val timeLeft by AppUtil.timeLeft.collectAsState()
+//    val timeLeft by timeViewmodel.timeLeft.collectAsState()
     val examFinished by AppUtil.examFinished.collectAsState()
     val editMode by AppUtil.editMode.collectAsState()
     var showReviewDialog by remember { mutableStateOf(false) }
@@ -200,6 +204,12 @@ fun CBTExamScreen(
 
         }
     }
+
+//    LaunchedEffect(examStarted) {
+//        if (examStarted && !examFinished) {
+//            timeViewmodel.startTimer()
+//        }
+//    }
 
 
     if (!examStarted) {

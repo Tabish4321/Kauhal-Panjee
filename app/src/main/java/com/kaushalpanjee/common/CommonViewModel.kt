@@ -1362,10 +1362,10 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
     // ---------------- CBT QUESTIONS FLOW ----------------
-    private val _getCBTQuestions =
+    private val _getCbtQuetios =
         MutableSharedFlow<Resource<CbtQuestionsResponse>>()
 
-    val getCBTQuestions = _getCBTQuestions.asSharedFlow()
+    val getCbtQuetios = _getCbtQuetios.asSharedFlow()
 
     fun getCbtExam(
         header: String,
@@ -1373,7 +1373,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     ) {
         viewModelScope.launch {
             commonRepository.getCbtExam(header, cbtQuestionsReq).collectLatest {
-                _getCBTQuestions.emit(it)
+                _getCbtQuetios.emit(it)
             }
         }
     }
