@@ -219,8 +219,51 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ઉન્નતિ વિશે</u></string>
+    <string name="unnati_schemes">ઉન્નતિ યોજનાઓ</string>
+
+    <string name="ddugky_title">ડીડીઉજિકેવાય</string>
+    <string name="rseti_title">આરસેટીઆઈ</string>
+    <string name="select_Class">ક્લાસ<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">તમારું પ્રમાણપત્ર જુઓ</string>
+    <string name="pmvishwakarma">પીએમ વિશ્વકર્મા</string>
+    <string name="nrlm">એનઆરએલએમ</string>
+    <string name="self_employment">સ્વ-રોજગારી</string>
+    <string name="ExpectationIncome">અપેક્ષિત માસિક આવક (રૂ.)</string>
+    <string name="domain">ડોમેન<font color='#FF0000'>*</font></string>
+    <string name="domain1">ડોમેન</string>
+    <string name="course">કોર્સ<font color='#FF0000'>*</font></string>
+    <string name="course1">કોર્સ</string>
+    <string name="select_YearOfPassingNew">પૂર્ણ થયેલ વર્ષ</string>
+    <string name="select_SchemeInterest">રસ ધરાવતી યોજના<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">રસ ધરાવતી યોજના</string>
+    <string name="ddugky_1">૧૫–૩૫ વર્ષના ગ્રામ્ય યુવકો માટે કૌશલ્ય વિકાસના અવસરો।</string>
+    <string name="ddugky_2">ઉદ્યોગ આધારિત તાલીમ, જે રોજગારી ક્ષમતા અને ગુણવત્તાવાળી નોકરી સુધી પ્રવેશ વધારવા માટે છે।</string>
+    <string name="ddugky_3">તાલીમ પૂર્ણ થયા પછી ગોઠવાયેલ પ્લેસમેન્ટ સપોર્ટ।</string>
+    <string name="rseti_1">૧૮–૫૦ વર્ષના ગ્રામ્ય યુવકો માટે ટૂંકા ગાળાની તાલીમ પ્રોગ્રામ, સ્વ-રોજગારી અને લઘુ-ઉદ્યોગ વિકાસ પર કેન્દ્રિત।</string>
+    <string name="rseti_2">વ્યક્તિગત ઉદ્યોગ સ્થાપિત કરવા માટે બેન્ક અને ક્રેડિટ સંસ્થાઓ સાથે કનેક્શન સુવિધા।</string>
+    <string name="rseti_3">તાલીમ પછી મેન્ટરિંગ અને સહાયતા, નવા વ્યવસાયની ટકાઉપણું અને વિકાસ સુનિશ્ચિત કરવા માટે।</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">પીએમકેવાય</string>
+    <string name="pmkvy_1">કૌશલ વિકાસ અને ઉદ્યોગસાહસિકતા મંત્રાલય (એમએસડીઈ) તેની મુખ્ય યોજના પીએમકેવાય અમલમાં મૂકી રહ્યું છે, جنهنનું ઉદ્દેશ્ય અલ્પકાળીન તાલીમ (એસટિટી) દ્વારા કૌશલ વિકાસ તથા પૂર્વ શિક્ષણની માન્યતા (આરપીએલ) દ્વારા કૌશલ ઉન્નતિ/પુનઃકૌશલ આપવાનું છે.</string>
+    <string name="pmkvy_2">આ યોજના દેશભરના યુવાનોને লক্ষ্য કરીને રચવામાં આવી છે, જેમાં ગ્રામ્ય વિસ્તારોના યુવાનો પણ સામેલ છે.</string>
+    <string name="pmkvy_3">૩૧ ઓક્ટોબર ૨૦૨૫ સુધી પીએમકેવાય અંતર્ગત સમગ્ર ભારતમાં १५,૦૦૦ તાલીમ કેન્દ્રો કાર્યરત છે.</string>
+    <string name="pmkvy_4">પીએમકેવાય ઉદ્યોગ સંબંધિત નોકરી ભૂમિકાઓમાં નિઃશુલ્ક કૌશલ તાલીમ આપે છે અને ઉમેદવારોથી કોઈ કોર્સ ફી લેવામાં આવતી નથી.</string>
+    <string name="pmkvy_5">તાલીમ સફળતાપૂર્વક પૂર્ણ થયા પછી ઉમેદવારોને પ્રમાણપત્ર આપવામાં આવે છે.</string>
+    <string name="pmkvy_6">પાઠ્યક્રમ નોકરીકેન્દ્રિત હોય છે અને રોજગારીની તકો વધે તે માટે બજારની માંગ અનુસાર તૈયાર કરવામાં આવે છે.</string>
+    <string name="pmkvy_7">કેટલાક પસંદ કરાયેલા નોકરી ક્ષેત્રોમાં ઓન-ધ-જોબ ટ્રેનિંગ (ઓજેટી) આપવામાં આવે છે જેથી ઉમેદવારોને વાસ્તવિક કાર્યસ્થળનો અનુભવ મળે.</string>
+    <string name="pmkvy_8">તાલીમમાં સોફ્ટ સ્કિલ્સ, ડિજિટલ સાક્ષરતા અને આર્થિક સાક્ષરતા સમાવવામાં આવે છે, જેથી સમગ્ર રોજગારક્ષમતા વધે.</string>
+    <string name="pmkvy_9">આ યોજના ખાસ કરીને યુવાનો, મહિલાઓ, એસસી/એસટી સમાજ, અલ્પસંખ્યકો અને દિવ્યાંગ વ્યક્તિઓ પર વિશેષ ધ્યાન કેન્દ્રિત કરે છે.</string>
+    <string name="pmkvy_10">કૌશલ વિકાસને ઉદ્યોગની જરૂરિયાતો સાથે જોડવામાં આવ્યું છે, જેના કારણે પગાર આધારિત નોકરીઓ અને સ્વરોજગારીની તકોમાં વધારો થાય છે.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 
 </resources>

@@ -6,6 +6,7 @@
     <string name="welcome_back">Hey, Let\'s shine today!</string>
     <string name="welcome_msg">Hi there, You\'ve been missed.</string>
     <string name="register"><u>Register</u></string>
+    <string name="bankConsent" translatable="false"><u>Give Consent</u></string>
     <string name="forgot_password"><u>Forgot id and Password?</u></string>
     <string name="forgot_id"><u>Forgot id?</u></string>
     <string name="create_an_account">Create an account</string>
@@ -36,14 +37,14 @@
     <string name="district">District<font color='#FF0000'>*</font></string>
     <string name="select_district">Select district</string>
     <string name="select_gp">Select Gram panchayat</string>
-    <string name="g_name">Guardian name</string>
+    <string name="g_name">Father name / Guardian name</string>
     <string name="guardian_name">Guardian Name</string>
     <string name="mother_name">Mother name<font color='#FF0000'>*</font></string>
-    <string name="guardian_alternative_number">Guardian /Alternative number<font color='#FF0000'>*</font></string>
+    <string name="guardian_alternative_number">Alternative mobile number<font color='#FF0000'>*</font></string>
     <string name="consent_text_short">I agree to voluntary share my identity information with e-kyc App. Read More</string>
     <string name="consent_text">I agree to voluntary share my identity information with e-kyc App.</string>
     <string name="candidate_name">Candidate name</string>
-    <string name="father_name">Guardian name<font color='#FF0000'>*</font></string>
+    <string name="father_name">Father name / Guardian name<font color='#FF0000'>*</font></string>
     <string name="category">Category<font color='#FF0000'>*</font></string>
     <string name="marital">Marital status<font color='#FF0000'>*</font></string>
     <string name="minority">Minority<font color='#FF0000'>*</font></string>
@@ -53,7 +54,7 @@
     <string name="do_you_Antyodaya">Do you have Antyodaya card</string>
     <string name="do_you_llRsby">Do you have RSBY/PM-JAY Card</string>
     <string name="do_you_Pip">Is PIP (Participatory Identification of Poor)</string>
-    <string name="father_incomer">Yearly income of the family (Rs.)</string>
+    <string name="father_incomer">Yearly income of the family (In Rupees)</string>
     <string name="voter_id">Voter Id</string>
     <string name="driving_id">Driving License</string>
     <string name="submit">Submit</string>
@@ -71,7 +72,7 @@
     <string name="Educational_information">Educational Information</string>
     <string name="Employment_information">Employment Information</string>
     <string name="Training_information">Training Information</string>
-    <string name="Banking_information">Banking Information</string>
+    <string name="Banking_information">Financial Information</string>
     <string name="select_HighestEducation">Highest Education<font color='#FF0000'>*</font></string>
     <string name="select_HighestEducation1">Highest Education</string>
     <string name="select_YearOfPassing">Year of passing of highest qualification</string>
@@ -84,9 +85,9 @@
     <string name="natureOfEmpl">What is the nature of employment?</string>
     <string name="IntrestedIn">Interested in?<font color='#FF0000'>*</font></string>
     <string name="EmploymentPreference">Employment Preference<font color='#FF0000'>*</font></string>
-    <string name="JobLocationPreference">Job Location Preference<font color='#FF0000'>*</font></string>
+    <string name="JobLocationPreference">Location Preference<font color='#FF0000'>*</font></string>
     <string name="CurrentEarning">What is personal current monthly earning in Rupees?</string>
-    <string name="CurrentEarningHint">Current Salary</string>
+    <string name="CurrentEarningHint">Current Earning</string>
     <string name="ExpectationSalary">Expected Minimum Monthly Salary (Rs.)</string>
     <string name="recievedAnyTrainingBefore">Have you received any training before?<font color='#FF0000'>*</font></string>
     <string name="PreviousComTraining">Previously completed training in</string>
@@ -134,12 +135,12 @@
     <string name="select_category">Select Category</string>
     <string name="name1">Mandatory field 1<font color='#FF0000'>*</font></string>
     <string name="validate">Validate</string>
-    <string name="upload_category_certificate">Upload Category Certificate</string>
+    <string name="upload_category_certificate">Upload SHG Member Proof</string>
     <string name="upload_shg_certificate">Upload SHG Certificate</string>
     <string name="upload_antyodaya_card">Upload Antyodaya Card</string>
     <string name="upload_rsby_pm_jay_card">Upload RSBY/PM-JAY CARD</string>
     <string name="upload_residence_certificate">Upload Residence Certificate</string>
-    <string name="guardian_alternative_numbern">Guardian/Alternative number</string>
+    <string name="guardian_alternative_numbern">Alternative mobile number</string>
     <string name="mother_namer">Mother Name</string>
     <string name="something_went_wrong_at_uidai_site">Something went wrong at UIDAI side.</string>
     <string name="ok">Ok</string>
@@ -175,7 +176,7 @@
     <string name="branch_name">Branch Name</string>
     <string name="view_profile"><u>View details</u></string>
     <string name="edit"><u>Edit details</u></string>
-    <string name="as_per_aadhaar">Aadhaar Address</string>
+    <string name="as_per_aadhaar">Address (As per Aadhaar)</string>
     <string name="forgot_id_and_password">Forgot id and password</string>
     <string name="sector">Sector<font color='#FF0000'>*</font></string>
     <string name="find_a_training_center">Find a training center</string>
@@ -221,4 +222,112 @@
     <string name="about_unnati"><u>About Unnati</u></string>
     <string name="unnati_schemes">Unnati Schemes</string>
 
+    <string name="ddugky_title">DDUGKY</string>
+    <string name="rseti_title">RSETI</string>
+    <string name="select_Class">Class<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">View Your\n    Certificate</string>
+    <string name="pmvishwakarma">PM Vishwakarma</string>
+    <string name="nrlm">NRLM</string>
+    <string name="self_employment">Self Employment</string>
+    <string name="ExpectationIncome">Expected Monthly Income (Rs.)</string>
+    <string name="domain">Domain<font color='#FF0000'>*</font></string>
+    <string name="domain1">Domain</string>
+    <string name="course">Course<font color='#FF0000'>*</font></string>
+    <string name="course1">Course</string>
+    <string name="select_YearOfPassingNew">Year of passing</string>
+    <string name="select_SchemeInterest">Scheme Interested In<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">Scheme Interested In</string>
+    <string name="ddugky_1">Skill development opportunities to rural youth in the age group of 15–35 years.</string>
+    <string name="ddugky_2">Industry-aligned training aimed at improving employability and access to quality job opportunities.</string>
+    <string name="ddugky_3">Structured placement support upon successful completion of training.</string>
+    <string name="rseti_1">Short-duration training programmes for rural youth aged 18–50 years, focusing on self-employment and micro-enterprise development.</string>
+    <string name="rseti_2">Facilitates linkage with banks and credit institutions to enable establishment of individual enterprises.</string>
+    <string name="rseti_3">Post-training mentoring and handholding support to ensure sustainability and growth of new businesses.</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">PMKVY</string>
+    <string name="pmkvy_1">The Ministry of Skill Development and Entrepreneurship (MSDE) has been implementing its flagship scheme, Pradhan Mantri Kaushal Vikas Yojana (PMKVY) that aims to provide skill development training through Short-Term Training (STT) and up-skilling/re-skilling through Recognition of Prior Learning (RPL).</string>
+    <string name="pmkvy_2">The scheme targets youth across the country, including rural areas.</string>
+    <string name="pmkvy_3">As of 31st October 2025, there are 15,000 training centres under PMKVY across India.</string>
+    <string name="pmkvy_4">PMKVY offers free skill training in industry-relevant job roles, with no course fee charged to candidates.</string>
+    <string name="pmkvy_5">Candidates receive certification upon successful completion of training.</string>
+    <string name="pmkvy_6">Courses are job-oriented and aligned with market demand to improve employment prospects.</string>
+    <string name="pmkvy_7">On-the-job training (OJT) is provided in select job roles to offer real workplace exposure.</string>
+    <string name="pmkvy_8">Training includes soft skills, digital literacy, and financial literacy to enhance overall employability.</string>
+    <string name="pmkvy_9">The scheme places special focus on youth, including women, SC/ST communities, minorities and persons with disabilities.</string>
+    <string name="pmkvy_10">Skill development is linked with industry needs, supporting opportunities for wage employment and self-employment.</string>
+
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark OJT Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
+
+
+
+
+    <string name="no_data_title">No Data Found</string>
+    <string name="no_data_description">Nothing to show right now. Please check back later.</string>
+    <string name="cbt_exam">CBT Exam</string>
+    <string name="candidate_id">Candidate ID :</string>
+    <string name="candidate_name_cbt">Candidate Name</string>
+    <string name="question">Question</string>
+    <string name="save_next">Save &amp; Next</string>
+    <string name="save_review">Save &amp; Review</string>
+    <string name="mark">Mark</string>
+    <string name="clear">Clear</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="question_index">Question Index</string>
+    <string name="answered">Answered</string>
+    <string name="not_answered">Not Answered</string>
+    <string name="loading_questions">Loading Questions...</string>
+    <string name="review">Review</string>
+    <string name="back">Back</string>
+    <string name="next_review"><![CDATA[Next & Review]]></string>
+    <string name="review_your_test">Review Your Test</string>
+    <string name="total">Total</string>
+    <string name="marked_for_review">Marked for Review</string>
+    <string name="back_to_test">Back to Test</string>
+    <string name="submit_test">Submit Test</string>
+    <string name="warning">Warning</string>
+    <string name="do_you_want_to_submit_the_questions">Do you want to submit the questions?</string>
+    <string name="mark_review"><![CDATA[Mark & Review]]></string>
+
+
+
+
+
+
+    <string name="instruction_1">The Computer Based Test consists of 50 Multiple Choice Questions (MCQs). Each question carries 2 marks.</string>
+    <string name="instruction_2">Total duration of the test is 60 minutes.</string>
+    <string name="instruction_3">The test will be automatically submitted after 60 minutes or earlier if the candidate submits the test.</string>
+    <string name="instruction_4">There is no negative marking.</string>
+    <string name="instruction_5">Each question has four options. Only one option is correct.</string>
+    <string name="instruction_6">Candidates can navigate to any question by clicking on the question number. Questions need not be attempted sequentially.</string>
+    <string name="instruction_7">Use the Next and Previous buttons to move between questions.</string>
+    <string name="instruction_8">Unanswered questions will be displayed in white or red color on the right-hand panel.</string>
+    <string name="instruction_9">Answered questions will be displayed in green color.</string>
+    <string name="instruction_10">Answered and marked for review questions will be displayed in orange color.</string>
+    <string name="instruction_11">Questions marked for review will be displayed in blue color.</string>
+    <string name="instruction_12">If a question is marked for review and an option is selected, it will be treated as attempted at final submission or on expiry of time.</string>
+    <string name="instruction_13">The remaining time is displayed at the top-left corner of the screen besides candidate\'s details.</string>
+    <string name="instruction_14">Don’t press ESC button during exam, after 2 attempts exam will be submitted forcefully and user will be logged out.</string>
+    <string name="exam_instructions">Exam Instructions</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">Please read the instructions carefully before starting the exam.</string>
+    <string name="declaration">DECLARATION</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">I have read and understood the instructions and wish to proceed with the test.</string>
+    <string name="exam_starts_in">Exam starts in: %1$s</string>
+    <string name="start_now">Start Now</string>
+    <string name="submit_exam">Submit Exam</string>
+    <string name="success">Success</string>
+    <string name="time_is_over">Time is Over</string>
+    <string name="please_submit_options">Please submit Options</string>
+    <string name="exit_exam">Exit Exam</string>
+    <string name="do_you_want_to_exit_exam">Do you want to exit exam?</string>
+    <string name="no_questions_available">No Questions Available</string>
+    <string name="no_questions_are_available_for_this_user">No questions are available for this user.</string>
 </resources>

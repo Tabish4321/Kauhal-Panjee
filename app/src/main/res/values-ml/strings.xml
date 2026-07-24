@@ -220,7 +220,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ഉന്നതി സംബന്ധിച്ച്</u></string>
+    <string name="unnati_schemes">ഉന്നതി പദ്ധതികൾ</string>
+
+    <string name="ddugky_title">ഡിഡിയുജികേവൈ</string>
+    <string name="rseti_title">ആർഎസ്ഇറ്റിഐ</string>
+    <string name="select_Class">ക്ലാസ്<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">സർട്ടിഫിക്കറ്റ് കാണുക</string>
+    <string name="pmvishwakarma">പിഎം വിശ്വകർമ്മ</string>
+    <string name="nrlm">എൻആർഎൽഎം</string>
+    <string name="self_employment">സ്വയം തൊഴിൽ</string>
+    <string name="ExpectationIncome">നിലവിലെ മാസവരുമാനം (₹)</string>
+    <string name="domain">ഡൊമെയ്ൻ<font color='#FF0000'>*</font></string>
+    <string name="domain1">ഡൊമെയ്ൻ</string>
+    <string name="course">കോഴ്സ്<font color='#FF0000'>*</font></string>
+    <string name="course1">കോഴ്സ്</string>
+    <string name="select_YearOfPassingNew">പൂർണമായ വർഷം</string>
+    <string name="select_SchemeInterest">ആസക്തി ഉള്ള പദ്ധതി<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ആസക്തി ഉള്ള പദ്ധതി</string>
+    <string name="ddugky_1">15–35 വയസ്സുള്ള ഗ്രാമീണ യുവാക്കൾക്ക് കൌശൽ വികസന അവസരങ്ങൾ.</string>
+    <string name="ddugky_2">വ്യവസായ-ആധാരിത പരിശീലനം, തൊഴിൽ സാധ്യത മെച്ചപ്പെടുത്താൻ.</string>
+    <string name="ddugky_3">പരിശീലനം പൂർത്തിയാക്കിയ ശേഷം സജ്ജീകരിച്ച പ്ലേസ്‌മെന്റ് പിന്തുണ.</string>
+    <string name="rseti_1">18–50 വയസ്സുള്ള ഗ്രാമീണ യുവാക്കൾക്കായുള്ള ലഘുഅവധിയുള്ള പരിശീലന പരിപാടികൾ, സ്വയം തൊഴിൽ, സൂക്ഷ്മ-ഉദ്യമ വികസനം.</string>
+    <string name="rseti_2">വ്യക്തിഗത സംരംഭം ആരംഭിക്കാൻ ബാങ്ക്/ക്രെഡിറ്റ് സ്ഥാപനങ്ങളുമായി ബന്ധം.</string>
+    <string name="rseti_3">പരിശീലനം കഴിഞ്ഞ് മെന്ററിംഗ്, പിന്തുണ, പുതിയ സംരംഭത്തിന്റെ സ്ഥിരത ഉറപ്പാക്കുന്നു.</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">പിഎംകേവൈ</string>
+    <string name="pmkvy_1">കൗശൽ വികസനവും സംരംഭകത്വവും സംബന്ധിച്ച മന്ത്രാലയം (എംഎസ്ഡിഇ) തന്റെ മുഖ്യ പദ്ധതിയായ പിഎംകേവൈ നടപ്പാക്കുകയാണ്. ഈ പദ്ധതിയുടെ ലക്ഷ്യം കുറഞ്ഞ കാലയളവിലെ പരിശീലനം (എസ്ഡിടി) വഴി കൗശൽ വികസനവും മുൻ പഠനത്തെ അംഗീകരിക്കൽ (ആർപിഎൽ) വഴി കൗശൽ മെച്ചപ്പെടുത്തലും/പുനർപരിശീലനവും നൽകുന്നതുമാണ്.</string>
+    <string name="pmkvy_2">ഈ പദ്ധതി രാജ്യത്തെ എല്ലാ യുവാക്കളെയും ലക്ഷ്യമിട്ട് രൂപപ്പെടുത്തിയതാണ്, ഇതിൽ ഗ്രാമപ്രദേശങ്ങളിലെ യുവാക്കളും ഉൾപ്പെടുന്നു.</string>
+    <string name="pmkvy_3">2025 ഒക്ടോബർ 31 വരെ പിഎംകേവൈയുടെ കീഴിൽ ഇന്ത്യയിലാകെ 15,000 പരിശീലന കേന്ദ്രങ്ങൾ പ്രവർത്തിക്കുന്നു.</string>
+    <string name="pmkvy_4">പിഎംകേവൈ വ്യവസായവുമായി ബന്ധപ്പെട്ട ജോലി മേഖലകളിൽ സൗജന്യ കൗശൽ പരിശീലനം നൽകുന്നു, കൂടാതെ ഉദ്യോഗാർത്ഥികളിൽ നിന്ന് ഒരിക്കൽപ്പോലും കോഴ്സ് ഫീസ് ഈടാക്കുന്നില്ല.</string>
+    <string name="pmkvy_5">പരിശീലനം വിജയകരമായി പൂർത്തിയാക്കിയ ഉദ്യോഗാർത്ഥികൾക്ക് സർട്ടിഫിക്കറ്റ് നൽകപ്പെടും.</string>
+    <string name="pmkvy_6">പാഠ്യപദ്ധതികൾ തൊഴിൽ കേന്ദ്രീകൃതമാണ്, കൂടാതെ തൊഴിലവസരങ്ങൾ വർധിപ്പിക്കുന്നതിനായി വിപണി ആവശ്യങ്ങൾക്കനുസരിച്ച് തയ്യാറാക്കപ്പെടുന്നു.</string>
+    <string name="pmkvy_7">തിരഞ്ഞെടുത്ത ചില ജോലി മേഖലകളിൽ ഓൺ-ദ-ജോബ് ട്രെയിനിംഗ് (ഓജെടി) നൽകപ്പെടുന്നു, ഇത് ഉദ്യോഗാർത്ഥികൾക്ക് യഥാർത്ഥ ജോലിസ്ഥല പരിചയം ലഭിക്കാൻ സഹായിക്കുന്നു.</string>
+    <string name="pmkvy_8">പരിശീലനത്തിൽ സൗമ്യ കൌശലങ്ങൾ, ഡിജിറ്റൽ സാക്ഷരത, സാമ്പത്തിക സാക്ഷരത തുടങ്ങിയവ ഉൾപ്പെടുന്നു, ഇത് സമഗ്ര തൊഴിൽയോഗ്യത വർധിപ്പിക്കുന്നു.</string>
+    <string name="pmkvy_9">ഈ പദ്ധതി പ്രത്യേകിച്ച് യുവാക്കൾ, സ്ത്രീകൾ, എസ്‌സി/എസ്‌ടി സമൂഹം, ന്യൂനപക്ഷങ്ങൾ, ദിവ്യാംഗർ എന്നിവർക്കാണ് കൂടുതൽ പ്രാധാന്യം നൽകുന്നത്.</string>
+    <string name="pmkvy_10">കൗശൽ വികസനം വ്യവസായ ആവശ്യങ്ങളുമായി ബന്ധിപ്പിച്ചിരിക്കുന്നതിനാൽ ശമ്പള അടിസ്ഥാനത്തിലുള്ള തൊഴിലും സ്വയംതൊഴിലും വർധിക്കാൻ സഹായിക്കുന്നു.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

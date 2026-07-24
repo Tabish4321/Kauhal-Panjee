@@ -8,9 +8,15 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.util.Log
+import androidx.annotation.OptIn
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.core.view.isVisible
 import androidx.media3.common.MediaItem
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
@@ -51,6 +57,8 @@ class SchemeAdapter(private val schemes: List<Scheme>) :
 
         fun bind(scheme: Scheme) {
             binding.data = scheme
+            // Disable nested scrolling (Main fix)
+            binding.rvSchemePoint.isNestedScrollingEnabled = false
             binding.rvSchemePoint.adapter = SchemeDetailAdapter(scheme.details)
 
             binding.tvSchemeName.setOnClickListener {
@@ -73,18 +81,52 @@ class SchemeAdapter(private val schemes: List<Scheme>) :
             }
         }
 
+//        private fun initializePlayer(playerView: PlayerView, url: String): ExoPlayer {
+//            val exoPlayer = ExoPlayer.Builder(binding.root.context).build()
+//            playerView.player = exoPlayer
+//
+//            val mediaItem = MediaItem.fromUri(Uri.parse(url))
+//            exoPlayer.setMediaItem(mediaItem)
+//            exoPlayer.prepare()
+//            exoPlayer.playWhenReady = false
+//
+//            return exoPlayer
+//        }
+
+        @OptIn(UnstableApi::class)
         private fun initializePlayer(playerView: PlayerView, url: String): ExoPlayer {
-            val exoPlayer = ExoPlayer.Builder(binding.root.context).build()
+
+            val context = binding.root.context
+
+            val exoPlayer = ExoPlayer.Builder(context).build()
             playerView.player = exoPlayer
 
-            val mediaItem = MediaItem.fromUri(Uri.parse(url))
-            exoPlayer.setMediaItem(mediaItem)
+            val dataSourceFactory = DefaultHttpDataSource.Factory()
+                .setUserAgent(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36"
+                )
+                .setAllowCrossProtocolRedirects(true)
+                .setConnectTimeoutMs(30000)
+                .setReadTimeoutMs(30000)
+
+            val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(
+                    MediaItem.fromUri(Uri.parse(url))
+                )
+
+            exoPlayer.setMediaSource(mediaSource)
             exoPlayer.prepare()
             exoPlayer.playWhenReady = false
 
+            exoPlayer.addListener(object : Player.Listener {
+                override fun onPlayerError(error: PlaybackException) {
+                    Log.e("EXO_ERROR", "Message = ${error.message}")
+                    Log.e("EXO_ERROR", "Cause = ${error.cause}")
+                }
+            })
+
             return exoPlayer
         }
-
         fun releasePlayer() {
             player?.release()
             player = null

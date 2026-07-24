@@ -76,7 +76,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             binding.etPhone.visible()
             binding.clOTP.gone()
             isEmailVerified = true
-
+            AppUtil.saveEmailPreference(requireContext(),"")
         }
 
         binding.etEmail.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO)

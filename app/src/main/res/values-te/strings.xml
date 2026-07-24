@@ -225,7 +225,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ఉన్నతి గురించి</u></string>
+    <string name="unnati_schemes">ఉన్నతి పథకాలు</string>
+
+    <string name="ddugky_title">డిడియుజికేవై</string>
+    <string name="rseti_title">ఆర్‌ఎస్‌ఈటీఐ</string>
+    <string name="select_Class">తరగతి<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">మీ సర్టిఫికెట్‌ను వీక్షించండి</string>
+    <string name="pmvishwakarma">పీఎం విశ్వకర్మ</string>
+    <string name="nrlm">ఎన్‌ఆర్‌ఎల్‌ఎం</string>
+    <string name="self_employment">స్వయం ఉపాధి</string>
+    <string name="ExpectationIncome">ఆశించిన నెలవారీ ఆదాయం (రూ.)</string>
+    <string name="domain">డొమైన్<font color='#FF0000'>*</font></string>
+    <string name="domain1">డొమైన్</string>
+    <string name="course">కోర్సు<font color='#FF0000'>*</font></string>
+    <string name="course1">కోర్సు</string>
+    <string name="select_YearOfPassingNew">పాస్ అయిన సంవత్సరం</string>
+    <string name="select_SchemeInterest">ఆసక్తి ఉన్న పథకం<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ఆసక్తి ఉన్న పథకం</string>
+    <string name="ddugky_1">15–35 సంవత్సరాల మధ్య వయస్సు గల గ్రామీణ యువతకు నైపుణ్యాభివృద్ధి అవకాశాలు.</string>
+    <string name="ddugky_2">ఉపాధిని మెరుగుపరచడం మరియు నాణ్యమైన ఉద్యోగ అవకాశాలను పొందడం లక్ష్యంగా పరిశ్రమ-సమలేఖన శిక్షణ.</string>
+    <string name="ddugky_3">శిక్షణ విజయవంతంగా పూర్తయిన తర్వాత నిర్మాణాత్మక ప్లేస్‌మెంట్ మద్దతు.</string>
+    <string name="rseti_1">18–50 సంవత్సరాల వయస్సు గల గ్రామీణ యువతకు స్వయం ఉపాధి మరియు సూక్ష్మ-సంస్థ అభివృద్ధిపై దృష్టి సారించే స్వల్పకాలిక శిక్షణా కార్యక్రమాలు.</string>
+    <string name="rseti_2">వ్యక్తిగత సంస్థల స్థాపనకు వీలుగా బ్యాంకులు మరియు క్రెడిట్ సంస్థలతో అనుసంధానాన్ని సులభతరం చేస్తుంది.</string>
+    <string name="rseti_3">కొత్త వ్యాపారాల స్థిరత్వం మరియు వృద్ధిని నిర్ధారించడానికి శిక్షణ తర్వాత మార్గదర్శకత్వం మరియు హ్యాండ్‌హోల్డింగ్ మద్దతు.</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">పీఎంకేవై</string>
+    <string name="pmkvy_1">నైపుణ్య అభివృద్ధి మరియు వ్యవసాయ ఆధారిత పరిశ్రమల మంత్రిత్వ శాఖ (ఎంఎస్‌డిఇ) తమ ప్రధాన యోజనైన పీఎంకేవైను అమలు చేస్తోంది. ఈ యోజన యొక్క లక్ష్యం స్వల్పకాలిక శిక్షణ (ఎస్టిటి) ద్వారా నైపుణ్యాభివృద్ధి చేసి, పూర్వ విద్యా గుర్తింపు (ఆర్పిఎల్) ద్వారా నైపుణ్య వృద్ధి/మళ్లీ నైపుణ్యాన్ని అందించడం.</string>
+    <string name="pmkvy_2">ఈ యోజన దేశంలోని అన్ని ప్రాంతాల యువతను లక్ష్యంగా ఉంచి రూపొందించబడింది, ఇందులో గ్రామీణ ప్రాంతాల యువత కూడా చేరుతుంది.</string>
+    <string name="pmkvy_3">2025 అక్టోబర్ 31 నాటికి పీఎంకేవై కింద దేశవ్యాప్తంగా 15,000 శిక్షణ కేంద్రాలు పనిచేస్తున్నాయి.</string>
+    <string name="pmkvy_4">పీఎంకేవై పరిశ్రమలకు సంబంధించిన ఉద్యోగాలకు ఉచిత నైపుణ్య శిక్షణను అందిస్తుంది మరియు అభ్యర్థుల నుండి ఎటువంటి కోర్సు ఫీజు వసూలు చేయదు.</string>
+    <string name="pmkvy_5">శిక్షణను విజయవంతంగా పూర్తి చేసిన తర్వాత అభ్యర్థులకు సర్టిఫికేట్ అందజేయబడుతుంది.</string>
+    <string name="pmkvy_6">పాఠ్యక్రమాలు ఉద్యోగ ప్రధానంగా ఉండి, ఉద్యోగ అవకాశాలు పెరగడానికి మార్కెట్ అవసరాలకు అనుగుణంగా రూపొందించబడతాయి.</string>
+    <string name="pmkvy_7">ఎంపిక చేసిన కొన్ని ఉద్యోగాల్లో ఆన్‌-ది-జాబ్ శిక్షణ (ఓజేటి) ఇవ్వబడుతుంది, దీని ద్వారా అభ్యర్థులు నిజమైన పనిస్థల అనుభవాన్ని పొందగలరు.</string>
+    <string name="pmkvy_8">శిక్షణలో సాఫ్ట్ స్కిల్స్, డిజిటల్ అక్షరాస్యత, ఆర్థిక అక్షరాస్యత వంటి అంశాలు ఉంటాయి, ఇవి మొత్తం ఉపాధి సామర్థ్యాన్ని పెంచుతాయి.</string>
+    <string name="pmkvy_9">ఈ యోజన ముఖ్యంగా యువత, మహిళలు, ఎస్సీ/ఎస్టీ సమూహాలు, మైనారిటీలు మరియు దివ్యాంగులు మీద ప్రత్యేక దృష్టి పెడుతుంది.</string>
+    <string name="pmkvy_10">నైపుణ్య అభివృద్ధిని పరిశ్రమ అవసరాలతో అనుసంధానించడం ద్వారా వేతన ఆధారిత ఉద్యోగాలు మరియు స్వయం ఉపాధి అవకాశాలు పెరుగుతాయి.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

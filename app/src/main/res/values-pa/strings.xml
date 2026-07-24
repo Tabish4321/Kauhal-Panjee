@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name"> ਕੌਸ਼ਲ ਪੰਜੀ</string>
     <string name="login_id">ਲਾਗਇਨ ਆਈਡੀ</string>
     <string name="login">ਲਾਗਇਨ ਕਰੋ</string>
@@ -220,7 +220,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ਉਨੱਤੀ ਬਾਰੇ</u></string>
+    <string name="unnati_schemes">ਉਨੱਤੀ ਯੋਜਨਾਵਾਂ</string>
+
+    <string name="ddugky_title">ਡੀਡੀਆੂਜੀਕੇਵਾਈ</string>
+    <string name="rseti_title">ਆਰਐਸਈਟੀਆਈ</string>
+    <string name="select_Class">ਵਰਗ<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">ਆਪਣਾ ਸਰਟੀਫਿਕੇਟ ਵੇਖੋ</string>
+    <string name="pmvishwakarma">ਪੀਐਮ ਵਿਸ਼ਵਕਰਮਾ</string>
+    <string name="nrlm">ਐਨਆਰਐਲਐਮ</string>
+    <string name="self_employment">ਸਵੈ-ਰੋਜ਼ਗਾਰ</string>
+    <string name="ExpectationIncome">ਉਮੀਦਵਾਰ ਮਾਸਿਕ ਆਮਦਨ (₹)</string>
+    <string name="domain">ਡੋਮੇਨ<font color='#FF0000'>*</font></string>
+    <string name="domain1">ਡੋਮੇਨ</string>
+    <string name="course">ਕੋਰਸ<font color='#FF0000'>*</font></string>
+    <string name="course1">ਕੋਰਸ</string>
+    <string name="select_YearOfPassingNew">ਪਾਸਿੰਗ ਸਾਲ</string>
+    <string name="select_SchemeInterest">ਰੁਚੀ ਵਾਲੀ ਯੋਜਨਾ<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ਰੁਚੀ ਵਾਲੀ ਯੋਜਨਾ</string>
+    <string name="ddugky_1">15–35 ਸਾਲ ਦੇ ਪਿੰਡ ਦੇ ਯੁਵਕਾਂ ਲਈ ਹੁਨਰ ਵਿਕਾਸ ਦੇ ਮੌਕੇ।</string>
+    <string name="ddugky_2">ਉਦਯੋਗ-ਸੰਬੰਧਿਤ ਤਾਲੀਮ ਜੋ ਰੋਜ਼ਗਾਰ ਯੋਗਤਾ ਨੂੰ ਸੁਧਾਰਦੀ ਹੈ।</string>
+    <string name="ddugky_3">ਤਾਲੀਮ ਪੂਰੀ ਕਰਨ \'ਤੇ ਸੰਰਚਿਤ ਨਿਯੁਕਤੀ ਸਹਾਇਤਾ।</string>
+    <string name="rseti_1">18–50 ਸਾਲ ਦੇ ਪਿੰਡ ਦੇ ਯੁਵਕਾਂ ਲਈ ਛੋਟੀ ਮਿਆਦ ਵਾਲੇ ਤਾਲੀਮ ਪ੍ਰੋਗਰਾਮ, ਜੋ ਸਵੈ-ਰੋਜ਼ਗਾਰ ਅਤੇ ਛੋਟੇ ਉਦਯਮ ਵਿਕਾਸ \'ਤੇ ਧਿਆਨ ਦਿੰਦੇ ਹਨ।</string>
+    <string name="rseti_2">ਵਿਆਕਤੀਗਤ ਉਦਯਮ ਸਥਾਪਿਤ ਕਰਨ ਲਈ ਬੈਂਕਾਂ ਅਤੇ ਕਰਜ਼ਾ ਸੰਸਥਾਵਾਂ ਨਾਲ ਸੰਬੰਧ।</string>
+    <string name="rseti_3">ਤਾਲੀਮ ਮਗਰੋਂ ਮੈਨਟਰਨਿੰਗ ਅਤੇ ਸਹਾਇਤਾ, ਨਵੇਂ ਉਦਯਮ ਦੀ ਟਿਕਾਊ ਅਤੇ ਵਿਕਾਸ ਨੂੰ ਯਕੀਨੀ ਬਣਾਉਣ ਲਈ।</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">ਪੀਐਮਕੇਵਾਈ</string>
+    <string name="pmkvy_1">ਕੌਸ਼ਲ ਵਿਕਾਸ ਅਤੇ ਉਦਯਮੀ ਮੰਤਰਾਲਾ (ਐਮਐਸਡੀਈ) ਆਪਣੀ ਮੁੱਖ ਯੋਜਨਾ ਪੀਐਮਕੇਵਾਈ ਲਾਗੂ ਕਰ ਰਿਹਾ ਹੈ। ਇਸ ਯੋਜਨਾ ਦਾ ਉਦੇਸ਼ ਛੋਟੇ ਸਮੇਂ ਦੀ ਟ੍ਰੇਨਿੰਗ (ਐਸਟਟੀ) ਰਾਹੀਂ ਕੌਸ਼ਲ ਵਿਕਾਸ ਕਰਨਾ ਅਤੇ ਪਿਛਲੀ ਸਿੱਖਿਆ ਦੀ ਪ੍ਰਮਾਣਿਕਤਾ (ਆਰਪੀਐਲ) ਰਾਹੀਂ ਕੌਸ਼ਲ ਉੱਨਤੀ/ਪੁਨਰ-ਕੌਸ਼ਲ ਮੁਹੱਈਆ ਕਰਵਾਉਣਾ ਹੈ।</string>
+    <string name="pmkvy_2">ਇਹ ਯੋਜਨਾ ਦੇਸ਼ ਭਰ ਦੇ ਨੌਜਵਾਨਾਂ ਨੂੰ ਧਿਆਨ ਵਿੱਚ ਰੱਖ ਕੇ ਤਿਆਰ ਕੀਤੀ ਗਈ ਹੈ, ਜਿਸ ਵਿੱਚ ਪਿੰਡਾਂ ਦੇ ਨੌਜਵਾਨ ਵੀ ਸ਼ਾਮਲ ਹਨ।</string>
+    <string name="pmkvy_3">31 ਅਕਤੂਬਰ 2025 ਤੱਕ ਪੀਐਮਕੇਵਾਈ ਦੇ ਤਹਿਤ ਭਾਰਤ ਭਰ ਵਿੱਚ 15,000 ਟ੍ਰੇਨਿੰਗ ਸੈਂਟਰ ਚੱਲ ਰਹੇ ਹਨ।</string>
+    <string name="pmkvy_4">ਪੀਐਮਕੇਵਾਈ ਉਦਯੋਗ-ਸੰਬੰਧਤ ਨੌਕਰੀਆਂ ਲਈ ਮੁਫ਼ਤ ਕੌਸ਼ਲ ਟ੍ਰੇਨਿੰਗ ਦਿੰਦੀ ਹੈ ਅਤੇ ਉਮੀਦਵਾਰਾਂ ਤੋਂ ਕੋਈ ਕੋਰਸ ਫੀਸ ਨਹੀਂ ਲੈਂਦੀ।</string>
+    <string name="pmkvy_5">ਟ੍ਰੇਨਿੰਗ ਸਫਲਤਾਪੂਰਵਕ ਪੂਰੀ ਹੋਣ ’ਤੇ ਉਮੀਦਵਾਰਾਂ ਨੂੰ ਸਰਟੀਫਿਕੇਟ ਜਾਰੀ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।</string>
+    <string name="pmkvy_6">ਪਾਠਕ੍ਰਮ ਨੌਕਰੀ-ਕੇਂਦਰਿਤ ਹੁੰਦੇ ਹਨ ਅਤੇ ਰੋਜ਼ਗਾਰ ਦੇ ਮੌਕੇ ਵਧਾਉਣ ਲਈ ਬਾਜ਼ਾਰ ਦੀ ਮੰਗ ਅਨੁਸਾਰ ਤਿਆਰ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।</string>
+    <string name="pmkvy_7">ਕੁਝ ਚੁਣੀਆਂ ਹੋਈਆਂ ਨੌਕਰੀ ਭੂਮਿਕਾਵਾਂ ਵਿੱਚ ਔਨ-ਦ-ਜੌਬ ਟ੍ਰੇਨਿੰਗ (ਓਜੇਟੀ) ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ, ਤਾਕਿ ਉਮੀਦਵਾਰਾਂ ਨੂੰ ਅਸਲ ਕਾਰਜਸਥਲ ਦਾ ਅਨੁਭਵ ਮਿਲ ਸਕੇ।</string>
+    <string name="pmkvy_8">ਟ੍ਰੇਨਿੰਗ ਵਿੱਚ ਸੌਫਟ ਸਕਿਲਜ਼, ਡਿਜ਼ਿਟਲ ਸਾਖਰਤਾ ਅਤੇ ਵਿੱਤੀ ਸਾਖਰਤਾ ਸ਼ਾਮਲ ਹੈ, ਜੋ ਕੁੱਲ ਰੋਜ਼ਗਾਰ ਯੋਗਤਾ ਨੂੰ ਵਧਾਉਂਦਾ ਹੈ।</string>
+    <string name="pmkvy_9">ਇਹ ਯੋਜਨਾ ਖਾਸ ਤੌਰ ’ਤੇ ਨੌਜਵਾਨਾਂ, ਮਹਿਲਾਵਾਂ, ਐਸਸੀ/ਐਸਟ (ਸ਼ੈਡਿਊਲ ਕਾਸਟ/ਸ਼ੈਡਿਊਲ ਟ੍ਰਾਈਬ) ਸਮੂਹਾਂ, ਘੱਟ ਗਿਣਤੀ ਅਤੇ ਵਿਸ਼ੇਸ਼ ਯੋਗਤਾ ਵਾਲੇ ਵਿਅਕਤੀਆਂ ’ਤੇ ਧਿਆਨ ਕੇਂਦਰਿਤ ਕਰਦੀ ਹੈ।</string>
+    <string name="pmkvy_10">ਕੌਸ਼ਲ ਵਿਕਾਸ ਨੂੰ ਉਦਯੋਗ ਦੀਆਂ ਲੋੜਾਂ ਨਾਲ ਜੋੜਿਆ ਗਿਆ ਹੈ, ਜਿਸ ਨਾਲ ਤਨਖਾਹ ਵਾਲੀਆਂ ਨੌਕਰੀਆਂ ਅਤੇ ਸਵੈ-ਰੋਜ਼ਗਾਰ ਦੇ ਮੌਕੇ ਵਧਦੇ ਹਨ।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

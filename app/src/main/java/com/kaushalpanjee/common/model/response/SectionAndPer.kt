@@ -9,6 +9,7 @@ data class SectionAndPer(
 
 data class StatusItem(
     val personalStatus: Int,
+    val firstLogin: String,
     val imagePath: String,
     val educationalStatus: Int,
     val trainingStatus: Int,
@@ -20,5 +21,11 @@ data class StatusItem(
     val isFaceRegistred: String,
     val candidateName: String,
     val aadhaarEnc: String,
-    val stateLgdCode: String
+    val certFlag: String,
+    val stateLgdCode: String,
+    val schemeType: String,
+    val stateCode: String,
+    val ojtFlag: String,
+    val cbtExam: String
+
 )

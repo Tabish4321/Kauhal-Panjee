@@ -225,7 +225,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>உன்னதி பற்றியது</u></string>
+    <string name="unnati_schemes">உன்னதி திட்டங்கள்</string>
+
+    <string name="ddugky_title">டிடியூஜிகேவை</string>
+    <string name="rseti_title">ஆர்எஸ்இடிஐ</string>
+    <string name="select_Class">வகுப்பு<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">உங்கள் சான்றிதழைப் பார்க்கவும்</string>
+    <string name="pmvishwakarma">பிஎம் விஸ்வகர்மா</string>
+    <string name="nrlm">என்ஆர்எல்எம்</string>
+    <string name="self_employment">சுயதொழில்</string>
+    <string name="ExpectationIncome">எதிர்பார்க்கப்படும் மாத வருமானம் (ரூ.)</string>
+    <string name="domain">டொமைன்<font color='#FF0000'>*</font></string>
+    <string name="domain1">டொமைன்</string>
+    <string name="course">பாடநெறி<font color='#FF0000'>*</font></string>
+    <string name="course1">பாடநெறி</string>
+    <string name="select_YearOfPassingNew">தேர்ச்சி பெற்ற ஆண்டு</string>
+    <string name="select_SchemeInterest">ஆர்வமுள்ள திட்டம்<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ஆர்வமுள்ள திட்டம்</string>
+    <string name="ddugky_1">15 முதல் 35 வயதுக்குட்பட்ட கிராமப்புற இளைஞர்களுக்கு திறன் மேம்பாட்டு வாய்ப்புகள்.</string>
+    <string name="ddugky_2">வேலைவாய்ப்பு மற்றும் தரமான வேலை வாய்ப்புகளுக்கான அணுகலை மேம்படுத்துவதை நோக்கமாகக் கொண்ட தொழில்துறை சார்ந்த பயிற்சி.</string>
+    <string name="ddugky_3">பயிற்சி வெற்றிகரமாக முடிந்தவுடன் கட்டமைக்கப்பட்ட வேலை வாய்ப்பு ஆதரவு.</string>
+    <string name="rseti_1">18–50 வயதுடைய கிராமப்புற இளைஞர்களுக்கான குறுகிய கால பயிற்சித் திட்டங்கள், சுயதொழில் மற்றும் நுண் நிறுவன மேம்பாட்டில் கவனம் செலுத்துகின்றன.</string>
+    <string name="rseti_2">தனிப்பட்ட நிறுவனங்களை நிறுவுவதற்கு வங்கிகள் மற்றும் கடன் நிறுவனங்களுடன் இணைப்பை எளிதாக்குகிறது.</string>
+    <string name="rseti_3">புதிய வணிகங்களின் நிலைத்தன்மை மற்றும் வளர்ச்சியை உறுதி செய்வதற்கு பயிற்சிக்குப் பிந்தைய வழிகாட்டுதல் மற்றும் கையடக்க ஆதரவு.</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">பிஎம்கேவை</string>
+    <string name="pmkvy_1">திறன் மேம்பாடு மற்றும் தொழில்முனைவோர் அமைச்சகம் (எம்எஸ்டிஇ) தன்னுடைய முக்கிய திட்டமான பிஎம்கேவை அமல்படுத்தி வருகிறது. இந்த திட்டத்தின் நோக்கம் குறுகிய காலப் பயிற்சி (எஸ்டிடிடி) மூலம் திறன் மேம்பாடு செய்வதும், முந்தைய கல்விக்கான அங்கீகாரம் (ஆர்பிஎல்) மூலம் திறன் உயர்வு/மறு பயிற்சி வழங்குவதுமாகும்.</string>
+    <string name="pmkvy_2">இந்த திட்டம் நாடு முழுவதும் உள்ள இளைஞர்களை குறிவைத்து வடிவமைக்கப்பட்டுள்ளது, இதில் கிராமப்புற இளைஞர்களும் அடங்குவர்.</string>
+    <string name="pmkvy_3">31 அக்டோபர் 2025 நிலவரப்படி, பிஎம்கேவை திட்டத்தின் கீழ் இந்தியா முழுவதும் 15,000 பயிற்சி மையங்கள் செயல்படுகின்றன.</string>
+    <string name="pmkvy_4">பிஎம்கேவை தொழில் தொடர்பான வேலைப் பணிகளுக்கு இலவச திறன் பயிற்சியை வழங்குகிறது, மேலும் வேட்பாளர்களிடமிருந்து எந்தக் கோர்ஸ் கட்டணமும் வசூலிக்கப்படாது.</string>
+    <string name="pmkvy_5">பயிற்சியை வெற்றிகரமாக முடித்த வேட்பாளர்களுக்கு சான்றிதழ் வழங்கப்படும்.</string>
+    <string name="pmkvy_6">பாடத்திட்டங்கள் வேலைக்கான தேவைகளை கருத்தில் கொண்டு, வேலை வாய்ப்புகள் அதிகரிக்கும் வகையில் சந்தைத் தேவைகளுக்கு ஏற்ப உருவாக்கப்படுகின்றன.</string>
+    <string name="pmkvy_7">சில தேர்ந்தெடுக்கப்பட்ட வேலைப் பணிகளில் பணியிடப் பயிற்சி (ஓஜெடி) வழங்கப்படுகிறது, இதன் மூலம் வேட்பாளர்கள் உண்மையான பணியிட அனுபவத்தை பெற முடியும்.</string>
+    <string name="pmkvy_8">பயிற்சியில் மென்மையான திறன்கள், டிஜிட்டல் எழுத்தறிவு மற்றும் நிதி எழுத்தறிவு போன்றவை சேர்க்கப்பட்டுள்ளதால், மொத்த வேலைவாய்ப்பு திறன் அதிகரிக்கப்படுகிறது.</string>
+    <string name="pmkvy_9">இந்த திட்டம் குறிப்பாக இளைஞர்கள், பெண்கள், எஸ்சி/எஸ்டி சமூகங்கள், சிறுபான்மையினர் மற்றும் மாற்றுத்திறனாளிகள் மீது சிறப்பு கவனம் செலுத்துகிறது.</string>
+    <string name="pmkvy_10">திறன் மேம்பாடு தொழில் தேவைகளுடன் இணைக்கப்பட்டுள்ளதால், ஊதிய அடிப்படையிலான வேலைகள் மற்றும் சுயதொழில் வாய்ப்புகள் அதிகரிக்கின்றன.</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

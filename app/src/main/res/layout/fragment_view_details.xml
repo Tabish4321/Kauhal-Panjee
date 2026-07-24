@@ -514,6 +514,34 @@
                         android:background="@drawable/card_background"
                         android:layout_margin="8dp" />
                 </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/tvPwdType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PWD Type"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llpwd"/>
+
+
+                <TextView
+                    style="@style/EditText"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="@dimen/dp_3"
+                    android:hint="PWD Type"
+                    android:id="@+id/llPwdType"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPwdType"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -526,7 +554,7 @@
                     android:textSize="@dimen/sp_20"
                     android:id="@+id/pwdImageUpload"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llpwd"/>
+                    app:layout_constraintTop_toBottomOf="@+id/llPwdType"/>
 
 
                 <LinearLayout
@@ -2192,7 +2220,6 @@
                 android:id="@+id/expandEducational"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_12"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -2214,7 +2241,7 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/select_HighestEducation"
+                        android:text="@string/select_HighestEducation1"
                         android:textColor="@color/color_dark_green" />
 
                     <TextView
@@ -2231,12 +2258,39 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llClass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llHighestEducation">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:padding="@dimen/dp_4"
+                        android:text="@string/select_Class"
+                        android:textColor="@color/color_dark_green" />
+
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etClass"
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/llYearOfPassing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llHighestEducation">
+                    app:layout_constraintTop_toBottomOf="@+id/llClass">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -2244,7 +2298,8 @@
                         android:layout_marginTop="@dimen/dp_16"
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:padding="@dimen/dp_4"
-                        android:text="@string/select_YearOfPassing"
+                        android:visibility="gone"
+                        android:text="@string/select_YearOfPassingNew"
                         android:textColor="@color/color_dark_green" />
 
 
@@ -2254,28 +2309,10 @@
                         android:background="@drawable/edittext_background"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
+                        android:visibility="gone"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/avenir_next_demi_bold"
-                        android:padding="@dimen/dp_4"
-                        android:text="@string/languages"
-                        android:textColor="@color/color_dark_green" />
-
-
-                    <TextView
-                        android:id="@+id/tvLanguages"
-                        style="@style/EditText"
-                        android:background="@drawable/edittext_background"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        tools:ignore="LabelFor" />
 
 
                     <LinearLayout
@@ -2292,7 +2329,7 @@
                         android:id="@+id/llTechEducation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
 
@@ -2302,7 +2339,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/TechnicalEducation1"
+                            android:text="@string/course1"
                             android:textColor="@color/color_dark_green" />
 
                         <TextView
@@ -2325,7 +2362,7 @@
                         android:id="@+id/llDomainOfTech"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
 
@@ -2335,7 +2372,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/DomainOfTech"
+                            android:text="@string/domain1"
                             android:textColor="@color/color_dark_green" />
 
                         <TextView
@@ -2365,7 +2402,7 @@
                             android:layout_marginTop="@dimen/dp_16"
                             android:fontFamily="@font/avenir_next_demi_bold"
                             android:padding="@dimen/dp_4"
-                            android:text="@string/select_YearOfPassingTech"
+                            android:text="@string/select_YearOfPassingNew"
                             android:textColor="@color/color_dark_green" />
 
 
@@ -2379,7 +2416,25 @@
                             android:textSize="16sp"/>
 
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_16"
+                            android:fontFamily="@font/avenir_next_demi_bold"
+                            android:padding="@dimen/dp_4"
+                            android:text="@string/languages"
+                            android:textColor="@color/color_dark_green" />
 
+
+                        <TextView
+                            android:id="@+id/tvLanguages"
+                            style="@style/EditText"
+                            android:background="@drawable/edittext_background"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            tools:ignore="LabelFor" />
 
                     </LinearLayout>
 
@@ -2578,6 +2633,7 @@
                     android:orientation="vertical"
                     android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/llIntrestedIn"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/llnatureOfEmpl">
 
@@ -2821,9 +2877,27 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_SchemeInterest"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp"  />
+
+                    <TextView
+                        style="@style/EditText"
+                        android:id="@+id/etSchemeInterestedIn"
+                        android:background="@drawable/edittext_background"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"/>
+
+                    <TextView
                         android:id="@+id/tvrecievedAnyTrainingBefore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:text="@string/recievedAnyTrainingBefore"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
@@ -2939,6 +3013,7 @@
                         android:orientation="vertical"
                         android:layout_marginTop="@dimen/dp_10"
                         android:id="@+id/llHeardAboutddugky"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/llPreviousComTraining">
@@ -3161,7 +3236,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopBanking" />
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/expandBanking"
                 android:layout_width="match_parent"
@@ -3171,172 +3245,28 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llTopBanking">
+
+                <!-- NO DATA TEXT -->
+                <TextView
+                    android:id="@+id/tvNoBank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No bank details available"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:padding="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <LinearLayout
+                    android:id="@+id/llBankContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llIfscCode"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvNoBank"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewBanking"
-                    tools:ignore="NotSibling">
-
-                    <!-- Label -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ifsc_code"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-                    <TextView
-                        android:id="@+id/etIfsc"
-                        style="@style/EditText"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llBankName"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llIfscCode"
-                    tools:ignore="NotSibling">
-
-                    <!-- Label -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bank_name"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <TextView
-                        android:id="@+id/etBankName"
-                        style="@style/EditText"
-                        android:hint="@string/bank_name"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llBranchName"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llBankName"
-                    tools:ignore="NotSibling">
-
-                    <!-- Label -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/branch_name"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <TextView
-                        android:id="@+id/etBranchName"
-                        style="@style/EditText"
-                        android:hint="@string/branch_name"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llBankAcNo"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llBranchName"
-                    tools:ignore="NotSibling">
-
-                    <!-- Label -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bank_account_number"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <TextView
-                        android:id="@+id/etBankAcNo"
-                        style="@style/EditText"
-                        android:hint="@string/bank_account_number"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:id="@+id/llPanNumber"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llBankAcNo"
-                    tools:ignore="NotSibling">
-
-                    <!-- Label -->
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/pan_no"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- EditText with custom background -->
-                    <TextView
-                        android:id="@+id/etPanNumber"
-                        style="@style/EditText"
-                        android:hint="@string/enter_pan_no"
-                        android:background="@drawable/edittext_background"
-                        android:padding="12dp"
-                        android:textColor="@android:color/black"
-                        android:textSize="16sp" />
-
-
-                    <TextView
-                        android:id="@+id/btnBnakingSubmit"
-                        style="@style/Button"
-                        android:visibility="gone"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:drawablePadding="@dimen/dp_20"
-                        android:text="@string/submit"
-                        app:drawableEndCompat="@drawable/ic_right_arrow" />
-
-                </LinearLayout>
-
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

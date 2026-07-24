@@ -3,6 +3,7 @@ package com.kaushalpanjee.core.util
 import com.google.gson.Gson
 import com.utilize.core.domain.model.response.BaseErrorResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -41,73 +42,136 @@ fun <ResultType, RequestType> networkBoundResource(
 
 }
 
+
+
 fun <RequestType> networkBoundResourceWithoutDb(
     fetch: suspend () -> RequestType
-) = flow {
+): Flow<Resource<RequestType>> = flow {
 
     emit(Resource.Loading(null))
+
     try {
         emit(Resource.Success(fetch.invoke()))
     } catch (t: Throwable) {
-        val error = if (t is HttpException)
+
+        val error = if (t is HttpException) {
             getErrorMessage(t)
-        else{
-            if (t.message!!.contains("Unable to resolve host")){
-                 BaseErrorResponse(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "No Internet Connection", false,Any())
-            }else BaseErrorResponse(0, t.message.toString(), false, Any())
+        } else {
+            if (t.message?.contains("Unable to resolve host", ignoreCase = true) == true) {
+                BaseErrorResponse(
+                    HttpURLConnection.HTTP_GATEWAY_TIMEOUT,
+                    "No Internet Connection",
+                    false,
+                    Any()
+                )
+            } else {
+                BaseErrorResponse(
+                    0,
+                    t.message ?: "Something went wrong",
+                    false,
+                    Any()
+                )
+            }
         }
 
         emit(Resource.Error(error, null))
     }
 }
+//fun <RequestType> networkBoundResourceWithoutDb(
+//    fetch: suspend () -> RequestType
+//) = flow {
+//
+//    emit(Resource.Loading(null))
+//    try {
+//        emit(Resource.Success(fetch.invoke()))
+//    } catch (t: Throwable) {
+//        val error = if (t is HttpException)
+//            getErrorMessage(t)
+//        else{
+//            if (t.message!!.contains("Unable to resolve host")){
+//                 BaseErrorResponse(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "No Internet Connection", false,Any())
+//            }else BaseErrorResponse(0, t.message.toString(), false, Any())
+//        }
+//
+//        emit(Resource.Error(error, null))
+//    }
+//}
 
- fun getErrorMessage(throwable: HttpException): BaseErrorResponse {
 
-     if (throwable.message().contains("java.net.UnknownHostException")){
-         return BaseErrorResponse(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "No Internet Connection", false,Any())
-     }
 
-     if (throwable.code() == HttpURLConnection.HTTP_GATEWAY_TIMEOUT)
-         return BaseErrorResponse(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "No Internet Connection", false,Any())
 
-     val errorBody = throwable.response()?.errorBody()
 
-     val endpoint = throwable.response()?.raw()?.request?.url?.toUrl()?.path
-     val host = throwable.response()?.raw()?.request?.url?.toUrl()?.host
 
-     var baseErrorResponse: BaseErrorResponse
 
-     baseErrorResponse = try {
 
-         if (throwable.code() == 429){
-             log("429", throwable.message())
-             BaseErrorResponse(429,"Too many requests found from this IP, please try again after an hour" , false,Any())
-         }
+fun <T> networkBoundResourceWithoutDbn(
+    apiCall: suspend () -> T
+): Flow<Resource<T>> {
+    return flow {
+        emit(Resource.Loading())
 
-         else if (errorBody == null)
-             BaseErrorResponse(0, "Server not reachable", false,Any())
-         else{
+        val response = apiCall()
+        emit(Resource.Success(response))
+    }.catch { e ->
+        emit(
+            Resource.Error(
+                BaseErrorResponse(
+                    code = 0,
+                    message = e.message ?: "Unknown error",
+                    success = false,
+                    data = Any()
+                )
+            )
+        )
+    }
+}
 
-             Gson().fromJson(errorBody.charStream(), BaseErrorResponse::class.java)
-         }
 
-     } catch (e: Exception) {
-         e.printStackTrace()
-         BaseErrorResponse(0, "Server not reachable", false,Any())
-     }
+fun getErrorMessage(throwable: HttpException): BaseErrorResponse {
 
-    if (baseErrorResponse.code == HttpURLConnection.HTTP_INTERNAL_ERROR)
-        baseErrorResponse = BaseErrorResponse(HttpURLConnection.HTTP_INTERNAL_ERROR, "Something went wrong!!", false,Any())
+    if (throwable.code() == HttpURLConnection.HTTP_GATEWAY_TIMEOUT) {
+        return BaseErrorResponse(
+            HttpURLConnection.HTTP_GATEWAY_TIMEOUT,
+            "No Internet Connection",
+            false,
+            Any()
+        )
+    }
 
-//     try {
-//         // log Analytics event with api error and api endpoint
-//         if (host?.contains("api.fitbit.com", true) == true)
-//             AnalyticsHelper.logError("Fitbit API error", endpoint)
-//         else
-//             AnalyticsHelper.logError(baseErrorResponse.message, endpoint)
-//     } catch (e: Exception) {
-//         e.printStackTrace()
-//     }
+    val errorBody = throwable.response()?.errorBody()
 
-    return baseErrorResponse
+    if (errorBody == null) {
+        return BaseErrorResponse(
+            throwable.code(),
+            throwable.message(),
+            false,
+            Any()
+        )
+    }
+
+    return try {
+
+        val body = errorBody.string()
+
+        //Log.e("API_ERROR", body)
+
+        Gson().fromJson(body, BaseErrorResponse::class.java)
+            ?: BaseErrorResponse(
+                throwable.code(),
+                throwable.message(),
+                false,
+                Any()
+            )
+
+    } catch (e: Exception) {
+
+        //Log.e("API_ERROR", e.message ?: "")
+
+        BaseErrorResponse(
+            throwable.code(),
+            throwable.message(),
+            false,
+            Any()
+        )
+    }
 }

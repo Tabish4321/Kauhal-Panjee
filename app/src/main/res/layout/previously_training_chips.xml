@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llPreviousComTraining"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_16"
+        android:padding="@dimen/dp_4"
+        android:textSize="@dimen/sp_16"
+        android:text="@string/PreviousComTraining"
+        android:textColor="@color/black" />
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipPreviousComTraGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="false"
+        app:selectionRequired="false"
+        app:chipSpacing="8dp"
+        android:padding="16dp"
+        android:orientation="horizontal">
+
+        <!-- Chip 1: Job -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrevOption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomChip"
+            android:text="@string/ddugky"
+            android:checkable="true"
+            android:layout_margin="8dp"
+            android:elevation="7dp" />
+
+        <!-- Chip 2: Training -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrevOption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rseti"
+            style="@style/CustomChip"
+            android:checkable="true"
+            android:layout_margin="8dp"
+            android:elevation="7dp" />
+
+        <!-- Chip 3: Both -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrevOption3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pmkvy"
+            style="@style/CustomChip"
+            android:checkable="true"
+            android:layout_margin="8dp"
+            android:elevation="7dp" />
+        <!-- Chip 5: Both -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrevOption5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pmvishwakarma_"
+            style="@style/CustomChip"
+            android:checkable="true"
+            android:layout_margin="8dp"
+            android:elevation="7dp" />
+        <!-- Chip 6: Both -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrevOption6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nrlm_"
+            style="@style/CustomChip"
+            android:checkable="true"
+            android:layout_margin="8dp"
+            android:elevation="7dp" />
+        <!-- Chip 4: Both -->
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrevOption4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/others"
+            style="@style/CustomChip"
+            android:checkable="true"
+            android:layout_margin="8dp"
+            android:elevation="7dp" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <EditText
+        android:id="@+id/tvPreviouslycompletedOthers"
+        style="@style/EditText"
+        android:layout_height="wrap_content"
+        android:hint="@string/mention_others_training"
+        android:background="@drawable/edittext_background"
+        android:padding="12dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"/>
+
+</LinearLayout>

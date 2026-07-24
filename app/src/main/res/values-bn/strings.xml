@@ -225,7 +225,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>উন্নতি সম্পর্কে</u></string>
+    <string name="unnati_schemes">উন্নতি স্কিমসমূহ</string>
+
+    <string name="ddugky_title">ডিডিইউজিকেওয়াই</string>
+    <string name="rseti_title">আরএসইটিআই</string>
+    <string name="select_Class">ক্লাস<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">আপনার সার্টিফিকেট দেখুন</string>
+    <string name="pmvishwakarma">পিএম বিশ্বকর্মা</string>
+    <string name="nrlm">এনআরএলএম</string>
+    <string name="self_employment">স্বনিযুক্ত</string>
+    <string name="ExpectationIncome">প্রত্যাশিত মাসিক আয় (টাকায়)</string>
+    <string name="domain">ডোমেইন<font color='#FF0000'>*</font></string>
+    <string name="domain1">ডোমেইন</string>
+    <string name="course">কোর্স<font color='#FF0000'>*</font></string>
+    <string name="course1">কোর্স</string>
+    <string name="select_YearOfPassingNew">উত্তীর্ণের বছর</string>
+    <string name="select_SchemeInterest">আগ্রহী স্কিম<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">আগ্রহী স্কিম</string>
+    <string name="ddugky_1">১৫–৩৫ বছরের গ্রামের যুবকদের জন্য দক্ষতা উন্নয়ন সুযোগ।</string>
+    <string name="ddugky_2">শিল্প-উন্মুখ প্রশিক্ষণ যা কর্মসংস্থানযোগ্যতা এবং মানসম্পন্ন চাকরিতে প্রবেশাধিকার বৃদ্ধি করে।</string>
+    <string name="ddugky_3">প্রশিক্ষণ সম্পন্ন করার পর সংগঠিত প্লেসমেন্ট সমর্থন।</string>
+    <string name="rseti_1">১৮–৫০ বছরের গ্রামের যুবকদের জন্য স্বল্প-মেয়াদি প্রশিক্ষণ প্রোগ্রাম, যা স্ব-নিযুক্তি ও ক্ষুদ্র উদ্যোক্তা উন্নয়নে কেন্দ্রিত।</string>
+    <string name="rseti_2">ব্যক্তিগত উদ্যোগ শুরু করতে ব্যাংক ও ক্রেডিট সংস্থার সাথে সংযোগের সুবিধা।</string>
+    <string name="rseti_3">প্রশিক্ষণ শেষে মেন্টরিং ও সহায়তা, নতুন উদ্যোগের স্থায়িত্ব ও বৃদ্ধি নিশ্চিত করতে।</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">পিএমকেভাই</string>
+    <string name="pmkvy_1">দক্ষতা উন্নয়ন ও উদ্যোক্তা মন্ত্রক (এমএসডিই) তার প্রধান উদ্যোগ পিএমকেভাই কার্যকর করছে, যার উদ্দেশ্য স্বল্প-মেয়াদী প্রশিক্ষণ (এসটিটি) এর মাধ্যমে দক্ষতা বিকাশ এবং পূর্ব শিক্ষার স্বীকৃতি (আরপিএল) এর মাধ্যমে দক্ষতার উন্নয়ন/পুনঃদক্ষতা প্রদান করা।</string>
+    <string name="pmkvy_2">এই যোজনা দেশের সকল অঞ্চলের যুবকদের লক্ষ্য করে গড়ে তোলা হয়েছে, যেখানে গ্রামীণ এলাকার যুবকরাও অন্তর্ভুক্ত।</string>
+    <string name="pmkvy_3">৩১ অক্টোবর ২০২৫ পর্যন্ত পিএমকেভাই-এর অধীনে সারা ভারতে ১৫,০০০টি প্রশিক্ষণ কেন্দ্র চালু রয়েছে।</string>
+    <string name="pmkvy_4">পিএমকেভাই শিল্প-সম্পর্কিত চাকরির ক্ষেত্রে বিনামূল্যে দক্ষতা প্রশিক্ষণ প্রদান করে এবং প্রার্থীদের কোনো কোর্স ফি দিতে হয় না।</string>
+    <string name="pmkvy_5">প্রশিক্ষণ সফলভাবে সম্পন্ন হলে প্রার্থীদের সার্টিফিকেট প্রদান করা হয়।</string>
+    <string name="pmkvy_6">পাঠ্যক্রম চাকরি-কেন্দ্রিক এবং চাকরির সুযোগ বাড়ানোর জন্য বাজারের চাহিদা অনুযায়ী তৈরি করা হয়।</string>
+    <string name="pmkvy_7">কিছু নির্বাচিত চাকরি ভূমিকায় অন-দ্য-জব প্রশিক্ষণ (ওজেটি) প্রদান করা হয়, যাতে প্রার্থীরা বাস্তব কর্মক্ষেত্রের অভিজ্ঞতা অর্জন করতে পারে।</string>
+    <string name="pmkvy_8">প্রশিক্ষণে সফট স্কিল, ডিজিটাল সাক্ষরতা এবং আর্থিক সাক্ষরতা অন্তর্ভুক্ত থাকে, যা সামগ্রিক কর্মসংস্থান সক্ষমতা বাড়ায়।</string>
+    <string name="pmkvy_9">এই যোজনা বিশেষভাবে যুবক-যুবতী, মহিলা, এসসি/এসটি সম্প্রদায়, সংখ্যালঘু এবং প্রতিবন্ধী ব্যক্তিদের উপর গুরুত্ব দেয়।</string>
+    <string name="pmkvy_10">দক্ষতা উন্নয়নকে শিল্পের প্রয়োজনের সঙ্গে যুক্ত করা হয়েছে, যার ফলে বেতনের চাকরি এবং স্বনিযুক্তির সুযোগ বৃদ্ধি পায়।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

@@ -31,5 +31,26 @@ data class UserDetails(
     val street: String,
     val pinCode: String,
     val village: String,
-    val postOffice: String
+    val postOffice: String,
+
+    val checkIn: String,
+    val checkOut: String,
+    val totalHours: String,
+    val attendanceFlag: String,
+    val workplaceId: String,
+    val workplaceName: String,
+    val employerId: String,
+    val employerName: String,
+    val latitute: String,
+    val longitute: String,
+    val radius: String,
+    val batchId: String
+
+
+
+
+
+
+
+
 )

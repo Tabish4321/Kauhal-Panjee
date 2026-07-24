@@ -31,9 +31,9 @@ class SeccAdapter(private val onItemClick: (WrappedListItem) -> Unit) :
         private val seccNameTextView: TextView = itemView.findViewById(R.id.nameTextView)
 
         fun bind(wrappedListItem: WrappedListItem) {
-            fatherNameTextView.text = wrappedListItem.fatherName
+            fatherNameTextView.text = wrappedListItem.fathername
             ahltinTextView.text = wrappedListItem.ahltin
-            seccNameTextView.text = wrappedListItem.seccName
+            seccNameTextView.text = wrappedListItem.seccname
 
             itemView.setOnClickListener {
                 onItemClick(wrappedListItem)

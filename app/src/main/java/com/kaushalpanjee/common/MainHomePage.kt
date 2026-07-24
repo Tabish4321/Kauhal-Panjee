@@ -12,6 +12,7 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,16 +31,16 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.FaceCheckReq
+import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.core.basecomponent.BaseFragment
-import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
 import com.kaushalpanjee.core.util.gone
-import com.kaushalpanjee.core.util.toastShort
+import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
@@ -69,7 +70,12 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var isFaceReg = ""
     private var candidateName = ""
     private var totalPercentange =0.0f
-    private var bannerImageList = ArrayList<String>()
+    private var certUrl = ""
+    private var attendanceFlag = ""
+    private var cbtExam = ""
+    private var schemeType = ""
+    private var stateCode = ""
+
 
     private val searchQuery = MutableLiveData<String>()
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
@@ -83,8 +89,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 val message = data?.getStringExtra(AppConstant.Constants.RESULT_MESSAGE) ?: "Unknown error"
 
                 if (status == "success") {
-
-                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()))
+                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectFaceUpdateResponse()
 
@@ -106,7 +111,12 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
 
+
+
     }
+
+
+
      private fun init(){
          val drawerLayout = binding.drawerLayout
          binding.navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -117,13 +127,10 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                      AppUtil.saveLoginStatus(requireContext(), false)  // false means user is logged out
 
-                     findNavController().navigate(
-                         R.id.loginFragment,
-                         null,
-                         NavOptions.Builder()
-                             .setPopUpTo(R.id.mainHomePage, true)
-                             .build()
-                     )
+                     commonViewModel.getLogout(LogoutRequest(BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext()), userPreferences.getUseID()), AppUtil.getSavedTokenPreference(requireContext()))
+
+                     collectLogoutResponse()
+
                  }
 
                  R.id.changePass -> {
@@ -133,6 +140,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                      findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
 
                  }
+
+
+                /* R.id.bankLoan -> {
+
+                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToLoanFragment())
+
+                 }*/
+
                  R.id.rekyc -> {
 
                      //For Re-KYC
@@ -142,27 +157,42 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                  }
 
+
+
+                 R.id.cbt ->{
+
+                     if (cbtExam == "N"){
+                         findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
+
+                     }
+                     else{
+                         showSnackBar("Exam is not available for you")
+                     }
+
+                 }
+
+
              }
              drawerLayout.closeDrawers()
              true
          }
 
          binding.trainingRecyclerView.gone()
-
-
          listeners()
          autoScroll()
-         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
 
-         collectSetionAndPerResponse()
          collectTrainingSearchResponse()
 
      }
 
  private fun  listeners(){
 
-    //Training Adapter Setting
+     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+     collectSetionAndPerResponse()
+
+
+     //Training Adapter Setting
 
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
      trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
@@ -178,7 +208,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      }
 
-
+     binding.circleINotification.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment())
+     }
 
      binding.trainingRecyclerView.adapter = trainingSearchAdapter
 
@@ -205,7 +237,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
      binding.trainingImageLogo.setOnClickListener {
 
-         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingFragment())
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingCenterAssign(stateCode,schemeType))
      }
 
 
@@ -214,6 +246,24 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
      binding.personalImageLogo.setOnClickListener {
              findNavController().navigate(MainHomePageDirections.actionMainHomePageToViewDetailsFragment())
 
+     }
+
+
+
+
+
+
+     binding.attendanceImageLogo.setOnClickListener {
+         findNavController().navigate(MainHomePageDirections.actionMainHomePageToAttendanceFragment())
+
+     }
+
+
+     binding.certificateImageLogo.setOnClickListener {
+
+         val intent = Intent(requireContext(), CertificateActivity::class.java)
+         intent.putExtra("CERT_URL", "${certUrl}")
+         startActivity(intent)
      }
 
          binding.circleImageViewMH.setOnClickListener {
@@ -292,6 +342,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                 for (x in percentageList) {
 
+                                    certUrl = x.certFlag
+                                    schemeType = x.schemeType
+                                    stateCode = x.stateCode
                                     personalStatus= x.personalStatus.toString()
                                     educationalStatus= x.educationalStatus.toString()
                                     trainingStatus= x.trainingStatus.toString()
@@ -301,20 +354,50 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     bankingStatus= x.bankingStatus.toString()
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
+                                    attendanceFlag= x.ojtFlag
+                                    cbtExam= x.cbtExam
+
+
+                                    if (attendanceFlag == "Y"){
+                                        binding.attendanceImageLogo.visible()
+                                        binding.attendanceTv.visible()
+                                    }
+                                    else
+                                    {
+                                        binding.attendanceImageLogo.gone()
+                                        binding.attendanceTv.gone()
+
+                                    }
+
+
+
+
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
                                     userPreferences.updateUserStateLgdCode(null)
                                     userPreferences.updateUserStateLgdCode(x.stateLgdCode)
 
-                                    val decryptedAadhaar = AESCryptography.decryptIntoString(
-                                        x.aadhaarEnc,
-                                        AppConstant.Constants.ENCRYPT_KEY,
-                                        AppConstant.Constants.ENCRYPT_IV_KEY
-                                    ) ?: "N/A"
+//                                    val decryptedAadhaar = AESCryptography.decryptIntoString(
+//                                        x.aadhaarEnc,
+//                                        AppConstant.Constants.ENCRYPT_KEY,
+//                                        AppConstant.Constants.ENCRYPT_IV_KEY
+//                                    ) ?: "N/A"
 
-                                    AppUtil.saveAadhaarPreference(requireContext(),decryptedAadhaar
+                                    AppUtil.saveAadhaarPreference(requireContext(),x.aadhaarEnc
                                     )
 
+                                    if (certUrl == "N"){
+
+                                        binding.certificateImageLogo.gone()
+                                        binding.certificateImageText.gone()
+
+                                    }
+
+
+
+                                    if (x.firstLogin == "N"){
+                                        showForcePasswordDialog()
+                                    }
 
                                 }
                                 if (isFaceReg=="N"){
@@ -362,6 +445,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                 }
 
 
+
                                 if (bankingStatus.contains("1")){
                                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_dark_verified)
 
@@ -375,6 +459,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     binding.tvBankingDetails.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
                                     binding.tvBankingDetails.setCompoundDrawablePadding(16)
                                 }
+
+                                val headerView = binding.navigationView.getHeaderView(0)
+                                val headerBinding = NavigationHeaderBinding.bind(headerView)
+                                val headerIdView: TextView = headerBinding.kpId
+                                headerIdView.text = userPreferences.getUseID()
 
 
                                 if (imagePath!=null){
@@ -393,11 +482,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     // Access the ImageView from the header layout
                                     val headerImageView: ImageView = headerBinding.circleImageView
-                                    val headerIdView: TextView = headerBinding.kpId
-
                                     headerImageView.setImageBitmap(bitmap)
-                                    headerIdView.text = userPreferences.getUseID()
-
 
                                 }
 
@@ -470,7 +555,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                         it.data?.let { updateFaceApi ->
                             if (updateFaceApi.responseCode == 200) {
 
-                                showSnackBar(updateFaceApi.responseDesc)
+                                showSnackBar(updateFaceApi.responseMsg)
 
                             } else if (updateFaceApi.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
@@ -484,6 +569,52 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 }
             }
         }
+    }
+
+    private fun collectLogoutResponse(){
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getLogout) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        showSnackBar(it.data?.responseDesc ?: "Something went wrong")
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data.let { logoutResponse ->
+                            when (logoutResponse?.responseCode) {
+                                200 -> {
+                                    findNavController().navigate(
+                                        R.id.loginFragment,
+                                        null,
+                                        NavOptions.Builder()
+                                            .setPopUpTo(R.id.mainHomePage, true)
+                                            .build()
+                                    )
+                                    toastLong(logoutResponse.responseDesc)
+                                }
+                                301 -> {
+
+                                    showUpdateDialog()
+                                }
+                                404 -> showSnackBar(logoutResponse.responseDesc)
+                                401 -> {
+                                    AppUtil.showSessionExpiredDialog(findNavController(), requireContext())
+                                }
+                                else -> {
+                                    showSnackBar("Something went wrong")
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
 
     private fun collectBannerResponse() {
@@ -622,6 +753,25 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         val dialog = builder.create()
         dialog.setCancelable(false)  // Prevent outside touch dismissal
         dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+    private fun showForcePasswordDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Security Warning")
+            .setMessage("For security reasons, you must change your password before continuing.")
+            .setCancelable(false)
+            .setPositiveButton("OK") { _, _ ->
+                findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
+            }
+            .create()
+
+        dialog.setCanceledOnTouchOutside(false)
+
+        dialog.setOnKeyListener { _, keyCode, _ ->
+            keyCode == KeyEvent.KEYCODE_BACK // block back press
+        }
+
         dialog.show()
     }
 

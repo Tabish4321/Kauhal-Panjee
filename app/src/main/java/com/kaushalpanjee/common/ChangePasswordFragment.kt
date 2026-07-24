@@ -2,6 +2,7 @@ package com.kaushalpanjee.common
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
@@ -15,6 +16,9 @@ import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
+import com.kaushalpanjee.core.util.log
+import com.kaushalpanjee.core.util.onRightDrawableClicked
+import com.kaushalpanjee.core.util.setRightDrawablePassword
 import com.kaushalpanjee.core.util.toastShort
 import com.kaushalpanjee.databinding.ChangePassFragmentBinding
 import kotlinx.coroutines.launch
@@ -52,7 +56,7 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
                 if (newPassword == confirmNewPassword){
 
                     val shaOldPassword= AppUtil.sha512Hash(oldPassword)
-                   // val shaNewPassword= AppUtil.sha512Hash(newPassword)
+                    // val shaNewPassword= AppUtil.sha512Hash(newPassword)
 
                     val encryptedNewPass=   AESCryptography.encryptIntoBase64String(newPassword, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
@@ -71,10 +75,64 @@ class ChangePasswordFragment : BaseFragment<ChangePassFragmentBinding>(ChangePas
 
             else toastShort("please fill all fields")
 
+        }
+
+        binding.etconfirmPassword.onRightDrawableClicked {
+
+            log("onRightDrawableClicked", "onRightDrawableClicked")
+            if (showPassword) {
+                showPassword = false
+                binding.etconfirmPassword.setRightDrawablePassword(
+                    true, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
+                )
+            } else {
+                showPassword = true
+                binding.etconfirmPassword.setRightDrawablePassword(
+                    false, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
+                )
+            }
 
         }
 
+        binding.etnewPassword.onRightDrawableClicked {
+            log("onRightDrawableClicked", "onRightDrawableClicked")
+            if (showPassword) {
+                showPassword = false
+                binding.etnewPassword.setRightDrawablePassword(
+                    true, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
+                )
+            } else {
+                showPassword = true
+                binding.etnewPassword.setRightDrawablePassword(
+                    false, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
+                )
+            }
+        }
+
+        binding.etPassword.onRightDrawableClicked {
+            log("onRightDrawableClicked", "onRightDrawableClicked")
+            if (showPassword) {
+                showPassword = false
+                binding.etPassword.setRightDrawablePassword(
+                    true, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_open_eye), null
+                )
+            } else {
+                showPassword = true
+                binding.etPassword.setRightDrawablePassword(
+                    false, null, null,
+                    ContextCompat.getDrawable(requireContext(), R.drawable.close_eye), null
+                )
+            }
+        }
     }
+
+    private var showPassword = true
+
 
     private fun collectChangePassResponse() {
         lifecycleScope.launch {

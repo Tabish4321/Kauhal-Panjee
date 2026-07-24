@@ -1,6 +1,9 @@
 package com.kaushalpanjee.common
 
+import com.example.myapplication.CBT.api.CbtQuestionsResponse
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -13,7 +16,6 @@ import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.DistrictResponse
-import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.data.local.database.AppDatabase
@@ -24,15 +26,20 @@ import com.kaushalpanjee.core.util.networkBoundResourceWithoutDb
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import com.kaushalpanjee.common.model.UidaiResp
+import com.kaushalpanjee.common.model.Unnati
 import com.kaushalpanjee.common.model.request.AadhaarCheckForgot
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
+import com.kaushalpanjee.common.model.request.BankListReq
+import com.kaushalpanjee.common.model.request.BankLoanReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
@@ -40,20 +47,34 @@ import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
+import com.kaushalpanjee.common.model.request.InsertBankLoanReq
+import com.kaushalpanjee.common.model.request.InsertOjtReq
+import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
+import com.kaushalpanjee.common.model.request.InstituteCourseReq
 import com.kaushalpanjee.common.model.request.LoginReq
+import com.kaushalpanjee.common.model.request.LogoutRequest
+import com.kaushalpanjee.common.model.request.OrgInstituteReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
+import com.kaushalpanjee.common.model.request.PiaListReq
+import com.kaushalpanjee.common.model.request.PiaTradeReq
+import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
+import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
-import com.kaushalpanjee.common.model.request.TradeReq
+import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.TrainingSearch
 import com.kaushalpanjee.common.model.request.ULBReq
+import com.kaushalpanjee.common.model.request.UnnatiRequest
+import com.kaushalpanjee.common.model.request.UnnatilistReq
 import com.kaushalpanjee.common.model.request.UpdateEmailReq
 import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
@@ -63,17 +84,28 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.AebasRes
+import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
+import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
+import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
+import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
+import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
 import com.kaushalpanjee.common.model.response.LoginRes
+import com.kaushalpanjee.common.model.response.LogoutResponse
+import com.kaushalpanjee.common.model.response.OrgInstituteRes
 import com.kaushalpanjee.common.model.response.OtpValidateResponse
+import com.kaushalpanjee.common.model.response.PiaListResponse
+import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
+import com.kaushalpanjee.common.model.response.PiaTrainingRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -81,14 +113,18 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
-import com.kaushalpanjee.common.model.response.TradeResponse
+import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
+import com.kaushalpanjee.common.model.response.UnnatiListResponse
 import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
-import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
+import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
+import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -96,9 +132,9 @@ class CommonRepository @Inject constructor(
     private val database: AppDatabase
     ){
 
-    suspend fun getToken(imeiNo : String, appVersion :String): Flow<Resource<out TokenRes>> {
+    suspend fun getToken(imeiNo : String, appVersion :String ,loginId :String): Flow<Resource<out TokenRes>> {
         return networkBoundResourceWithoutDb {
-            appLevelApi.getToken(TokenReq(appVersion,imeiNo))
+            appLevelApi.getToken(TokenReq(appVersion,imeiNo,loginId))
         }
     }
 
@@ -127,9 +163,9 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String): Flow<Resource<out TechQualificationRes>>{
+    suspend fun getTechEducationAPI(appVersion: String,loginId :String,header :String, qualCat : String): Flow<Resource<out TechQualificationRes>>{
         return networkBoundResourceWithoutDb {
-            appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId))
+            appLevelApi.getTechEducationAPI(header,TechQualification(appVersion,loginId, qualCat))
         }
 
     }
@@ -352,16 +388,16 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun updateFaceApi(faceCheckReq: FaceCheckReq): Flow<Resource<out FaceResponse>>{
+    suspend fun updateFaceApi(faceCheckReq: FaceCheckReq,header :String): Flow<Resource<out FaceResponse>>{
         return networkBoundResourceWithoutDb {
 
-            appLevelApi.updateFaceApi(faceCheckReq)
+            appLevelApi.updateFaceApi(header,faceCheckReq)
         }
     }
 
 
 
-    suspend fun getSectorListAPI(techQualification: TechQualification,header :String): Flow<Resource<out SectorResponse>>{
+    suspend fun getSectorListAPI(techQualification: SectorRequest,header :String): Flow<Resource<out SectorResponse>>{
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getSectorListAPI(header,techQualification)
@@ -375,12 +411,13 @@ class CommonRepository @Inject constructor(
     }
 
 
-    suspend fun getTradeListAPI(tradeReq: TradeReq,header :String): Flow<Resource<out TradeResponse>>{
+    suspend fun getTradeListAPI(tradeReq: TradeSearchReq,header :String): Flow<Resource<out TradeSearchRes>>{
         return networkBoundResourceWithoutDb {
 
             appLevelApi.getTradeListAPI(header,tradeReq)
         }
     }
+
 
 
 
@@ -436,7 +473,17 @@ class CommonRepository @Inject constructor(
     }
 
 
+    suspend fun getLogout(logoutReq: LogoutRequest, header : String): Flow<Resource<out LogoutResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getLogout(header,logoutReq)
+        }
+    }
 
+    suspend fun getUnnati(languageString: UnnatiRequest): Flow<Resource<out Unnati>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getUnnati(languageString)
+        }
+    }
 
     suspend fun aadhaarRekycApi(aadhaarRekycReq: AadhaarRekycReq,header :String): Flow<Resource<out AadhaarEkycRes>>{
         return networkBoundResourceWithoutDb {
@@ -444,6 +491,16 @@ class CommonRepository @Inject constructor(
             appLevelApi.aadhaarRekycApi(header,aadhaarRekycReq)
         }
     }
+
+    suspend fun unnatiScheneListApi(unnatilistReq: UnnatilistReq,header :String): Flow<Resource<out UnnatiListResponse>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.unnatiScheneListApi(header,unnatilistReq)
+        }
+    }
+
+
+
     suspend fun getChangePassOtp(loginIdNdPassReq: GetLoginIdNdPassReq): Flow<Resource<out ForgotIdOtpRes>>{
         return networkBoundResourceWithoutDb {
 
@@ -479,6 +536,10 @@ class CommonRepository @Inject constructor(
     }
 
 
+
+
+
+
     suspend fun shgValidateAPI(url:String, shgValidateReq: ShgValidateReq): Flow<Resource<out Response<ShgValidateRes>>> {
         return networkBoundResourceWithoutDb {
             appLevelApi.shgValidateAPI(url,shgValidateReq)
@@ -494,7 +555,146 @@ class CommonRepository @Inject constructor(
         }
     }
 
+    fun getPiaOrgList(piaListReq: PiaListReq,header :String): Flow<Resource<out PiaListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getPiaOrgList(header,piaListReq)
+        }
+    }
+
+
+    fun getTrainingList(piaTrainingCenterReq: PiaTrainingCenterReq,header :String): Flow<Resource<out PiaTrainingCenterRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getTrainingList(header,piaTrainingCenterReq)
+        }
+    }
 
 
 
+    fun getTradeList(piaTradeReq: PiaTradeReq,header :String): Flow<Resource<out PiaTrainingRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getTrainingList(header,piaTradeReq)
+        }
+    }
+
+
+    fun getInstituteList(orgInstituteReq: OrgInstituteReq,header :String): Flow<Resource<out OrgInstituteRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getInstituteList(header,orgInstituteReq)
+        }
+    }
+
+
+    fun getInstituteCourseList(instituteCourseReq: InstituteCourseReq,header :String): Flow<Resource<out InstituteCourseRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getInstituteCourseList(header,instituteCourseReq)
+        }
+    }
+
+
+
+    fun insertOjtAttendance(insertOjtReq: InsertOjtReq,header :String): Flow<Resource<out InsertOjtRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertOjtAttendance(header,insertOjtReq)
+        }
+    }
+
+
+
+
+
+
+    fun insertTrainingCenter(insertTrainingCenterReq: InsertTrainingCenterReq ,header :String): Flow<Resource<out InsertTrainingCenterRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertTrainingCenter(header,insertTrainingCenterReq)
+        }
+    }
+
+
+/*    fun getNotifications(
+        page: Int,
+        size: Int
+    ): Flow< Resource<out NotificationListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getNotifications(page, size)
+        }
+    }*/
+
+    fun getNotifications(
+        candidateId: String,
+        page: Int,
+        size: Int
+    ): Flow<Resource<out NotificationListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getNotifications(candidateId, page, size)
+        }
+    }
+
+
+    suspend fun invitationApprove(invitation : InvitationApprovalRequest,header :String): Flow<Resource<out ResponseBody>> {
+        return networkBoundResourceWithoutDbn {
+            appLevelApi.invitationApproved(header,invitation)
+        }
+    }
+
+
+    fun insertAadhaarTxn(insertAadhaarTxnReq: InsertAadhaarTxnReq): Flow<Resource<out InsertRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertAadhaarTxn(insertAadhaarTxnReq)
+        }
+    }
+
+    suspend fun getBankListApi(header: String, loginId: String): Flow<Resource<out BankListResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getBankListAPI(header, BankListReq(loginId, BuildConfig.VERSION_NAME))
+        }
+    }
+
+
+
+    suspend fun getBankLoanDetails(header: String,candidateId : String): Flow<Resource<out GetDetailsBankLoanRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getBankLoanDetails(header, BankLoanReq( BuildConfig.VERSION_NAME ,candidateId))
+        }
+    }
+
+
+
+    suspend fun insertBankLoanDetails(header: String, insertBankLoanReq: InsertBankLoanReq): Flow<Resource<out InsertRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertBankLoanDetails(header, insertBankLoanReq)
+        }
+    }
+
+    suspend fun insertBankConsent(header: String,  insertBankConsentReq: InsertBankConsentReq): Flow<Resource<out InsertRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.insertBankConsent(header, insertBankConsentReq)
+        }
+    }
+
+
+    suspend fun getAebasDetails(header: String,  aebasReq: AebasReq): Flow<Resource<out  AebasRes>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getAebasDetails(header, aebasReq)
+        }
+    }
+
+    suspend fun getCbtExam(
+        header: String,
+        cbtQuestionsReq: CbtQuestionsReq
+    ): Flow<Resource<CbtQuestionsResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getCbtExam(header, cbtQuestionsReq)
+        }
+    }
+
+
+
+    suspend fun submitExam(
+        header: String,
+        cbtQuestionsReq: CbtAnsersSubmit
+    ): Flow<Resource<SubmitExamResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.submitExam(header, cbtQuestionsReq)
+        }
+    }
 }

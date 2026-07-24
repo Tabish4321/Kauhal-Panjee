@@ -14,11 +14,16 @@
 
         <action
             android:id="@+id/action_loginFragment_to_ekycFragment"
-            app:destination="@id/ekycFragment" />
+            app:destination="@id/ekycFragment"
+            />
 
         <action
             android:id="@+id/action_loginFragment_to_mainHomePage"
             app:destination="@id/mainHomePage" />
+        <action
+            android:id="@+id/action_mainHomePage_to_languageChangeFragment"
+            app:destination="@id/languageChangeFragment" />
+
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
@@ -28,10 +33,28 @@
 
         <action
             android:id="@+id/action_loginFragment_to_aboutUnnatiFragment"
-            app:destination="@id/aboutUnnatiFragment" />
+            app:destination="@id/aboutUnnatiFragment">
+            <argument
+                android:name="ddugky"
+                app:argType="string" />
+            <argument
+                android:name="rseti"
+                app:argType="string" />
+            <argument
+                android:name="nrlm"
+                app:argType="string" />
+            <argument
+                android:name="pmvishwakarma"
+                app:argType="string" />
+            <argument
+                android:name="pmkvy"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -91,6 +114,25 @@
         <action
             android:id="@+id/action_homeFragment_to_viewDetailsFragment"
             app:destination="@id/viewDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_submitBankConcent"
+            app:destination="@id/submitBankConcent" >
+
+            <argument
+                android:name="userId"
+                app:argType="string" />
+            <argument
+                android:name="mobile"
+                app:argType="string" />
+
+            <argument
+                android:name="email"
+                app:argType="string" />
+
+        </action>
+
+
+
     </fragment>
     <fragment
         android:id="@+id/mainHomePage"
@@ -125,6 +167,36 @@
         <action
             android:id="@+id/action_mainHomePage_to_reKycFragment"
             app:destination="@id/reKycFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_notificationListFragment"
+            app:destination="@id/notificationListFragment"/>
+        <action
+            android:id="@+id/action_mainHomePage_to_trainingCenterAssign"
+            app:destination="@id/trainingCenterAssign">
+
+            <argument
+                android:name="stateCode"
+                app:argType="string" />
+            <argument
+                android:name="schemeType"
+                app:argType="string" />
+
+        </action>
+        <action
+            android:id="@+id/action_mainHomePage_to_attendanceFragment"
+            app:destination="@id/attendanceFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_loanFragment"
+            app:destination="@id/loanFragment" />
+
+
+
+        <action
+            android:id="@+id/action_mainHomePage_to_CbtDetailFragment"
+            app:destination="@id/cbtFragment" />
+
+
+
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -196,4 +268,50 @@
         android:name="com.kaushalpanjee.common.ForgotPassViaAadhaarFragment"
         android:label="ForgotPassViaAadhaarFragment"
         tools:layout="@layout/fragment_forgot_via_aadhaar"/>
+    <fragment
+        android:id="@+id/trainingCenterAssign"
+        android:name="com.kaushalpanjee.common.TrainingCenterAssign"
+        android:label="fragment_training_center_assign"
+        tools:layout="@layout/fragment_training_center_assign" />
+    <fragment
+        android:id="@+id/notificationListFragment"
+        android:name="com.kaushalpanjee.notification.NotificationListFragment"
+        android:label="fragment_notification_list_fragment"
+        tools:layout="@layout/fragment_training_center_assign" />
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.kaushalpanjee.common.AttendanceFragment"
+        android:label="AttendanceFragment"
+        tools:layout="@layout/attendance_fragment">
+
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/loanFragment"
+        android:name="com.kaushalpanjee.common.LoanFragment"
+        android:label="LoanFragment" />
+    <fragment
+        android:id="@+id/submitBankConcent"
+        android:name="com.kaushalpanjee.common.SubmitBankConcent"
+        android:label="SubmitBankConcent" />
+
+
+
+
+
+
+    <fragment
+        android:id="@+id/cbtFragment"
+        android:name="com.kaushalpanjee.common.compose.cbt.CbtDetailFragment"
+        android:label="CbtDetailFragment"
+        tools:layout="@layout/fragment_c_b_t_detail">
+
+        <action
+            android:id="@+id/action_cbtDetailFragment_to_mainHomePage"
+            app:destination="@id/mainHomePage"
+            app:popUpTo="@id/mainHomePage"
+            app:popUpToInclusive="true" />
+
+    </fragment>
 </navigation>

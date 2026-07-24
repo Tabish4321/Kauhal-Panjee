@@ -34,6 +34,7 @@ class SearchTrainingFragment : BaseFragment<SearchTrainingFragmentBinding>(Searc
         collectSelectedTrainingSearchResponse()
     }
 
+
     private  fun  init(){
 
         listener()

@@ -8,9 +8,9 @@ data class TrainingInsertReq(
     val isPreTraining: String,
     val preCompletedTraining: String,
     val compTrainingDuration: String,
-    val hearedAboutScheme: String,
-    val hearedFrom: String,
     val intrestedSector: String,
     val intrestedTrade: String,
-    val tradeCode: String
-)
+    val tradeCode: String,
+    val schemeType: String
+
+    )

@@ -73,7 +73,7 @@
     <string name="Educational_information">शैक्षिक जानकारी</string>
     <string name="Employment_information">रोजगार जानकारी</string>
     <string name="Training_information">प्रशिक्षण जानकारी</string>
-    <string name="Banking_information">बैंकिंग जानकारी</string>
+    <string name="Banking_information">वित्तीय जानकारी</string>
     <string name="select_HighestEducation">उच्चतम शिक्षा<font color='#FF0000'>*</font></string>
     <string name="select_HighestEducation1">उच्चतम शिक्षा</string>
     <string name="select_YearOfPassing">उच्चतम योग्यता की उत्तीर्ण करने का वर्ष</string>
@@ -220,7 +220,118 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>उन्नति के बारे में</u></string>
+    <string name="unnati_schemes">उन्नति योजनाएँ</string>
 
+    <string name="ddugky_title">डीडीयूजीकेवाई</string>
+    <string name="rseti_title">आरएसईटीआई</string>
+    <string name="select_Class">कक्षा<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">अपना प्रमाणपत्र\n देखें</string>
+    <string name="pmvishwakarma">पीएम विश्वकर्मा</string>
+    <string name="nrlm">एनआरएलएम</string>
+    <string name="self_employment">स्व रोजगार</string>
+    <string name="ExpectationIncome">अपेक्षित मासिक आय (रुपये में)</string>
+    <string name="domain">कार्यक्षेत्र<font color='#FF0000'>*</font></string>
+    <string name="domain1">कार्यक्षेत्र</string>
+    <string name="course">कार्यप्रणाली<font color='#FF0000'>*</font></string>
+    <string name="course1">कार्यप्रणाली</string>
+    <string name="select_YearOfPassingNew">बीतने का वर्ष</string>
+    <string name="select_SchemeInterest">योजना में रुचि रखते हैं<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">योजना में रुचि रखते हैं</string>
+    <string name="ddugky_1">15-35 साल की उम्र के ग्रामीण युवाओं को स्किल डेवलपमेंट के अवसर।</string>
+    <string name="ddugky_2">उद्योग-संरेखित प्रशिक्षण का उद्देश्य रोजगार क्षमता में सुधार लाना और गुणवत्तापूर्ण नौकरी के अवसरों तक पहुंच बनाना है।</string>
+    <string name="ddugky_3">प्रशिक्षण सफलतापूर्वक पूरा करने पर संरचित प्लेसमेंट सहायता।</string>
+    <string name="rseti_1">18 से 50 वर्ष की आयु के ग्रामीण युवाओं के लिए अल्पकालिक प्रशिक्षण कार्यक्रम, जो स्व-रोजगार और सूक्ष्म उद्यम विकास पर केंद्रित हैं।</string>
+    <string name="rseti_2">व्यक्तिगत उद्यमों की स्थापना सक्षम करने के लिए बैंकों व ऋण संस्थानों से संपर्क स्थापित करने में सहायता करता है।</string>
+    <string name="rseti_3">नए व्यवसायों की स्थिरता और विकास सुनिश्चित करने के लिए प्रशिक्षण के बाद मार्गदर्शन और सहायता प्रदान की जाती है।</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">पीएमकेवीवाई</string>
+    <string name="pmkvy_1">कौशल विकास और उद्यमशीलता मंत्रालय (एमएसडीई) अपनी प्रमुख योजना प्रधानमंत्री कौशल विकास योजना लागू कर रहा है, जिसका उद्देश्य लघु अवधि प्रशिक्षण (एसटीटी) के माध्यम से कौशल विकास तथा मान्यता पूर्व शिक्षा (आरपीएल) के जरिए कौशल उन्नयन/पुनः कौशल प्रदान करना है।</string>
+    <string name="pmkvy_2">यह योजना देशभर के युवाओं को लक्षित करती है, जिसमें ग्रामीण क्षेत्रों के युवा भी शामिल हैं।</string>
+    <string name="pmkvy_3">31 अक्टूबर 2025 तक पीएमकेवीवाई के तहत पूरे भारत में 15,000 प्रशिक्षण केंद्र संचालित हो रहे हैं।</string>
+    <string name="pmkvy_4">पीएमकेवीवाई उद्योग-संबंधित नौकरी भूमिकाओं में निःशुल्क कौशल प्रशिक्षण प्रदान करता है, जिसमें उम्मीदवारों से कोई कोर्स शुल्क नहीं लिया जाता।</string>
+    <string name="pmkvy_5">उम्मीदवारों को प्रशिक्षण सफलतापूर्वक पूरा करने पर प्रमाणपत्र प्रदान किया जाता है।</string>
+    <string name="pmkvy_6">पाठ्यक्रम नौकरी-उन्मुख होते हैं और रोजगार बढ़ाने के लिए बाजार की मांग के अनुरूप तैयार किए जाते हैं।</string>
+    <string name="pmkvy_7">कुछ चयनित नौकरी भूमिकाओं में ऑन-द-जॉब ट्रेनिंग (ओजेटी) प्रदान की जाती है ताकि उम्मीदवारों को वास्तविक कार्यस्थल का अनुभव मिल सके।</string>
+    <string name="pmkvy_8">प्रशिक्षण में सॉफ्ट स्किल्स, डिजिटल साक्षरता तथा वित्तीय साक्षरता शामिल होती है, जिससे समग्र रोजगार क्षमता बढ़ती है।</string>
+    <string name="pmkvy_9">यह योजना विशेष रूप से युवाओं, महिलाओं, एससी/एसटी समुदायों, अल्पसंख्यकों और दिव्यांगजनों पर ध्यान केंद्रित करती है।</string>
+    <string name="pmkvy_10">कौशल विकास को उद्योग की जरूरतों से जोड़ा गया है, जिससे वेतन आधारित रोजगार और स्वयं-रोजगार के अवसर बेहतर होते हैं।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
+
+
+
+
+
+
+
+
+
+
+    <string name="cbt_exam">सीबीटी परीक्षा</string>
+    <string name="candidate_id">उम्मीदवार आईडी :</string>
+    <string name="candidate_name_cbt">उम्मीदवार का नाम</string>
+    <string name="question">प्रश्न</string>
+    <string name="save_next">सेव करें और अगला</string>
+    <string name="save_review">सेव करें और समीक्षा</string>
+    <string name="mark">मार्क करें</string>
+    <string name="clear">साफ़ करें</string>
+    <string name="previous">पिछला</string>
+    <string name="next">अगला</string>
+    <string name="question_index">प्रश्न सूची</string>
+    <string name="answered">उत्तर दिया गया</string>
+    <string name="not_answered">उत्तर नहीं दिया गया</string>
+    <string name="loading_questions">प्रश्न लोड हो रहे हैं...</string>
+    <string name="review">समीक्षा</string>
+    <string name="back">वापस</string>
+    <string name="next_review"><![CDATA[अगला और समीक्षा]]></string>
+    <string name="review_your_test">अपनी परीक्षा की समीक्षा करें</string>
+    <string name="total">कुल</string>
+    <string name="marked_for_review">समीक्षा के लिए चिह्नित</string>
+    <string name="back_to_test">परीक्षा पर वापस जाएं</string>
+    <string name="submit_test">परीक्षा सबमिट करें</string>
+    <string name="warning">चेतावनी</string>
+    <string name="do_you_want_to_submit_the_questions">क्या आप प्रश्न सबमिट करना चाहते हैं?</string>
+    <string name="mark_review"><![CDATA[चिह्नित करें और समीक्षा]]></string>
+
+
+
+
+
+    <string name="instruction_1">कंप्यूटर आधारित परीक्षा में 50 बहुविकल्पीय प्रश्न (MCQs) होते हैं। प्रत्येक प्रश्न 2 अंकों का होता है।</string>
+    <string name="instruction_2">परीक्षा की कुल अवधि 60 मिनट है।</string>
+    <string name="instruction_3">60 मिनट के बाद परीक्षा स्वतः सबमिट हो जाएगी, या यदि उम्मीदवार पहले परीक्षा सबमिट कर देता है तो उससे पहले।</string>
+    <string name="instruction_4">इसमें कोई नकारात्मक अंकन (negative marking) नहीं है।</string>
+    <string name="instruction_5">प्रत्येक प्रश्न में चार विकल्प होते हैं। केवल एक विकल्प सही होता है।</string>
+    <string name="instruction_6">उम्मीदवार प्रश्न संख्या पर क्लिक करके किसी भी प्रश्न पर जा सकते हैं। प्रश्नों को क्रमानुसार हल करना आवश्यक नहीं है।</string>
+    <string name="instruction_7">प्रश्नों के बीच जाने के लिए Next और Previous बटन का उपयोग करें।</string>
+    <string name="instruction_8">अनुत्तरित प्रश्न दाईं ओर के पैनल पर सफेद या लाल रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_9">उत्तर दिए गए प्रश्न हरे रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_10">उत्तर दिए गए और समीक्षा के लिए चिह्नित प्रश्न नारंगी रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_11">समीक्षा के लिए चिह्नित प्रश्न नीले रंग में दिखाए जाएंगे।</string>
+    <string name="instruction_12">यदि किसी प्रश्न को समीक्षा के लिए चिह्नित किया गया है और कोई विकल्प चुना गया है, तो अंतिम सबमिशन या समय समाप्त होने पर उसे हल किया हुआ माना जाएगा।</string>
+    <string name="instruction_13">शेष समय स्क्रीन के ऊपरी-बाएं कोने में उम्मीदवार के विवरण के पास प्रदर्शित होता है।</string>
+    <string name="instruction_14">परीक्षा के दौरान ESC बटन न दबाएं, 2 प्रयासों के बाद परीक्षा जबरन सबमिट हो जाएगी और उपयोगकर्ता को लॉग आउट कर दिया जाएगा।</string>
+
+
+
+
+
+
+
+    <string name="exam_instructions">परीक्षा निर्देश</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">परीक्षा शुरू करने से पहले निर्देशों को ध्यानपूर्वक पढ़ें।</string>
+    <string name="declaration">घोषणा</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">मैंने निर्देश पढ़ और समझ लिए हैं और परीक्षा जारी रखना चाहता/चाहती हूं।</string>
+    <string name="exam_starts_in">परीक्षा शुरू होगी: %1$s</string>
+    <string name="start_now">अभी शुरू करें</string>
+    <string name="submit_exam">परीक्षा सबमिट करें</string>
+    <string name="success">सफलता</string>
 </resources>

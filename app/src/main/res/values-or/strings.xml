@@ -216,7 +216,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>ଉନ୍ନତି ବିଷୟରେ</u></string>
+    <string name="unnati_schemes">ଉନ୍ନତି ଯୋଜନାମାନେ</string>
+
+    <string name="ddugky_title">ଡିଡିଉଜିକେଓଆଇ</string>
+    <string name="rseti_title">ଆରଏସଇଟିଆଇ</string>
+    <string name="select_Class">ଶ୍ରେଣୀ<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">ଆପଣଙ୍କର ପ୍ରମାଣପତ୍ର ଦେଖନ୍ତୁ</string>
+    <string name="pmvishwakarma">ପିଏମ ବିଶ୍ୱକର୍ମା</string>
+    <string name="nrlm">ଏନଏରଏଲଏମ</string>
+    <string name="self_employment">ସ୍ୱରୋଜଗାର</string>
+    <string name="ExpectationIncome">ଆଶା କରାଯାଇଥିବା ମାସିକ ଆୟ (ଟଙ୍କା)</string>
+    <string name="domain">ଡୋମେନ୍<font color='#FF0000'>*</font></string>
+    <string name="domain1">ଡୋମେନ୍</string>
+    <string name="course">ପାଠ୍ୟକ୍ରମ<font color='#FF0000'>*</font></string>
+    <string name="course1">ପାଠ୍ୟକ୍ରମ</string>
+    <string name="select_YearOfPassingNew">ପାସ୍ ବର୍ଷ</string>
+    <string name="select_SchemeInterest">ସ୍କିମ୍ ଆଗ୍ରହୀ<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">ସ୍କିମ୍ ଆଗ୍ରହୀ</string>
+    <string name="ddugky_1">୧୫-୩୫ ବର୍ଷ ବୟସ ବର୍ଗର ଗ୍ରାମୀଣ ଯୁବକ ଯୁବତୀମାନଙ୍କୁ ଦକ୍ଷତା ବିକାଶ ସୁଯୋଗ।</string>
+    <string name="ddugky_2">ନିଯୁକ୍ତି ସୁଯୋଗ ଏବଂ ଗୁଣାତ୍ମକ ଚାକିରି ସୁଯୋଗ ପାଇବାକୁ ଉନ୍ନତ କରିବା ପାଇଁ ଉଦ୍ଦିଷ୍ଟ ଶିଳ୍ପ-ସମର୍ଥିତ ତାଲିମ।</string>
+    <string name="ddugky_3">ତାଲିମର ସଫଳ ସମାପ୍ତି ପରେ ସଂରଚିତ ନିଯୁକ୍ତି ସହାୟତା।</string>
+    <string name="rseti_1">୧୮-୫୦ ବର୍ଷ ବୟସର ଗ୍ରାମୀଣ ଯୁବକ ଯୁବତୀମାନଙ୍କ ପାଇଁ ସ୍ୱଳ୍ପକାଳୀନ ତାଲିମ କାର୍ଯ୍ୟକ୍ରମ, ସ୍ୱ-ନିଯୁକ୍ତି ଏବଂ କ୍ଷୁଦ୍ର-ଉଦ୍ୟୋଗ ବିକାଶ ଉପରେ ଧ୍ୟାନ କେନ୍ଦ୍ରିତ।</string>
+    <string name="rseti_2">ବ୍ୟକ୍ତିଗତ ଉଦ୍ୟୋଗ ପ୍ରତିଷ୍ଠାକୁ ସକ୍ଷମ କରିବା ପାଇଁ ବ୍ୟାଙ୍କ ଏବଂ ଋଣ ପ୍ରତିଷ୍ଠାନ ସହିତ ସଂଯୋଗକୁ ସୁଗମ କରେ।</string>
+    <string name="rseti_3">ନୂତନ ବ୍ୟବସାୟର ସ୍ଥାୟୀତ୍ୱ ଏବଂ ଅଭିବୃଦ୍ଧି ସୁନିଶ୍ଚିତ କରିବା ପାଇଁ ତାଲିମ ପରବର୍ତ୍ତୀ ପରାମର୍ଶ ଏବଂ ହସ୍ତଶିଳ୍ପ ସହାୟତା।</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">ପିଏମକେଭାଇ</string>
+    <string name="pmkvy_1">କୌଶଳ ବିକାଶ ଓ ଉଦ୍ୟମିତା ମନ୍ତ୍ରଣାଳୟ (ଏମଏସଡିଇ) ତାଙ୍କର ମୁଖ୍ୟ ଯୋଜନା ପିଏମକେଭାଇକୁ କାର୍ଯ୍ୟକରୀ କରୁଛି। ଏହି ଯୋଜନାର ଉଦ୍ଦେଶ୍ୟ ସ୍ଵଳ୍ପ ସମୟର ପ୍ରଶିକ୍ଷଣ (ଏସଟିଟି) ମାଧ୍ୟମରେ କୌଶଳ ବିକାଶ କରାଇବା ଓ ପୂର୍ବ ଶିକ୍ଷାର ସ୍ୱୀକୃତି (ଆରପିଏଲ) ମାଧ୍ୟମରେ କୌଶଳ ଉନ୍ନତି/ପୁନଃକୌଶଳ ପ୍ରଦାନ କରିବା।</string>
+    <string name="pmkvy_2">ଏହି ଯୋଜନା ଦେଶର ସମସ୍ତ ଯୁବକ-ଯୁବତୀଙ୍କୁ ଲକ୍ଷ୍ୟକରି ପ୍ରସ୍ତୁତ କରାଯାଇଛି, ଯେଠାରେ ଗ୍ରାମୀଣ ଅଞ୍ଚଳର ଯୁବମାନେ ମଧ୍ୟ ଅନ୍ତର୍ଭୁକ୍ତ।</string>
+    <string name="pmkvy_3">୩୧ ଅକ୍ଟୋବର ୨୦୨୫ ପର୍ଯ୍ୟନ୍ତ ପିଏମକେଭାଇ ଅଧୀନରେ ସମଗ୍ର ଭାରତରେ ୧୫,୦୦୦ଟି ପ୍ରଶିକ୍ଷଣ କେନ୍ଦ୍ର କାର୍ଯ୍ୟରତ।</string>
+    <string name="pmkvy_4">ପିଏମକେଭାଇ ଶିଳ୍ପ ସମ୍ବନ୍ଧୀୟ ଚାକିରି ଭୂମିକାରେ ନିଶୁଳ୍କ କୌଶଳ ପ୍ରଶିକ୍ଷଣ ଦେଇଥାଏ ଓ ପ୍ରାର୍ଥୀମାନଙ୍କୁ କୌଣସି କୋର୍ସ ଫି ଦେବାକୁ ପଡ଼େ ନାହିଁ।</string>
+    <string name="pmkvy_5">ପ୍ରଶିକ୍ଷଣ ସଫଳତାର ସହ ସମାପ୍ତ ହେଲେ ପ୍ରାର୍ଥୀମାନଙ୍କୁ ସର୍ଟିଫିକେଟ୍ ଦିଆଯାଏ।</string>
+    <string name="pmkvy_6">ପାଠ୍ୟକ୍ରମ ଚାକିରିମୁଖୀ ଏବଂ ନିଯୁକ୍ତି ସୁଯୋଗ ବୃଦ୍ଧି ପାଇଁ ବଜାର ଆବଶ୍ୟକତାଅନୁଯାୟୀ ପ୍ରସ୍ତୁତ ହୁଏ।</string>
+    <string name="pmkvy_7">କିଛି ନିର୍ବାଚିତ ଚାକିରି ଭୂମିକାରେ ଅନ-ଦ-ଜବ୍ ପ୍ରଶିକ୍ଷଣ (ଓଜେଟି) ଦିଆଯାଏ, ଯାହାଦ୍ୱାରା ପ୍ରାର୍ଥୀମାନେ ପ୍ରାକ୍ତିକ କାର୍ଯ୍ୟସ୍ଥଳର ଅଭିଜ୍ଞତା ଲାଭ କରିପାରିବେ।</string>
+    <string name="pmkvy_8">ପ୍ରଶିକ୍ଷଣରେ ସଫ୍ଟ୍ ସ୍କିଲ୍, ଡିଜିଟାଲ ସାକ୍ଷରତା ଓ ଆର୍ଥିକ ସାକ୍ଷରତା ଅନ୍ତର୍ଭୁକ୍ତ ହୁଏ, ଯାହା ସମଗ୍ର ନିଯୁକ୍ତିଯୋଗ୍ୟତା ବଢ଼ାଏ।</string>
+    <string name="pmkvy_9">ଏହି ଯୋଜନା ବିଶେଷତଃ ଯୁବକ-ଯୁବତୀ, ମହିଳା, ଏସସି/ଏସଟି ସମୁଦାୟ, ଅଲ୍ପସଂଖ୍ୟକ ଓ ଦିବ୍ୟାଙ୍ଗ ବ୍ୟକ୍ତିମାନଙ୍କୁ ମୁଖ୍ୟ ଗୁରୁତ୍ୱ ଦେଇଥାଏ।</string>
+    <string name="pmkvy_10">କୌଶଳ ବିକାଶକୁ ଶିଳ୍ପର ଆବଶ୍ୟକତା ସହିତ ସଂଯୋଗ କରାଯାଇଛି, ଯାହାଦ୍ୱାରା ଉପାର୍ଜନମୂଖୀ ଚାକିରି ଓ ସ୍ୱୟଂରୋଜଗାର ସୁଯୋଗ ବୃଦ୍ଧି ପାଏ।</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>

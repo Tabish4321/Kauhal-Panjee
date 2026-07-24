@@ -2,9 +2,9 @@ package com.kaushalpanjee.common.model.response
 
 
 data class WrappedListItem(
-    val fatherName: String,
+    val fathername: String,
     val ahltin: String,
-    val seccName: String
+    val seccname: String
 )
 
 data class SeccDetailsRes(

@@ -1,14 +1,16 @@
 package com.kaushalpanjee.core.di
 
+import LoggingInterceptor
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.core.data.local.database.AppDatabase
 import com.kaushalpanjee.core.data.remote.AppLevelApi
 import com.kaushalpanjee.core.util.ApiConstant
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.CustomInterceptor
+import com.kaushalpanjee.core.util.NetworkLoggingInterceptor
 import com.kaushalpanjee.core.util.UserPreferences
 
 import dagger.Module
@@ -18,6 +20,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
 import okhttp3.Cache
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,6 +30,11 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
 import javax.inject.Singleton
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -76,47 +84,51 @@ object AppModule {
             .build()
     }
 
+
     @Provides
+    @Singleton
     @PostLoginOkHttpClient
     fun providesRetrofitForPostLogin(
         userPreferences: UserPreferences,
         @ApplicationContext context: Context
     ): Retrofit {
         return Retrofit.Builder()
-           .baseUrl(AppConstant.StaticURL.baseUrl)
-          // .baseUrl(AppConstant.StaticURL.localUrl)
-            .client(getRetrofitClient(null, userPreferences = userPreferences, context = context))
-            .addConverterFactory(ScalarsConverterFactory.create())
+            .baseUrl(AppConstant.StaticURL.baseUrl)
+            .client(
+                getRetrofitClient(
+                    userPreferences = userPreferences,
+                    context = context
+                )
+            )
             .addConverterFactory(GsonConverterFactory.create())
+            // .addConverterFactory(ScalarsConverterFactory.create()) // ONLY if needed
             .build()
     }
+
     private fun getRetrofitClient(
         authenticator: Authenticator? = null,
         userPreferences: UserPreferences,
         isPostLogin: Boolean = true,
         isAuthenticationRequired: Boolean = true,
         context: Context
-    )
-            : OkHttpClient {
+    ): OkHttpClient {
         val cacheSize = (5 * 1024 * 1024).toLong()
         val myCache = Cache(context.cacheDir, cacheSize)
-        return OkHttpClient.Builder()
-            .cache(myCache)
-            .connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
-            .readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(
-                CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context)
-            ).also { client ->
-                authenticator?.let { client.authenticator(it) }
-                if (BuildConfig.DEBUG) {
-                    val logging = HttpLoggingInterceptor()
-                    logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-                    client.addInterceptor(logging)
-                   // client.addInterceptor(ChuckerInterceptor(context))
-                }
-            }.build()
+
+
+        return OkHttpClient.Builder().apply {
+           // certificatePinner(certificatePinner)
+            cache(myCache)
+            connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
+            readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
+            addInterceptor(LoggingInterceptor())
+            addInterceptor(CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context))
+            authenticator?.let { authenticator(it) }
+        }.build()
     }
+
+
 
     @Provides
     @PreLoginAppLevelApi

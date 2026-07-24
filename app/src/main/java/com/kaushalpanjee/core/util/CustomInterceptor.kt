@@ -57,7 +57,10 @@ class CustomInterceptor @Inject constructor(
                     "App/${BuildConfig.VERSION_NAME} (Android ${Build.VERSION.RELEASE})"
                 )
                 requestBuilder.addHeader("client_secret", BuildConfig.CLIENT_SECRET_KEY)
+                //requestBuilder.addHeader("client_secret", SecurityUtils.getClientSecretKey())
                 requestBuilder.url(BuildConfig.REFRESH_TOKEN_URL)
+                //requestBuilder.url(SecurityUtils.getRefreshTokenUrl())
+
                 requestBuilder.post(
                     RequestBody.create(
                         "application/json".toMediaTypeOrNull(),
@@ -135,6 +138,7 @@ class CustomInterceptor @Inject constructor(
             reqBuilder.addHeader("authorization", userPreferences.getAccessToken())
         } else {
             reqBuilder.addHeader("client_secret", BuildConfig.CLIENT_SECRET_KEY)
+          //  reqBuilder.addHeader("client_secret", SecurityUtils.getClientSecretKey())
         }
 
     /*    if (method == "GET") {

@@ -221,7 +221,50 @@
     <string name="ulbn">ULB<font color="#FF0000">*</font></string>
     <string name="wardn">Ward<font color="#FF0000">*</font></string>
     <string name="select_typen">Select Type<font color="#FF0000">*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
-    <string name="unnati_schemes">Unnati Schemes</string>
+    <string name="about_unnati"><u>اُناّتی کے بارے میں</u></string>
+    <string name="unnati_schemes">اُناّتی کی اسکیمیں</string>
+
+    <string name="ddugky_title">ڈی ڈی یو جے کے وائی</string>
+    <string name="rseti_title">آر ایس ای ٹی آئی</string>
+    <string name="select_Class">کلاس<font color='#FF0000'>*</font></string>
+    <string name="view_your_certificate">اپنا سرٹیفکیٹ دیکھیں</string>
+    <string name="pmvishwakarma">پی ایم وِشوکرما</string>
+    <string name="nrlm">این آر ایل ایم</string>
+    <string name="self_employment">سیلف ایمپلائمنٹ</string>
+    <string name="ExpectationIncome">متوقع ماہانہ آمدنی (روپے)</string>
+    <string name="domain">ڈومین<font color='#FF0000'>*</font></string>
+    <string name="domain1">ڈومین</string>
+    <string name="course">کورس<font color='#FF0000'>*</font></string>
+    <string name="course1">کورس</string>
+    <string name="select_YearOfPassingNew">گزرنے کا سال</string>
+    <string name="select_SchemeInterest">اسکیم میں دلچسپی ہے۔<font color='#FF0000'>*</font></string>
+    <string name="select_SchemeInterest1">اسکیم میں دلچسپی ہے۔</string>
+    <string name="ddugky_1">15-35 سال کی عمر کے دیہی نوجوانوں کے لیے ہنر مندی کے مواقع۔</string>
+    <string name="ddugky_2">صنعت سے منسلک تربیت کا مقصد روزگار کی اہلیت کو بہتر بنانا اور ملازمت کے معیاری مواقع تک رسائی حاصل کرنا ہے۔</string>
+    <string name="ddugky_3">تربیت کی کامیاب تکمیل پر سٹرکچرڈ پلیسمنٹ سپورٹ۔</string>
+    <string name="rseti_1">18-50 سال کی عمر کے دیہی نوجوانوں کے لیے مختصر مدت کے تربیتی پروگرام، جو خود روزگار اور مائیکرو انٹرپرائز کی ترقی پر توجہ مرکوز کرتے ہیں۔</string>
+    <string name="rseti_2">انفرادی انٹرپرائزز کے قیام کے لیے بینکوں اور کریڈٹ اداروں کے ساتھ رابطے کی سہولت فراہم کرتا ہے۔</string>
+    <string name="rseti_3">نئے کاروبار کی پائیداری اور ترقی کو یقینی بنانے کے لیے بعد از تربیت رہنمائی اور ہینڈ ہولڈنگ سپورٹ۔</string>
+    <string name="pmvishwakarma_">PM Vishwakarma</string>
+    <string name="nrlm_">NRLM</string>
+    <string name="pmkvy_">پی ایم کے وائی</string>
+    <string name="pmkvy_1">ہنر مندی اور روزگار سازی کی وزارت (ایم ایس ڈی ای) اپنا اہم منصوبہ پی ایم کے وائی نافذ کر رہی ہے۔ اس منصوبے کا مقصد مختصر مدتی تربیت (ایس ٹی ٹی) کے ذریعے ہنر کی ترقی کرنا اور سابقہ تعلیمی قابلیت کی منظوری (آر پی ایل) کے ذریعے ہنر میں بہتری یا دوبارہ تربیت فراہم کرنا ہے۔</string>
+    <string name="pmkvy_2">یہ منصوبہ ملک بھر کے نوجوانوں کو مدنظر رکھ کر تیار کیا گیا ہے، جن میں دیہی علاقوں کے نوجوان بھی شامل ہیں۔</string>
+    <string name="pmkvy_3">31 اکتوبر 2025 تک پی ایم کے وائی کے تحت پورے بھارت میں 15,000 تربیتی مراکز فعال ہیں۔</string>
+    <string name="pmkvy_4">پی ایم کے وائی صنعت سے متعلق ملازمتوں کے لیے مفت ہنر مندی کی تربیت فراہم کرتا ہے اور امیدواروں سے کسی قسم کی فیس وصول نہیں کی جاتی۔</string>
+    <string name="pmkvy_5">تربیت کامیابی سے مکمل کرنے والے امیدواروں کو باقاعدہ سند (سرٹیفکیٹ) جاری کی جاتی ہے۔</string>
+    <string name="pmkvy_6">نصاب روزگار پر مبنی ہوتا ہے اور ملازمت کے بہتر مواقع کے لیے اسے بازار کی ضرورت کے مطابق تیار کیا جاتا ہے۔</string>
+    <string name="pmkvy_7">چند منتخب ملازمتوں میں ملازمت کے دوران تربیت (او جے ٹی) فراہم کی جاتی ہے تاکہ امیدوار عملی کام کا تجربہ حاصل کر سکیں۔</string>
+    <string name="pmkvy_8">تربیتی پروگرام میں نرم مہارتیں، ڈیجیٹل خواندگی اور مالی خواندگی شامل ہوتی ہے، جس سے مجموعی روزگار کی صلاحیت میں اضافہ ہوتا ہے۔</string>
+    <string name="pmkvy_9">یہ منصوبہ خاص طور پر نوجوانوں، خواتین، ایس سی/ایس ٹی طبقات، اقلیتوں اور معذور افراد پر خصوصی توجہ دیتا ہے۔</string>
+    <string name="pmkvy_10">ہنر کی ترقی کو صنعت کی ضروریات کے ساتھ ہم آہنگ کیا گیا ہے، جس کے نتیجے میں تنخواہ دار ملازمتوں اور خود روزگار کے مواقع میں اضافہ ہوتا ہے۔</string>
+    <string name="roll_no">Roll No:</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+    <string name="_00_00_am">00:00 AM</string>
+    <string name="total_hours">Total Hours</string>
+    <string name="mark_attendance_ojt">Mark Attendance</string>
+    <string name="attendance_marked">Attendance Marked</string>
+    <string name="careof">"Care Of: "</string>
 
 </resources>
