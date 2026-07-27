@@ -1,5 +1,8 @@
 package com.kaushalpanjee.core.data.remote
 
+import com.example.myapplication.CBT.api.CbtQuestionsResponse
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -28,6 +31,7 @@ import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
@@ -58,7 +62,6 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
-import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
@@ -87,11 +90,9 @@ import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
 import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
-import com.kaushalpanjee.common.model.response.GrampanchayatList
 import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
-import com.kaushalpanjee.common.model.response.InstituteCourse
 import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
@@ -109,7 +110,6 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
-import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
@@ -518,5 +518,19 @@ interface AppLevelApi {
     suspend fun getAebasDetails( @Header("Authorization") token: String,
                                    @Body aebasReq: AebasReq  ) : AebasRes
 
+
+
+    @POST(ApiConstant.CBTGETQUESTION)
+    suspend fun getCbtExam(
+        @Header("Authorization") token: String,
+        @Body cbtQuestionsReq: CbtQuestionsReq
+    ): CbtQuestionsResponse
+
+
+    @POST(ApiConstant.CBTSUBMITANSWERS)
+    suspend fun submitExam(
+        @Header("Authorization") token: String,
+        @Body cbtAnsersSubmit: CbtAnsersSubmit
+    ): SubmitExamResponse
 
 }

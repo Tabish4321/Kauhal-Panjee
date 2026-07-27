@@ -146,12 +146,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val commonViewModel: CommonViewModel by activityViewModels()
 
     private var currentRequestPurpose: String? = null
-    private val PERMISSION_READ_MEDIA_IMAGES = 201
-    private val REQUEST_PICK_IMAGE = 201
-    private val REQUEST_PICK_PDF = 202
     private var countDownTimer: CountDownTimer? = null
 
-    private val REQUEST_CAPTURE_IMAGE = 203
     private lateinit var cameraImageUri: Uri
 
     //Boolean Values
@@ -256,7 +252,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var branchName = ""
     private var selectedSeccName = ""
     private var selectedAhlTin = ""
-    private var jobCardNo = ""
     private var IfscCode = ""
     private var BankName = ""
     private var selectedTypeItem = ""
@@ -266,7 +261,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var BankAcNo = ""
     private var previousTrainingDuration = ""
     private var result = StringBuilder()
-    private var userAadhaarDetailsListNew: List<UserDetails> = mutableListOf()
     private var userCandidatePersonalDetailsList: List<Personal> = mutableListOf()
     private var userCandidatePersonalDetailsList2: List<PersonalDetail> = mutableListOf()
     private var userCandidateAddressDetailsList: List<Address> = mutableListOf()
@@ -292,7 +286,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var stateSeccAdapter: ArrayAdapter<String>
     private lateinit var selectBranchAdapter: ArrayAdapter<String>
     private var selectedSeccStateCodeItem = ""
-    private var selectedSeccStateLgdCodeItem = ""
     private var selectedSeccStateItem = ""
 
 
@@ -388,12 +381,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var gpAdapter: ArrayAdapter<String>
     private var gp = ArrayList<String>()
     private var gpCode = ArrayList<String>()
-    private var gpCodePer = ArrayList<String>()
     private var gpLgdCode = ArrayList<String>()
     private var selectedGpCodeItem = ""
     private var selectedbGpLgdCodeItem = ""
     private var selectedGpItem = ""
-
 
     //Village var
     private var villageList: MutableList<VillageList> = mutableListOf()
@@ -404,17 +395,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesDomainName = ArrayList<String>()
     private var courseesDomainCode = ArrayList<String>()
     private var statePer = ArrayList<String>()
-    private var districtPer = ArrayList<String>()
     private var blockPer = ArrayList<String>()
-    private var blockCodePer = ArrayList<String>()
     private var gpPer = ArrayList<String>()
-    private var villagePer = ArrayList<String>()
-    private var villageCodePer = ArrayList<String>()
-
-
     private var heardName = ArrayList<String>()
-    private var languageName = ArrayList<String>()
-    private var languageCode = ArrayList<String>()
     private var fatherName = ArrayList<String>()
     private var ahlTinNo = ArrayList<String>()
     private var seccName = ArrayList<String>()
@@ -503,8 +486,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val highestEducationListNew = listOf("Schooling", "Diploma", "Graduation", "Post Graduation")
 
     private var schemesList: MutableList<String> = mutableListOf()
-    private var sectorList = ArrayList<String>()
-    private var sectorCode = ArrayList<String>()
 
     private val searchQuery = MutableLiveData<String>()
 
@@ -529,7 +510,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val takePicture =
         registerForActivityResult(
             ActivityResultContracts.TakePicture()
-        ) { success ->
+        )
+        { success ->
 
             if (success) {
 
@@ -544,7 +526,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val pickMedia =
         registerForActivityResult(
             ActivityResultContracts.PickVisualMedia()
-        ) { uri ->
+        )
+        { uri ->
 
             uri?.let {
 
@@ -558,7 +541,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val pickPdf =
         registerForActivityResult(
             ActivityResultContracts.OpenDocument()
-        ) { uri ->
+        )
+        { uri ->
 
             uri?.let {
 
@@ -851,11 +835,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
-
-
-
-
 
     private fun init() {
         listener()
@@ -2127,12 +2106,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         wardName
                                     )
 
-                                    /*   setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, state)
-                                       commonViewModel.getDistrictListApi(x.presentStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
-
-                                       districtPresentAdapter.notifyDataSetChanged()*/
-
-
                                 }
 
 
@@ -2236,10 +2209,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isEducationalInfoVisible = false
                         binding.expandEducational.visible()
                         binding.viewEducational.visible()
-//                        binding.btnEIddressSubmit.visible()
-//                        binding.spinnerDomainOfTech.visible()
-//                        binding.spinnerTechnicalEducation.visible()
-//                        binding.tvClickYearOfPassingTech.visibility = View.GONE
 
                         for (x in userCandidateEducationalDetailsList) {
 
@@ -2313,14 +2282,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 ""
                             )
 
-
-//                            if (x.isTechEducate == "Yes") {
-//
-//                                binding.spinnerTechnicalEducation.visible()
-//                                binding.spinnerDomainOfTech.visible()
-//                                binding.tvLanguages.visible()
-//
-//                            }
 
                             binding.tvClickYearOfPassingTech.setText(x.monthYearOfPassing)
 
@@ -2449,53 +2410,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isBankingInfoVisible = false
                         binding.bankingView.expandBanking.visible()
                         binding.bankingView.viewBanking.visible()
-                        //binding.btnBnakingSubmit.visible()
                         showBankFormUI()
 
-/*
-                        for (x in userCandidateBankDetailsList) {
-
-
-                            val DecIfscCode = AESCryptography.decryptIntoString(
-                                x.ifscCode,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecBankName = AESCryptography.decryptIntoString(
-                                x.bankName,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecbankBranchName = AESCryptography.decryptIntoString(
-                                x.bankBranchName,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecbankbankAccNumber = AESCryptography.decryptIntoString(
-                                x.bankAccNumber,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecpanNo = AESCryptography.decryptIntoString(
-                                x.panNo,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-
-
-                            binding.bankingView.etIfscCode.setText(DecIfscCode)
-                            binding.bankingView.etBankName.setText(DecBankName)
-                            binding.bankingView.etBranchName.setText(DecbankBranchName)
-                            binding.bankingView.etBankAcNo.setText(DecbankbankAccNumber)
-                            binding.bankingView.etPanNumber.setText(DecpanNo)
-
-                            BankName = DecBankName
-                            BankAcNo = DecbankbankAccNumber
-                            IfscCode = DecIfscCode
-                            PanNumber = DecpanNo
-
-                        }
-*/
 
 
                     },
@@ -2849,7 +2765,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             } else toastShort("Wrong Selection")
         }
 
-
         binding.spinnerUlb.setOnItemClickListener { parent, view, position, id ->
             binding.spinnerUlb.clearFocus()
             selectedUlbNameItem = parent.getItemAtPosition(position).toString()
@@ -2929,9 +2844,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             } else toastShort("Wrong Selection")
         }
-
-
-
 
         binding.spinnerWard.setOnItemClickListener { parent, view, position, id ->
             binding.spinnerWard.clearFocus()
@@ -3256,9 +3168,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-
 
 
         //District selection
@@ -3736,7 +3645,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-        // ✅ SET ADAPTER ONCE (IMPORTANT)
+        //  SET ADAPTER ONCE (IMPORTANT)
         val adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
@@ -3745,7 +3654,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.bankingView.spinnerBranchName.setAdapter(adapter)
 
 
-// ✅ ADD BUTTON (OUTSIDE spinner listener)
+//  ADD BUTTON (OUTSIDE spinner listener)
       //  binding.bankingView.expandBanking.gone() // default hidden
 
         binding.bankingView.btnAddBank.setOnClickListener {
@@ -3757,7 +3666,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-// ✅ SINGLE ITEM CLICK LISTENER (FIXED)
+//  SINGLE ITEM CLICK LISTENER (FIXED)
         binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
 
             val selectedItem = parent.getItemAtPosition(position).toString()
@@ -3774,7 +3683,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.bankingView.etBankName.setText(bankName1)
                 binding.bankingView.etBranchName.setText(branchName)
 
-                // ✅ CLEAR OLD WATCHERS (IMPORTANT FIX)
+                //  CLEAR OLD WATCHERS (IMPORTANT FIX)
                 binding.bankingView.etBankAcNo.addTextChangedListener(null)
 
                 if (accLenghth.isNotBlank()) {
@@ -3795,7 +3704,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         binding.bankingView.etBankAcNo.filters =
                             arrayOf(InputFilter.LengthFilter(maxLength))
 
-                        // ✅ ADD WATCHER ONLY ONCE
+                        //  ADD WATCHER ONLY ONCE
                         binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
 
                             override fun afterTextChanged(s: Editable?) {
@@ -3831,7 +3740,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
 
-// ✅ TEXT CHANGE VALIDATION (UNCHANGED LOGIC)
+//  TEXT CHANGE VALIDATION (UNCHANGED LOGIC)
         binding.bankingView.spinnerBranchName.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable?) {}
@@ -3875,8 +3784,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) {
 
 
-                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
-                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background)
 
                     isClickedPermanentYes = true
                     isClickedPermanentNo = false
@@ -3928,7 +3837,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     selectedVillagePresentItem = selectedVillageItem
 
                     //others
-
 
                 } else
 
@@ -4017,7 +3925,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         // If Present Address is not same as permanent
-
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
             addressLine1 = binding.etAdressLine.text.toString()
@@ -4515,55 +4422,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.recyclerView.visible()
             isSeccStatus = "No"
 
-
         }
-
-
-
-
-//        binding.tvSectorItems.setOnClickListener {
-//            MaterialDialog(requireContext()).show {
-//                title(text = "Select Sectors")
-//                val itemList = sectorList.toList()
-//
-//                listItemsMultiChoice(
-//                    items = itemList,
-//                    initialSelection = selectedSectorIndices.toIntArray() // Use sector-specific indices
-//                ) { _, indices, _ ->
-//                    // Update selected indices for sectors
-//                    selectedSectorIndices = indices.toMutableList()
-//
-//                    // Display selected items in the TextView
-//                    binding.tvSectorItems.text = "Selected Sectors: ${indices.joinToString(",") { itemList[it] }}"
-//
-//                    // Store the selected sectors as a comma-separated string
-//                    selectedSector = indices.joinToString(",") { itemList[it] }
-//
-//                    // Store the selected sector codes as a comma-separated string
-//                    selectedSectorCode = indices.joinToString(",") { sectorCode[it] }
-//
-//                    // Call API with selected sector codes
-////                    commonViewModel.getTradeListAPI(
-////                        TradeReq(
-////                            BuildConfig.VERSION_NAME,
-////                            selectedSectorCode,
-////                            userPreferences.getUseID()
-////                        ), AppUtil.getSavedTokenPreference(requireContext())
-//
-////                    )
-//
-//                    commonViewModel.getTradeListAPI(TradeSearchReq(BuildConfig.VERSION_NAME, userPreferences.getUseID(),selectedSectorCode, ), AppUtil.getSavedTokenPreference(requireContext()))
-//                    selectedTradeIndices.clear()
-//                    binding.tvTradeItems.text = "Select Trade"
-//                    selectedTrade = ""
-//
-//                }
-//                positiveButton(text = "OK")
-//                negativeButton(text = "Cancel")
-//            }
-//        }
-
-
 
         binding.bankingView.etBankAcNo.onRightDrawableClicked {
 
@@ -4596,7 +4455,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 val panRegex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
 
                 if (s.toString().matches(panRegex)) {
-                    binding.bankingView.etPanNumber.error = null  // ✅ Valid PAN
+                    binding.bankingView.etPanNumber.error = null  //  Valid PAN
                     isValidPan = true
                     //  binding.btnBnakingSubmit.visible()
 
@@ -4742,7 +4601,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             collectInsertTrainingResponse()
 
 
-            /////////////
 
         }
 
@@ -4800,11 +4658,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
             }
-//            else if (selectedInterestedIn.isEmpty()) {
-//
-//                toastShort("Please select Interested in ")
-//
-//            }
+
             else if (selectedJobLocation.isNotEmpty() && selectedIEmploymentPref.isNotEmpty()) {
 
 
@@ -4851,32 +4705,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnEIddressSubmit.setOnClickListener {
 
-//            if ( selectedTechEducationDate.isNotEmpty() && result.isNotEmpty() && selectedHighestEducationItem.isNotEmpty()){
-//                // Hit the Insert Api
-//                commonViewModel.insertEducationAPI(
-//                    EducationalInsertReq(
-//                        BuildConfig.VERSION_NAME,
-//                        userPreferences.getUseID(),
-//                        AppUtil.getAndroidId(requireContext()),
-//                        "4",
-//                        selectedTechEducationDate,
-//                        result.toString(),
-//                        selectedTechEducationItemCode,
-//                        selectedTechEducationDomainCode,
-//                        selectedHighestEducationItem
-//                    )  ,
-//                    AppUtil.getSavedTokenPreference(requireContext())
-//                )
-//                collectInsertEducationalResponse()
-//            }
-//            else
-//                if (
-//                selectedTechEducationDate.isNotEmpty() &&
-//                result.isNotEmpty() && selectedTechEducationItemCode.isNotEmpty() &&
-//                selectedTechEducationDomainCode.isNotEmpty()){
-                // Hit the Insert Api
-
-
             commonViewModel.insertEducationAPI(
                     EducationalInsertReq(
                         BuildConfig.VERSION_NAME,
@@ -4892,62 +4720,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     AppUtil.getSavedTokenPreference(requireContext())
                 )
                 collectInsertEducationalResponse()
-//            }
-//            else toastLong("Please complete Education Info First")
 
-//            if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
-//                result.isNotEmpty()
-//            ) {
-//                selectedTechEducationItemCode = ""
-//                selectedTechEducationDomainCode = ""
-//                selectedHighestEducationItemNew = ""
-//                selectedHighestEducationItem = ""
-                // Hit the Insert Api
-//                commonViewModel.insertEducationAPI(
-//                   var educationalRequest =  EducationalInsertReq(
-//                        BuildConfig.VERSION_NAME,
-//                        userPreferences.getUseID(),
-//                        AppUtil.getAndroidId(requireContext()),
-//                        "4",
-//                       selectedTechEducationDate,
-//                        result.toString(),
-//                        selectedTechEducationItemCode,
-//                        selectedTechEducationDomainCode,
-//                        selectedHighestEducationItem
-//                    )
-//            Log.e("EducationalRequest", educationalRequest.toString())
-//                    ,
-//                    AppUtil.getSavedTokenPreference(requireContext())
-//                )
-//                collectInsertEducationalResponse()
-//            }
-//            else if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() && selectedTechEducationItemCode.isNotEmpty() &&
-//                selectedTechEducationDomainCode.isNotEmpty() &&
-//                result.isNotEmpty()
-//            ) {
-//                selectedTechEducationItemCode = ""
-//                selectedTechEducationDomainCode = ""
-//                selectedHighestEducationItemNew = ""
-//                selectedHighestEducationItem = ""
-//                // Hit the Insert Api
-//                commonViewModel.insertEducationAPI(
-//                    EducationalInsertReq(
-//                        BuildConfig.VERSION_NAME,
-//                        userPreferences.getUseID(),
-//                        AppUtil.getAndroidId(requireContext()),
-//                        "4",
-//                        selectedHighestEducationItemNew,
-//                        highestEducationDate,
-//                        result.toString(),
-//                        selectedTechEducationItemCode,
-//                        selectedTechEducationDate,
-//                        selectedHighestEducationItem.toInt()
-//                    ),
-//                    AppUtil.getSavedTokenPreference(requireContext())
-//                )
-//                collectInsertEducationalResponse()
-//            }
-//            else toastLong("Please complete Education Info First")
         }
 
 
@@ -4972,46 +4745,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        /*  binding.btnPmayValidate.setOnClickListener {
 
-           commonViewModel.shgValidateAPI(
-                ShgValidateReq(
-                    binding.etShgValidate.text.toString(),
-                    userPreferences.getUserStateLgdCode()
-                )
-            )  //41358
-
-            lifecycleScope.launch {
-                delay(1000)
-                if (shgValidateStatus == "Y") {
-
-                    binding.tvShgValidate.visible()
-                    binding.btnShgValidate.gone()
-                    shgCode = binding.etShgValidate.text.toString()
-                    binding.tvShgValidate.text = "Validate Successfully: $shgName"
-                } else toastLong("Validation Failed please check your SHG Code")
-            }
-        }*/
-
-
-
-      /*  binding.btnjobcardnoValidate.setOnClickListener {
-
-          //  val username = HashUtils.sha512("Nrega")
-          //  val password = HashUtils.sha512("Nrg2k18")
-            val username = HashUtils.sha512("GRAMG")
-            val password = HashUtils.sha512("GRAMG@2026")
-            jobCardNo = binding.etNregaValidate.text.toString()
-          //  val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
-            val fullUrl = "https://vbgramgweb4.dord.gov.in/GRAMG_webAPI/api/checkjobcard"
-
-            if (jobCardNo.isNotEmpty()) {
-
-                commonViewModel.getCheckJobCardAPI(fullUrl, username, password, jobCardNo)
-                //    commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
-
-            } else toastShort("Please enter jobCard")
-        }*/
 
         binding.btnjobcardnoValidate.setOnClickListener {
 
@@ -5024,6 +4758,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             when {
                 jobCardNo.isEmpty() -> {
                     binding.etNregaValidate.error = "Please enter Job Card No."
+                    toastLong("Please enter Job Card No.")
                 }
 
                 !isValidJobCard(jobCardNo) -> {
@@ -5120,7 +4855,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         )
                     }
 
-                    // ✅ Now call the helper
+                    //  Now call the helper
                     val missingPermanent = getMissingFields(permanentFields)
                     val missingPresent = getMissingFields(presentFields)
 
@@ -6830,7 +6565,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
                                 nregaValidateStatus = getValidateStatus.body()?.Status ?: ""
-
                                 if (getValidateStatus.body()?.Remarks.toString()=="Some error occurred")
                                 showSnackBar("Please enter a valid Job Card Number (e.g., HR-00-000-000-000/0000).")
                                 nregaJobCard = binding.etNregaValidate.text.toString()
@@ -7043,13 +6777,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
-
-
-
     private fun showFileSelectionDialog(purpose: String) {
         if (purpose == "PROFILE_PIC") {
-            // Directly open the gallery for profile picture
+
             openGalleryForDocument(purpose)
             return
         }
@@ -7353,7 +7083,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     }
 
-    // This map will hold the checkbox states, ensuring persistent selection across dialog opens
     private val selectedLanguageStates = mutableMapOf<String, MutableMap<String, Boolean>>()
 
     private fun showStyledLanguageSelectionDialog() {
@@ -8262,12 +7991,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         Toast.LENGTH_LONG
                     ).show()
 
-                    log("", consentId?:"")
-
-                   /* commonViewModel.insertBankConsent(AppUtil.getSavedTokenPreference(requireContext()),
-                        InsertBankConsentReq(BuildConfig.VERSION_NAME,mobileNo,consentId?:"",consentHandleId?:"",status?:"",userPreferences.getUseID())
-                    )*/
-
+                    //log("", consentId?:"")
 
                     dialog.dismiss()
                 },
@@ -8287,8 +8011,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
     }
-
-
 
     private fun collectAebasDetailsResponse() {
         lifecycleScope.launch {

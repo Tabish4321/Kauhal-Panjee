@@ -72,6 +72,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var totalPercentange =0.0f
     private var certUrl = ""
     private var attendanceFlag = ""
+    private var cbtExam = ""
     private var schemeType = ""
     private var stateCode = ""
 
@@ -88,7 +89,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 val message = data?.getStringExtra(AppConstant.Constants.RESULT_MESSAGE) ?: "Unknown error"
 
                 if (status == "success") {
-
                   commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectFaceUpdateResponse()
@@ -156,6 +156,21 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
                  }
+
+
+
+                 R.id.cbt ->{
+
+                     if (cbtExam == "N"){
+                         findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
+
+                     }
+                     else{
+                         showSnackBar("Exam is not available for you")
+                     }
+
+                 }
+
 
              }
              drawerLayout.closeDrawers()
@@ -340,19 +355,21 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
                                     attendanceFlag= x.ojtFlag
+                                    cbtExam= x.cbtExam
 
 
                                     if (attendanceFlag == "Y"){
-
                                         binding.attendanceImageLogo.visible()
                                         binding.attendanceTv.visible()
-
                                     }
                                     else
                                     {
                                         binding.attendanceImageLogo.gone()
                                         binding.attendanceTv.gone()
+
                                     }
+
+
 
 
                                     candidateName=x.candidateName

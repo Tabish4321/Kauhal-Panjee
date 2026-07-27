@@ -1,6 +1,9 @@
 package com.kaushalpanjee.common
 
+import com.example.myapplication.CBT.api.CbtQuestionsResponse
 import com.kaushalpanjee.BuildConfig
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -36,6 +39,7 @@ import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
@@ -64,7 +68,6 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
-import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
@@ -110,7 +113,6 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
-import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
@@ -119,7 +121,6 @@ import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
-import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
@@ -677,7 +678,23 @@ class CommonRepository @Inject constructor(
         }
     }
 
+    suspend fun getCbtExam(
+        header: String,
+        cbtQuestionsReq: CbtQuestionsReq
+    ): Flow<Resource<CbtQuestionsResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getCbtExam(header, cbtQuestionsReq)
+        }
+    }
 
 
 
+    suspend fun submitExam(
+        header: String,
+        cbtQuestionsReq: CbtAnsersSubmit
+    ): Flow<Resource<SubmitExamResponse>> {
+        return networkBoundResourceWithoutDb {
+            appLevelApi.submitExam(header, cbtQuestionsReq)
+        }
+    }
 }

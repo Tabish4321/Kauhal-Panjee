@@ -83,8 +83,7 @@ chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "ch
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore-preferences" }
-simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }
-#firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+simple-xml = { module = "org.simpleframework:simple-xml", version.ref = "simpleXml" }#firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
 
 
 

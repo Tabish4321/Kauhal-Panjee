@@ -276,6 +276,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+
     // CardView
     implementation("androidx.cardview:cardview:1.0.0")
 
