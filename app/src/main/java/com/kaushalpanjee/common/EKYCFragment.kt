@@ -1161,7 +1161,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             }
                             else
                                 showSnackBar(getUserCreationRes.responseDesc)
-                            toastShort("error in create Api")
+                           // toastShort("error in create Api")
 
                         } ?: showSnackBar("Internal Sever Error")
                     }
