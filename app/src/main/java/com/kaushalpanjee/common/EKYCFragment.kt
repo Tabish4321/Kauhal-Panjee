@@ -1111,7 +1111,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                     is Resource.Error -> {
 
-                        toastShort("CreateUser ${it.error.toString()}")
+                        toastShort("User creation failed try again ")
 
                         when (it.error?.code) {
 

@@ -491,7 +491,7 @@ class AttendanceFragment:
                                             latitude = x.latitute.toDouble()
                                             longitude = x.longitute.toDouble()
                                            // radius = x.radius.toFloat()
-                                            radius = 1000000000f
+                                            radius = 1000f
 
 
                                             binding.tvAadhaarName.text=decryptedUserName
