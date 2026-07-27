@@ -27,12 +27,6 @@ android {
         }
     }
 
-
-   /* composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }*/
-
-
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     val projectProperties = readProperties(keystorePropertiesFile)
 
@@ -74,14 +68,6 @@ android {
         }
     }
 
-/*    packaging {
-        resources {
-            excludes += setOf(
-                "META-INF/services/org.xmlpull.v1.XmlPullParserFactory",
-                "META-INF/services/org.codehaus.stax2.validation.XMLValidationSchemaFactory.*"
-            )
-        }
-    }*/
 
     buildTypes {
         release     {
