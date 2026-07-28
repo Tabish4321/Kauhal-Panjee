@@ -789,13 +789,7 @@ fun CBTExamScreen(
 //                                CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
                                 commonViewModel.submitExam(
                                     AppUtil.getSavedTokenPreference(context),
-//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
-                                    CbtAnsersSubmit(
-                                        "2603404318",
-                                        batchId,
-                                        examId,
-                                        questionSetId,
-                                        questionList.map { question ->
+                                    CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
 
 
                                             val answerGiven = answers[question.question_id] ?: ""

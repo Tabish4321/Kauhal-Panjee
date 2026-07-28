@@ -51,7 +51,7 @@ class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
 
         commonViewModel.getCbtExam(
             AppUtil.getSavedTokenPreference(requireContext()),
-            CbtQuestionsReq(BuildConfig.VERSION_NAME, "2603404318", AppUtil.getSavedLanguagePreference(requireContext()))
+            CbtQuestionsReq(BuildConfig.VERSION_NAME, userPreferences.getUseID(), AppUtil.getSavedLanguagePreference(requireContext()))
 //            CbtQuestionsReq(BuildConfig.VERSION_NAME, userPreferences.getUseID(), AppUtil.getSavedLanguagePreference(requireContext()))
         )
 
