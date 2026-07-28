@@ -39,10 +39,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlin.getValue
 
 
-
-
-
-
 class CbtDetailFragment : BaseFragment<FragmentCBTDetailBinding>(
     bindingInflater = FragmentCBTDetailBinding::inflate
 ) {
