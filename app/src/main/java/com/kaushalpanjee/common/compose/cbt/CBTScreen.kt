@@ -50,6 +50,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -74,7 +75,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.example.esop.quetions_esop.SummaryCard
-import com.example.myapplication.CBT.CircularTimer
 import com.example.myapplication.CBT.api.Question
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
@@ -99,6 +99,7 @@ fun CBTExamScreen(
     batchId: String,
 
     commonViewModel: CommonViewModel = viewModel(),
+    timeViewmodel: TimeViewModel = viewModel(),
     onOrientationChange: (() -> Unit)? = null,
     onSubmitSuccess: () -> Unit
 
@@ -117,13 +118,12 @@ fun CBTExamScreen(
       val viewModel: AppUtil
 
     // Collect ViewModel StateFlows
-    val examStarted   by  AppUtil.examStarted.collectAsState()
-//    val commonViewModel: CommonViewModel = viewModel()
-
+    val examStarted  by timeViewmodel.examStarted.collectAsState()
+//    var isLoading by remember { mutableStateOf(false) }
     val currentIndex by AppUtil.currentIndex.collectAsState()
-//    var currentIndex by remember { mutableStateOf(0) }
-    val timeLeft by AppUtil.timeLeft.collectAsState()
-    val examFinished by AppUtil.examFinished.collectAsState()
+    val timeLeft by timeViewmodel.timeLeft.collectAsState()
+//    val examFinished by AppUtil.examFinished.collectAsState()
+    val examFinished by timeViewmodel.examFinished.collectAsState()
     val editMode by AppUtil.editMode.collectAsState()
     var showReviewDialog by remember { mutableStateOf(false) }
     var showQuestionPalette by remember { mutableStateOf(false) }
@@ -136,6 +136,7 @@ fun CBTExamScreen(
     var currentQuestionIndex by remember {
         mutableIntStateOf(0)
     }
+    var showTimeUpDialog by remember { mutableStateOf(false) }
     val DarkGreen = Color(0xFF173430)
     val screenHeight = LocalConfiguration.current.screenHeightDp
     val context = LocalContext.current
@@ -188,19 +189,20 @@ fun CBTExamScreen(
         }
     }
 
-    // Start timer once when exam begins
+
+
+
     LaunchedEffect(examStarted) {
         if (examStarted && !examFinished) {
-            AppUtil.startTimer(
-                scope = this,
-                timeLeft = AppUtil.timeLeft,
-                examFinished = AppUtil.examFinished,
-                showSuccessDialog = AppUtil.showSuccessDialog
-            )
-
+            timeViewmodel.startTimer()
         }
     }
 
+    LaunchedEffect(examFinished) {
+        if (examFinished) {
+            showTimeUpDialog = true
+        }
+    }
 
     if (!examStarted) {
         CBTInstructionStartScreen(
@@ -212,7 +214,7 @@ fun CBTExamScreen(
                 onOrientationChange?.invoke()
             },
             onStartClick = {
-                AppUtil.startExam()
+                timeViewmodel.startExam()
             }
         )
         return
@@ -393,8 +395,120 @@ fun CBTExamScreen(
 
                 Spacer(Modifier.height(12.dp))
             }
+            if (showTimeUpDialog) {
+                AlertDialog(
+                    onDismissRequest = {},
+                    properties = DialogProperties(
+                        dismissOnBackPress = false,
+                        dismissOnClickOutside = false
+                    ),
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Warning,
+                            contentDescription =stringResource(R.string.time_is_over),
+                            tint = Color(0xFFE53935),
+                            modifier = Modifier.size(40.dp)
+                        )
+                    },
+                    title = {
+                        Text(
+                            text = stringResource(R.string.time_is_over),
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    text = {
+                        Text(stringResource(R.string.please_submit_options))
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                showTimeUpDialog = false
+//                                showSubmitDialog = true
+
+//                                commonViewModel.submitExam(
+//                                    AppUtil.getSavedTokenPreference(context),
+//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
+                                commonViewModel.submitExam(
+                                    AppUtil.getSavedTokenPreference(context),
+//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
+//                                    CbtAnsersSubmit(
+//                                        "2603404318",
+//                                        batchId,
+//                                        examId,
+//                                        questionSetId,
+//                                        questionList.map { question ->
+
+                                    CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
+                                            val answerGiven = answers[question.question_id] ?: ""
+                                            val category = when {
+                                                markedQuestions.contains(question.question_id) -> context.getString(
+                                                    R.string.mark_review
+                                                )
+                                                answerGiven.isNotEmpty() -> context.getString(
+                                                    R.string.save_next
+                                                )
+//                                                answerGiven.isNotEmpty() -> "Save & Next"
+//                                    answerGiven.isNotEmpty() -> "NA"
+                                                else -> context.getString(
+                                                    R.string.save_next
+                                                )
+//                                                else -> "Save & Next"
+//                                    else -> "Not Answered"
+                                            }
+                                            SubmitExamItem(
+                                                question_id = question.question_id ?: "",
+                                                answer_given = if (answerGiven.isEmpty()) "NA" else answerGiven,
+                                                category = category,
+                                                marks_per_qs = question.marks_per_qs ?: 0.0
+                                            )
+                                        }
+                                    ))
 
 
+                            }
+                        ) {
+                            Text(stringResource(R.string.ok))
+                        }
+                    }
+                )
+            }
+
+//            if (showTimeUpDialog) {
+//                AlertDialog(
+//                    onDismissRequest = { /* force submit, dismiss allowed नहीं */ },
+//                    properties = DialogProperties(
+//                        dismissOnBackPress = false,
+//                        dismissOnClickOutside = false
+//                    ),
+//                    icon = {
+//                        Icon(
+//                            imageVector = Icons.Default.Warning,
+//                            contentDescription = "Time Over",
+//                            tint = Color(0xFFE53935),
+//                            modifier = Modifier.size(40.dp)
+//                        )
+//                    },
+//                    title = {
+//                        Text(
+//                            text = "Time is Over",
+//                            fontWeight = FontWeight.Bold
+//                        )
+//                    },
+//                    text = {
+//                        Text(text = "Please submit Questions")
+//                    },
+//                    confirmButton = {
+//                        Button(
+//                            onClick = {
+//                                showTimeUpDialog = false
+//                                showSubmitDialog = true   // seedha submit dialog khol dega
+//                            }
+//                        ) {
+//                            Text("OK")
+//                        }
+//                    }
+//                )
+//            }
 
             if (showReviewDialog) {
 
@@ -787,8 +901,18 @@ fun CBTExamScreen(
                                 // -----------------------------
 
 //                                CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
+//                                commonViewModel.submitExam(
+//                                    AppUtil.getSavedTokenPreference(context),
+//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
                                 commonViewModel.submitExam(
                                     AppUtil.getSavedTokenPreference(context),
+//                            CbtAnsersSubmit(BuildConfig.VERSION_NAME,"2603404318","en")
+//                                    CbtAnsersSubmit(
+//                                        "2603404318",
+//                                        batchId,
+//                                        examId,
+//                                        questionSetId,
+//                                        questionList.map { question ->
                                     CbtAnsersSubmit(candidateId,batchId,examId,questionSetId,questionList.map { question ->
 
 
@@ -833,35 +957,29 @@ fun CBTExamScreen(
                 )
             }
 
-
-
-            // 🔥 ACTION BUTTONS (Save & Next, Save Review, Mark, Clear)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp, vertical = 4.dp)
-            )
-            {
+            ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     val buttonList = listOf(
                         R.string.save_next to Color(0xFF4CAF50),
                         R.string.save_review to Color(0xFFFFC107),
-//                        R.string.mark to Color(0xFF03A9F4),
                         R.string.clear to Color.Gray
                     )
 
                     buttonList.forEach { (textRes, color) ->
                         val text = stringResource(id = textRes)
 
-                        Text(
-                            text = text,
+                        Box(
                             modifier = Modifier
                                 .weight(1f)
-                                .background(color, RoundedCornerShape(5.dp))
+                                .height(50.dp) // Height Increase
+                                .background(color, RoundedCornerShape(8.dp))
                                 .clickable {
                                     val id = currentQuestion.question_id
 
@@ -879,10 +997,6 @@ fun CBTExamScreen(
                                             )
                                         }
 
-//                                        R.string.mark -> {
-//                                            viewModel.markQuestion(id.toString())
-//                                        }
-
                                         else -> {
                                             AppUtil.saveAndNext(
                                                 id.toString(),
@@ -891,29 +1005,35 @@ fun CBTExamScreen(
                                             )
                                         }
                                     }
-                                }
-                                .padding(vertical = 7.dp),
-                            textAlign = TextAlign.Center,
-                            color = if (textRes == R.string.save_review) Color.Black else Color.White,
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = text,
+                                textAlign = TextAlign.Center,
+                                color = if (textRes == R.string.save_review) Color.Black else Color.White,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 2
+                            )
+                        }
                     }
                 }
 
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(6.dp))
 
                 // 🔥 NAVIGATION BUTTONS (Previous & Next)
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     // Previous Button
                     Box(
                         modifier = Modifier
                             .weight(1f)
+                            .height(50.dp) // Height Increase
                             .clip(RoundedCornerShape(8.dp))
                             .background(Color.Transparent)
                             .border(
@@ -928,15 +1048,14 @@ fun CBTExamScreen(
                             )
                             .clickable {
                                 AppUtil.previousQuestion()
-                            }
-                            .padding(vertical = 8.dp),
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = stringResource(id = R.string.previous),
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 11.sp
+                            fontSize = 12.sp
                         )
                     }
 
@@ -944,6 +1063,7 @@ fun CBTExamScreen(
                     Box(
                         modifier = Modifier
                             .weight(1f)
+                            .height(50.dp) // Height Increase
                             .clip(RoundedCornerShape(8.dp))
                             .background(Color.Transparent)
                             .border(
@@ -958,21 +1078,18 @@ fun CBTExamScreen(
                             )
                             .clickable {
                                 AppUtil.nextQuestion(questionList.size)
-                            }
-                            .padding(vertical = 8.dp),
+                            },
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = stringResource(id = R.string.next),
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 11.sp
+                            fontSize = 12.sp
                         )
                     }
                 }
             }
-
-            // 🔥 SUBMIT BUTTON
 
             Box(
                 modifier = Modifier
@@ -1039,10 +1156,7 @@ fun CBTExamScreen(
                         }
                     }
             }
-            // 🔥 SUCCESS DIALOG - Show when exam submitted successfully
 
-
-            // 🔥 FAILURE DIALOG - Show when exam submission fails
             if (submissionError != null) {
                 AlertDialog(
                     onDismissRequest = { AppUtil.closeSuccessDialog() },

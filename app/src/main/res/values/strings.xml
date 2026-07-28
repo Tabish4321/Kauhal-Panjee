@@ -324,4 +324,10 @@
     <string name="start_now">Start Now</string>
     <string name="submit_exam">Submit Exam</string>
     <string name="success">Success</string>
+    <string name="time_is_over">Time is Over</string>
+    <string name="please_submit_options">Please submit Options</string>
+    <string name="exit_exam">Exit Exam</string>
+    <string name="do_you_want_to_exit_exam">Do you want to exit exam?</string>
+    <string name="no_questions_available">No Questions Available</string>
+    <string name="no_questions_are_available_for_this_user">No questions are available for this user.</string>
 </resources>
