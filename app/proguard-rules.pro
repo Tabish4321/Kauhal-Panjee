@@ -1,148 +1,303 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+##############################################
+# 🔐 GLOBAL SETTINGS
+##############################################
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
-
+# Keep annotations (important for Retrofit, Hilt, Room)
 -keepattributes *Annotation*
 -keepattributes Signature
--keep class com.google.gson.reflect.TypeToken { *; }
-
-
-
--keep class org.simpleframework.xml.** { *; }
--dontwarn org.simpleframework.xml.**
-
--keep class com.kaushalpanjee.model.kyc_resp_pojo.** { *; }
--keep class com.kaushalpanjee.model.** { *; }
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes EnclosingMethod
 
 -keepclassmembers class * {
-    @org.simpleframework.xml.* <fields>;
-    @org.simpleframework.xml.* <methods>;
+    public <init>(...);
 }
 
--keepclassmembers class ** {
-    @org.simpleframework.xml.Root <init>(...);
-    @org.simpleframework.xml.Element *;
-    @org.simpleframework.xml.Attribute *;
-}
+##############################################
+# 🧠 KOTLIN + METADATA
+##############################################
 
--keep class com.kaushalpanjee.common.model.** { *; }
--keep class com.kaushalpanjee.core.domain.** { *; }
--keep class com.kaushalpanjee.pojo.** { *; }
+-keep class kotlin.Metadata { *; }
+-dontwarn kotlin.**
 
-# Room (Added for entity/DAO serialization)
--keep class * extends androidx.room.** { *; }
--dontwarn androidx.room.**
+##############################################
+# 🏗️ APPLICATION CLASS
+##############################################
 
-# Keep hilt generated code
+-keep class ** extends android.app.Application { *; }
+
+##############################################
+# 🔥 HILT / DAGGER (IMPORTANT)
+##############################################
+
 -keep class dagger.hilt.** { *; }
 -keep interface dagger.hilt.** { *; }
 -keep class dagger.** { *; }
 -keep interface dagger.** { *; }
+
 -keep class javax.inject.** { *; }
 -keep interface javax.inject.** { *; }
+
 -dontwarn dagger.hilt.**
 -dontwarn javax.inject.**
 
-# Keep Dagger modules (like AppModule)
+# Keep Hilt generated classes
+-keep class * extends dagger.hilt.internal.GeneratedComponent { *; }
+
+# Modules
 -keep @dagger.Module class * { *; }
 -keepclasseswithmembers class * {
     @dagger.Provides <methods>;
 }
 
-# Retrofit
--keepattributes Signature, Exceptions, InnerClasses, *Annotation*
--keep class retrofit2.** { *; }
--dontwarn retrofit2.**
+##############################################
+# 🌐 RETROFIT (VERY IMPORTANT)
+##############################################
+
 -keep interface retrofit2.http.* { *; }
+-dontwarn retrofit2.**
+-keep interface * {
+    @retrofit2.http.* <methods>;
+}
 
-# OkHttp
+-keep interface com.kaushalpanjee.** {
+    @retrofit2.http.* <methods>;
+}
+
+-keep,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+-keep class kotlin.coroutines.** { *; }
+
+# Keep API interfaces
+-keep interface com.kaushalpanjee.remote.** { *; }
+
+##############################################
+# 📡 OKHTTP
+##############################################
+
 -dontwarn okhttp3.**
--keep class okhttp3.** { *; }
--keep interface okhttp3.** { *; }
+# Do NOT keep full okhttp (let it shrink)
 
-# Gson
--keep class com.google.gson.** { *; }
+##############################################
+# 🧾 GSON (IMPORTANT FOR MODELS)
+##############################################
+
+-keep class com.google.gson.reflect.TypeToken { *; }
+
+# Keep only model classes (GOOD PRACTICE)
+-keep class com.kaushalpanjee.model.** { *; }
+-keep class com.kaushalpanjee.pojo.** { *; }
+-keep class com.kaushalpanjee.common.model.** { *; }
+-keep class com.kaushalpanjee.notification.with_api.** { *; }
+-keep class com.kaushalpanjee.uidai.** { *; }
+
 -dontwarn com.google.gson.**
 
-# Moshi
--keep class com.squareup.moshi.** { *; }
--dontwarn com.squareup.moshi.**
+##############################################
+# 🗄️ ROOM DATABASE
+##############################################
+
+# Keep Entities
+-keep @androidx.room.Entity class * { *; }
+
+# Keep DAO
+-keep @androidx.room.Dao class * { *; }
+
+# Keep Database
+-keep class * extends androidx.room.RoomDatabase { *; }
+
+-dontwarn androidx.room.**
+
+##############################################
+# 🧩 FRAGMENTS / ACTIVITIES / BASE CLASSES
+##############################################
+
+-keep class * extends androidx.fragment.app.Fragment { *; }
+-keep class * extends android.app.Activity { *; }
+
+# Your base components
+-keep class com.kaushalpanjee.basecomponent.** { *; }
+
+##############################################
+# 📦 REPOSITORY LAYER
+##############################################
+
+-keep class com.kaushalpanjee.repository.** { *; }
+
+##############################################
+# 🔐 CUSTOM INTERCEPTOR
+##############################################
 
 -keepclassmembers class com.kaushalpanjee.core.util.CustomInterceptor {
     public <methods>;
 }
 
--keep class ** extends android.app.Application { *; }
+##############################################
+# 🧪 SIMPLE XML
+##############################################
 
-#-keep class org.simpleframework.* { *; }
-#-keepclasseswithmembers class org.simpleframework.** { *; }
-# ... (your existing rules unchanged up to the XML section)
+-keep class org.simpleframework.xml.** { *; }
+-dontwarn org.simpleframework.xml.**
 
-# Ignore xmlpull / stax2 warnings during R8 shrink/minify
-# Suppress warnings for xmlpull and related classes
--dontwarn org.xmlpull.v1.**
--dontnote org.xmlpull.v1.**
--dontwarn org.xmlpull.mxp1.**
+##############################################
+# 🧬 XML / STAX / XSTREAM CLEANUP
+##############################################
+
 -dontwarn org.xmlpull.**
--dontwarn android.content.res.**  # ✅ Suppresses framework inversion (safe per #123054725)
+-dontwarn org.kxml2.**
+-dontwarn org.codehaus.stax2.**
 -dontwarn org.codehaus.stax2.validation.**
 
-# Keep XmlPullParser classes intact (BROADENED)
--keep class org.xmlpull.** { *; }  # ✅ UPDATED: org.xmlpull.** (not just v1)
--keepclassmembers class org.xmlpull.** { *; }
-
-# Optional: If using KXML or similar, add
--dontwarn org.kxml2.io.**
-
-# StAX2/Woodstox validation (fixes META-INF services warnings)
--dontwarn org.codehaus.stax2.validation.**  # ✅ NEW: Covers DTD/RelaxNG/W3C schema factories
 
 
--dontwarn aQute.bnd.annotation.spi.**
--keep class aQute.bnd.annotation.spi.ServiceProvider.** { *; }
 
-# Java AWT/Swing (XStream desktop converters - safe to suppress on Android)
--dontwarn java.awt.**
--keep class java.awt.Color.* { *; }
--keep class java.awt.Font.* { *; }
--dontwarn javax.swing.**
--keep class javax.swing.LookAndFeel.* { *; }
--keep class javax.swing.plaf.FontUIResource.* { *; }
-
-# Java Beans (Jackson Java7Support)
--dontwarn java.beans.**
--keep class java.beans.ConstructorProperties.* { *; }
--keep class java.beans.Transient.* { *; }
-
-# Java Beans (Jackson Java7Support)
--dontwarn java.beans.**
--keep class java.beans.ConstructorProperties.* { *; }
--keep class java.beans.Transient.* { *; }
-
-# Koin DI (From pehchaanlib.aar - Keep if using injection in face detection)
--dontwarn org.koin.core.annotation.**
--keep class org.koin.core.annotation.Single.* { *; }
--keep @org.koin.core.annotation.Single.* class * { *; }  # Preserves annotated classes
+##############################################
+# 🔐 BOUNCY CASTLE (CRYPTO)
+##############################################
 
 -keep class org.bouncycastle.** { *; }
 -dontwarn org.bouncycastle.**
+
 -keep class javax.crypto.** { *; }
 -dontwarn javax.crypto.**
+
+##############################################
+# 🎯 ML KIT / CAMERA / MEDIAPIPE
+##############################################
+
+-dontwarn com.google.mlkit.**
+-dontwarn androidx.camera.**
+-dontwarn com.google.mediapipe.**
+
+##############################################
+# 🎨 GLIDE
+##############################################
+
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+
+##############################################
+# 🧱 COMPOSE (SAFE)
+##############################################
+
+-dontwarn androidx.compose.**
+
+##############################################
+# ⚙️ WORKMANAGER
+##############################################
+
+-keep class * extends androidx.work.ListenableWorker { *; }
+
+##############################################
+# 🧹 REMOVE LOGS (SECURITY)
+##############################################
+
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** i(...);
+}
+
+##############################################
+# 🚫 REMOVE UNUSED WARNINGS
+##############################################
+
+-dontwarn java.awt.**
+-dontwarn javax.swing.**
+-dontwarn java.beans.**
+
+##############################################
+# 🧾 MOSHI (MINIMAL SAFE RULES)
+##############################################
+
+# Keep Moshi core (light)
+-keep class com.squareup.moshi.** { *; }
+-dontwarn com.squareup.moshi.**
+
+##############################################
+# 🔐 SSL PINNING (CRITICAL)
+##############################################
+
+# Keep OkHttp SSL + Certificate Pinner
+-keep class okhttp3.CertificatePinner { *; }
+-keep class okhttp3.internal.tls.** { *; }
+
+# Keep TrustManager & SSL classes
+-keep class javax.net.ssl.** { *; }
+-dontwarn javax.net.ssl.**
+
+# Keep X509 Certificates
+-keep class java.security.cert.** { *; }
+-dontwarn java.security.cert.**
+
+# Keep your custom interceptor (important for pin logic)
+-keep class com.kaushalpanjee.core.util.CustomInterceptor { *; }
+
+# If using custom TrustManager
+-keepclassmembers class * implements javax.net.ssl.X509TrustManager {
+    public void checkServerTrusted(...);
+    public void checkClientTrusted(...);
+}
+
+-keep class org.xmlpull.v1.** { *; }
+-keep interface org.xmlpull.v1.** { *; }
+
+# Ignore xmlpull (Android provides it)
+-dontwarn org.xmlpull.v1.**
+-dontwarn org.xmlpull.**
+
+# Ignore StAX warnings
+-dontwarn org.codehaus.stax2.**
+-dontwarn javax.xml.stream.**
+
+##############################################
+# 🔐 PREVENT PIN STRING REMOVAL
+##############################################
+
+# Keep string constants (pins)
+-keepclassmembers class * {
+    java.lang.String *;
+}
+
+
+
+# ---- Ignore desktop Java classes (XStream issue) ----
+-dontwarn java.awt.**
+-dontwarn javax.swing.**
+
+# ---- Ignore OSGi / bnd annotations (Woodstox / XML libs) ----
+-dontwarn aQute.bnd.annotation.spi.**
+
+# ---- Ignore StAX / XML streaming warnings ----
+-dontwarn com.ctc.wstx.**
+-dontwarn org.codehaus.stax2.**
+-dontwarn javax.xml.stream.**
+
+# ---- Ignore missing Koin annotations (only if you are NOT using Koin runtime) ----
+-dontwarn org.koin.core.annotation.**
+
+# ---- Keep XStream core (avoid aggressive stripping) ----
+-keep class com.thoughtworks.xstream.** { *; }
+-dontwarn com.thoughtworks.xstream.**
+
+-keep class com.fasterxml.** { *; }
+-dontwarn com.fasterxml.**
+
+-keep class org.apache.xml.security.** { *; }
+-dontwarn org.apache.xml.security.**
+
+-keep class com.pehchaan.** { *; }
+
+##############################################
+# 🚀 FINAL SHRINKING OPTIMIZATION
+##############################################
+
+# Allow shrinking & obfuscation (IMPORTANT)
+-allowaccessmodification

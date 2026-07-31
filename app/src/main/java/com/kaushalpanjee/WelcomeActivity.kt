@@ -29,9 +29,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
-import android.Manifest
-import android.app.ComponentCaller
-import androidx.navigation.fragment.NavHostFragment
+import com.kaushalpanjee.core.util.toastShort
 
 
 @AndroidEntryPoint
@@ -41,7 +39,6 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
@@ -59,7 +56,9 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
                 showSecurityWarning()
            }*/
             if (isDeviceRooted()) {
-                showSecurityWarning()
+                navigate()
+                // showSecurityWarning()
+
             }
             else {
                 navigate()

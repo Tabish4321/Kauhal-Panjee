@@ -596,6 +596,58 @@
                             android:background="@drawable/card_background"
                             android:layout_margin="8dp" />
                     </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tvPwdType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Type of PWD"
+                    android:visibility="gone"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llpwd"/>
+
+
+
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:hint="Select Type of PWD"
+                    android:id="@+id/llPwdType"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/dp_3"
+                    android:textColorHint="@color/color_dark_green"
+                    app:boxStrokeColor="@color/color_dark_green"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPwdType">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/SpinnerPwdType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:inputType="none"
+                        android:textColor="@color/color_dark_green"
+                        android:textSize="15sp"
+                        tools:ignore="LabelFor"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     style="@style/EditText"
                     android:id="@+id/pwdImageUpload"
@@ -606,7 +658,7 @@
                     android:layout_marginEnd="@dimen/dp_12"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llpwd">
+                    app:layout_constraintTop_toBottomOf="@+id/llPwdType">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -710,7 +762,7 @@
                     <EditText
                         android:id="@+id/etNregaValidate"
                         style="@style/EditText"
-                        android:hint="@string/enter_jobcardno"
+                        android:hint="e.g., HR-00-000-000-000/0000"
                         android:background="@drawable/edittext_background"
                         android:padding="12dp"
                         android:layout_marginTop="@dimen/dp_8"
@@ -3659,7 +3711,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
                 android:id="@+id/expandTraining"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewTraining">

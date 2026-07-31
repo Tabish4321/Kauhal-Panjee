@@ -34,6 +34,9 @@ import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.databinding.FragmentTrainingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+
+////https://github.com/Tabish4321/Kauhal-Panjee/settings/access
+////code commit 150120261453
 @AndroidEntryPoint
 class TrainingCenterAssign : BaseFragment<FragmentTrainingBinding>(FragmentTrainingBinding::inflate) {
 
@@ -284,7 +287,7 @@ fun TrainingCenterScreen(
                             BuildConfig.VERSION_NAME,
                             selectedScheme!!,
                             district.districtCode
-                        )
+                        ), AppUtil.getSavedTokenPreference(context)
                     )
                 }
             )
@@ -308,7 +311,7 @@ fun TrainingCenterScreen(
                             PiaTrainingCenterReq(
                                 BuildConfig.VERSION_NAME,
                                 pia.piaOrgCode
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -330,7 +333,7 @@ fun TrainingCenterScreen(
                             PiaTradeReq(
                                 BuildConfig.VERSION_NAME,
                                 training.trainingCenterId.toString()
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -368,7 +371,7 @@ fun TrainingCenterScreen(
                             OrgInstituteReq(
                                 BuildConfig.VERSION_NAME,
                                 bank.piaOrgCode
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )
@@ -390,7 +393,7 @@ fun TrainingCenterScreen(
                             InstituteCourseReq(
                                 BuildConfig.VERSION_NAME,
                                 institute.instituteId.toString()
-                            )
+                            ),AppUtil.getSavedTokenPreference(context)
                         )
                     }
                 )

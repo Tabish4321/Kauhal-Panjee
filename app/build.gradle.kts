@@ -6,9 +6,11 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.compose")
 
 }
 
@@ -17,22 +19,13 @@ android {
     compileSdk = 35
 
 
-    buildFeatures {
-        compose = true
-    }
-    // ✅ FIX: 16 KB page-size Play Store rejection bypass
+    // FIX: 16 KB page-size Play Store rejection bypass
 
     packaging {
         jniLibs {
             useLegacyPackaging = true
         }
     }
-
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
-    }
-
 
     val keystorePropertiesFile = rootProject.file("keystore.properties")
     val projectProperties = readProperties(keystorePropertiesFile)
@@ -41,12 +34,14 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 44
-        versionName = "2.6.5"
+        versionCode = 64
+        versionName = "2.7.4"
+       // versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // ✅ Correct Kotlin DSL syntax for keeping all language resources
+        // Correct Kotlin DSL syntax for keeping all language resources
+
         resourceConfigurations += listOf(
             "en",
             "hi",
@@ -66,12 +61,13 @@ android {
     }
 
 
-    // ✅ Prevent Google Play from splitting languages (needed for in-app switching)
+    //  Prevent Google Play from splitting languages (needed for in-app switching)
     bundle {
         language {
             enableSplit = false
         }
     }
+
 
     buildTypes {
         release     {
@@ -102,15 +98,22 @@ android {
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+            buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
+            buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
 
-           //  signingConfig = signingConfigs.getByName("release")
+        //    signingConfig = signingConfigs.getByName("debug")
         }
 
         debug {
             isMinifyEnabled = false
+            isShrinkResources = false
             isDebuggable=true
             versionNameSuffix=""
             applicationIdSuffix=""
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             buildConfigField(
                 "String",
                 "CLIENT_SECRET_KEY",
@@ -131,38 +134,31 @@ android {
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+            buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
+            buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
+
 
         }
     }
 
     buildFeatures {
+        compose = true
         viewBinding = true
         dataBinding = true
         buildConfig = true
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
-//    flavorDimensions += listOf("app")
-//    productFlavors {
-//        create("dev") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_DEV"] as String)
-//
-//        }
-//        create("prod") {
-//            dimension = "app"
-//            buildConfigField("String", "BASE_URL", projectProperties["BASE_URL_PROD"] as String)
-//
-//        }
-//    }
+
+
 
     configurations.all {
         // ✅ NEW: Global exclude for xmlpull (fixes program class misclassification)
@@ -184,6 +180,9 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 dependencies {
     // Local AAR Library
     implementation(files("libs/pehchaanlib.aar"))
+
+    implementation(files("libs/samiksha-release.aar"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -228,8 +227,7 @@ dependencies {
 
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
-
+    kapt("com.github.bumptech.glide:compiler:4.13.0")
     implementation(libs.androidx.core.splashscreen)
 
     //Xml
@@ -253,13 +251,15 @@ dependencies {
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
     }
+
+
     // implementation(libs.stax.api)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
 //    implementation (libs.simple.xml)\
-    implementation(libs.simple.xml) {  // ✅ UPDATED: Explicit exclude for Simple XML transitive
+    implementation(libs.simple.xml) {  //  UPDATED: Explicit exclude for Simple XML transitive
         exclude(group = "xmlpull", module = "xmlpull")
         exclude(group = "org.xmlpull", module = "xmlpull")
         exclude(group = "net.sf.kxml", module = "kxml2")
@@ -276,6 +276,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
+
     // CardView
     implementation("androidx.cardview:cardview:1.0.0")
 
@@ -287,7 +292,10 @@ dependencies {
 
     // ML Kit (Vision)
     implementation("com.google.mlkit:face-detection:16.1.7")
-    implementation("com.google.mlkit:vision-common:16.1.7")
+   // implementation("com.google.mlkit:vision-common:16.1.7")
+
+  /*  implementation("com.google.mlkit:face-detection:16.1.6")
+    implementation("com.google.mlkit:vision-common:16.3.0")*/
 
     // CameraX
     implementation("androidx.camera:camera-camera2:1.4.1")
@@ -328,13 +336,21 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    //implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-messaging")
+    implementation("androidx.compose.material:material-icons-extended:1.6.0")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("app.cash.turbine:turbine:1.0.0")
     testImplementation("junit:junit:4.13.2")
+
+
+
+
+    // Required Firebase libs (IMPORTANT)
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-config-ktx")
+
 }
 
 kapt {

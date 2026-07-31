@@ -42,6 +42,9 @@ public class KycRes {
     @XStreamAsAttribute
     protected String txn = "";
     @XStreamAsAttribute
+    protected String ts = "";
+
+    @XStreamAsAttribute
     protected String err = "";
 
     @XStreamAsAttribute
@@ -126,6 +129,21 @@ public class KycRes {
      */
     public void setTxn(String value) {
         this.txn = value;
+    }
+
+
+    public String getTs() {
+        return ts;
+    }
+
+    /**
+     * Sets the value of the txn property.
+     *
+     * @param value allowed object is
+     *              {@link String }
+     */
+    public void setTs(String value) {
+        this.ts = value;
     }
 
     /**

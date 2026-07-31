@@ -12,6 +12,9 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import android.graphics.Color
+import android.text.style.AbsoluteSizeSpan
+import android.graphics.drawable.ColorDrawable
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.common.model.response.BlockList
 import com.kaushalpanjee.common.model.response.DistrictList
@@ -27,13 +30,14 @@ import java.util.Calendar
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
 import android.Manifest // For permission constants
-import android.R.attr.resource
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager // For checking permissions
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -52,8 +56,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.NumberPicker
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -61,19 +68,19 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat // For permission checks
 import androidx.core.content.FileProvider
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.CandidateReq
@@ -81,6 +88,7 @@ import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
@@ -97,6 +105,7 @@ import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.WardReq
 import com.kaushalpanjee.common.model.response.Address
 import com.kaushalpanjee.common.model.response.AddressDetail
+import com.kaushalpanjee.common.model.response.AttendanceDetails
 import com.kaushalpanjee.common.model.response.Bank
 import com.kaushalpanjee.common.model.response.Educational
 import com.kaushalpanjee.common.model.response.Employment
@@ -116,25 +125,20 @@ import com.kaushalpanjee.core.util.onDone
 import com.kaushalpanjee.core.util.onRightDrawableClicked
 import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.setRightDrawablePassword
-import com.kaushalpanjee.core.util.showKeyboard
 import com.kaushalpanjee.core.util.toastShort
 import com.utilize.core.util.FileUtils.Companion.getFileName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import kotlin.collections.joinToString
+import kotlin.toString
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -142,14 +146,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val commonViewModel: CommonViewModel by activityViewModels()
 
     private var currentRequestPurpose: String? = null
-    private val PERMISSION_READ_MEDIA_IMAGES = 201
-    private val REQUEST_PICK_IMAGE = 201
-    private val REQUEST_PICK_PDF = 202
     private var countDownTimer: CountDownTimer? = null
 
-    private val REQUEST_CAPTURE_IMAGE = 203
-    private var cameraImageUri: Uri? = null
-
+    private lateinit var cameraImageUri: Uri
 
     //Boolean Values
     private var isPersonalVisible = true
@@ -188,6 +187,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var antoyadaImage = ""
     private var selectedCategoryItem = ""
     private var selectedMaritalItem = ""
+    private var selectedPwdTypeItem = ""
     private var selectedHighestEducationItem = ""
     private var selectedSchemeItem = ""
     private var selectedHighestEducationItemNew = ""
@@ -252,7 +252,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var branchName = ""
     private var selectedSeccName = ""
     private var selectedAhlTin = ""
-    private var jobCardNo = ""
     private var IfscCode = ""
     private var BankName = ""
     private var selectedTypeItem = ""
@@ -262,7 +261,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var BankAcNo = ""
     private var previousTrainingDuration = ""
     private var result = StringBuilder()
-    private var userAadhaarDetailsListNew: List<UserDetails> = mutableListOf()
     private var userCandidatePersonalDetailsList: List<Personal> = mutableListOf()
     private var userCandidatePersonalDetailsList2: List<PersonalDetail> = mutableListOf()
     private var userCandidateAddressDetailsList: List<Address> = mutableListOf()
@@ -272,9 +270,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var userCandidateEmploymentDetailsList: List<Employment> = mutableListOf()
     private var userCandidateTrainingDetailsList: List<Training> = mutableListOf()
     private var userCandidateBankDetailsList: List<Bank> = mutableListOf()
+    private var aebasDetailsList: List<AttendanceDetails> = mutableListOf()
     private var currentSalary = ""
     private var salaryExpectation = ""
     private var accLenghth = ""
+    private var decryptMobileNo = ""
+    private var decryptEmail = ""
 
 
 
@@ -285,7 +286,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var stateSeccAdapter: ArrayAdapter<String>
     private lateinit var selectBranchAdapter: ArrayAdapter<String>
     private var selectedSeccStateCodeItem = ""
-    private var selectedSeccStateLgdCodeItem = ""
     private var selectedSeccStateItem = ""
 
 
@@ -327,6 +327,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private lateinit var categoryAdapter: ArrayAdapter<String>
     private lateinit var maritalAdapter: ArrayAdapter<String>
+    private lateinit var pwdTypeAdapter: ArrayAdapter<String>
     private lateinit var highestEducationAdapter: ArrayAdapter<String>
     private lateinit var highestEducationAdapterNew: ArrayAdapter<String>
     private lateinit var schemeListAdapter: ArrayAdapter<String>
@@ -380,12 +381,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var gpAdapter: ArrayAdapter<String>
     private var gp = ArrayList<String>()
     private var gpCode = ArrayList<String>()
-    private var gpCodePer = ArrayList<String>()
     private var gpLgdCode = ArrayList<String>()
     private var selectedGpCodeItem = ""
     private var selectedbGpLgdCodeItem = ""
     private var selectedGpItem = ""
-
 
     //Village var
     private var villageList: MutableList<VillageList> = mutableListOf()
@@ -396,17 +395,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var courseesDomainName = ArrayList<String>()
     private var courseesDomainCode = ArrayList<String>()
     private var statePer = ArrayList<String>()
-    private var districtPer = ArrayList<String>()
     private var blockPer = ArrayList<String>()
-    private var blockCodePer = ArrayList<String>()
     private var gpPer = ArrayList<String>()
-    private var villagePer = ArrayList<String>()
-    private var villageCodePer = ArrayList<String>()
-
-
     private var heardName = ArrayList<String>()
-    private var languageName = ArrayList<String>()
-    private var languageCode = ArrayList<String>()
     private var fatherName = ArrayList<String>()
     private var ahlTinNo = ArrayList<String>()
     private var seccName = ArrayList<String>()
@@ -454,6 +445,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedbVillagePresentLgdCodeItem = ""
     private var selectedVillagePresentItem = ""
     private var unnatiFlag = ""
+    private var consentHandleId: String? = ""
+    private var consentId: String? = ""
+    private var status: String? = ""
 
     private lateinit var TechEduAdapter: ArrayAdapter<String>
     private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
@@ -485,20 +479,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     private val maritalList = listOf("Married", "Unmarried", "Divorce")
+    private val pwdTypeList = listOf("Physically Handicapped", "Visual/Hearing Impaired", "Mentally Disability")
     private val highestEducationList =
         mutableListOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
-    private val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
 
     private val highestEducationListNew = listOf("Schooling", "Diploma", "Graduation", "Post Graduation")
 
     private var schemesList: MutableList<String> = mutableListOf()
-    private var sectorList = ArrayList<String>()
-    private var sectorCode = ArrayList<String>()
-    private var tradeName = ArrayList<String>()
-    private var tradeCode = ArrayList<String>()
 
-    private var selectedSectorIndices: MutableList<Int> = mutableListOf()
-    private var selectedTradeIndices: MutableList<Int> = mutableListOf()
     private val searchQuery = MutableLiveData<String>()
 
     private val tradeNameList = mutableListOf<String>()
@@ -519,10 +507,58 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+    private val takePicture =
+        registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        )
+        { success ->
+
+            if (success) {
+
+                val fileName = getFileName(requireContext(), cameraImageUri)
+
+                handleImageSelection(cameraImageUri, fileName)
+            }
+        }
+
+
+
+    private val pickMedia =
+        registerForActivityResult(
+            ActivityResultContracts.PickVisualMedia()
+        )
+        { uri ->
+
+            uri?.let {
+
+                val fileName = getFileName(requireContext(), it)
+
+                handleImageSelection(it, fileName)
+            }
+        }
+
+
+    private val pickPdf =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocument()
+        )
+        { uri ->
+
+            uri?.let {
+
+                val fileName = getFileName(requireContext(), it)
+
+                handlePdfSelection(it, fileName)
+            }
+        }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.etNregaValidate.apply {
+            filters = arrayOf(InputFilter.AllCaps())
+        }
 
 
         init()
@@ -541,11 +577,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectWardResponse()
         collectNregaValidateResponse()
         collectSendEmailOTPResponse()
-
-
+        collectInsertConsentResponse()
+      //  bankDetails()
         allResponseintrade()
-
-
 
        // collectSectorResponse()
 
@@ -582,7 +616,93 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     )
                 }
             })
+        showBankListUI()
+        binding.bankingView.expandBanking.visible()
 
+    }
+
+    fun bankDetails() {
+        commonViewModel.getBankList(
+            AppUtil.getSavedTokenPreference(requireContext()),
+            userPreferences.getUseID()
+        )
+
+        lifecycleScope.launch {
+            commonViewModel.bankList.collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        val apiList = resource.data?.data ?: emptyList()
+
+                        binding.bankingView.llBankContainer.removeAllViews()
+                        if (apiList.isEmpty()) {
+                            binding.bankingView.tvNoBank.visible()
+                            return@collectLatest
+                        }
+                        binding.bankingView.tvNoBank.gone()
+                        apiList.map { item ->
+                            val itemView = layoutInflater.inflate(
+                                R.layout.item_bank,
+                                binding.bankingView.llBankContainer,
+                                false
+                            )
+                            itemView.findViewById<TextView>(R.id.tvIfsc).text = item.ifscCode
+                            itemView.findViewById<TextView>(R.id.tvBankName).text = item.bankName
+                            itemView.findViewById<TextView>(R.id.tvAccount).text = item.accountNumber
+                            itemView.findViewById<TextView>(R.id.tvPan).text = AESCryptography.decryptIntoString(item.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+                            binding.bankingView.llBankContainer.addView(itemView)
+
+                            itemView.findViewById<TextView>(R.id.tvConsent).setOnClickListener {
+
+                                showConsentDialog(
+                                    userId = userPreferences.getUseID(),
+                                    mobile = decryptMobileNo,
+                                    email = decryptEmail
+                                )
+                            }
+
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        resource.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message ?: "Something went wrong")
+                        }
+                        hideProgressBar()
+                        binding.bankingView.tvNoBank.visible()
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showBankListUI() {
+        bankDetails()
+        binding.bankingView.llBankContainer.visible()
+        binding.bankingView.btnAddBank.visible()
+        binding.bankingView.btnAddBank.text = "Add Bank Details"
+
+        binding.bankingView.llIfscCode.gone()
+        binding.bankingView.llBankName.gone()
+        binding.bankingView.llBranchName.gone()
+        binding.bankingView.llBankAcNo.gone()
+        binding.bankingView.llPanNumber.gone()
+    }
+
+    private fun showBankFormUI() {
+        binding.bankingView.llBankContainer.gone()
+        binding.bankingView.btnAddBank.text = "View Bank Details"
+        binding.bankingView.btnAddBank.visible()
+
+        binding.bankingView.llIfscCode.visible()
+        binding.bankingView.llBankName.visible()
+        binding.bankingView.llBranchName.visible()
+        binding.bankingView.llBankAcNo.visible()
+        binding.bankingView.llPanNumber.visible()
     }
 
     private fun setupTradeSearch() {
@@ -716,11 +836,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
-
-
-
-
     private fun init() {
         listener()
 
@@ -738,7 +853,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
+        commonViewModel.getAebasDetails(AppUtil.getSavedTokenPreference(requireContext()),
+            AebasReq(
+                BuildConfig.VERSION_NAME,
+                userPreferences.getUseID()
+              //"2506415871"
+            ))
 
+       collectAebasDetailsResponse()
+
+
+
+        binding.profileView.viewAttendanceDetails.setOnClickListener {
+
+            showAttendanceDetailsDialog()
+        }
 
 
 
@@ -754,16 +883,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         collectSetionAndPerResponse()
 
         commonViewModel.getStateListApi()
-        commonViewModel.getSectorListAPI(
+   /*     commonViewModel.getSectorListAPI(
             SectorRequest(
                 BuildConfig.VERSION_NAME,
                 userPreferences.getUseID()
             ), AppUtil.getSavedTokenPreference(requireContext())
         )
-
-
-
-
+*/
 
 
     }
@@ -771,15 +897,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     @SuppressLint("SetTextI18n", "CheckResult", "SuspiciousIndentation")
     private fun listener() {
-
-
-//        binding.profileView.btnCertificate.setOnClickListener {
-//            val intent = Intent(requireContext(), CertificateActivity::class.java)
-//            intent.putExtra("CERT_URL", "")
-//            startActivity(intent)
-//        }
-
-
 
 
         binding.spinnerType.setOnItemClickListener { parent, view, position, id ->
@@ -796,13 +913,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             selectedWardNameItem = ""
             binding.spinnerWard.clearFocus()
             binding.spinnerWard.setText("", false)
-
-
-
-
-
-
-
 
 
 
@@ -1051,9 +1161,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.profileView.editImageButton.setOnClickListener {
 
-
-            checkAndRequestPermissionsForEveryPurpose("PROFILE_PIC")
-
+            showFileSelectionDialog("PROFILE_PIC")
 
         }
 
@@ -1130,6 +1238,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         binding.SpinnerMarital.setAdapter(maritalAdapter)
+
+
+
+
+
+
+        pwdTypeAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            pwdTypeList
+        )
+
+        binding.SpinnerPwdType.setAdapter(pwdTypeAdapter)
+
+
 
 
         gpPresentAdapter = ArrayAdapter(
@@ -1472,8 +1595,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     maritalList
                                 )
 
+                                if (x.isDisablity == "Yes")
+                                {
+                                    binding.tvPwdType.visible()
+                                    binding.llPwdType.visible()
+                                }
 
-                                //  binding.SpinnerMarital.setText(x.maritalStatus)
+                                setDropdownValue(
+                                    binding.SpinnerPwdType,
+                                    x.disabilityType?:"N/A",
+                                    pwdTypeList
+                                )
+
                                 binding.etShgValidate.setText(x.shgNo)
 
                                 val minorityStatusn = x.isMinority
@@ -1548,6 +1681,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 drivingLicenceNumber = x.dlNo
                                 selectedCategoryItem = x.castCategory
                                 selectedMaritalItem = x.maritalStatus
+                                selectedPwdTypeItem = x.disabilityType?:"N/A"
                                 minorityStatus = x.isMinority
                                 pwdStatus = x.isDisablity
                                 nregaStatus = x.isNarega
@@ -1972,12 +2106,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         wardName
                                     )
 
-                                    /*   setDropdownValue(binding.SpinnerPresentAddressStateName, x.presentStateName, state)
-                                       commonViewModel.getDistrictListApi(x.presentStateCode,AppUtil.getSavedTokenPreference(requireContext()),userPreferences.getUseID())
-
-                                       districtPresentAdapter.notifyDataSetChanged()*/
-
-
                                 }
 
 
@@ -2081,10 +2209,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isEducationalInfoVisible = false
                         binding.expandEducational.visible()
                         binding.viewEducational.visible()
-//                        binding.btnEIddressSubmit.visible()
-//                        binding.spinnerDomainOfTech.visible()
-//                        binding.spinnerTechnicalEducation.visible()
-//                        binding.tvClickYearOfPassingTech.visibility = View.GONE
 
                         for (x in userCandidateEducationalDetailsList) {
 
@@ -2158,14 +2282,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 ""
                             )
 
-
-//                            if (x.isTechEducate == "Yes") {
-//
-//                                binding.spinnerTechnicalEducation.visible()
-//                                binding.spinnerDomainOfTech.visible()
-//                                binding.tvLanguages.visible()
-//
-//                            }
 
                             binding.tvClickYearOfPassingTech.setText(x.monthYearOfPassing)
 
@@ -2270,12 +2386,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+
+
         binding.bankingView.llTopBanking.setOnClickListener {
 
             if (isBankingInfoVisible && bankingStatus.contains("0")) {
                 isBankingInfoVisible = false
                 binding.bankingView.expandBanking.visible()
                 binding.bankingView.viewBanking.visible()
+                showBankListUI()
             } else {
 
                 isBankingInfoVisible = true
@@ -2291,50 +2410,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         isBankingInfoVisible = false
                         binding.bankingView.expandBanking.visible()
                         binding.bankingView.viewBanking.visible()
-                        //binding.btnBnakingSubmit.visible()
+                        showBankFormUI()
 
-                        for (x in userCandidateBankDetailsList) {
-
-
-                            val DecIfscCode = AESCryptography.decryptIntoString(
-                                x.ifscCode,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecBankName = AESCryptography.decryptIntoString(
-                                x.bankName,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecbankBranchName = AESCryptography.decryptIntoString(
-                                x.bankBranchName,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecbankbankAccNumber = AESCryptography.decryptIntoString(
-                                x.bankAccNumber,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-                            val DecpanNo = AESCryptography.decryptIntoString(
-                                x.panNo,
-                                AppConstant.Constants.ENCRYPT_KEY,
-                                AppConstant.Constants.ENCRYPT_IV_KEY
-                            )
-
-
-                            binding.bankingView.etIfscCode.setText(DecIfscCode)
-                            binding.bankingView.etBankName.setText(DecBankName)
-                            binding.bankingView.etBranchName.setText(DecbankBranchName)
-                            binding.bankingView.etBankAcNo.setText(DecbankbankAccNumber)
-                            binding.bankingView.etPanNumber.setText(DecpanNo)
-
-                            BankName = DecBankName
-                            BankAcNo = DecbankbankAccNumber
-                            IfscCode = DecIfscCode
-                            PanNumber = DecpanNo
-
-                        }
 
 
                     },
@@ -2471,6 +2548,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.SpinnerMarital.setOnItemClickListener { parent, view, position, id ->
             selectedMaritalItem = parent.getItemAtPosition(position).toString()
+
+
+        }
+
+
+        // pwdType selection
+
+        binding.SpinnerPwdType.setOnItemClickListener { parent, view, position, id ->
+            selectedPwdTypeItem = parent.getItemAtPosition(position).toString()
 
 
         }
@@ -2679,7 +2765,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             } else toastShort("Wrong Selection")
         }
 
-
         binding.spinnerUlb.setOnItemClickListener { parent, view, position, id ->
             binding.spinnerUlb.clearFocus()
             selectedUlbNameItem = parent.getItemAtPosition(position).toString()
@@ -2759,9 +2844,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             } else toastShort("Wrong Selection")
         }
-
-
-
 
         binding.spinnerWard.setOnItemClickListener { parent, view, position, id ->
             binding.spinnerWard.clearFocus()
@@ -3086,9 +3168,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-
 
 
         //District selection
@@ -3565,93 +3644,123 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+
+        //  SET ADAPTER ONCE (IMPORTANT)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            branchListValue
+        )
+        binding.bankingView.spinnerBranchName.setAdapter(adapter)
+
+
+//  ADD BUTTON (OUTSIDE spinner listener)
+      //  binding.bankingView.expandBanking.gone() // default hidden
+
+        binding.bankingView.btnAddBank.setOnClickListener {
+            if (binding.bankingView.llBankContainer.visibility == View.VISIBLE) {
+                showBankFormUI()
+            } else {
+                showBankListUI()
+            }
+        }
+
+
+//  SINGLE ITEM CLICK LISTENER (FIXED)
         binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, branchListValue)
-            binding.bankingView.spinnerBranchName.setAdapter(adapter)
 
-            binding.bankingView.spinnerBranchName.setOnItemClickListener { parent, view, position, id ->
-                val selectedItem = parent.getItemAtPosition(position).toString()
-                val originalPosition = branchListValue.indexOf(selectedItem)
+            val selectedItem = parent.getItemAtPosition(position).toString()
+            val originalPosition = branchListValue.indexOf(selectedItem)
 
-                if (originalPosition != -1 && originalPosition in branchListValue.indices) {
-                    branchName = branchListValue[originalPosition]
-                    branchCode = branchCodeList[originalPosition]
-                    bankCode = bankCodeList[originalPosition]
-                    bankName1 = bankListValue[originalPosition]
-                    accLenghth = bankAccountLenghth[originalPosition]
+            if (originalPosition != -1 && originalPosition in branchListValue.indices) {
 
-                    binding.bankingView.etBankName.setText(bankName1)
-                    binding.bankingView.etBranchName.setText(branchName)
+                branchName = branchListValue[originalPosition]
+                branchCode = branchCodeList[originalPosition]
+                bankCode = bankCodeList[originalPosition]
+                bankName1 = bankListValue[originalPosition]
+                accLenghth = bankAccountLenghth[originalPosition]
 
-                    if (accLenghth.isNotBlank()) {
-                        val lengths = accLenghth.split(",")
-                            .mapNotNull { it.toIntOrNull() }
-                            .sorted()
+                binding.bankingView.etBankName.setText(bankName1)
+                binding.bankingView.etBranchName.setText(branchName)
 
-                        val maxLength = lengths.maxOrNull() ?: 0
+                //  CLEAR OLD WATCHERS (IMPORTANT FIX)
+                binding.bankingView.etBankAcNo.addTextChangedListener(null)
 
-                        if (lengths.size == 1) {
-                            binding.bankingView.etBankAcNo.filters =
-                                arrayOf(InputFilter.LengthFilter(lengths.first()))
-                        } else if (lengths.isNotEmpty()) {
-                            binding.bankingView.etBankAcNo.filters =
-                                arrayOf(InputFilter.LengthFilter(maxLength))
+                if (accLenghth.isNotBlank()) {
 
-                            binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
-                                override fun afterTextChanged(s: Editable?) {
-                                    s?.let {
-                                        if (it.length in lengths || it.isEmpty()) {
-                                            binding.bankingView.etBankAcNo.error = null
-                                            binding.bankingView.btnBnakingSubmit.visible()
-                                        } else {
-                                            binding.bankingView.etBankAcNo.error =
-                                                "Account number must be ${lengths.joinToString(", ")} digits"
-                                        }
+                    val lengths = accLenghth.split(",")
+                        .mapNotNull { it.toIntOrNull() }
+                        .sorted()
+
+                    val maxLength = lengths.maxOrNull() ?: 0
+
+                    if (lengths.size == 1) {
+
+                        binding.bankingView.etBankAcNo.filters =
+                            arrayOf(InputFilter.LengthFilter(lengths.first()))
+
+                    } else if (lengths.isNotEmpty()) {
+
+                        binding.bankingView.etBankAcNo.filters =
+                            arrayOf(InputFilter.LengthFilter(maxLength))
+
+                        //  ADD WATCHER ONLY ONCE
+                        binding.bankingView.etBankAcNo.addTextChangedListener(object : TextWatcher {
+
+                            override fun afterTextChanged(s: Editable?) {
+                                s?.let {
+                                    if (it.length in lengths || it.isEmpty()) {
+                                        binding.bankingView.etBankAcNo.error = null
+                                        binding.bankingView.btnBnakingSubmit.visible()
+                                    } else {
+                                        binding.bankingView.etBankAcNo.error =
+                                            "Account number must be ${lengths.joinToString(", ")} digits"
+                                        binding.bankingView.btnBnakingSubmit.gone()
                                     }
                                 }
+                            }
 
-                                override fun beforeTextChanged(
-                                    s: CharSequence?,
-                                    start: Int,
-                                    count: Int,
-                                    after: Int
-                                ) {
-                                }
+                            override fun beforeTextChanged(
+                                s: CharSequence?, start: Int, count: Int, after: Int
+                            ) {}
 
-                                override fun onTextChanged(
-                                    s: CharSequence?,
-                                    start: Int,
-                                    before: Int,
-                                    count: Int
-                                ) {
-                                }
-                            })
-                        }
-                    } else {
-                        binding.bankingView.etBankAcNo.filters = arrayOf()
+                            override fun onTextChanged(
+                                s: CharSequence?, start: Int, before: Int, count: Int
+                            ) {}
+                        })
                     }
+
                 } else {
-                    Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+                    binding.bankingView.etBankAcNo.filters = arrayOf()
+                }
+
+            } else {
+                Toast.makeText(requireContext(), "Invalid selection", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+//  TEXT CHANGE VALIDATION (UNCHANGED LOGIC)
+        binding.bankingView.spinnerBranchName.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(
+                s: CharSequence?, start: Int, count: Int, after: Int
+            ) {}
+
+            override fun onTextChanged(
+                s: CharSequence?, start: Int, before: Int, count: Int
+            ) {
+                if (!branchListValue.contains(s.toString())) {
+                    branchName = ""
+                    branchCode = ""
+                    bankCode = ""
+                    bankName1 = ""
+                    accLenghth = ""
                 }
             }
-
-            binding.bankingView.spinnerBranchName.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                }
-
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (!branchListValue.contains(s.toString())) {
-                        branchName = ""
-                        branchCode = ""
-                        bankCode = ""
-                        bankName1 = ""
-                        accLenghth = ""
-                    }
-                }
-            })
-        }
+        })
 
 
         // If Present Address is same as permanent
@@ -3675,8 +3784,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ) {
 
 
-                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected) // Reset to default
-                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background) // Change to clicked color
+                    binding.optionllSamePermanentYesSelect.setBackgroundResource(R.drawable.card_background_selected)
+                    binding.optionSamePermanentNoSelect.setBackgroundResource(R.drawable.card_background)
 
                     isClickedPermanentYes = true
                     isClickedPermanentNo = false
@@ -3728,7 +3837,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     selectedVillagePresentItem = selectedVillageItem
 
                     //others
-
 
                 } else
 
@@ -3817,7 +3925,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         // If Present Address is not same as permanent
-
 
         binding.optionSamePermanentNoSelect.setOnClickListener {
             addressLine1 = binding.etAdressLine.text.toString()
@@ -4011,6 +4118,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             pwdStatus = "Yes"
             binding.pwdImageUpload.visible()
+            binding.llPwdType.visible()
+            binding.tvPwdType.visible()
 
 
         }
@@ -4022,6 +4131,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             pwdStatus = "No"
 
             binding.pwdImageUpload.gone()
+            binding.llPwdType.gone()
+            binding.tvPwdType.gone()
 
 
         }
@@ -4311,55 +4422,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             binding.recyclerView.visible()
             isSeccStatus = "No"
 
-
         }
-
-
-
-
-//        binding.tvSectorItems.setOnClickListener {
-//            MaterialDialog(requireContext()).show {
-//                title(text = "Select Sectors")
-//                val itemList = sectorList.toList()
-//
-//                listItemsMultiChoice(
-//                    items = itemList,
-//                    initialSelection = selectedSectorIndices.toIntArray() // Use sector-specific indices
-//                ) { _, indices, _ ->
-//                    // Update selected indices for sectors
-//                    selectedSectorIndices = indices.toMutableList()
-//
-//                    // Display selected items in the TextView
-//                    binding.tvSectorItems.text = "Selected Sectors: ${indices.joinToString(",") { itemList[it] }}"
-//
-//                    // Store the selected sectors as a comma-separated string
-//                    selectedSector = indices.joinToString(",") { itemList[it] }
-//
-//                    // Store the selected sector codes as a comma-separated string
-//                    selectedSectorCode = indices.joinToString(",") { sectorCode[it] }
-//
-//                    // Call API with selected sector codes
-////                    commonViewModel.getTradeListAPI(
-////                        TradeReq(
-////                            BuildConfig.VERSION_NAME,
-////                            selectedSectorCode,
-////                            userPreferences.getUseID()
-////                        ), AppUtil.getSavedTokenPreference(requireContext())
-//
-////                    )
-//
-//                    commonViewModel.getTradeListAPI(TradeSearchReq(BuildConfig.VERSION_NAME, userPreferences.getUseID(),selectedSectorCode, ), AppUtil.getSavedTokenPreference(requireContext()))
-//                    selectedTradeIndices.clear()
-//                    binding.tvTradeItems.text = "Select Trade"
-//                    selectedTrade = ""
-//
-//                }
-//                positiveButton(text = "OK")
-//                negativeButton(text = "Cancel")
-//            }
-//        }
-
-
 
         binding.bankingView.etBankAcNo.onRightDrawableClicked {
 
@@ -4392,7 +4455,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 val panRegex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
 
                 if (s.toString().matches(panRegex)) {
-                    binding.bankingView.etPanNumber.error = null  // ✅ Valid PAN
+                    binding.bankingView.etPanNumber.error = null  //  Valid PAN
                     isValidPan = true
                     //  binding.btnBnakingSubmit.visible()
 
@@ -4538,7 +4601,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             collectInsertTrainingResponse()
 
 
-            /////////////
 
         }
 
@@ -4596,11 +4658,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
             }
-//            else if (selectedInterestedIn.isEmpty()) {
-//
-//                toastShort("Please select Interested in ")
-//
-//            }
+
             else if (selectedJobLocation.isNotEmpty() && selectedIEmploymentPref.isNotEmpty()) {
 
 
@@ -4647,32 +4705,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.btnEIddressSubmit.setOnClickListener {
 
-//            if ( selectedTechEducationDate.isNotEmpty() && result.isNotEmpty() && selectedHighestEducationItem.isNotEmpty()){
-//                // Hit the Insert Api
-//                commonViewModel.insertEducationAPI(
-//                    EducationalInsertReq(
-//                        BuildConfig.VERSION_NAME,
-//                        userPreferences.getUseID(),
-//                        AppUtil.getAndroidId(requireContext()),
-//                        "4",
-//                        selectedTechEducationDate,
-//                        result.toString(),
-//                        selectedTechEducationItemCode,
-//                        selectedTechEducationDomainCode,
-//                        selectedHighestEducationItem
-//                    )  ,
-//                    AppUtil.getSavedTokenPreference(requireContext())
-//                )
-//                collectInsertEducationalResponse()
-//            }
-//            else
-//                if (
-//                selectedTechEducationDate.isNotEmpty() &&
-//                result.isNotEmpty() && selectedTechEducationItemCode.isNotEmpty() &&
-//                selectedTechEducationDomainCode.isNotEmpty()){
-                // Hit the Insert Api
-
-
             commonViewModel.insertEducationAPI(
                     EducationalInsertReq(
                         BuildConfig.VERSION_NAME,
@@ -4688,62 +4720,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     AppUtil.getSavedTokenPreference(requireContext())
                 )
                 collectInsertEducationalResponse()
-//            }
-//            else toastLong("Please complete Education Info First")
 
-//            if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() &&
-//                result.isNotEmpty()
-//            ) {
-//                selectedTechEducationItemCode = ""
-//                selectedTechEducationDomainCode = ""
-//                selectedHighestEducationItemNew = ""
-//                selectedHighestEducationItem = ""
-                // Hit the Insert Api
-//                commonViewModel.insertEducationAPI(
-//                   var educationalRequest =  EducationalInsertReq(
-//                        BuildConfig.VERSION_NAME,
-//                        userPreferences.getUseID(),
-//                        AppUtil.getAndroidId(requireContext()),
-//                        "4",
-//                       selectedTechEducationDate,
-//                        result.toString(),
-//                        selectedTechEducationItemCode,
-//                        selectedTechEducationDomainCode,
-//                        selectedHighestEducationItem
-//                    )
-//            Log.e("EducationalRequest", educationalRequest.toString())
-//                    ,
-//                    AppUtil.getSavedTokenPreference(requireContext())
-//                )
-//                collectInsertEducationalResponse()
-//            }
-//            else if (selectedHighestEducationItem.isNotEmpty() && highestEducationDate.isNotEmpty() && selectedTechEducationItemCode.isNotEmpty() &&
-//                selectedTechEducationDomainCode.isNotEmpty() &&
-//                result.isNotEmpty()
-//            ) {
-//                selectedTechEducationItemCode = ""
-//                selectedTechEducationDomainCode = ""
-//                selectedHighestEducationItemNew = ""
-//                selectedHighestEducationItem = ""
-//                // Hit the Insert Api
-//                commonViewModel.insertEducationAPI(
-//                    EducationalInsertReq(
-//                        BuildConfig.VERSION_NAME,
-//                        userPreferences.getUseID(),
-//                        AppUtil.getAndroidId(requireContext()),
-//                        "4",
-//                        selectedHighestEducationItemNew,
-//                        highestEducationDate,
-//                        result.toString(),
-//                        selectedTechEducationItemCode,
-//                        selectedTechEducationDate,
-//                        selectedHighestEducationItem.toInt()
-//                    ),
-//                    AppUtil.getSavedTokenPreference(requireContext())
-//                )
-//                collectInsertEducationalResponse()
-//            }
-//            else toastLong("Please complete Education Info First")
         }
 
 
@@ -4768,43 +4745,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
-        /*  binding.btnPmayValidate.setOnClickListener {
-
-          */
-        /* commonViewModel.shgValidateAPI(
-                ShgValidateReq(
-                    binding.etShgValidate.text.toString(),
-                    userPreferences.getUserStateLgdCode()
-                )
-            )  //41358
-
-            lifecycleScope.launch {
-                delay(1000)
-                if (shgValidateStatus == "Y") {
-
-                    binding.tvShgValidate.visible()
-                    binding.btnShgValidate.gone()
-                    shgCode = binding.etShgValidate.text.toString()
-                    binding.tvShgValidate.text = "Validate Successfully: $shgName"
-                } else toastLong("Validation Failed please check your SHG Code")
-            }*//*
-        }*/
-
 
 
         binding.btnjobcardnoValidate.setOnClickListener {
 
-            val username = HashUtils.sha512("Nrega")
-            val password = HashUtils.sha512("Nrg2k18")
-            jobCardNo = binding.etNregaValidate.text.toString()
-            val fullUrl = "https://nregarep2.nic.in/webapi/api/checkjobcard"
+            val username = HashUtils.sha512("GRAMG")
+            val password = HashUtils.sha512("GRAMG@2026")
+            val jobCardNo = binding.etNregaValidate.text.toString().trim()
 
-            if (jobCardNo.isNotEmpty()) {
+            val fullUrl = "https://vbgramgweb4.dord.gov.in/GRAMG_webAPI/api/checkjobcard"
 
-                commonViewModel.getCheckJobCardAPI(fullUrl, username, password, jobCardNo)
-                //    commonViewModel.getCheckJobCardAPI(fullUrl,username,password,"HR-01-005-001-001/1128" )
+            when {
+                jobCardNo.isEmpty() -> {
+                    binding.etNregaValidate.error = "Please enter Job Card No."
+                    toastLong("Please enter Job Card No.")
+                }
 
-            } else toastShort("Please enter jobCard")
+                !isValidJobCard(jobCardNo) -> {
+                    binding.etNregaValidate.error = "Enter valid format (e.g. HR-12345)"
+
+                    toastLong("Enter valid format (e.g. HR-12345)")
+                }
+
+                else -> {
+                    binding.etNregaValidate.error = null
+                    commonViewModel.getCheckJobCardAPI(
+                        fullUrl,
+                        username,
+                        password,
+                        jobCardNo
+                    )
+                }
+            }
         }
 
         binding.btnAddressSubmit.setOnClickListener {
@@ -4883,7 +4855,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         )
                     }
 
-                    // ✅ Now call the helper
+                    //  Now call the helper
                     val missingPermanent = getMissingFields(permanentFields)
                     val missingPresent = getMissingFields(presentFields)
 
@@ -5132,7 +5104,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         pipImage,
                         pmayStatus,
                         pmaygImage,
-                        shgImage
+                        shgImage,
+                        selectedPwdTypeItem
                     ), AppUtil.getSavedTokenPreference(requireContext())
                 )
 
@@ -5143,61 +5116,71 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         }
 
-
         // External Validation
 
 
         //image Upload
 
         binding.voterIdUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("VOTER_ID")
+            showFileSelectionDialog("VOTER_ID")
+
         }
         binding.nregaJobUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("NREGA_ID")
+            showFileSelectionDialog("NREGA_ID")
+
 
         }
 
         binding.pipdUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("PIP_ID")
+            showFileSelectionDialog("PIP_ID")
 
         }
 
         binding.pmaygUpload.setOnClickListener {
 
-            checkAndRequestPermissionsForEveryPurpose("Pmayg_ID")
+            showFileSelectionDialog("Pmayg_ID")
+
 
         }
 
         binding.drivingLicenceUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("DRIVING_LICENSE")
+            showFileSelectionDialog("DRIVING_LICENSE")
+
         }
 
         binding.minorityImageUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("MINORITY_CERTIFICATE")
+            showFileSelectionDialog("MINORITY_CERTIFICATE")
+
         }
         binding.categoryCertificateUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("CATEGORY_CERTIFICATE")
+            showFileSelectionDialog("CATEGORY_CERTIFICATE")
+
         }
 
         binding.shgCertificateUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("SHG_CERTIFICATE")
+            showFileSelectionDialog("SHG_CERTIFICATE")
+
         }
 
         binding.pwdImageUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("PWD_CERTIFICATE")
+            showFileSelectionDialog("PWD_CERTIFICATE")
+
         }
 
         binding.antyodayaCardUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("ANTOYADA_CERTIFICATE")
+            showFileSelectionDialog("ANTOYADA_CERTIFICATE")
+
         }
         binding.rsbyUpload.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("RSBY_CERTIFICATE")
+            showFileSelectionDialog("RSBY_CERTIFICATE")
+
         }
 
         binding.uploadResidenceImage.setOnClickListener {
-            checkAndRequestPermissionsForEveryPurpose("RESIDENCE_CERTIFICATE")
+            showFileSelectionDialog("RESIDENCE_CERTIFICATE")
+
         }
     }
 
@@ -5673,6 +5656,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             when (insertPersResponse.responseCode) {
                                 200 -> {
 
+                                    bankDetails()
+
                                     showSnackBar(insertPersResponse.responseMsg)
                                     commonViewModel.getCandidateDetailsAPI(
                                         CandidateReq(
@@ -6047,6 +6032,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                     AppConstant.Constants.ENCRYPT_IV_KEY
                                                 ) ?: "N/A"
 
+                                            decryptMobileNo = decryptedMobileNo
+
                                             val decryptedDob = AESCryptography.decryptIntoString(
                                                 x.dateOfBirth,
                                                 AppConstant.Constants.ENCRYPT_KEY,
@@ -6065,6 +6052,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                                 AppConstant.Constants.ENCRYPT_KEY,
                                                 AppConstant.Constants.ENCRYPT_IV_KEY
                                             ) ?: "N/A"
+
+                                            decryptEmail = decryptedEmail
+
 
                                             // Set Data to UI
                                             binding.profileView.tvAadhaarName.text =
@@ -6575,7 +6565,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
                                 nregaValidateStatus = getValidateStatus.body()?.Status ?: ""
-                                showSnackBar(getValidateStatus.body()?.Remarks.toString())
+                                if (getValidateStatus.body()?.Remarks.toString()=="Some error occurred")
+                                showSnackBar("Please enter a valid Job Card Number (e.g., HR-00-000-000-000/0000).")
                                 nregaJobCard = binding.etNregaValidate.text.toString()
 
 
@@ -6586,7 +6577,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     private fun collectBankResponse() {
         lifecycleScope.launch {
@@ -6761,55 +6751,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
-    @SuppressLint("SuspiciousIndentation")
-    private fun collectSectorResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getSectorListAPI) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { getSectorList ->
-                            if (getSectorList.responseCode == 200) {
-                                val sectorList1 = getSectorList.wrappedList
-
-                                sectorCode.clear()
-                                sectorList.clear()
-                                for (x in sectorList1) {
-                                    sectorList.add(x.sectorName)
-                                    sectorCode.add(x.sectorId)
-
-                                }
-
-
-                            } else if (getSectorList.responseCode == 301) {
-                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
-                            } else if (getSectorList.responseCode == 302) {
-                                getSectorList.responseMsg?.let { it1 -> showSnackBar(it1) }
-                            } else if (getSectorList.responseCode == 401) {
-                                AppUtil.showSessionExpiredDialog(
-                                    findNavController(),
-                                    requireContext()
-                                )
-                            } else {
-                                showSnackBar("Something went wrong")
-                            }
-                        } ?: showSnackBar("Internal Server Error")
-                    }
-                }
-            }
-        }
-    }
-
-
-
 
     private fun setDropdownValue(
         autoCompleteTextView: AutoCompleteTextView,
@@ -6836,70 +6777,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == PERMISSION_READ_MEDIA_IMAGES) {
-            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                // ✅ All permissions granted, proceed with file selection
-                showFileSelectionDialog(currentRequestPurpose ?: "")
-            } else {
-                // ❌ Permission denied, show a message
-                Toast.makeText(
-                    requireContext(),
-                    "Permission denied. Please enable it in Settings.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
-
-
-    private fun checkAndRequestPermissionsForEveryPurpose(purpose: String) {
-        currentRequestPurpose = purpose
-
-        val permissions = mutableListOf<String>()
-
-        // Check and add necessary permissions
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
-        } else {
-            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        // 🔴 Add CAMERA permission
-        permissions.add(Manifest.permission.CAMERA)
-
-        // Add WRITE_EXTERNAL_STORAGE for Android < 10 (API 29)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        // Get the permissions that are NOT granted
-        val notGrantedPermissions = permissions.filter {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                it
-            ) != PackageManager.PERMISSION_GRANTED
-        }.toTypedArray()
-
-        if (notGrantedPermissions.isNotEmpty()) {
-            // 🔴 Request all required permissions at once
-            requestPermissions(notGrantedPermissions, PERMISSION_READ_MEDIA_IMAGES)
-        } else {
-            // 🔵 All permissions are granted, proceed
-            showFileSelectionDialog(purpose)
-        }
-    }
-
     private fun showFileSelectionDialog(purpose: String) {
         if (purpose == "PROFILE_PIC") {
-            // Directly open the gallery for profile picture
+
             openGalleryForDocument(purpose)
             return
         }
@@ -6918,67 +6798,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun openCameraForDocument(purpose: String) {
-        val context = requireContext()
-
-        val file =
-            File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_image.jpg")
-        cameraImageUri =
-            FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
-
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri) // Store image in file
-        }
 
         currentRequestPurpose = purpose
 
+        val file = File(
+            requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "captured_image.jpg"
+        )
 
-        // Check if there's a camera app available
+        cameraImageUri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            file
+        )
 
-        if (intent.resolveActivity(context.packageManager) != null) {
-            startActivityForResult(intent, REQUEST_CAPTURE_IMAGE)
-        } else {
-            Toast.makeText(context, "No Camera App Found", Toast.LENGTH_SHORT).show()
-        }
+        takePicture.launch(cameraImageUri)
     }
-
 
     // Select Image from Gallery
     private fun openGalleryForDocument(purpose: String) {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_PICK_IMAGE)
+
         currentRequestPurpose = purpose
+
+        pickMedia.launch(
+            PickVisualMediaRequest(
+                ActivityResultContracts.PickVisualMedia.ImageOnly
+            )
+        )
     }
 
     // Select PDF from File Picker
+
     private fun openPdfPickerForDocument(purpose: String) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "application/pdf"
-        startActivityForResult(intent, REQUEST_PICK_PDF)
+
         currentRequestPurpose = purpose
+
+        pickPdf.launch(arrayOf("application/pdf"))
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == AppCompatActivity.RESULT_OK) {
-            var selectedUri: Uri? = data?.data
-
-            if (requestCode == REQUEST_CAPTURE_IMAGE) {
-                selectedUri = cameraImageUri // Use the stored URI
-            }
-
-            val fileName: String? =
-                selectedUri?.let { getFileName(requireContext(), it) } ?: "Captured_Image.jpg"
-
-            when (requestCode) {
-                REQUEST_CAPTURE_IMAGE -> handleImageSelection(selectedUri, fileName)
-                REQUEST_PICK_IMAGE -> handleImageSelection(selectedUri, fileName)
-                REQUEST_PICK_PDF -> handlePdfSelection(selectedUri, fileName)
-            }
-        }
-    }
 
 
     private fun handleImageSelection(uri: Uri?, fileName: String?) {
@@ -7166,7 +7023,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         return Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP)
     }
 
-
     // Convert PDF to Base64
     private fun convertPdfToBase64(pdfUri: Uri): String {
         val inputStream = requireContext().contentResolver.openInputStream(pdfUri)
@@ -7227,8 +7083,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     }
 
-
-    // This map will hold the checkbox states, ensuring persistent selection across dialog opens
     private val selectedLanguageStates = mutableMapOf<String, MutableMap<String, Boolean>>()
 
     private fun showStyledLanguageSelectionDialog() {
@@ -7311,7 +7165,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         dialog.show()
     }
 
-
     private fun showYesNoDialog(
         context: Context,
         title: String,
@@ -7345,7 +7198,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         val dialog = builder.create()
         dialog.show()
     }
-
 
     object HashUtils {
         fun sha512(input: String): String {
@@ -7816,7 +7668,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-
     private fun collectUpdateEmailResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getUpdateEmailAPI) {
@@ -7867,7 +7718,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
     }
-
 
     @SuppressLint("SuspiciousIndentation")
     private fun collectUlbResponse() {
@@ -8013,10 +7863,273 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private fun collectInsertConsentResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertBankConsent) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            toastShort(baseErrorResponse.message)
+
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertBankConsent ->
+                            if (insertBankConsent.responseCode == 200) {
+
+                               toastShort(insertBankConsent.responseMsg)
+
+                            }
+                            else {
+                                toastShort(insertBankConsent.responseMsg)
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
     private fun getMissingFields(fields: Map<String, String>): List<String> {
         return fields.filter { it.value.isBlank() }.map { it.key }
     }
 
+    private fun showConsentDialog(
+        userId: String,
+        mobile: String,
+        email: String
+    ) {
+
+        val dialogView = layoutInflater.inflate(
+            R.layout.dialog_submit_consent,
+            null
+        )
+
+        val etMobile = dialogView.findViewById<EditText>(R.id.etMobile)
+        val btnSubmit =
+            dialogView.findViewById<TextView>(R.id.btnSubmitConsent)
+
+        val progressBar =
+            dialogView.findViewById<ProgressBar>(R.id.progressBar)
+
+        etMobile.setText(mobile)
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.show()
+
+        btnSubmit.setOnClickListener {
+
+            val mobileNo = etMobile.text.toString().trim()
+
+            if (mobileNo.isEmpty()) {
+                etMobile.error = "Enter mobile number"
+                return@setOnClickListener
+            }
+
+            progressBar.visible()
+            btnSubmit.isEnabled = false
+
+            val request = ConsentRequest(
+                mobileNo = mobileNo,
+                userId = userId,
+                fipId = "",
+                email = email,
+                pan = "",
+                candidateId = userId,
+                aadharNo = ""
+            )
+
+            SamikshaSdk.submitConsent(
+                context = requireContext(),
+                request = request,
+
+                onSuccess = { response ->
+
+                    progressBar.gone()
+                    btnSubmit.isEnabled = true
+
+
+
+                    val consentList = response.data?.consentList
+                    val accountList = response.data?.acountListStatus
+
+                    if (consentList != null) {
+                        for (x in consentList){
+
+                             consentId =x.consentId
+                             consentHandleId =x.consentHandleId
+                             status =x.status
+                        }
+                    }
+
+                    Toast.makeText(
+                        requireContext(),
+                        status,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+
+                    if (accountList != null) {
+                        for (x in accountList){
+
+
+                        }
+                    }
+
+                    Toast.makeText(
+                        requireContext(),
+                        consentId,
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    //log("", consentId?:"")
+
+                    dialog.dismiss()
+                },
+
+                onError = { error ->
+
+                    progressBar.gone()
+                    btnSubmit.isEnabled = true
+
+                    Toast.makeText(
+                        requireContext(),
+                        error.message ?: "Something went wrong",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
+
+        }
+    }
+
+    private fun collectAebasDetailsResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.getAebasDetails) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { getAebasDetails ->
+                            if (getAebasDetails.responseCode == 200) {
+
+                                aebasDetailsList = getAebasDetails.wrappedList
+                                for (x in getAebasDetails.wrappedList) {
+
+                                    binding.profileView.tvAttendanceId.text = x.attendanceId.toString()
+
+                                }
+                            }
+
+                            else if (getAebasDetails.responseCode == 301) {
+                                showSnackBar("Please Update from PlayStore")
+                            }
+
+                            else if (getAebasDetails.responseCode == 401) {
+                                AppUtil.showSessionExpiredDialog(
+                                    findNavController(),
+                                    requireContext()
+                                )
+
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showAttendanceDetailsDialog() {
+        if (aebasDetailsList.isEmpty()) {
+            toastLong("No attendance details found")
+            return
+        }
+        val details = aebasDetailsList[0]
+
+        val spannable = SpannableStringBuilder()
+
+        fun addRow(label: String, value: String?) {
+            val start = spannable.length
+
+            spannable.append(label)
+
+            // Bold
+            spannable.setSpan(
+                StyleSpan(Typeface.BOLD),
+                start,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            // Label size 18sp
+            spannable.setSpan(
+                AbsoluteSizeSpan(16, true),
+                start,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            val valueStart = spannable.length
+            spannable.append(" ${value ?: "-"}\n\n")
+
+            // Value size 16sp
+            spannable.setSpan(
+                AbsoluteSizeSpan(14, true),
+                valueStart,
+                spannable.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        addRow("Employee Status :", details.empStatus)
+        addRow("Employee Location :", details.empLocation)
+        addRow("Registration Date :", details.regDate)
+        addRow("Attendance ID :", details.attendanceId.toString())
+        addRow("Previous Employee Code :", details.previousEmpCode)
+
+        val trimmed = spannable.trimEnd()
+
+        val titleView = TextView(requireContext()).apply {
+            text = "Attendance Details :"
+            textSize = 22f   // Title size
+            setTypeface(typeface, Typeface.BOLD)
+            setPadding(50, 40, 50, 20)
+        }
+
+
+        val dialog = MaterialAlertDialogBuilder(
+            requireContext(),
+            R.style.RoundedDialog
+        )
+            .setCustomTitle(titleView)
+            .setMessage(trimmed)
+            .setPositiveButton("OK", null)
+            .create()
+
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_bg)
+    }
+
+
+    private fun isValidJobCard(jobCard: String): Boolean {
+        val regex = Regex("^[A-Z]{2}-\\d+$")
+        return regex.matches(jobCard)
+    }
 
 }
 

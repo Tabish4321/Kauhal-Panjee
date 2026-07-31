@@ -10,14 +10,17 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import com.d2k.samiksha.SamikshaSdk
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
+import com.kaushalpanjee.core.util.AppUtil.printSslPin
 import com.kaushalpanjee.databinding.ActivityCommonBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,11 +32,29 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //printSslPin()
 
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.attributes.layoutInDisplayCutoutMode =
             WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+
+
+
+        SamikshaSdk.init( this,
+            baseUrl = "https://samikshaapi.nabard.org/",
+            apiKey = "624f2281-b0f1-44e3-9d3e-24826a53e7a6",
+            calledFrom = "NABSKILL",
+            apiVersion = "2",
+            onFailure = { msg ->
+              //  Toast.makeText( this@CommonActivity, msg, Toast.LENGTH_SHORT ).show()
+                        },
+            onSuccess = {
+              //  Toast.makeText( this@CommonActivity, "Samiksha SDK initialized successfully", Toast.LENGTH_SHORT ).show()
+        }
+        )
+
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navGraphHost) as NavHostFragment
@@ -45,6 +66,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
             navGraph.setStartDestination(R.id.mainHomePage)
         } else {
             navGraph.setStartDestination(R.id.loginFragment)
+//            navGraph.setStartDestination(R.id.cbtFragment)
         }
 
         navController?.graph = navGraph
@@ -163,4 +185,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         }
 
     }
+
+
+
 }

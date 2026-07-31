@@ -35,7 +35,6 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
-import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.response.IntentModel
@@ -57,10 +56,8 @@ import com.kaushalpanjee.databinding.AttendanceFragmentBinding
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods
 import com.kaushalpanjee.model.kyc_resp_pojo.XstreamCommonMethods.respDecodedXmlToPojoAuth
 import com.kaushalpanjee.uidai.capture.CaptureResponse
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.time.Duration
@@ -91,13 +88,6 @@ class AttendanceFragment:
     private var street = ""
     private var village = ""
     private var photo = ""
-    private var candidateName = ""
-    private var imagePath = ""
-    private var candidateMobile = ""
-    private var candidateEmail = ""
-    private var candidateGender = ""
-    private var candidateDob = ""
-    private var candidateDp = ""
     private var batchId = ""
     private var workplaceId = ""
     private var employerId = ""
@@ -137,9 +127,8 @@ class AttendanceFragment:
             AppConstant.Constants.ENCRYPT_KEY,
             AppConstant.Constants.ENCRYPT_IV_KEY
         )
+
         listener()
-
-
 
         commonViewModel.getAadhaarListAPI(
             AdharDetailsReq
@@ -275,7 +264,6 @@ class AttendanceFragment:
         // Handle back button press
         bottomSheetDialog.setOnKeyListener { dialog, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                // Show a confirmation dialog before closing
                 AlertDialog.Builder(requireContext())
                     .setTitle("Exit")
                     .setMessage("Do you want to close this screen?")
@@ -475,8 +463,6 @@ class AttendanceFragment:
                                                 AppConstant.Constants.ENCRYPT_IV_KEY
                                             ) ?: "N/A"
 
-
-
                                             // Set Data to UI
 
                                             binding.tvAaadharMobile.text =
@@ -505,7 +491,7 @@ class AttendanceFragment:
                                             latitude = x.latitute.toDouble()
                                             longitude = x.longitute.toDouble()
                                            // radius = x.radius.toFloat()
-                                            radius = 1000000000f
+                                            radius = 1000f
 
 
                                             binding.tvAadhaarName.text=decryptedUserName
@@ -693,8 +679,7 @@ class AttendanceFragment:
                 // Process the response to generate the PoiType or other required fields
                 val poiType = XstreamCommonMethods.processPidBlockEkyc(
                     response.toXML(),
-                    //decryptedAadhaar,
-                    "939625617876",
+                    decryptedAadhaar,
                     false,
                     requireContext()
                 )
@@ -906,9 +891,6 @@ class AttendanceFragment:
             }
         }
 
-
-
-
     }
 
     private fun collectInsertResponse() {
@@ -954,7 +936,7 @@ class AttendanceFragment:
     }
 
     private fun showUpdateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Update Available")
         builder.setMessage("A new version of the app is available. Please update to continue.")
 

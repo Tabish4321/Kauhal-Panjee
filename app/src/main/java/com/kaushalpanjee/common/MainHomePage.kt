@@ -72,6 +72,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var totalPercentange =0.0f
     private var certUrl = ""
     private var attendanceFlag = ""
+    private var cbtExam = ""
     private var schemeType = ""
     private var stateCode = ""
 
@@ -88,8 +89,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 val message = data?.getStringExtra(AppConstant.Constants.RESULT_MESSAGE) ?: "Unknown error"
 
                 if (status == "success") {
-
-                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()))
+                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
 
                     collectFaceUpdateResponse()
 
@@ -110,6 +110,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         init()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
         collectBannerResponse()
+
+
 
     }
 
@@ -138,6 +140,14 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                      findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
 
                  }
+
+
+                /* R.id.bankLoan -> {
+
+                     findNavController().navigate(MainHomePageDirections.actionMainHomePageToLoanFragment())
+
+                 }*/
+
                  R.id.rekyc -> {
 
                      //For Re-KYC
@@ -147,28 +157,42 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                  }
 
+
+
+                 R.id.cbt ->{
+
+                     if (cbtExam == "Y"){
+                         findNavController().navigate(MainHomePageDirections.actionMainHomePageToCbtDetailFragment())
+
+                     }
+                     else{
+                         showSnackBar("Exam is not available for you")
+                     }
+
+                 }
+
+
              }
              drawerLayout.closeDrawers()
              true
          }
 
          binding.trainingRecyclerView.gone()
-
-
          listeners()
          autoScroll()
-         commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
 
 
-         collectSetionAndPerResponse()
          collectTrainingSearchResponse()
 
      }
 
  private fun  listeners(){
 
+     commonViewModel.getSecctionAndPerAPI(SectionAndPerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())),AppUtil.getSavedTokenPreference(requireContext()))
+     collectSetionAndPerResponse()
 
-    //Training Adapter Setting
+
+     //Training Adapter Setting
 
      binding.trainingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
      trainingSearchAdapter = TrainingSearchAdapter { selectedItem ->
@@ -227,17 +251,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
-     if (attendanceFlag == "Y"){
-
-         binding.attendanceImageLogo.visible()
-         binding.attendanceTv.visible()
-
-     }
-     else
-     {
-         binding.attendanceImageLogo.gone()
-         binding.attendanceTv.gone()
-     }
 
 
      binding.attendanceImageLogo.setOnClickListener {
@@ -342,6 +355,23 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     totalPercentange= x.totalPercentage
                                     imagePath= x.imagePath
                                     attendanceFlag= x.ojtFlag
+                                    cbtExam= x.cbtExam
+
+
+                                    if (attendanceFlag == "Y"){
+                                        binding.attendanceImageLogo.visible()
+                                        binding.attendanceTv.visible()
+                                    }
+                                    else
+                                    {
+                                        binding.attendanceImageLogo.gone()
+                                        binding.attendanceTv.gone()
+
+                                    }
+
+
+
+
                                     candidateName=x.candidateName
                                     isFaceReg= x.isFaceRegistred
                                     userPreferences.updateUserStateLgdCode(null)
@@ -430,6 +460,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     binding.tvBankingDetails.setCompoundDrawablePadding(16)
                                 }
 
+                                val headerView = binding.navigationView.getHeaderView(0)
+                                val headerBinding = NavigationHeaderBinding.bind(headerView)
+                                val headerIdView: TextView = headerBinding.kpId
+                                headerIdView.text = userPreferences.getUseID()
+
 
                                 if (imagePath!=null){
 
@@ -447,11 +482,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
                                     // Access the ImageView from the header layout
                                     val headerImageView: ImageView = headerBinding.circleImageView
-                                    val headerIdView: TextView = headerBinding.kpId
-
                                     headerImageView.setImageBitmap(bitmap)
-                                    headerIdView.text = userPreferences.getUseID()
-
 
                                 }
 
@@ -562,7 +593,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                             .setPopUpTo(R.id.mainHomePage, true)
                                             .build()
                                     )
-                                    toastLong(logoutResponse.responseMsg)
+                                    toastLong(logoutResponse.responseDesc)
                                 }
                                 301 -> {
 

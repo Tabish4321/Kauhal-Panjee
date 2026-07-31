@@ -1,5 +1,8 @@
 package com.kaushalpanjee.core.data.remote
 
+import com.example.myapplication.CBT.api.CbtQuestionsResponse
+import com.kaushalpanjee.common.model.response.CbtAnsersSubmit
+import com.kaushalpanjee.common.model.response.SubmitExamResponse
 import com.kaushalpanjee.common.model.SendMobileOTPResponse
 import com.kaushalpanjee.common.model.SendOTPRequest
 import com.kaushalpanjee.common.model.SendOtpEmailReq
@@ -20,11 +23,15 @@ import com.kaushalpanjee.common.model.request.AadhaarCheckReq
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
 import com.kaushalpanjee.common.model.request.AddressInsertReq
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
+import com.kaushalpanjee.common.model.request.AebasReq
+import com.kaushalpanjee.common.model.request.BankListReq
+import com.kaushalpanjee.common.model.request.BankLoanReq
 import com.kaushalpanjee.common.model.request.BankingInsertReq
 import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.BlockReq
 import com.kaushalpanjee.common.model.request.CandidateReq
+import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
 import com.kaushalpanjee.common.model.request.DistrictReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
@@ -34,6 +41,9 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertBankConsentReq
+import com.kaushalpanjee.common.model.request.InsertBankLoanReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
 import com.kaushalpanjee.common.model.request.InsertTrainingCenterReq
 import com.kaushalpanjee.common.model.request.InstituteCourseReq
@@ -52,7 +62,6 @@ import com.kaushalpanjee.common.model.request.ShgValidateReq
 import com.kaushalpanjee.common.model.request.TechDomainReq
 import com.kaushalpanjee.common.model.request.TechQualification
 import com.kaushalpanjee.common.model.request.TokenReq
-import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingCenterReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
@@ -70,6 +79,8 @@ import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
 import com.kaushalpanjee.common.model.response.AadhaarEkycRes
+import com.kaushalpanjee.common.model.response.AebasRes
+import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.BlockResponse
@@ -78,11 +89,10 @@ import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
-import com.kaushalpanjee.common.model.response.GrampanchayatList
+import com.kaushalpanjee.common.model.response.GetDetailsBankLoanRes
 import com.kaushalpanjee.common.model.response.InsertOjtRes
 import com.kaushalpanjee.common.model.response.InsertRes
 import com.kaushalpanjee.common.model.response.InsertTrainingCenterRes
-import com.kaushalpanjee.common.model.response.InstituteCourse
 import com.kaushalpanjee.common.model.response.InstituteCourseRes
 import com.kaushalpanjee.common.model.response.JobcardResponse
 import com.kaushalpanjee.common.model.response.LanguageList
@@ -100,7 +110,6 @@ import com.kaushalpanjee.common.model.response.ShgValidateRes
 import com.kaushalpanjee.common.model.response.TechQualificationRes
 import com.kaushalpanjee.common.model.response.TechnicalEduDomain
 import com.kaushalpanjee.common.model.response.TokenRes
-import com.kaushalpanjee.common.model.response.TradeResponse
 import com.kaushalpanjee.common.model.response.TradeSearchRes
 import com.kaushalpanjee.common.model.response.TrainingCenterRes
 import com.kaushalpanjee.common.model.response.UlbRes
@@ -112,6 +121,7 @@ import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
+import com.kaushalpanjee.core.util.ApiConstant.API_GET_BANKLIST
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
@@ -122,6 +132,18 @@ import retrofit2.http.Header
 import retrofit2.http.Headers
 
 interface AppLevelApi {
+
+
+    @POST(ApiConstant.API_LOGIN)
+    suspend fun getLoginAPI(@Body loginReq: LoginReq):LoginRes
+
+
+    @POST(ApiConstant.API_CREATE_USER)
+    suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
+
+    @POST(ApiConstant.API_STATE)
+    suspend fun getStateListAPI(
+        @Body stateListReq: StateListReq):StateDataResponse
 
     @POST(ApiConstant.GET_TOKEN_GENERATE)
     suspend fun getToken(@Body tokenReq: TokenReq):TokenRes
@@ -139,6 +161,78 @@ interface AppLevelApi {
 
     @POST(ApiConstant.API_EMAIL_OTP)
     suspend fun sendEmailTP(@Body sendOtpEmailReq: SendOtpEmailReq):SendMobileOTPResponse
+
+
+    @POST(ApiConstant.API_UNNATI)
+    suspend fun getUnnati(@Body languageString: UnnatiRequest): Unnati
+
+    @POST(ApiConstant.Forgot_PASSWORD_OTP)
+    suspend fun getChangePassOtp(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):ForgotIdOtpRes
+
+
+
+    @POST(ApiConstant.GET_LOGINID_PASS)
+    suspend fun getLoginIdPass(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):InsertRes
+
+
+    @POST(ApiConstant.LANGUAGE_LIST)
+    suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
+
+    @POST(ApiConstant.API_OTP_VALIDATE)
+    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq): OtpValidateResponse
+
+    @POST(ApiConstant.API_OTP_checkUserExistance)
+    suspend fun getAadhaarCheck(@Body aadhaarCheckReq: AadhaarCheckReq):AadhaarCheckRes
+
+
+
+    @POST(ApiConstant.API_PIA_LIST)
+    suspend fun getPiaOrgList(@Header("Authorization") token: String,
+                              @Body piaListReq: PiaListReq): PiaListResponse
+
+
+
+    @POST(ApiConstant.API_PIA_TRAINING_CENTER)
+    suspend fun getTrainingList(@Header("Authorization") token: String,
+                                @Body piaTrainingCenterReq: PiaTrainingCenterReq): PiaTrainingCenterRes
+
+
+
+
+    @POST(ApiConstant.API_PIA_TRADE)
+    suspend fun getTrainingList(@Header("Authorization") token: String,
+                                @Body piaTradeReq: PiaTradeReq): PiaTrainingRes
+
+
+
+
+    @POST(ApiConstant.API_INSTITUTE)
+    suspend fun getInstituteList(@Header("Authorization") token: String,
+                                 @Body orgInstituteReq: OrgInstituteReq): OrgInstituteRes
+
+
+    @POST(ApiConstant.API_INSTITUTE_COURSE)
+    suspend fun getInstituteCourseList(@Header("Authorization") token: String,
+                                       @Body instituteCourseReq: InstituteCourseReq): InstituteCourseRes
+
+
+    @GET(API_NOTIFICATION)
+    suspend fun getNotifications(
+        @Query("candidateId") candidateId: String,
+        @Query("page") page
+        : Int,
+        @Query("size") size: Int
+    ): NotificationListResponse
+
+    @POST(API_APPROVECONDIDATE)
+    suspend fun invitationApproved(@Header("Authorization") token: String,
+                                   @Body invitation: InvitationApprovalRequest): ResponseBody
+
+
+    @POST(ApiConstant.API_INSERT_AADHAAR_TXN)
+    suspend fun insertAadhaarTxn(@Body insertAadhaarTxnReq: InsertAadhaarTxnReq): InsertRes
+
+
 
 
     @POST(ApiConstant.API_TECH_EDUCATION)
@@ -167,9 +261,7 @@ interface AppLevelApi {
 
                                         @Body stateListReq: StateListReq ):WhereHaveYouHeardRes
 
-    @POST(ApiConstant.API_STATE)
-    suspend fun getStateListAPI(
-                                @Body stateListReq: StateListReq):StateDataResponse
+
 
     @POST(ApiConstant.API_DISTRICT)
     suspend fun getDistrictListAPI(@Header("Authorization") token: String,
@@ -180,8 +272,7 @@ interface AppLevelApi {
                                       @Body districtReq: DistrictReq):DistrictResponse
 
 
-    @POST(ApiConstant.API_CREATE_USER)
-    suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
+
 
 
 
@@ -284,9 +375,6 @@ interface AppLevelApi {
 
 
 
-    @POST(ApiConstant.API_LOGIN)
-    suspend fun getLoginAPI(@Body loginReq: LoginReq):LoginRes
-
 
 
 
@@ -300,10 +388,6 @@ interface AppLevelApi {
     suspend fun getTradeListAPI(@Header("Authorization") token: String,
                                 @Body tradeReq: TradeSearchReq):TradeSearchRes
 
-//    @POST(ApiConstant.API_SEARCH_TRADE)
-//    suspend fun getTradeSearchListAPI(@Header("Authorization") token: String,
-//                                @Body tradeReq: TradeSearchReq
-//    ): TradeSearchRes
 
     @POST(ApiConstant.API_TRAINING_SEARCH)
     suspend fun getTrainingSearchAPI(@Header("Authorization") token: String,
@@ -343,30 +427,11 @@ interface AppLevelApi {
     suspend fun getLogout(@Header("Authorization") token: String,
                           @Body logoutRequest: LogoutRequest): LogoutResponse
 
-    @POST(ApiConstant.API_UNNATI)
-    suspend fun getUnnati(@Body languageString: UnnatiRequest): Unnati
-
-    @POST(ApiConstant.Forgot_PASSWORD_OTP)
-    suspend fun getChangePassOtp(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):ForgotIdOtpRes
-
-
-
-    @POST(ApiConstant.GET_LOGINID_PASS)
-    suspend fun getLoginIdPass(@Body getLoginIdNdPassReq: GetLoginIdNdPassReq):InsertRes
-
-
-    @POST(ApiConstant.LANGUAGE_LIST)
-    suspend fun getLanguageListAPI(@Body appVersion :String):LanguageList
-
-    @POST(ApiConstant.API_OTP_VALIDATE)
-    suspend fun getOtpValidateApi(@Body validateOtpReq: ValidateOtpReq): OtpValidateResponse
-
-    @POST(ApiConstant.API_OTP_checkUserExistance)
-    suspend fun getAadhaarCheck(@Body aadhaarCheckReq: AadhaarCheckReq):AadhaarCheckRes
 
 
     @POST(ApiConstant.API_UPDATE_FACE)
-    suspend fun updateFaceApi(@Body faceCheckReq: FaceCheckReq):FaceResponse
+    suspend fun updateFaceApi(@Header("Authorization") token: String,
+                              @Body faceCheckReq: FaceCheckReq):FaceResponse
 
     @POST(ApiConstant.API_UPDATE_Aadhaar)
     suspend fun aadhaarRekycApi(@Header("Authorization") token: String,
@@ -409,38 +474,10 @@ interface AppLevelApi {
 
 
 
-    @POST(ApiConstant.API_PIA_LIST)
-    suspend fun getPiaOrgList(@Body piaListReq: PiaListReq): PiaListResponse
-
-
-
-    @POST(ApiConstant.API_PIA_TRAINING_CENTER)
-    suspend fun getTrainingList(@Body piaTrainingCenterReq: PiaTrainingCenterReq): PiaTrainingCenterRes
-
-
-
-
-    @POST(ApiConstant.API_PIA_TRADE)
-    suspend fun getTrainingList(@Body piaTradeReq: PiaTradeReq): PiaTrainingRes
-
-
-
-
-    @POST(ApiConstant.API_INSTITUTE)
-    suspend fun getInstituteList(@Body orgInstituteReq: OrgInstituteReq): OrgInstituteRes
-
-
-    @POST(ApiConstant.API_INSTITUTE_COURSE)
-    suspend fun getInstituteCourseList(@Body instituteCourseReq: InstituteCourseReq): InstituteCourseRes
-
-
-
 
     @POST(ApiConstant.API_INSERT_OJT_ATTENDANCE)
     suspend fun insertOjtAttendance( @Header("Authorization") token: String,
                                      @Body insertOjtReq: InsertOjtReq): InsertOjtRes
-
-
 
 
 
@@ -450,13 +487,50 @@ interface AppLevelApi {
         @Body insertTrainingCenterReq: InsertTrainingCenterReq ): InsertTrainingCenterRes
 
 
-        @GET(API_NOTIFICATION)
-        suspend fun getNotifications(
-            @Query("page") page: Int,
-            @Query("size") size: Int
-        ): NotificationListResponse
 
-    @POST(API_APPROVECONDIDATE)
-    suspend fun invitationApproved(@Body invitation: InvitationApprovalRequest): ResponseBody
+    @POST(API_GET_BANKLIST)
+    suspend fun getBankListAPI(
+        @Header("Authorization") token: String,
+        @Body req: BankListReq
+    ): BankListResponse
+
+
+
+
+    @POST(ApiConstant.API_GET_DETAILS_FOR_BANK_LOAN)
+    suspend fun getBankLoanDetails( @Header("Authorization") token: String,
+                                 @Body bankLoanReq: BankLoanReq  ) : GetDetailsBankLoanRes
+
+
+
+    @POST(ApiConstant.API_INSERT_FOR_BANK_LOAN)
+    suspend fun insertBankLoanDetails( @Header("Authorization") token: String,
+                                    @Body insertBankLoanReq: InsertBankLoanReq  ) : InsertRes
+
+
+    @POST(ApiConstant.API_INSERT_FOR_BANK_Consent)
+    suspend fun insertBankConsent( @Header("Authorization") token: String,
+                                       @Body insertBankConsentReq: InsertBankConsentReq  ) : InsertRes
+
+
+
+    @POST(ApiConstant.API_CANDIDATE_AEBAS_DETAIL)
+    suspend fun getAebasDetails( @Header("Authorization") token: String,
+                                   @Body aebasReq: AebasReq  ) : AebasRes
+
+
+
+    @POST(ApiConstant.CBTGETQUESTION)
+    suspend fun getCbtExam(
+        @Header("Authorization") token: String,
+        @Body cbtQuestionsReq: CbtQuestionsReq
+    ): CbtQuestionsResponse
+
+
+    @POST(ApiConstant.CBTSUBMITANSWERS)
+    suspend fun submitExam(
+        @Header("Authorization") token: String,
+        @Body cbtAnsersSubmit: CbtAnsersSubmit
+    ): SubmitExamResponse
 
 }

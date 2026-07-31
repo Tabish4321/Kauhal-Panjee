@@ -33,6 +33,7 @@ import com.kaushalpanjee.common.EKYCFragment.AadhaarValidator
 import com.kaushalpanjee.common.model.UidaiKycRequest
 import com.kaushalpanjee.common.model.UidaiResp
 import com.kaushalpanjee.common.model.request.AadhaarRekycReq
+import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.response.IntentModel
 import com.kaushalpanjee.common.model.response.IntentResponse
@@ -43,6 +44,7 @@ import com.kaushalpanjee.core.util.AppConstant.Constants.LANGUAGE
 import com.kaushalpanjee.core.util.AppConstant.Constants.PRODUCTION
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
+import com.kaushalpanjee.core.util.copyToClipboard
 import com.kaushalpanjee.core.util.decodeBase64
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
@@ -58,10 +60,13 @@ import com.kaushalpanjee.uidai.capture.CaptureResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.security.SecureRandom
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @AndroidEntryPoint
-class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLayoutBinding::inflate)  {
+class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLayoutBinding::inflate) {
 
     private var showPassword = true
     private var aadhaarValidate = false
@@ -84,6 +89,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
     private val neededPermissions = arrayOf(Manifest.permission.CAMERA)
     private var startTime: Long = 0
     private val commonViewModel: CommonViewModel by viewModels()
+    private var appTxn = ""
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,14 +98,16 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
 
         init()
         initEKYC()
+        collectInsertAadhaarTxnResponse()
 
     }
 
-    private fun init(){
+    private fun init() {
 
         listener()
 
     }
+
     private fun initEKYC() {
 
 
@@ -125,7 +133,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             request?.let {
                 AESCryptography.decryptIntoString(
                     it,
-                    AppConstant.Constants.CRYPT_ID,AppConstant.Constants.CRYPT_IV
+                    AppConstant.Constants.CRYPT_ID, AppConstant.Constants.CRYPT_IV
 
                 )
             },
@@ -135,13 +143,11 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
 
     }
 
-    private  fun listener(){
+    private fun listener() {
 
-
-                invokeCaptureIntent()
+        invokeCaptureIntent()
 
     }
-
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -151,16 +157,27 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                 collectLatestLifecycleFlow(commonViewModel.postOnAUAFaceAuthNREGA) { resource ->
                     when (resource) {
                         is Resource.Loading -> {
+                            hideProgressBar()
                         }
 
                         is Resource.Error -> {
                             hideProgressBar()
                             resource.error?.let { errorResponse ->
+
                                 toastShort(errorResponse.message)
-                                log("EKYCDATA", errorResponse.message ?: "Unknown error message")
                             } ?: run {
                                 toastShort("Nothing to show pls try again")
                             }
+
+                            resource.data?.body()?.let { uidaiData: UidaiResp ->
+
+                                val kycResp = XstreamCommonMethods.respDecodedXmlToPojoEkyc(
+                                    uidaiData.PostOnAUA_Face_authResult
+                                )
+
+                                commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
+                            }
+
                         }
 
                         is Resource.Success -> {
@@ -171,8 +188,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                         uidaiData.PostOnAUA_Face_authResult
                                     )
 
-
-                                    log("EKYCDATA", kycResp.toString())
+                                    commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
 
                                     if (kycResp.isSuccess) {
                                         val bytes: ByteArray =
@@ -201,51 +217,103 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                         pinCode = kycResp.uidData.poa.pc ?: "N/A"
 
 
-
                                         // Output the result
                                         lifecycleScope.launch {
 
 
+                                            val encryptedAadhaarString =
+                                                AppUtil.getSavedAadhaarPreference(requireContext())
+                                            val encryptedName =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    name,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedGender =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    gender,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedDob =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    dob,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedState =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    state,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedDist =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    dist,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedBlock =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    block,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedPo =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    po,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedVillage =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    village,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedPinCode =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    pinCode,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedCareOf =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    careOf,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
+                                            val encryptedStreet =
+                                                AESCryptography.encryptIntoBase64String(
+                                                    street,
+                                                    AppConstant.Constants.ENCRYPT_KEY,
+                                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                                )
 
 
-                                            val encryptedAadhaarString =    AppUtil.getSavedAadhaarPreference(requireContext())
-                                            val encryptedName =   AESCryptography.encryptIntoBase64String(name, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedGender =   AESCryptography.encryptIntoBase64String(gender, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedDob =   AESCryptography.encryptIntoBase64String(dob, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedState =   AESCryptography.encryptIntoBase64String(state, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedDist =   AESCryptography.encryptIntoBase64String(dist, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedBlock =   AESCryptography.encryptIntoBase64String(block, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedPo =   AESCryptography.encryptIntoBase64String(po, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedVillage =   AESCryptography.encryptIntoBase64String(village, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedPinCode =   AESCryptography.encryptIntoBase64String(pinCode, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedCareOf =   AESCryptography.encryptIntoBase64String(careOf, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val encryptedStreet =   AESCryptography.encryptIntoBase64String(street, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
 
 
 
-
-
-                                                commonViewModel.aadhaarRekycApi(
-                                                    AadhaarRekycReq(
-                                                        photo,
+                                            commonViewModel.aadhaarRekycApi(
+                                                AadhaarRekycReq(
+                                                    photo,
                                                     encryptedAadhaarString,
-                                                        BuildConfig.VERSION_NAME,
-                                                        encryptedBlock,
+                                                    BuildConfig.VERSION_NAME,
+                                                    encryptedBlock,
                                                     encryptedName,
-                                                        encryptedCareOf,
-                                                        encryptedDob,
-                                                        encryptedDist,
+                                                    encryptedCareOf,
+                                                    encryptedDob,
+                                                    encryptedDist,
                                                     encryptedGender,
-                                                        encryptedPinCode,
-                                                        encryptedPo,
+                                                    encryptedPinCode,
+                                                    encryptedPo,
                                                     encryptedState,
-                                                        encryptedStreet,
+                                                    encryptedStreet,
                                                     encryptedVillage,
                                                     AppUtil.getAndroidId(requireContext()),
-                                                        userPreferences.getUseID()
-                                                )
-                                                    ,AppUtil.getSavedTokenPreference(requireContext())
-                                                )
+                                                    userPreferences.getUseID()
+                                                ), AppUtil.getSavedTokenPreference(requireContext())
+                                            )
 
                                             collectAadharRekycResponse()
 
@@ -255,8 +323,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                         hideProgressBar()
 
 
-                                    }
-                                    else {
+                                    } else {
                                         hideProgressBar()
                                         val decodedRar = decodeBase64(kycResp.rar)
                                         decodedRar?.let { decodedRarParsed ->
@@ -269,14 +336,13 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                                             findNavController().navigateUp()
                                         } ?: toastShort("Getting Error")
                                     }
-                                }
-                                catch (e: Exception) {
+                                } catch (e: Exception) {
                                     hideProgressBar()
                                     toastShort("going back2")
                                     findNavController().navigateUp()
                                     e.printStackTrace()
-                                    log("EKYCDATA", "Error processing KYC response: ${e.message}")
                                     toastShort("Error processing KYC response")
+                                    commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq("",appTxn,"N",""))
 
                                 }
                             } ?: toastShort("Server error from uidai. Please try again.")
@@ -336,7 +402,6 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             bottomSheetDialog.dismiss()
 
 
-
         }
 
         // Handle back button press
@@ -362,33 +427,48 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
 
 
     private fun invokeCaptureIntent() {
-
         try {
-            val intent1 = Intent(AppConstant.Constants.CAPTURE_INTENT)
-            intent1.putExtra(
+            val intent = Intent(AppConstant.Constants.CAPTURE_INTENT)
+            intent.putExtra(
                 AppConstant.Constants.CAPTURE_INTENT_REQUEST,
                 createPidOptions(getTransactionID(), "auth")
             )
-            startUidaiAuthResult.launch(intent1)
 
-            val intent =
-                requireContext().packageManager.getLaunchIntentForPackage(AppConstant.Constants.CAPTURE_INTENT)
-            intent?.putExtra(
-                AppConstant.Constants.CAPTURE_INTENT_REQUEST,
-                createPidOptions(getTransactionID(), "auth")
-            )
-            if (intent != null) {
-                startActivity(intent)
-            }
+            startUidaiAuthResult.launch(intent) //  only one call
+
         } catch (exp: Exception) {
             log("EKYCDATA", exp.toString())
+            hideProgressBar()
+            toastShort("Failed to open capture app")
         }
+    }
 
-    }
     private fun getTransactionID(): String {
-        val secureRandom = SecureRandom()
-        return secureRandom.nextInt(9999).toString()
+        val prefix = "KaushalPanjee"
+        val suffix = "AEAD"
+
+        // 12 digit random number
+        val random = SecureRandom()
+        val n = (100000000000L + (random.nextDouble() * 900000000000L)).toLong()
+
+        val date = Date()
+
+        val yyyy = SimpleDateFormat("yyyy", Locale.getDefault()).format(date)
+        val mm = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+        val dd = SimpleDateFormat("dd", Locale.getDefault()).format(date)
+
+        val hh = SimpleDateFormat("HH", Locale.getDefault()).format(date) // 24-hour format better
+        val min = SimpleDateFormat("mm", Locale.getDefault()).format(date)
+        val ss = SimpleDateFormat("ss", Locale.getDefault()).format(date)
+
+        val strDate = yyyy + mm + dd
+        val strTime = hh + min + ss
+
+
+        appTxn = "$prefix$n$strDate$strTime$suffix"
+        return "$prefix$n$strDate$strTime$suffix"
     }
+
 
     private fun createPidOptions(txnId: String, purpose: String): String {
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<PidOptions ver=\"1.0\" env=\"$PRODUCTION\">\n" + "   <Opts fCount=\"\" fType=\"\" iCount=\"\" iType=\"\" pCount=\"\" pType=\"\" format=\"\" pidVer=\"2.0\" timeout=\"\" otp=\"\" wadh=\"${AppConstant.Constants.WADH_KEY}\" posh=\"\" />\n" + "   <CustOpts>\n" + "      <Param name=\"txnId\" value=\"${txnId}\"/>\n" + "      <Param name=\"purpose\" value=\"$purpose\"/>\n" + "      <Param name=\"language\" value=\"$LANGUAGE}\"/>\n" + "   </CustOpts>\n" + "</PidOptions>"
@@ -429,6 +509,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
                 log("startUidaiAuthResult", "Exception: ${e.message}")
             }
         }
+
     private fun handleCaptureResponse(captureResponse: String) {
         try {
 
@@ -437,6 +518,10 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
 
             // Parse the capture response XML to an object
             val response = CaptureResponse.fromXML(captureResponse)
+
+
+//            captureResponse.copyToClipboard(requireContext())
+
 
             val decryptedAadhaar = AESCryptography.decryptIntoString(
                 AppUtil.getSavedAadhaarPreference(requireContext()),
@@ -488,6 +573,8 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             // Catch all other exceptions
             hideProgressBar()
             e.printStackTrace()
+            //commonViewModel.insertAadhaarTxn(InsertAadhaarTxnReq(kycResp.txn,appTxn,kycResp.ret,kycResp.code))
+
             toastShort("An error occurred while processing the response.")
             log("EKYCDATA", "Exception: ${e.message}")
             // e.message?.copyToClipboard(requireContext())
@@ -523,6 +610,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
         }
         return true
     }
+
     private fun showPermissionAlert(permissions: Array<String>) {
         val alertBuilder = AlertDialog.Builder(requireActivity())
         alertBuilder.setCancelable(true)
@@ -534,6 +622,7 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
         val alert = alertBuilder.create()
         alert.show()
     }
+
     private fun requestPermissions(permissions: Array<String>) {
         ActivityCompat.requestPermissions(
             requireActivity(),
@@ -549,35 +638,38 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             collectLatestLifecycleFlow(commonViewModel.aadhaarRekycApi) {
                 when (it) {
                     is Resource.Loading -> {}
+
                     is Resource.Error -> {
+
+                        hideProgressBar()
+
                         it.error?.let { baseErrorResponse ->
                             showSnackBar(baseErrorResponse.message)
-                            toastShort("error in create Api")
+
                         }
                     }
 
                     is Resource.Success -> {
+
+
                         it.data?.let { getAadhaarRekyc ->
+
+
                             if (getAadhaarRekyc.responseCode == 200) {
-
-
-
 
                                 showSnackBar(getAadhaarRekyc.responseDesc)
 
-                          showBottomSheet(userPhotoUIADI, name, gender, dob, careOf)
+                                showBottomSheet(userPhotoUIADI, name, gender, dob, careOf)
 
                                 showSnackBar(getAadhaarRekyc.responseMsg)
 
-                            }
-                            else if (getAadhaarRekyc.responseCode == 301) {
+                            } else if (getAadhaarRekyc.responseCode == 301) {
 
 
                                 //Update app
-                                showUpdateDialog()
+                                showSnackBar(getAadhaarRekyc.responseMsg)
 
-                            }
-                            else
+                            } else
                                 showSnackBar(getAadhaarRekyc.responseMsg)
 
 
@@ -587,30 +679,44 @@ class ReKycFragment  : BaseFragment<FragmentRekycLayoutBinding>(FragmentRekycLay
             }
         }
     }
-    private fun showUpdateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
-        builder.setTitle("Update Available")
-        builder.setMessage("A new version of the app is available. Please update to continue.")
 
-        builder.setPositiveButton("Update") { dialog, _ ->
-            val appPackageName = "com.kaushalpanjee"
-            try {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
-                intent.setPackage("com.android.vending")
-                startActivity(intent)
-            } catch (e: Exception) {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"))
-                startActivity(intent)
+    private fun collectInsertAadhaarTxnResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertAadhaarTxn) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        showSnackBar("Error in txn api")
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertPersResponse ->
+                            when (insertPersResponse.responseCode) {
+                                200 -> {
+
+                                    showSnackBar(insertPersResponse.responseMsg)
+
+                                }
+
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+
+                                else -> {
+                                    showSnackBar(insertPersResponse.responseDesc)
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+
+                    else -> {}
+                }
             }
-            dialog.dismiss()
         }
-
-        builder.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        builder.setCancelable(false)
-        builder.create().show()
     }
 
 }
+
+

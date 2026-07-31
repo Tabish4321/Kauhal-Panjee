@@ -232,7 +232,6 @@
             android:textSize="@dimen/sp_16"
             android:layout_gravity="center"
             tools:viewBindingIgnore="true"
-
             app:layout_constraintTop_toTopOf="@+id/ivDobIcon"
             app:layout_constraintBottom_toBottomOf="@+id/ivDobIcon"
             app:layout_constraintStart_toEndOf="@+id/ivDobIcon"
@@ -251,6 +250,74 @@
             app:layout_constraintStart_toStartOf="@id/circleImageView"
             />
 
+
+
+
+
+
+
+
+        <ImageView
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_12"
+            tools:viewBindingIgnore="true"
+            android:id="@+id/ivAttendanceIdIcon"
+            android:src="@drawable/aebas"
+            app:layout_constraintTop_toBottomOf="@+id/tvAaadharDob"
+            app:layout_constraintStart_toStartOf="@id/circleImageView"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attendance Id"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textSize="@dimen/sp_16"
+            android:layout_gravity="center"
+            tools:viewBindingIgnore="true"
+            app:layout_constraintStart_toEndOf="@+id/ivAttendanceIdIcon"
+            app:layout_constraintTop_toTopOf="@+id/ivAttendanceIdIcon"
+            app:layout_constraintBottom_toBottomOf="@+id/ivAttendanceIdIcon"
+
+            />
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvAttendanceId"
+            android:layout_marginStart="@dimen/dp_40"
+            android:textColor="@color/color_dark_green"
+            android:textSize="@dimen/sp_14"
+            android:text="N/A"
+            android:fontFamily="@font/avenir_next_semi_bold"
+            android:layout_gravity="start"
+            app:layout_constraintTop_toBottomOf="@+id/ivAttendanceIdIcon"
+            app:layout_constraintStart_toStartOf="@id/circleImageView"
+            />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewAttendanceDetails"
+            android:text="@string/view_profile"
+            android:textColor="@color/main_blue_color"
+            android:textSize="@dimen/sp_14"
+            android:fontFamily="@font/avenir_next_bold"
+            app:layout_constraintStart_toEndOf="@+id/tvAttendanceId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivAttendanceIdIcon"
+           />
+
+
+
+
+
         <ImageView
             android:layout_width="@dimen/dp_135"
             android:layout_height="@dimen/dp_135"
@@ -268,8 +335,9 @@
             tools:viewBindingIgnore="true"
             android:id="@+id/ivAddressIcon"
             android:src="@drawable/location"
-            app:layout_constraintTop_toBottomOf="@+id/tvAaadharDob"
-            app:layout_constraintStart_toStartOf="@id/circleImageView"
+            android:layout_marginStart="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/tvAttendanceId"
+            app:layout_constraintStart_toStartOf="parent"
             />
 
         <TextView

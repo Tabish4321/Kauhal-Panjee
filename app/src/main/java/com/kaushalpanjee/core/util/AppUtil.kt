@@ -30,18 +30,90 @@ import java.util.GregorianCalendar
 import java.util.Locale
 import java.util.TimeZone
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.provider.Settings
 import android.widget.Toast
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.model.ConsentRequest
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import java.security.MessageDigest
 import java.security.SecureRandom
 
-
 object AppUtil {
+
+    fun showUpdateDialog(
+        context: Context
+    ) {
+
+        val builder =
+            android.app.AlertDialog.Builder(context)
+
+        builder.setTitle("Update Available")
+
+        builder.setMessage(
+            "A new version of the app is available. Please update to continue."
+        )
+
+        builder.setPositiveButton("Update") { dialog, _ ->
+
+            val appPackageName =
+                "com.kaushalpanjee"
+
+            try {
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "market://details?id=$appPackageName"
+                    )
+                )
+
+                intent.setPackage("com.android.vending")
+
+                context.startActivity(intent)
+
+            } catch (e: Exception) {
+
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "https://play.google.com/store/apps/details?id=$appPackageName&hl=en_IN"
+                    )
+                )
+
+                context.startActivity(intent)
+            }
+
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+
+            dialog.dismiss()
+        }
+
+        builder.setCancelable(false)
+
+        builder.create().show()
+    }
+
+    fun validatePAN(pan: String): Boolean {
+        val regex = Regex("[A-Z]{5}[0-9]{4}[A-Z]{1}")
+        return regex.matches(pan)
+    }
 
     @SuppressLint("HardwareIds")
     fun getAndroidId(context: Context) : String{
@@ -420,7 +492,208 @@ object AppUtil {
 
         isSessionDialogShown = false // Reset flag after navigation
     }
+  //  sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c= , sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0=
+    fun printSslPin() {
+        val client = OkHttpClient()
+        val request = okhttp3.Request.Builder()
+            .url("https://kaushal.rural.gov.in/")
+            .build()
+        Thread {
+            try {
+            val response = client.newCall(request).execute()
+            val handshake = response.handshake
+            val certs = handshake?.peerCertificates
+            certs?.forEach {
+                val pin = okhttp3.CertificatePinner.pin(it)
+                println("SSL PIN 👉 $pin")
+                }
+            } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        }.start()
+    }
 
 
+    fun base64ToBitmap(base64: String): Bitmap? {
+        return try {
+            val cleanBase64 = base64.substringAfter(",") // handles data:image/png;base64,...
+            val decodedBytes = Base64.decode(cleanBase64, Base64.DEFAULT)
+            BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
+//     Ajit Ranjan some Data use in 21/07/2026
+private val _examStarted = MutableStateFlow(false)
+    val examStarted: StateFlow<Boolean> = _examStarted
+
+    private val _currentIndex = MutableStateFlow(0)
+    val currentIndex: StateFlow<Int> = _currentIndex
+
+    private val _timeLeft = MutableStateFlow(1800) // 30 minutes in seconds
+    //     private val _timeLeft = MutableStateFlow(60)
+//      private val _timeLeft = MutableStateFlow(15)
+
+
+    private val _examFinished = MutableStateFlow(false)
+
+
+    private val _showReviewDialog = MutableStateFlow(false)
+
+
+
+    private val _reviewQuestions = MutableStateFlow<Set<String>>(emptySet())
+    private val _showSuccessDialog = MutableStateFlow(false)
+    private val _editMode = MutableStateFlow(false)
+    val editMode: StateFlow<Boolean> = _editMode
+    private val _submissionLoading = MutableStateFlow(false)
+    val submissionLoading: StateFlow<Boolean> = _submissionLoading
+
+    private val _submissionError = MutableStateFlow<String?>(null)
+    val submissionError: StateFlow<String?> = _submissionError
+
+    // Answer tracking
+    private val _answers = MutableStateFlow<Map<String, String>>(emptyMap())
+    val answers: StateFlow<Map<String, String>> = _answers
+
+    private val _markedQuestions = MutableStateFlow<Set<String>>(emptySet())
+    val markedQuestions: StateFlow<Set<String>> = _markedQuestions
+//    val timeLeft: StateFlow<Int> = _timeLeft
+//    val examFinished: StateFlow<Boolean> = _examFinished
+    private val _questionStatus = MutableStateFlow<Map<String, String>>(emptyMap())
+//    private var timeLeft = MutableStateFlow(60) // Example: 60 seconds
+//    private var examFinished = MutableStateFlow(false)
+//    private var showSuccessDialog = MutableStateFlow(false)
+
+
+
+    val timeLeft = MutableStateFlow(60)
+    val examFinished = MutableStateFlow(false)
+    val showSuccessDialog = MutableStateFlow(false)
+
+
+    // UI Event Methods
+    fun startExam() {
+        _examStarted.value = true
+    }
+
+    fun nextQuestion(maxQuestions: Int) {
+        if (_currentIndex.value < maxQuestions - 1) {
+            _currentIndex.value += 1
+        }
+    }
+
+    fun previousQuestion() {
+        if (_currentIndex.value > 0) {
+            _currentIndex.value -= 1
+        }
+    }
+
+    fun goToQuestion(index: Int) {
+        _currentIndex.value = index
+    }
+    fun clearSubmissionError() {
+        _submissionError.value = null
+    }
+
+
+    fun closeReviewDialog() {
+        _showReviewDialog.value = false
+    }
+
+    fun closeSuccessDialog() {
+        _showSuccessDialog.value = false
+    }
+
+    // Answer Management
+    fun selectAnswer(questionId: String, optionKey: String) {
+        val currentAnswers = _answers.value.toMutableMap()
+        currentAnswers[questionId] = optionKey
+        _answers.value = currentAnswers
+    }
+
+    fun clearAnswer(questionId: String) {
+        val currentAnswers = _answers.value.toMutableMap()
+        currentAnswers.remove(questionId)
+        _answers.value = currentAnswers
+
+        val currentStatus = _questionStatus.value.toMutableMap()
+        currentStatus.remove(questionId)
+        _questionStatus.value = currentStatus
+    }
+
+    fun markQuestion(questionId: String) {
+        val currentMarked = _markedQuestions.value.toMutableSet()
+        if (currentMarked.contains(questionId)) {
+            currentMarked.remove(questionId)
+        } else {
+            currentMarked.add(questionId)
+        }
+        _markedQuestions.value = currentMarked
+    }
+
+
+    fun ReviewQuestion(questionId: String) {
+
+        val currentReview = _reviewQuestions.value.toMutableSet()
+
+        if (currentReview.contains(questionId)) {
+            currentReview.remove(questionId)
+        } else {
+            currentReview.add(questionId)
+        }
+
+        _reviewQuestions.value = currentReview
+    }
+
+
+    fun saveAndNext(questionId: String, actionText: String, maxQuestions: Int) {
+        val currentStatus = _questionStatus.value.toMutableMap()
+        currentStatus[questionId] = actionText
+        _questionStatus.value = currentStatus
+
+        if (_currentIndex.value < maxQuestions - 1) {
+            _currentIndex.value += 1
+        }
+    }
+
+    // Timer Management
+    fun startTimer(
+        scope: CoroutineScope,
+        timeLeft: MutableStateFlow<Int>,
+        examFinished: MutableStateFlow<Boolean>,
+        showSuccessDialog: MutableStateFlow<Boolean>
+    ) {
+        scope.launch(Dispatchers.Default) {
+            while (!examFinished.value && timeLeft.value > 0) {
+                delay(1000)
+                timeLeft.value--
+            }
+
+            if (timeLeft.value == 0) {
+                examFinished.value = true
+                showSuccessDialog.value = true
+            }
+        }
+    }
+
+
+//    fun startTimer() {
+//        viewModelScope.launch(Dispatchers.Default) {
+//            while (!_examFinished.value && _timeLeft.value > 0) {
+//                kotlinx.coroutines.delay(1000)
+//                _timeLeft.value = _timeLeft.value - 1
+//            }
+//
+//            if (_timeLeft.value == 0) {
+//                _examFinished.value = true
+//                _showSuccessDialog.value = true
+//            }
+//        }
+//    }
     }
 

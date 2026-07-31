@@ -26,8 +26,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.model.BankItem
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -53,6 +55,7 @@ import com.kaushalpanjee.core.util.setDrawable
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentViewDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -95,6 +98,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var pmaygImage=  ""
     private var pipImage=  ""
     private var dlImage=  ""
+    private var pwdType=  ""
     private var categoryImage=  ""
     private var minorityImage =  ""
     private var pwdImage =  ""
@@ -114,6 +118,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         collectAadharDetailsResponse()
         collectSetionAndPerResponse()
         collectCandidateDetailsResponse()
+        bankDetails()
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -141,6 +146,61 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
         commonViewModel.getCandidateDetailsAPI(CandidateReq(BuildConfig.VERSION_NAME,userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
     }
+
+
+    fun bankDetails() {
+        commonViewModel.getBankList(
+            AppUtil.getSavedTokenPreference(requireContext()),
+            userPreferences.getUseID()
+        )
+
+        lifecycleScope.launch {
+            commonViewModel.bankList.collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                           hideProgressBar()
+                        val apiList = resource.data?.data ?: emptyList()
+                        binding.llBankContainer.removeAllViews()
+                        if (apiList.isEmpty()) {
+                            binding.tvNoBank.visible()
+                            return@collectLatest
+                        }
+                        binding.tvNoBank.gone()
+
+                        apiList.map { item ->
+
+                            val itemView = layoutInflater.inflate(
+                                R.layout.item_bank,
+                                binding.llBankContainer,
+                                false
+                            )
+
+                            itemView.findViewById<TextView>(R.id.tvIfsc).text = item.ifscCode
+                            itemView.findViewById<TextView>(R.id.tvBankName).text = item.bankName
+                            itemView.findViewById<TextView>(R.id.tvAccount).text = item.accountNumber
+                            itemView.findViewById<TextView>(R.id.tvPan).text = AESCryptography.decryptIntoString(item.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                            binding.llBankContainer.addView(itemView)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        resource.error?.let { baseErrorResponse ->
+                            showSnackBar(baseErrorResponse.message ?: "Something went wrong")
+                        }
+                        hideProgressBar()
+                        binding.tvNoBank.visible()
+                    }
+
+                    is Resource.Loading -> {
+                        showProgressBar()
+                    }
+                }
+            }
+        }
+    }
+    private var isBankApiCalled = false
+
 
     private fun listeners() {
 
@@ -293,10 +353,16 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
         binding.llTopBanking.setOnClickListener {
 
-            if (isBankingInfoVisible ) {
+            if (isBankingInfoVisible) {
                 isBankingInfoVisible = false
                 binding.expandBanking.visible()
                 binding.viewBanking.visible()
+
+             //   if (!isBankApiCalled) {
+               //     isBankApiCalled = true
+                    bankDetails()
+                //}
+
             } else {
                 isBankingInfoVisible = true
                 binding.expandBanking.gone()
@@ -564,6 +630,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
                                                  dlImage = x.dlImagePath
 
+
                                                  nregaImage = x.naregaCardPath
                                                  shgImage = x.shgImage
 
@@ -593,6 +660,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                                 binding.etdrivingId.setText(x.dlNo)
                                                 binding.llCategory.setText(x.castCategory)
                                                 binding.llMarital.setText(x.maritalStatus)
+                                                binding.llPwdType.setText(x.disabilityType)
                                                 binding.etShgValidate.setText(x.shgNo)
 
                                                 val minorityStatus = x.isMinority
@@ -900,24 +968,20 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         }
 
 
-                                        for (x in userCandidateBankDetailsList){
-
-
-                                            val DecIfscCode = AESCryptography.decryptIntoString(x.ifscCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val DecBankName = AESCryptography.decryptIntoString(x.bankName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val DecbankBranchName = AESCryptography.decryptIntoString(x.bankBranchName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val DecbankbankAccNumber = AESCryptography.decryptIntoString(x.bankAccNumber,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-                                            val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-
-                                            val maskedAccountNo= maskString(DecbankbankAccNumber)
-
-
-                                            binding.etIfsc.setText(DecIfscCode)
-                                            binding.etBankName.setText(DecBankName)
-                                            binding.etBranchName.setText(DecbankBranchName)
-                                            binding.etBankAcNo.setText(maskedAccountNo)
-                                            binding.etPanNumber.setText(DecpanNo)
-                                        }
+//                                        for (x in userCandidateBankDetailsList){
+//                                            val DecIfscCode = AESCryptography.decryptIntoString(x.ifscCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+//                                            val DecBankName = AESCryptography.decryptIntoString(x.bankName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+//                                            val DecbankBranchName = AESCryptography.decryptIntoString(x.bankBranchName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+//                                            val DecbankbankAccNumber = AESCryptography.decryptIntoString(x.bankAccNumber,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+//                                            val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+//                                            val maskedAccountNo= maskString(DecbankbankAccNumber)
+//
+//                                            binding.etIfsc.setText(DecIfscCode)
+//                                            binding.etBankName.setText(DecBankName)
+//                                            binding.etBranchName.setText(DecbankBranchName)
+//                                            binding.etBankAcNo.setText(maskedAccountNo)
+//                                            binding.etPanNumber.setText(DecpanNo)
+//                                        }
 
                                     } else if (getCandidateDetailsAPI.responseCode == 301) {
                                         showSnackBar("Please Update from PlayStore")

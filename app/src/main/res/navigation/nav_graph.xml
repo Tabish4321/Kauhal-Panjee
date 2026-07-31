@@ -53,6 +53,8 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -112,6 +114,25 @@
         <action
             android:id="@+id/action_homeFragment_to_viewDetailsFragment"
             app:destination="@id/viewDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_submitBankConcent"
+            app:destination="@id/submitBankConcent" >
+
+            <argument
+                android:name="userId"
+                app:argType="string" />
+            <argument
+                android:name="mobile"
+                app:argType="string" />
+
+            <argument
+                android:name="email"
+                app:argType="string" />
+
+        </action>
+
+
+
     </fragment>
     <fragment
         android:id="@+id/mainHomePage"
@@ -164,6 +185,18 @@
         <action
             android:id="@+id/action_mainHomePage_to_attendanceFragment"
             app:destination="@id/attendanceFragment" />
+        <action
+            android:id="@+id/action_mainHomePage_to_loanFragment"
+            app:destination="@id/loanFragment" />
+
+
+
+        <action
+            android:id="@+id/action_mainHomePage_to_CbtDetailFragment"
+            app:destination="@id/cbtFragment" />
+
+
+
     </fragment>
     <fragment
         android:id="@+id/languageChangeFragment"
@@ -252,6 +285,33 @@
         tools:layout="@layout/attendance_fragment">
 
 
+
+    </fragment>
+    <fragment
+        android:id="@+id/loanFragment"
+        android:name="com.kaushalpanjee.common.LoanFragment"
+        android:label="LoanFragment" />
+    <fragment
+        android:id="@+id/submitBankConcent"
+        android:name="com.kaushalpanjee.common.SubmitBankConcent"
+        android:label="SubmitBankConcent" />
+
+
+
+
+
+
+    <fragment
+        android:id="@+id/cbtFragment"
+        android:name="com.kaushalpanjee.common.compose.cbt.CbtDetailFragment"
+        android:label="CbtDetailFragment"
+        tools:layout="@layout/fragment_c_b_t_detail">
+
+        <action
+            android:id="@+id/action_cbtDetailFragment_to_mainHomePage"
+            app:destination="@id/mainHomePage"
+            app:popUpTo="@id/mainHomePage"
+            app:popUpToInclusive="true" />
 
     </fragment>
 </navigation>
