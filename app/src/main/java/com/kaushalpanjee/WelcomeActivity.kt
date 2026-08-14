@@ -2,23 +2,15 @@ package com.kaushalpanjee
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.Context
+
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.kaushalpanjee.common.CommonActivity
 import com.kaushalpanjee.core.basecomponent.BaseActivity
 import com.kaushalpanjee.core.util.AppUtil
@@ -29,8 +21,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.system.exitProcess
-import com.kaushalpanjee.core.util.toastShort
-
 
 @AndroidEntryPoint
 class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
@@ -52,12 +42,16 @@ class WelcomeActivity : BaseActivity<ActivityWelcomeBinding>(
         lifecycleScope.launch {
             delay(2000)
 
-            /*if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
+
+
+
+/*
+            if (isDeviceRooted() || isRunningOnEmulator() || isDeveloperModeEnabled(this@WelcomeActivity)) {
                 showSecurityWarning()
            }*/
             if (isDeviceRooted()) {
-                navigate()
                 // showSecurityWarning()
+                navigate()
 
             }
             else {

@@ -198,11 +198,24 @@ class CommonRepository @Inject constructor(
 
     }
 
+    suspend fun getOtpStateListAPI(header :String,appVersion: String,loginId:String): Flow<Resource<out StateDataResponse>>{
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getOtpStateListAPI(header,StateListReq(appVersion,loginId))
+        }
+    }
+
+
+
+
     suspend fun getStateListApi(appVersion: String,loginId:String): Flow<Resource<out StateDataResponse>>{
         return networkBoundResourceWithoutDb {
             appLevelApi.getStateListAPI(StateListReq(appVersion,loginId))
         }
     }
+
+
+
+
 
 
 

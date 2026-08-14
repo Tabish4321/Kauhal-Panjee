@@ -68,10 +68,10 @@ abstract class BaseFragment<VB : ViewBinding>(private val bindingInflater: (infl
             throw IllegalArgumentException("Binding cannot be null")
 
         // 🔹 Prevent screenshots and screen recording for all fragments
-/*        requireActivity().window.setFlags(
+        requireActivity().window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
-        )*/
+        )
 
         return binding.root
     }

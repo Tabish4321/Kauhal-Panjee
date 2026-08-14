@@ -4,6 +4,7 @@ data class OtpValidateResponse(
     val responseCode: Int,
     val responseDesc: String,
     val responseFlag: String,
+    val candidateId: String,
     val wrappedList: List<UserIdName>
 )
 

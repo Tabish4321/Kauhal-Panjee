@@ -27,6 +27,7 @@ object ApiConstant {
      const val  API_CREATE_USER= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}createUser"
      const val  API_EMAIL_OTP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}generateMailOtp"
      const val  API_STATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}stateList"
+     const val  API_OTP_STATE= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}stateOTPVerifiedList"
      const val  API_DISTRICT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}districtList"
      const val  API_BLOCK= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}blockList"
      const val  API_GP= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}gramPanchayatList"

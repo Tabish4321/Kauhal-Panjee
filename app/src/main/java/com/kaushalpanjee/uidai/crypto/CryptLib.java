@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import com.kaushalpanjee.BuildConfig;
 import com.kaushalpanjee.core.util.AppConstant;
+import com.kaushalpanjee.core.util.NativeSecurity;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -48,7 +49,7 @@ public class CryptLib {
     public CryptLib() {
 
         try{
-            _cx = Cipher.getInstance(BuildConfig.CRYPLIBAES );
+            _cx =Cipher.getInstance(NativeSecurity.INSTANCE.getCryptLibAES());
             _key = new byte[16]; //256 bit key space
             _iv = new byte[16]; //128 bit IV
         }catch (Exception exp ){
@@ -227,13 +228,13 @@ public class CryptLib {
         return encryptDecrypt(_plainText, _key, EncryptMode.ENCRYPT, _iv);
     }
 
-    public String encrypt(String _plainText)
+ /*   public String encrypt(String _plainText)
             throws InvalidKeyException, UnsupportedEncodingException,
             InvalidAlgorithmParameterException, IllegalBlockSizeException,
             BadPaddingException {
 
         return encryptDecrypt(_plainText,AppConstant.Constants.CRYPT_ID , EncryptMode.ENCRYPT, AppConstant.Constants.CRYPT_IV);
-    }
+    }*/
 
     /***
      * This funtion decrypts the encrypted text to plain text using the key

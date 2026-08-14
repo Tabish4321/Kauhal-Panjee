@@ -1,9 +1,17 @@
 package com.kaushalpanjee.core.util
 
 import com.kaushalpanjee.BuildConfig
+import android.os.Handler
+import android.os.Looper
 
 
 object AppConstant {
+
+
+
+
+
+
 
     object BundleConstant{
         const val EXTRA_BUNDLE = "EXTRA_BUNDLE"
@@ -17,8 +25,8 @@ object AppConstant {
         const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid_gramg/stateservices/Uid_Face_Auth_DDUGKY.svc/PostOnAUA_Face_auth"
        // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid_gramg/stateservices/nrega_face_auth.svc/PostOnAUA_Face_auth"
        //const val baseUrl= "http://10.197.183.177:8001/"                        //local
-         const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
-       // const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"      //demo
+        // const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
+        const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"      //demo
     }
 
     object Constants{
@@ -29,11 +37,11 @@ object AppConstant {
         const val CAPTURE_INTENT_RESULT = "in.gov.uidai.rdservice.face.CAPTURE_RESULT"
         const val CAPTURE_INTENT_RESPONSE_DATA = "response"
         const val DEVICE_CHECK_INTENT_RESULT = "in.gov.uidai.rdservice.face.CHECK_DEVICE_RESULT"
-        const val WADH_KEY = BuildConfig.WADH_KEY   //"sgydIC09zzy6f8Lb3xaAqzKquKe9lFcNR9uTvYxFp+A="
+        val WADH_KEY = NativeSecurity.getWadhKey()
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
-        var ENCRYPT_IV_KEY =BuildConfig.ENCRYPT_IV_KEY;
-        var ENCRYPT_KEY =BuildConfig.ENCRYPT_KEY;
+        val ENCRYPT_IV_KEY = NativeSecurity.getEncryptIvKey()
+        val ENCRYPT_KEY = NativeSecurity.getEncryptKey()
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"
         const val ENGLISH: String = "english"
@@ -42,9 +50,12 @@ object AppConstant {
         const val CURRENT_ENVIRONMENT_CODE = PRE_PRODUCTION_CODE;
         const val PRODUCTION_CODE: String = "P"
 
-        const val CRYPT_ID = BuildConfig.CRYPT_ID   // "8080808080808080"
-        const val CRYPT_IV =BuildConfig.CRYPT_IV    // "8080808080808080"
-        const val CRYPLIBAES = BuildConfig.CRYPLIBAES
+        val CRYPT_ID = NativeSecurity.getCryptId()
+        val CRYPT_IV = NativeSecurity.getCryptIV()
+        val CRYPLIBAES = NativeSecurity.getCryptLibAES()
+        const val SESSION_TIMEOUT = 30 * 60 * 1000L
+        //const val SESSION_TIMEOUT = 30_000L
+
 
         const val EXTRA_CLIENT_ID = "client_id"
         const val EXTRA_FETCH_USER_EMBEDDING = "fetch_user_embeddings"
@@ -57,5 +68,38 @@ object AppConstant {
         const val RESULT_STATUS = "status"
         const val RESULT_MESSAGE = "message"
         const val YOUR_CLIENT_ID = "RD_0725"
+
+
     }
+
+
+
+    object SessionTimeoutManager {
+
+        private const val SESSION_TIMEOUT = 30 * 60 * 1000L //30 minutes
+       //private const val SESSION_TIMEOUT = 30_000L // 1 minute
+
+        private val handler = Handler(Looper.getMainLooper())
+
+        private var timeoutListener: (() -> Unit)? = null
+
+        private val timeoutRunnable = Runnable {
+            timeoutListener?.invoke()
+        }
+
+        fun start(listener: () -> Unit) {
+            timeoutListener = listener
+            reset()
+        }
+
+        fun reset() {
+            handler.removeCallbacks(timeoutRunnable)
+            handler.postDelayed(timeoutRunnable, SESSION_TIMEOUT)
+        }
+
+        fun stop() {
+            handler.removeCallbacks(timeoutRunnable)
+        }
+    }
+
 }

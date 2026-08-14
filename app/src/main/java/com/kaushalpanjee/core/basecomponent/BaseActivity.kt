@@ -22,6 +22,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.kaushalpanjee.R
+import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
@@ -102,6 +103,23 @@ abstract class BaseActivity<VB : ViewBinding>(
 
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+
+        // -------- Tapjacking Protection --------
+        if ((event.flags and MotionEvent.FLAG_WINDOW_IS_OBSCURED) != 0) {
+
+            AlertDialog.Builder(this)
+                .setTitle("Security Warning")
+                .setMessage("Screen overlay detected. Please disable any screen overlay application and try again.")
+                .setCancelable(false)
+                .setPositiveButton("Exit") { _, _ ->
+                    finishAffinity()
+                }
+                .show()
+
+            return false
+        }
+
+        // -------- Existing Keyboard Hide Logic --------
         if (event.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
             if (v is EditText) {
@@ -111,10 +129,12 @@ abstract class BaseActivity<VB : ViewBinding>(
                     v.clearFocus()
                     val imm =
                         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                    imm.hideSoftInputFromWindow(v.windowToken, 0)
                 }
             }
         }
+
+        AppConstant.SessionTimeoutManager.reset()
         return super.dispatchTouchEvent(event)
     }
 

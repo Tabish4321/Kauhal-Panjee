@@ -194,7 +194,9 @@
         <action
             android:id="@+id/action_mainHomePage_to_CbtDetailFragment"
             app:destination="@id/cbtFragment" />
-
+        <action
+            android:id="@+id/action_mainHomePage_to_helpDeskFragment"
+            app:destination="@id/helpDeskFragment" />
 
 
     </fragment>
@@ -314,4 +316,9 @@
             app:popUpToInclusive="true" />
 
     </fragment>
+    <fragment
+        android:id="@+id/helpDeskFragment"
+        android:name="com.kaushalpanjee.common.HelpDeskFragment"
+        android:label="HelpDeskFragment"
+        tools:layout="@layout/help_desk_fragment"/>
 </navigation>

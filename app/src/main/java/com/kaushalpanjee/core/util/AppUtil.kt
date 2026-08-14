@@ -116,10 +116,11 @@ object AppUtil {
     }
 
     @SuppressLint("HardwareIds")
-    fun getAndroidId(context: Context) : String{
+    fun getAndroidId(context: Context): String {
 
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }
+
     fun getCurrentDateForAttendance(): String {
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd MMMM yyyy, EEEE", Locale.getDefault())
@@ -139,7 +140,7 @@ object AppUtil {
     }
 
     // Add this function to your class
-    fun convertUriToBase64(uri: Uri,context: Context): String {
+    fun convertUriToBase64(uri: Uri, context: Context): String {
         val inputStream = context.contentResolver.openInputStream(uri)
         val bytes = inputStream?.readBytes()
         inputStream?.close()
@@ -150,18 +151,18 @@ object AppUtil {
         return TimeZone.getDefault().id
     }
 
-    fun getTimeZoneOffset():Int{
+    fun getTimeZoneOffset(): Int {
         val offset: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ZonedDateTime.now().offset.totalSeconds/60
+            ZonedDateTime.now().offset.totalSeconds / 60
         } else {
             val tz = TimeZone.getDefault()
             val cal = GregorianCalendar.getInstance(tz)
-            tz.getOffset(cal.timeInMillis)/1000*60
+            tz.getOffset(cal.timeInMillis) / 1000 * 60
         }
         return offset
     }
 
-    fun getAndroidDeviceInfo():String{
+    fun getAndroidDeviceInfo(): String {
         return "MODEL : ${Build.MODEL}, MANUFACTURER : ${Build.MANUFACTURER}, DEVICE : ${Build.DEVICE}"
     }
 
@@ -187,7 +188,8 @@ object AppUtil {
 
     fun getLoginStatus(context: Context): Boolean {
         // Get the SharedPreferences instance
-        val sharedPreferences = context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
 
         // Retrieve the login status (false is the default value if not found)
         return sharedPreferences.getBoolean("isLoggedIn", false)
@@ -196,14 +198,14 @@ object AppUtil {
 
     fun saveLoginStatus(context: Context, isLoggedIn: Boolean) {
         // Get the SharedPreferences instance
-        val sharedPreferences = context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("UserPreferences", Context.MODE_PRIVATE)
 
         // Save the login status
         val editor = sharedPreferences.edit()
         editor.putBoolean("isLoggedIn", isLoggedIn)
         editor.apply()  // Use apply() for asynchronous saving
     }
-
 
 
     fun saveStateCode(context: Context, stateCode: String) {
@@ -268,7 +270,8 @@ object AppUtil {
         val combinedDateTime = datePart.withHour(timePart.hour).withMinute(timePart.minute)
 
         // Format the combined date and time to ISO format with 'Z' to indicate UTC time
-        val isoDateTime = combinedDateTime.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
+        val isoDateTime =
+            combinedDateTime.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
 
         return isoDateTime
     }
@@ -280,7 +283,8 @@ object AppUtil {
         val parsedDateTime = LocalDateTime.parse(input, inputFormatter)
 
         // Define the output formatter
-        val outputFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mma", Locale.ENGLISH)
+        val outputFormatter =
+            DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mma", Locale.ENGLISH)
 
         // Format the parsed date-time
         val formattedDateTime = parsedDateTime.format(outputFormatter)
@@ -290,11 +294,13 @@ object AppUtil {
 
     fun formatUtcDateTimeIntoReminderDateNew(input: String): String {
         // Parse the input date-time string without milliseconds and timezone
-        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
+        val inputFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH)
         val parsedDateTime = ZonedDateTime.parse(input, inputFormatter)
 
         // Define the output formatter (without timezone information)
-        val outputFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mma", Locale.ENGLISH)
+        val outputFormatter =
+            DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' hh:mma", Locale.ENGLISH)
 
         // Format the parsed date-time
         val formattedDateTime = parsedDateTime.format(outputFormatter)
@@ -354,7 +360,7 @@ object AppUtil {
         }
     }
 
-    fun convertUTCtoIST(utcFormat: String, istFormat: String, dateToFormat: String): String{
+    fun convertUTCtoIST(utcFormat: String, istFormat: String, dateToFormat: String): String {
         val utcFormat: DateFormat = SimpleDateFormat(utcFormat)
         utcFormat.timeZone = TimeZone.getTimeZone("GMT")
 
@@ -366,78 +372,107 @@ object AppUtil {
     }
 
 
-    fun getCurrentDateTime():String{
+    fun getCurrentDateTime(): String {
         val calendar = Calendar.getInstance();
-        val dateFormat =  SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         return dateFormat.format(calendar.getTime());
 
     }
 
 
-
     fun saveLanguagePreference(context: Context, languageCode: String) {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("language_code", languageCode)
         editor.apply()
     }
 
     fun getSavedLanguagePreference(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("language_code", "en") ?: "en" // Default to English
     }
 
 
-
     fun saveTokenPreference(context: Context, tokenCode: String) {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("token_code", tokenCode)
         editor.apply()
     }
 
     fun getSavedTokenPreference(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("token_code", "") ?: "" // Default to English
     }
 
 
 
+
+    fun saveOtpTokenPreference(context: Context, tokenCode: String) {
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("token_otp_code", tokenCode)
+        editor.apply()
+    }
+
+    fun getSavedOtpTokenPreference(context: Context): String {
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("token_otp_code", "") ?: "" // Default to English
+    }
+
+
+
+
+
+
+
     fun saveAadhaarPreference(context: Context, tokenCode: String) {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("aadhaar_code", tokenCode)
         editor.apply()
     }
 
     fun getSavedAadhaarPreference(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("aadhaar_code", "") ?: "" // Default to English
     }
 
 
     fun saveMobileNoPreference(context: Context, mobileNo: String) {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("mobile_no", mobileNo)
         editor.apply()
     }
 
     fun getSavedMobileNoPreference(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("mobile_no", "") ?: "" // Default to English
     }
 
 
     fun saveEmailPreference(context: Context, email: String) {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("email", email)
         editor.apply()
     }
 
     fun getSavedEmailPreference(context: Context): String {
-        val sharedPreferences = context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         return sharedPreferences.getString("email", "") ?: "" // Default to English
     }
 
@@ -456,6 +491,7 @@ object AppUtil {
         val secureRandom = SecureRandom()
         return secureRandom.nextInt(9000) + 1000 // Ensures a 4-digit number (1000 - 9999)
     }
+
     private var isSessionDialogShown = false // Flag to prevent multiple dialogs
 
     fun showSessionExpiredDialog(navController: NavController, context: Context) {
@@ -477,6 +513,18 @@ object AppUtil {
         alertDialog.show()
     }
 
+    fun saveBackgroundTime(context: Context, time: Long) {
+        context.getSharedPreferences("session", Context.MODE_PRIVATE)
+            .edit()
+            .putLong("background_time", time)
+            .apply()
+    }
+
+    fun getBackgroundTime(context: Context): Long {
+        return context.getSharedPreferences("session", Context.MODE_PRIVATE)
+            .getLong("background_time", 0L)
+    }
+
     fun logoutUser(navController: NavController, context: Context) {
         // Clear user session data
         AppUtil.saveLoginStatus(context, false)
@@ -492,7 +540,8 @@ object AppUtil {
 
         isSessionDialogShown = false // Reset flag after navigation
     }
-  //  sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c= , sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0=
+
+    //  sha256/KY00gO3RItl8kWF7tuMBl13Q4kXD+pZanVHy6o1XR1c= , sha256/AlSQhgtJirc8ahLyekmtX+Iw+v46yPYRLJt9Cq1GlB0=
     fun printSslPin() {
         val client = OkHttpClient()
         val request = okhttp3.Request.Builder()
@@ -500,16 +549,16 @@ object AppUtil {
             .build()
         Thread {
             try {
-            val response = client.newCall(request).execute()
-            val handshake = response.handshake
-            val certs = handshake?.peerCertificates
-            certs?.forEach {
-                val pin = okhttp3.CertificatePinner.pin(it)
-                println("SSL PIN 👉 $pin")
+                val response = client.newCall(request).execute()
+                val handshake = response.handshake
+                val certs = handshake?.peerCertificates
+                certs?.forEach {
+                    val pin = okhttp3.CertificatePinner.pin(it)
+                    println("SSL PIN 👉 $pin")
                 }
             } catch (e: Exception) {
-            e.printStackTrace()
-        }
+                e.printStackTrace()
+            }
         }.start()
     }
 
@@ -526,9 +575,36 @@ object AppUtil {
     }
 
 
+    fun uriToBase64(
+        context: Context,
+        uri: Uri
+    ): String {
 
-//     Ajit Ranjan some Data use in 21/07/2026
-private val _examStarted = MutableStateFlow(false)
+        return try {
+
+            val input =
+                context.contentResolver.openInputStream(uri)
+
+            val bytes = input?.readBytes()
+
+            input?.close()
+
+            android.util.Base64.encodeToString(
+                bytes,
+                android.util.Base64.NO_WRAP
+            )
+
+        } catch (e: Exception) {
+
+            ""
+
+        }
+
+    }
+
+
+    //     Ajit Ranjan some Data use in 21/07/2026
+    private val _examStarted = MutableStateFlow(false)
     val examStarted: StateFlow<Boolean> = _examStarted
 
     private val _currentIndex = MutableStateFlow(0)
@@ -543,7 +619,6 @@ private val _examStarted = MutableStateFlow(false)
 
 
     private val _showReviewDialog = MutableStateFlow(false)
-
 
 
     private val _reviewQuestions = MutableStateFlow<Set<String>>(emptySet())
@@ -562,13 +637,13 @@ private val _examStarted = MutableStateFlow(false)
 
     private val _markedQuestions = MutableStateFlow<Set<String>>(emptySet())
     val markedQuestions: StateFlow<Set<String>> = _markedQuestions
-//    val timeLeft: StateFlow<Int> = _timeLeft
+
+    //    val timeLeft: StateFlow<Int> = _timeLeft
 //    val examFinished: StateFlow<Boolean> = _examFinished
     private val _questionStatus = MutableStateFlow<Map<String, String>>(emptyMap())
 //    private var timeLeft = MutableStateFlow(60) // Example: 60 seconds
 //    private var examFinished = MutableStateFlow(false)
 //    private var showSuccessDialog = MutableStateFlow(false)
-
 
 
     val timeLeft = MutableStateFlow(60)
@@ -596,6 +671,7 @@ private val _examStarted = MutableStateFlow(false)
     fun goToQuestion(index: Int) {
         _currentIndex.value = index
     }
+
     fun clearSubmissionError() {
         _submissionError.value = null
     }
@@ -681,19 +757,5 @@ private val _examStarted = MutableStateFlow(false)
         }
     }
 
-
-//    fun startTimer() {
-//        viewModelScope.launch(Dispatchers.Default) {
-//            while (!_examFinished.value && _timeLeft.value > 0) {
-//                kotlinx.coroutines.delay(1000)
-//                _timeLeft.value = _timeLeft.value - 1
-//            }
-//
-//            if (_timeLeft.value == 0) {
-//                _examFinished.value = true
-//                _showSuccessDialog.value = true
-//            }
-//        }
-//    }
-    }
+}
 

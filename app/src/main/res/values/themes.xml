@@ -113,4 +113,39 @@
 
 
 
+
+    <style name="HelpDeskBottomSheetTheme"
+        parent="Theme.Material3.Light.BottomSheetDialog">
+
+        <item name="bottomSheetStyle">@style/HelpDeskBottomSheetStyle</item>
+
+    </style>
+
+
+    <style name="HelpDeskBottomSheetStyle"
+        parent="Widget.Material3.BottomSheet.Modal">
+
+        <item name="android:background">@android:color/transparent</item>
+
+        <item name="backgroundTint">@android:color/transparent</item>
+
+        <item name="shapeAppearance">@style/HelpDeskBottomSheetShape</item>
+
+    </style>
+
+
+    <style name="HelpDeskBottomSheetShape">
+
+        <item name="cornerFamily">rounded</item>
+
+        <item name="cornerSizeTopLeft">30dp</item>
+
+        <item name="cornerSizeTopRight">30dp</item>
+
+        <item name="cornerSizeBottomLeft">0dp</item>
+
+        <item name="cornerSizeBottomRight">0dp</item>
+
+    </style>
+
 </resources>

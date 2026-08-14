@@ -290,7 +290,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                             else if (sendMobileOTPResponse.responseCode==301){
                                 showUpdateDialog()
                             }
-                            else showSnackBar("Internal Sever Error")
+                            else if (sendMobileOTPResponse.responseCode == 304) {
+                                toastShort(sendMobileOTPResponse.responseDesc)
+                            }
+                            else toastShort(sendMobileOTPResponse.responseDesc)
+
+
 
 
                         } ?: showSnackBar("Internal Sever Error")
@@ -605,6 +610,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                                 if (getOtpValidateApi.responseFlag=="M") {
 
+                                    AppUtil.saveOtpTokenPreference(requireContext(),getOtpValidateApi.candidateId)
+
+
                                     binding.clOTP.gone()
                                     //toastLong("Phone number is verified")
 
@@ -648,7 +656,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
 
 
-                            } else if (getOtpValidateApi.responseCode == 301) {
+                            }
+                            else if (getOtpValidateApi.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             }
 
@@ -660,10 +669,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                 toastShort(getOtpValidateApi.responseDesc)
                             }
 
-
+                            else if (getOtpValidateApi.responseCode == 304) {
+                                toastShort(getOtpValidateApi.responseDesc)
+                            }
 
                             else {
-                                showSnackBar("Something went wrong")
+                                toastShort(getOtpValidateApi.responseDesc)
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
