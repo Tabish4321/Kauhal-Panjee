@@ -786,7 +786,7 @@ class AttendanceFragment:
 
                                         val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
                                         val currentTime = LocalTime.now()
-                                        val formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))  // ✅ 24-hour format\
+                                        val formattedTime = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))  // 24-hour format
                                         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
 

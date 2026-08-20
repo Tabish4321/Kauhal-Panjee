@@ -373,16 +373,8 @@
                     android:gravity="center"
                     app:layout_constraintTop_toBottomOf="@+id/attendance_image_logo"
                     app:layout_constraintStart_toStartOf="parent"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
         </androidx.core.widget.NestedScrollView>
-
-
-
         <!-- Navigation Drawer -->
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigation_view"
@@ -403,7 +395,7 @@
         android:layout_margin="20dp"
         android:text="Help Desk"
         android:textAllCaps="false"
-        android:visibility="visible"
+        android:visibility="gone"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:contentDescription="Raise Support Ticket"

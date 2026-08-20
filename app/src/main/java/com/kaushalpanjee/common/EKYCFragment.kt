@@ -148,8 +148,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
-    private lateinit var progressBar: ProgressBar
-    private lateinit var downloadHelper: DownloadHelper
 
     private var isStateSelected = false
 
@@ -187,6 +185,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
 
         init()
+        collectStateResponse()
         collectInsertAadhaarTxnResponse()
 
 
@@ -207,7 +206,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
      /* commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME,userPreferences.getUseID())
         collectTokenResponse()*/
         setUI()
-        collectStateResponse()
         collectAadharResponse()
         collectUserCreationResponse()
         addTextWatchers()
@@ -452,8 +450,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             if (getStateResponse.responseCode == 200) {
                                 stateList = getStateResponse.stateList
 
-
                                 stateAdaptor.setData(stateList)
+
                             } else if (getStateResponse.responseCode == 301) {
 
                                 showSnackBar("Please Update from PlayStore")

@@ -319,30 +319,23 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
 
+    private val _stateOtpList =
+        MutableStateFlow<Resource<out StateDataResponse>>(Resource.Loading())
 
-
-
-
-    private var _stateOtpList = MutableStateFlow<Resource<out StateDataResponse>>(Resource.Loading())
     val stateOtpList = _stateOtpList.asStateFlow()
 
-
-    fun getOtpStateListApi(header :String) {
+    fun getOtpStateListApi(header: String) {
         viewModelScope.launch {
-            commonRepository.getOtpStateListAPI(header,BuildConfig.VERSION_NAME, "").collectLatest {
-                _stateList.emit(it)
+            commonRepository.getOtpStateListAPI(
+                header,
+                BuildConfig.VERSION_NAME,
+                ""
+            ).collectLatest { result ->
+
+                _stateOtpList.emit(result)
             }
         }
     }
-
-
-
-
-
-
-
-
-
 
 
     private var _stateList = MutableStateFlow<Resource<out StateDataResponse>>(Resource.Loading())

@@ -32,9 +32,9 @@ import kotlin.system.exitProcess
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.core.util.AppConstant.Constants.SESSION_TIMEOUT
+import com.kaushalpanjee.core.util.AppSignatureVerifier
 import com.kaushalpanjee.core.util.AppUtil.showUpdateDialog
 import com.kaushalpanjee.core.util.Resource
-import com.kaushalpanjee.core.util.toastLong
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -81,14 +81,13 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         // Security Checks
         // ===========================
 
-        /*   when {
-               !AppSignatureVerifier.isSignatureValid(this) -> {
+           when {
+             /*  !AppSignatureVerifier.isSignatureValid(this) -> {
                    showSecurityWarning(
                        "Application integrity verification failed. This application appears to have been modified or re-signed and cannot be trusted."
                    )
                    return
-               }
-
+               }*/
                isDeviceRooted() -> {
                    showSecurityWarning(
                        "Rooted device detected! For security reasons, this application cannot run on rooted devices."
@@ -109,7 +108,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
                    )
                    return
                }
-        }*/
+        }
 
 
 
