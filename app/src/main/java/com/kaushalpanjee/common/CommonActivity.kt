@@ -102,12 +102,12 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
                    return
                }
 
-               isDeveloperModeEnabled(this) -> {
+           /*    isDeveloperModeEnabled(this) -> {
                    showSecurityWarning(
                        "Developer Options or USB Debugging is enabled. Please disable it to continue."
                    )
                    return
-               }
+               }*/
         }
 
 

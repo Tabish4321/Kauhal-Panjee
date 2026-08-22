@@ -37,11 +37,11 @@ object AppConstant {
         const val CAPTURE_INTENT_RESULT = "in.gov.uidai.rdservice.face.CAPTURE_RESULT"
         const val CAPTURE_INTENT_RESPONSE_DATA = "response"
         const val DEVICE_CHECK_INTENT_RESULT = "in.gov.uidai.rdservice.face.CHECK_DEVICE_RESULT"
-        val WADH_KEY = NativeSecurity.getWadhKey()
+        val WADH_KEY = BuildConfig.WADH_KEY
         var ENVIRONMENT_TAG = "P"//"S"
         var LANGUAGE = "en"
-        val ENCRYPT_IV_KEY = NativeSecurity.getEncryptIvKey()
-        val ENCRYPT_KEY = NativeSecurity.getEncryptKey()
+        val ENCRYPT_IV_KEY = BuildConfig.ENCRYPT_IV_KEY
+        val ENCRYPT_KEY = BuildConfig.ENCRYPT_KEY
         const val PRE_PRODUCTION: String = "preProduction"
         const val PRODUCTION: String = "P"
         const val ENGLISH: String = "english"
@@ -50,9 +50,9 @@ object AppConstant {
         const val CURRENT_ENVIRONMENT_CODE = PRE_PRODUCTION_CODE;
         const val PRODUCTION_CODE: String = "P"
 
-        val CRYPT_ID = NativeSecurity.getCryptId()
-        val CRYPT_IV = NativeSecurity.getCryptIV()
-        val CRYPLIBAES = NativeSecurity.getCryptLibAES()
+        val CRYPT_ID = BuildConfig.CRYPT_ID
+        val CRYPT_IV = BuildConfig.CRYPT_IV
+        val CRYPLIBAES = BuildConfig.CRYPLIBAES
         const val SESSION_TIMEOUT = 30 * 60 * 1000L
         //const val SESSION_TIMEOUT = 30_000L
 

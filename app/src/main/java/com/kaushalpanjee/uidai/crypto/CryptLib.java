@@ -4,8 +4,6 @@ import android.util.Base64;
 
 import com.kaushalpanjee.BuildConfig;
 import com.kaushalpanjee.core.util.AppConstant;
-import com.kaushalpanjee.core.util.NativeSecurity;
-
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -49,7 +47,7 @@ public class CryptLib {
     public CryptLib() {
 
         try{
-            _cx =Cipher.getInstance(NativeSecurity.INSTANCE.getCryptLibAES());
+            _cx =Cipher.getInstance(BuildConfig.CRYPLIBAES);
             _key = new byte[16]; //256 bit key space
             _iv = new byte[16]; //128 bit IV
         }catch (Exception exp ){

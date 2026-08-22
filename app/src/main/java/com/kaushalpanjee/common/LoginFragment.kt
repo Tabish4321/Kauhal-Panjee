@@ -293,6 +293,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                     toastShort(getLoginResponse.responseDesc)
                                     toastShort(getLoginResponse.responseMsg)
+                                    commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME,binding.etEmail.text.toString())
+
                                     isApiCalled = false
 
                                 }
@@ -306,6 +308,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                                 else -> {
                                     showSnackBar(getLoginResponse.responseDesc)
+                                    commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME,binding.etEmail.text.toString())
 
                                     isApiCalled = false
 
