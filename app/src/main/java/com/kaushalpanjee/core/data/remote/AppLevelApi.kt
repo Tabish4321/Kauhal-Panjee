@@ -141,6 +141,19 @@ interface AppLevelApi {
     @POST(ApiConstant.API_CREATE_USER)
     suspend fun getCreateUserAPI(@Body creationReq: UserCreationReq):CreateUserRes
 
+
+
+
+    @POST(ApiConstant.API_OTP_STATE)
+    suspend fun getOtpStateListAPI(
+        @Header("CandidateId") token: String,
+        @Body stateListReq: StateListReq):StateDataResponse
+
+
+
+
+
+
     @POST(ApiConstant.API_STATE)
     suspend fun getStateListAPI(
         @Body stateListReq: StateListReq):StateDataResponse

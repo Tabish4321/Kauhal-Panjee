@@ -116,6 +116,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private var isBlocked = false
     private var countDownTimer: CountDownTimer? = null
     private var appTxn = ""
+    private var otpToken = ""
 
 
 
@@ -147,8 +148,6 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
-    private lateinit var progressBar: ProgressBar
-    private lateinit var downloadHelper: DownloadHelper
 
     private var isStateSelected = false
 
@@ -180,7 +179,13 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressButton.root.gone()
+
+        otpToken = AppUtil.getSavedOtpTokenPreference(requireContext())
+
+
+
         init()
+        collectStateResponse()
         collectInsertAadhaarTxnResponse()
 
 
@@ -201,11 +206,12 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
      /* commonViewModel.getToken(AppUtil.getAndroidId(requireContext()), BuildConfig.VERSION_NAME,userPreferences.getUseID())
         collectTokenResponse()*/
         setUI()
-        collectStateResponse()
         collectAadharResponse()
         collectUserCreationResponse()
         addTextWatchers()
-        commonViewModel.getStateListApi()
+
+
+        commonViewModel.getOtpStateListApi(otpToken)
         initEKYC()
 
         //  startAppDownload()
@@ -425,7 +431,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
     private fun collectStateResponse() {
         lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.getStateList) {
+            collectLatestLifecycleFlow(commonViewModel.stateOtpList) {
                 when (it) {
                     is Resource.Loading -> {
                         showProgressBar()
@@ -444,12 +450,30 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                             if (getStateResponse.responseCode == 200) {
                                 stateList = getStateResponse.stateList
 
-
                                 stateAdaptor.setData(stateList)
+
                             } else if (getStateResponse.responseCode == 301) {
 
                                 showSnackBar("Please Update from PlayStore")
-                            } else showSnackBar("Something went wrong")
+                            }
+                            else if (getStateResponse.responseCode == 401) {
+
+                                AppUtil.showSessionExpiredDialog(
+                                    findNavController(),
+                                    requireContext()
+                                )
+                                showSnackBar(getStateResponse.responseDesc)
+                            }
+
+
+                            else if (getStateResponse.responseCode == 304) {
+
+                                showSnackBar(getStateResponse.responseDesc)
+                            }
+
+
+                            else showSnackBar(getStateResponse.responseDesc)
+
 
                         } ?: showSnackBar("Internal Sever Error")
                     }
@@ -457,6 +481,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
             }
         }
     }
+
+
+
 
     private fun addTextWatchers() {
 

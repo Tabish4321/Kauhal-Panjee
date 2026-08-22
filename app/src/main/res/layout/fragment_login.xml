@@ -9,7 +9,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:filterTouchesWhenObscured="true">
+
         <!-- Toolbar Section -->
         <!-- Toolbar Section -->
         <androidx.appcompat.widget.Toolbar
@@ -49,6 +51,7 @@
                     android:layout_height="@dimen/dp_70"
                     android:id="@+id/ivDDGKY"
                     android:src="@drawable/ic_ddgky"
+                    android:filterTouchesWhenObscured="true" />
                     />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -56,6 +59,7 @@
                     android:layout_height="@dimen/dp_70"
                     android:id="@+id/ivRSETI"
                     android:src="@drawable/ic_rseti"
+                    android:filterTouchesWhenObscured="true" />
                     android:layout_marginStart="@dimen/dp_20"
 
                     />
@@ -155,6 +159,7 @@
                 android:drawablePadding="@dimen/dp_10"
                 android:inputType="textEmailAddress"
                 android:maxLength="25"
+                android:filterTouchesWhenObscured="true"
                 android:paddingHorizontal="@dimen/dp_20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -170,6 +175,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPassword"
                 android:maxLength="25"
+                android:filterTouchesWhenObscured="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etEmail" />
@@ -189,6 +195,7 @@
             android:textSize="@dimen/sp_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llFields"
+            android:filterTouchesWhenObscured="true"
 
             />
 
@@ -261,6 +268,7 @@
             app:layout_constraintBottom_toTopOf="@+id/tvRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:filterTouchesWhenObscured="true" />
 
             />
 

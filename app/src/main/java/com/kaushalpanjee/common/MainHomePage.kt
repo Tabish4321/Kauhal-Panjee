@@ -14,11 +14,17 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
@@ -27,8 +33,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import android.graphics.drawable.ColorDrawable
+import android.widget.LinearLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kaushalpanjee.common.compose.helpdesk.RaiseTicketBottomSheet
 import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.LogoutRequest
@@ -75,10 +87,11 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var cbtExam = ""
     private var schemeType = ""
     private var stateCode = ""
-
-
+    private lateinit var composeView: ComposeView
+    private var dialog: BottomSheetDialog? = null
     private val searchQuery = MutableLiveData<String>()
     private lateinit var trainingSearchAdapter: TrainingSearchAdapter
+
 
 
     private val startForAuthentication =
@@ -118,6 +131,17 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
      private fun init(){
+
+
+         binding.fabRaiseTicket.setOnClickListener {
+
+             showHelpDeskOptions()
+
+         }
+
+
+
+
          val drawerLayout = binding.drawerLayout
          binding.navigationView.setNavigationItemSelectedListener { menuItem ->
              when (menuItem.itemId) {
@@ -330,7 +354,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                           // showSnackBar(baseErrorResponse.message)
                         }
                     }
 
@@ -775,6 +799,116 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         dialog.show()
     }
 
+    private fun showRaiseTicketBottomSheet() {
+
+        dialog = BottomSheetDialog(
+            requireContext(),
+            R.style.HelpDeskBottomSheetTheme
+        )
+
+        dialog?.setCancelable(false)
+        dialog?.setCanceledOnTouchOutside(false)
+
+        val composeView = ComposeView(requireContext())
+
+        composeView.setContent {
+
+            MaterialTheme {
+
+                RaiseTicketBottomSheet(
+
+                    onDismiss = {
+
+                        dialog?.dismiss()
+
+                    }
+
+                )
+
+            }
+
+        }
+
+        dialog?.setContentView(composeView)
+
+        dialog?.show()
+
+        val bottomSheet = dialog?.findViewById<FrameLayout>(
+            com.google.android.material.R.id.design_bottom_sheet
+        )
+
+        bottomSheet?.apply {
+
+            setBackgroundColor(android.graphics.Color.TRANSPARENT)
+
+            background = null
+
+        }
+
+        dialog?.behavior.apply {
+
+            this?.state = BottomSheetBehavior.STATE_EXPANDED
+
+            this?.skipCollapsed = true
+
+            this?.isDraggable = false
+
+            this?.isHideable = false
+
+            this?.peekHeight = 0
+
+        }
+
+        dialog?.window?.apply {
+
+            setDimAmount(0.60f)
+
+            setBackgroundDrawable(
+                ColorDrawable(android.graphics.Color.TRANSPARENT)
+            )
+
+        }
+
+    }
 
 
+    private fun showHelpDeskOptions() {
+
+        val dialog = BottomSheetDialog(requireContext())
+
+        val view = layoutInflater.inflate(
+            R.layout.bottom_sheet_helpdesk_options,
+            null
+        )
+
+        dialog.setContentView(view)
+
+        view.findViewById<LinearLayout>(R.id.llRaiseTicket)
+            .setOnClickListener {
+
+                dialog.dismiss()
+
+                showRaiseTicketBottomSheet()
+
+            }
+
+        view.findViewById<LinearLayout>(R.id.llRequester)
+            .setOnClickListener {
+
+                dialog.dismiss()
+
+                findNavController().navigate(MainHomePageDirections.actionMainHomePageToHelpDeskFragment())
+
+            }
+
+        view.findViewById<TextView>(R.id.tvCancel)
+            .setOnClickListener {
+
+                dialog.dismiss()
+
+            }
+
+        dialog.show()
+
+    }
 }

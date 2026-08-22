@@ -317,6 +317,27 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
+
+
+    private val _stateOtpList =
+        MutableStateFlow<Resource<out StateDataResponse>>(Resource.Loading())
+
+    val stateOtpList = _stateOtpList.asStateFlow()
+
+    fun getOtpStateListApi(header: String) {
+        viewModelScope.launch {
+            commonRepository.getOtpStateListAPI(
+                header,
+                BuildConfig.VERSION_NAME,
+                ""
+            ).collectLatest { result ->
+
+                _stateOtpList.emit(result)
+            }
+        }
+    }
+
+
     private var _stateList = MutableStateFlow<Resource<out StateDataResponse>>(Resource.Loading())
     val getStateList = _stateList.asStateFlow()
 
@@ -429,6 +450,32 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     private var _aadhaarList = MutableStateFlow<Resource<out AadhaarDetailRes>>(Resource.Loading())
@@ -946,8 +993,8 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
 
     }
 
+    private val _getLogout = MutableSharedFlow<Resource<out LogoutResponse>>()
 
-    private var _getLogout = MutableStateFlow<Resource<out LogoutResponse>>(Resource.Loading())
     val getLogout = _getLogout.asSharedFlow()
 
     fun getLogout(logoutReq: LogoutRequest, header: String) {
@@ -956,7 +1003,6 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                 _getLogout.emit(it)
             }
         }
-
     }
 
     private var _getUnnati = MutableStateFlow<Resource<out Unnati>>(Resource.Loading())
@@ -1078,49 +1124,6 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     private var isLoading = false
 
 
-    /*
-    fun loadNotifications(loadMore: Boolean = false) {
-        if (isLoading || isLastPage) return
-
-        isLoading = true
-
-        if (!loadMore) {
-            currentPage = 0
-            isLastPage = false
-            _notificationList.value = Resource.Loading()
-        }
-
-        viewModelScope.launch {
-            commonRepository.getNotifications(currentPage, 10)
-                .collectLatest { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            val newItems =
-                                result.data?.content
-                                    ?.map { it.toUiModel() }
-                                    ?: emptyList()
-
-                            isLastPage = newItems.isEmpty()
-                            currentPage++
-
-                            val oldList = (_notificationList.value as? Resource.Success)?.data.orEmpty()
-
-                            _notificationList.value =
-                                Resource.Success(
-                                    if (loadMore) oldList + newItems else newItems
-                                )
-                        }
-                        is Resource.Error -> {
-                            _notificationList.value = Resource.Error(BaseErrorResponse(0,"Something Went wrong to get list",false,""))
-                        }
-
-                        is Resource.Loading -> Unit
-                    }
-                    isLoading = false
-                }
-        }
-    }
-*/
 
 
     fun loadNotifications(loadMore: Boolean = false) {

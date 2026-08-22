@@ -1197,9 +1197,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             override fun afterTextChanged(s: Editable?) {}
         })
 
-
-
-
         binding.llPresentAddressState.gone()
         binding.llPresentAddressDistrict.gone()
         binding.llPresentAddressType.gone()
@@ -5796,7 +5793,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 )
 
                             } else {
-                                showSnackBar("Something went wrong")
+                                showSnackBar(getDistrictResponse.responseDesc)
+
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -5845,7 +5843,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 )
 
                             } else {
-                                showSnackBar("Something went wrong")
+                                showSnackBar(getBlockResponse.responseDesc)
+
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -5892,7 +5891,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 )
 
                             } else {
-                                showSnackBar("Something went wrong")
+                                showSnackBar(getGpResponse.responseDesc)
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -5938,7 +5937,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 )
 
                             } else {
-                                showSnackBar("Something went wrong")
+                                showSnackBar(getVillageResponse.responseDesc)
+
                             }
                         } ?: showSnackBar("Internal Server Error")
                     }
@@ -6358,7 +6358,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                            //showSnackBar(baseErrorResponse.message)
                         }
                     }
 
@@ -8020,7 +8020,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                            //showSnackBar(baseErrorResponse.message)
                         }
                     }
 
