@@ -18,10 +18,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTicketContent(
-    onSubmit: () -> Unit = {}
+    onSubmit: (
+        ticketType: String,
+        scheme: String,
+        title: String,
+        description: String,
+        attachment: Uri?
+    ) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -42,14 +47,13 @@ fun CreateTicketContent(
     val ticketTypes = listOf(
         "Technical",
         "Functional",
-        "Training",
         "Grievance",
         "Feedback"
     )
 
     val schemeTypes = listOf(
-        "RSETI",
-        "DDUGKY"
+        "DDUGKY",
+        "RSETI"
     )
 
     val launcher = rememberLauncherForActivityResult(
@@ -58,21 +62,23 @@ fun CreateTicketContent(
 
         attachment = uri
         attachmentName = uri?.lastPathSegment ?: ""
-
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-    ){
+    ) {
 
         Card(
 
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 10.dp
+                ),
 
             shape = RoundedCornerShape(22.dp),
 
@@ -89,26 +95,32 @@ fun CreateTicketContent(
             Column(
 
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(
+                        rememberScrollState()
+                    )
                     .padding(20.dp)
 
             ) {
 
                 Text(
-                    "Ticket Details",
+                    text = "Ticket Details",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF173430)
                 )
 
-                Spacer(Modifier.height(4.dp))
+                Spacer(
+                    modifier = Modifier.height(4.dp)
+                )
 
                 Text(
-                    "Provide complete issue details",
+                    text = "Provide complete issue details",
                     color = Color.Gray
                 )
 
-                Spacer(Modifier.height(22.dp))
+                Spacer(
+                    modifier = Modifier.height(22.dp)
+                )
 
                 TicketTypeDropDown(
                     selectedTicket,
@@ -118,10 +130,11 @@ fun CreateTicketContent(
 
                     selectedTicket = it
                     ticketError = false
-
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
 
                 SchemeTypeDropDown(
                     selectedScheme,
@@ -131,10 +144,11 @@ fun CreateTicketContent(
 
                     selectedScheme = it
                     schemeError = false
-
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
 
                 CommonTextField(
                     value = title,
@@ -144,10 +158,11 @@ fun CreateTicketContent(
 
                     title = it
                     titleError = false
-
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
 
                 OutlinedTextField(
 
@@ -157,7 +172,6 @@ fun CreateTicketContent(
 
                         description = it
                         descriptionError = false
-
                     },
 
                     modifier = Modifier
@@ -174,7 +188,9 @@ fun CreateTicketContent(
 
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(
+                    modifier = Modifier.height(16.dp)
+                )
 
                 AttachmentSection(
 
@@ -183,22 +199,19 @@ fun CreateTicketContent(
                     onChooseClick = {
 
                         launcher.launch("*/*")
-
                     },
 
                     onRemoveClick = {
 
                         attachment = null
                         attachmentName = ""
-
                     }
-
                 )
 
-                Spacer(Modifier.height(20.dp))
-
+                Spacer(
+                    modifier = Modifier.height(20.dp)
+                )
             }
-
         }
 
         CommonButton(
@@ -207,7 +220,10 @@ fun CreateTicketContent(
 
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 12.dp)
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = 12.dp
+                )
 
         ) {
 
@@ -223,7 +239,13 @@ fun CreateTicketContent(
                 !descriptionError
             ) {
 
-                onSubmit()
+                onSubmit(
+                    selectedTicket,
+                    selectedScheme,
+                    title,
+                    description,
+                    attachment
+                )
 
             } else {
 
@@ -232,11 +254,7 @@ fun CreateTicketContent(
                     "Missing mandatory fields",
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
-
         }
-
     }
-
 }

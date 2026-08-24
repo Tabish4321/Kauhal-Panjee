@@ -35,6 +35,7 @@ import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
+import com.kaushalpanjee.common.model.request.CreateTicketRequest
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.FaceCheckReq
@@ -79,6 +80,7 @@ import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
+import com.kaushalpanjee.common.model.response.CreateTicketResponse
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
@@ -120,6 +122,7 @@ import com.utilize.core.domain.model.response.BaseErrorResponse
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -1381,7 +1384,6 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
         }
     }
 
-    // ---------------- CBT ANSWERS FLOW ----------------
     private val _submitAnswers =
         MutableSharedFlow<Resource<SubmitExamResponse>>()
 
@@ -1395,6 +1397,35 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             commonRepository.submitExam(header, cbtQuestionsReq).collectLatest {
                 _submitAnswers.emit(it)
             }
+        }
+    }
+
+
+    private val _createTicket =
+        MutableSharedFlow<Resource<CreateTicketResponse>>()
+
+    val createTicket =
+        _createTicket.asSharedFlow()
+
+
+    fun createTicket(
+        header: String,
+        createTicketRequest: CreateTicketRequest,
+        file: File?
+    ) {
+
+        viewModelScope.launch {
+
+            commonRepository
+                .createTicket(
+                    header = header,
+                    createTicketRequest = createTicketRequest,
+                    file = file
+                )
+                .collectLatest {
+
+                    _createTicket.emit(it)
+                }
         }
     }
 

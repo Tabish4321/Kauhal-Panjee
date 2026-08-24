@@ -41,6 +41,7 @@ import com.kaushalpanjee.common.model.request.BannerReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.CbtQuestionsReq
 import com.kaushalpanjee.common.model.request.ChangePassReq
+import com.kaushalpanjee.common.model.request.CreateTicketRequest
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
 import com.kaushalpanjee.common.model.request.FaceCheckReq
@@ -89,6 +90,7 @@ import com.kaushalpanjee.common.model.response.BankListResponse
 import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
+import com.kaushalpanjee.common.model.response.CreateTicketResponse
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.FaceResponse
 import com.kaushalpanjee.common.model.response.ForgotIdOtpRes
@@ -121,10 +123,12 @@ import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
+import com.kaushalpanjee.core.util.MultipartUtil
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
 import okhttp3.ResponseBody
+import java.io.File
 import javax.inject.Inject
 
 class CommonRepository @Inject constructor(
@@ -708,6 +712,31 @@ class CommonRepository @Inject constructor(
     ): Flow<Resource<SubmitExamResponse>> {
         return networkBoundResourceWithoutDb {
             appLevelApi.submitExam(header, cbtQuestionsReq)
+        }
+    }
+
+
+
+    suspend fun createTicket(
+        header: String,
+        createTicketRequest: CreateTicketRequest,
+        file: File?
+    ): Flow<Resource<CreateTicketResponse>> {
+
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.createTicket(
+                header = header,
+
+                data = MultipartUtil.createDataPart(
+                    createTicketRequest
+                ),
+
+                file = MultipartUtil.createFilePart(
+                    name = "file",
+                    file = file
+                )
+            )
         }
     }
 }

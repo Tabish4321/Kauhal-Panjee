@@ -42,6 +42,7 @@ import androidx.navigation.fragment.findNavController
 import com.d2k.samiksha.SamikshaSdk
 import com.d2k.samiksha.model.ConsentRequest
 import com.google.gson.Gson
+import com.utilize.core.util.FileUtils.Companion.getFileName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -49,6 +50,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import java.io.File
 import java.security.MessageDigest
 import java.security.SecureRandom
 
@@ -754,6 +756,44 @@ object AppUtil {
                 examFinished.value = true
                 showSuccessDialog.value = true
             }
+        }
+    }
+
+
+    fun uriToFile(
+        context: Context,
+        uri: Uri
+    ): File? {
+
+        return try {
+
+            val contentResolver = context.contentResolver
+
+            val fileName = getFileName(
+                context,
+                uri
+            )
+
+            val file = File(
+                context.cacheDir,
+                fileName
+            )
+
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+
+                file.outputStream().use { outputStream ->
+
+                    inputStream.copyTo(outputStream)
+                }
+            }
+
+            file
+
+        } catch (e: Exception) {
+
+            e.printStackTrace()
+
+            null
         }
     }
 

@@ -102,6 +102,7 @@ abstract class BaseActivity<VB : ViewBinding>(
     }
 
 
+/*
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
 
         // -------- Tapjacking Protection --------
@@ -137,6 +138,7 @@ abstract class BaseActivity<VB : ViewBinding>(
         AppConstant.SessionTimeoutManager.reset()
         return super.dispatchTouchEvent(event)
     }
+*/
 
 
     fun launchActivity(activityClass: Class<out AppCompatActivity>) {

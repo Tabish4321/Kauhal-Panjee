@@ -39,9 +39,12 @@ import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import android.graphics.drawable.ColorDrawable
 import android.widget.LinearLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kaushalpanjee.common.compose.helpdesk.RaiseTicketBottomSheet
 import com.kaushalpanjee.common.model.request.BannerReq
+import com.kaushalpanjee.common.model.request.CreateTicketRequest
 import com.kaushalpanjee.common.model.request.FaceCheckReq
 import com.kaushalpanjee.common.model.request.LogoutRequest
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -59,6 +62,7 @@ import com.kaushalpanjee.databinding.NavigationHeaderBinding
 import com.pehchaan.backend.service.AuthenticationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -86,6 +90,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var attendanceFlag = ""
     private var cbtExam = ""
     private var schemeType = ""
+    private var roleName = ""
     private var stateCode = ""
     private lateinit var composeView: ComposeView
     private var dialog: BottomSheetDialog? = null
@@ -119,6 +124,65 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            viewLifecycleOwner.repeatOnLifecycle(
+                Lifecycle.State.STARTED
+            ) {
+
+                commonViewModel.createTicket.collectLatest { resource ->
+
+                    when (resource) {
+
+                        is Resource.Loading -> {
+
+                            // Show Progress
+                           // showProgressDialog()
+                        }
+
+                        is Resource.Success -> {
+
+                          //  hideProgressDialog()
+
+                            val response = resource.data
+
+                            if (response?.responseCode == 200) {
+
+                                Toast.makeText(
+                                    requireContext(),
+                                    response.responseDesc ?: "Ticket created successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
+                                dialog?.dismiss()
+
+                            } else {
+
+                                Toast.makeText(
+                                    requireContext(),
+                                    response?.responseDesc ?: "Failed to create ticket",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
+                        is Resource.Error -> {
+
+                           // hideProgressDialog()
+
+                            Toast.makeText(
+                                requireContext(), "Something went wrong",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+
+
+
         handleBackPress()
         init()
         commonViewModel.getBannerAPI(AppUtil.getSavedTokenPreference(requireContext()),BannerReq(BuildConfig.VERSION_NAME,userPreferences.getUseID(),AppUtil.getAndroidId(requireContext())))
@@ -818,17 +882,83 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                 RaiseTicketBottomSheet(
 
                     onDismiss = {
-
                         dialog?.dismiss()
+                    },
 
+                    onSubmit = {
+                            ticketType,
+                            scheme,
+                            title,
+                            description,
+                            attachment ->
+
+                        val ticketTypeId = when (ticketType) {
+
+                            "Technical" -> 1
+                            "Functional" -> 2
+                            "Grievance" -> 3
+                            "Feedback" -> 4
+
+                            else -> 1
+                        }
+
+                        val schemeCd = when (scheme) {
+
+                            "DDUGKY" -> "1"
+                            "RSETI" -> "2"
+
+                            else -> ""
+                        }
+
+                        val roleName = when (scheme) {
+
+                            "DDUGKY" -> "DDUGKY MOBILE HELPDESK"
+
+                            "RSETI" -> "RSETI MOBILE HELPDESK"
+
+                            else -> "DDUGKY MOBILE HELPDESK"
+                        }
+
+                        val request = CreateTicketRequest(
+
+                            //loginId = userPreferences.getUseID(),
+
+                            loginId = "AS2025RT0192",
+
+                            roleName = roleName,
+
+                            ticketTypeId = ticketTypeId,
+
+                            schemeCd = schemeCd,
+
+                            issueTitle = title,
+
+                            description = description,
+
+                            ticketPriorityId = 3
+                        )
+
+                        val file = attachment?.let { uri ->
+
+                            AppUtil.uriToFile(
+                                context = requireContext(),
+                                uri = uri
+                            )
+                        }
+
+                        commonViewModel.createTicket(
+
+                            header =
+                                AppUtil.getSavedTokenPreference(requireContext()),
+
+                            createTicketRequest = request,
+
+                            file = file
+                        )
                     }
-
                 )
-
             }
-
         }
-
         dialog?.setContentView(composeView)
 
         dialog?.show()

@@ -85,6 +85,7 @@ import com.kaushalpanjee.common.model.response.BankingRes
 import com.kaushalpanjee.common.model.response.BannerResponse
 import com.kaushalpanjee.common.model.response.BlockResponse
 import com.kaushalpanjee.common.model.response.CandidateDetails
+import com.kaushalpanjee.common.model.response.CreateTicketResponse
 import com.kaushalpanjee.common.model.response.CreateUserRes
 import com.kaushalpanjee.common.model.response.DistrictResponse
 import com.kaushalpanjee.common.model.response.FaceResponse
@@ -125,11 +126,15 @@ import com.kaushalpanjee.core.util.ApiConstant.API_GET_BANKLIST
 import com.kaushalpanjee.core.util.ApiConstant.API_NOTIFICATION
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.res.NotificationListResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.Header
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
+import retrofit2.http.Part
 
 interface AppLevelApi {
 
@@ -545,5 +550,15 @@ interface AppLevelApi {
         @Header("Authorization") token: String,
         @Body cbtAnsersSubmit: CbtAnsersSubmit
     ): SubmitExamResponse
+
+
+    @Multipart
+    @POST(ApiConstant.CREATE_TICKET)
+    suspend fun createTicket(
+        @Header("Authorization") header: String,
+        @Part("data") data: RequestBody,
+        @Part file: MultipartBody.Part?
+    ): CreateTicketResponse
+
 
 }

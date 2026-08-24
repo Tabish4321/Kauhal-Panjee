@@ -2,6 +2,9 @@ package com.kaushalpanjee.common
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,6 +26,7 @@ import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.Resource
 import com.kaushalpanjee.core.util.UserPreferences
+import com.kaushalpanjee.core.util.copyToClipboard
 import com.kaushalpanjee.core.util.gone
 import com.kaushalpanjee.core.util.log
 import com.kaushalpanjee.core.util.onDone
@@ -110,10 +114,42 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     }
 
                     val etMobile = binding.etPhone.text.toString()
-                    commonViewModel.sendMobileOTP(
-                        etMobile,
-                        BuildConfig.VERSION_NAME, AppUtil.getAndroidId(requireContext())
-                    )
+                    toastShort("API Hit")
+
+                    try {
+
+                        val mobileNumber =
+                            binding.etPhone.text.toString().trim()
+
+                        val androidId =
+                            AppUtil.getAndroidId(requireContext())
+
+                        commonViewModel.sendMobileOTP(
+                            mobileNumber,
+                            BuildConfig.VERSION_NAME,
+                            androidId
+                        )
+
+                    } catch (e: UnsatisfiedLinkError) {
+
+                        hideProgressBar()
+
+                        copyCrashToClipboard(e)
+
+                        toastLong(
+                            "Native error occurred. Crash log copied."
+                        )
+
+                    } catch (e: Exception) {
+
+                        hideProgressBar()
+
+                        copyCrashToClipboard(e)
+
+                        toastLong(
+                            "Error occurred. Crash log copied."
+                        )
+                    }
 
                 } else {
                     "${getString(R.string.enter_code_email_msg)} ${binding.etEmail.text}".also {
@@ -126,7 +162,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext())
                     )
                 }
-            } else showSnackBar("No internet connection")
+            } else toastShort("No internet connection")
         }
 
         binding.tvVerify.setOnClickListener {
@@ -222,10 +258,40 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
 
 
-                commonViewModel.sendMobileOTP(
-                    etMobile,
-                    BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext())
-                )
+                try {
+
+                    val mobileNumber =
+                        binding.etPhone.text.toString().trim()
+
+                    val androidId =
+                        AppUtil.getAndroidId(requireContext())
+
+                    commonViewModel.sendMobileOTP(
+                        mobileNumber,
+                        BuildConfig.VERSION_NAME,
+                        androidId
+                    )
+
+                } catch (e: UnsatisfiedLinkError) {
+
+                    hideProgressBar()
+
+                    copyCrashToClipboard(e)
+
+                    toastLong(
+                        "Native error occurred. Crash log copied."
+                    )
+
+                } catch (e: Exception) {
+
+                    hideProgressBar()
+
+                    copyCrashToClipboard(e)
+
+                    toastLong(
+                        "Error occurred. Crash log copied."
+                    )
+                }
             } else commonViewModel.sendEmailOTP(
                 binding.etEmail.text.toString(),
                 BuildConfig.VERSION_NAME,AppUtil.getAndroidId(requireContext())
@@ -268,45 +334,60 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.sendMobileOTP) {
                 when (it) {
+
                     is Resource.Loading -> {}
+
                     is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
-                        }
+
+                        toastShort("Try after sometime")
                     }
 
                     is Resource.Success -> {
+
+
                         hideProgressBar()
+
                         it.data?.let { sendMobileOTPResponse ->
+
                             if (sendMobileOTPResponse.responseCode == 200) {
+
+
                                 toastShort(sendMobileOTPResponse.responseDesc)
+
                                 binding.clOTP.visible()
-                                AppUtil.saveMobileNoPreference(requireContext(),binding.etPhone.text.toString())
 
-                            } else if (sendMobileOTPResponse.responseCode == 201)
-                                showSnackBar("Incorrect mobile number")
+                                context?.let { safeContext ->
+                                    AppUtil.saveMobileNoPreference(
+                                        safeContext,
+                                        binding.etPhone.text.toString()
+                                    )
+                                }
 
-                            else if (sendMobileOTPResponse.responseCode==301){
+                            } else if (sendMobileOTPResponse.responseCode == 201) {
+
+                                toastShort("Incorrect mobile number")
+
+                            } else if (sendMobileOTPResponse.responseCode == 301) {
+
                                 showUpdateDialog()
-                            }
-                            else if (sendMobileOTPResponse.responseCode == 304) {
+
+                            } else if (sendMobileOTPResponse.responseCode == 304) {
+
+                                toastShort(sendMobileOTPResponse.responseDesc)
+
+                            } else {
+
                                 toastShort(sendMobileOTPResponse.responseDesc)
                             }
-                            else toastShort(sendMobileOTPResponse.responseDesc)
 
-
-
-
-                        } ?: showSnackBar("Internal Sever Error")
+                        } ?: toastShort("Internal Server Error")
                     }
                 }
             }
         }
     }
-
     private fun showUpdateDialog() {
-        val builder = AlertDialog.Builder(requireContext()) // 🔥 use requireContext() inside Fragment
+        val builder = AlertDialog.Builder(requireContext()) //  use requireContext() inside Fragment
         builder.setTitle("Update Available")
         builder.setMessage("A new version of the app is available. Please update to continue.")
 
@@ -339,7 +420,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message)
+                            //toastShort(baseErrorResponse.message)
                         }
                     }
 
@@ -351,11 +432,11 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                 AppUtil.saveEmailPreference(requireContext(),binding.etEmail.text.toString())
                                 toastShort(sendMobileOTPResponse.responseDesc)
                             } else if (sendMobileOTPResponse.responseCode == 201)
-                                showSnackBar("Incorrect email Id")
+                                toastShort("Incorrect email Id")
                             else if (sendMobileOTPResponse.responseCode==301)
                                 showUpdateDialog()
 
-                        } ?: showSnackBar("Internal Sever Error")
+                        } ?: toastShort("Internal Sever Error")
                     }
                 }
             }
@@ -598,7 +679,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     is Resource.Error -> {
                         hideProgressBar()
                         it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
+                          //  toastShort(baseErrorResponse.message)
                         }
                     }
 
@@ -658,7 +739,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                             }
                             else if (getOtpValidateApi.responseCode == 301) {
-                                showSnackBar("Please Update from PlayStore")
+                                toastShort("Please Update from PlayStore")
                             }
 
                             else if (getOtpValidateApi.responseCode == 207) {
@@ -676,11 +757,30 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                             else {
                                 toastShort(getOtpValidateApi.responseDesc)
                             }
-                        } ?: showSnackBar("Internal Server Error")
+                        } ?: toastShort("Internal Server Error")
                     }
                 }
             }
         }
+    }
+
+    private fun copyCrashToClipboard(throwable: Throwable) {
+
+        val stackTrace = throwable.stackTraceToString()
+
+        val clipboard =
+            requireContext().getSystemService(
+                Context.CLIPBOARD_SERVICE
+            ) as ClipboardManager
+
+        val clip = ClipData.newPlainText(
+            "Crash Log",
+            stackTrace
+        )
+
+        clipboard.setPrimaryClip(clip)
+
+        toastLong("Crash log copied to clipboard")
     }
 
 }

@@ -26,7 +26,7 @@ object AppConstant {
        // const val FACE_AUTH_UIADI= "https://nregarep2.nic.in/uid_gramg/stateservices/nrega_face_auth.svc/PostOnAUA_Face_auth"
        //const val baseUrl= "http://10.197.183.177:8001/"                        //local
          const val baseUrl= "https://kaushal.rural.gov.in/backend/"             //live
-        //const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"      //demo
+      //  const val baseUrl= "https://kaushal.dord.gov.in/demobackend/"      //demo
     }
 
     object Constants{

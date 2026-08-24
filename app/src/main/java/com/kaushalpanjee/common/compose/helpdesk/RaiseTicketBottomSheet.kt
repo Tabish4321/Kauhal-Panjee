@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common.compose.helpdesk
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,7 +19,15 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun RaiseTicketBottomSheet(
 
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+
+    onSubmit: (
+        ticketType: String,
+        scheme: String,
+        title: String,
+        description: String,
+        attachment: Uri?
+    ) -> Unit
 
 ) {
 
@@ -37,7 +46,7 @@ fun RaiseTicketBottomSheet(
                 )
                 .fillMaxHeight(.90f),
 
-                    shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(28.dp),
 
             color = Color.White,
 
@@ -60,17 +69,22 @@ fun RaiseTicketBottomSheet(
                 CreateTicketContent(
 
                     onSubmit = {
+                            ticketType,
+                            scheme,
+                            title,
+                            description,
+                            attachment ->
 
-                        onDismiss()
-
+                        onSubmit(
+                            ticketType,
+                            scheme,
+                            title,
+                            description,
+                            attachment
+                        )
                     }
-
                 )
-
             }
-
         }
-
     }
-
 }

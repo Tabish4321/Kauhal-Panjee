@@ -77,32 +77,6 @@ fun <RequestType> networkBoundResourceWithoutDb(
         emit(Resource.Error(error, null))
     }
 }
-//fun <RequestType> networkBoundResourceWithoutDb(
-//    fetch: suspend () -> RequestType
-//) = flow {
-//
-//    emit(Resource.Loading(null))
-//    try {
-//        emit(Resource.Success(fetch.invoke()))
-//    } catch (t: Throwable) {
-//        val error = if (t is HttpException)
-//            getErrorMessage(t)
-//        else{
-//            if (t.message!!.contains("Unable to resolve host")){
-//                 BaseErrorResponse(HttpURLConnection.HTTP_GATEWAY_TIMEOUT, "No Internet Connection", false,Any())
-//            }else BaseErrorResponse(0, t.message.toString(), false, Any())
-//        }
-//
-//        emit(Resource.Error(error, null))
-//    }
-//}
-
-
-
-
-
-
-
 
 fun <T> networkBoundResourceWithoutDbn(
     apiCall: suspend () -> T

@@ -32,7 +32,6 @@ import kotlin.system.exitProcess
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaushalpanjee.core.util.AppConstant.Constants.SESSION_TIMEOUT
-import com.kaushalpanjee.core.util.AppSignatureVerifier
 import com.kaushalpanjee.core.util.AppUtil.showUpdateDialog
 import com.kaushalpanjee.core.util.Resource
 import kotlinx.coroutines.launch
@@ -102,12 +101,12 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
                    return
                }
 
-               isDeveloperModeEnabled(this) -> {
+            /*   isDeveloperModeEnabled(this) -> {
                    showSecurityWarning(
                        "Developer Options or USB Debugging is enabled. Please disable it to continue."
                    )
                    return
-               }
+               }*/
         }
 
 
