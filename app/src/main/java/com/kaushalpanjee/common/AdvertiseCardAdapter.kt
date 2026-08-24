@@ -1,5 +1,5 @@
 package com.kaushalpanjee.common
-
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
@@ -19,13 +19,14 @@ class AdvertiseCardAdapter(
         return ImageViewHolder(view)
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
 
         if (images.isNull){
             holder.imageView.setImageResource(R.drawable.person)
         }
         else
-        holder.imageView.setImageBitmap(images[position]) // ✅ fix here
+        holder.imageView.setImageBitmap(images[position]) //  fix here
     }
 
     override fun getItemCount(): Int = images.size

@@ -34,17 +34,13 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 71
+        versionCode = 64
         versionName = "2.7.7"
+       // versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        ndk {
-            abiFilters += listOf(
-                "arm64-v8a",
-                "armeabi-v7a"
-            )
-        }
+        // Correct Kotlin DSL syntax for keeping all language resources
 
         resourceConfigurations += listOf(
             "en",
@@ -62,12 +58,9 @@ android {
             "ur"
         )
 
-        externalNativeBuild {
-            cmake {
-                cppFlags += ""
-            }
-        }
     }
+
+
     //  Prevent Google Play from splitting languages (needed for in-app switching)
     bundle {
         language {
@@ -85,7 +78,30 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "CLIENT_SECRET_KEY",
+                projectProperties["CLIENT_SECRET_KEY"] as String
+            )
+            buildConfigField(
+                "String",
+                "REFRESH_TOKEN_URL",
+                projectProperties["REFRESH_TOKEN_URL"] as String
+            )
+            buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
+            buildConfigField(
+                "String",
+                "ENCRYPT_IV_KEY",
+                projectProperties["ENCRYPT_IV_KEY"] as String
+            )
+            buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
+            buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
+            buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
+            buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+            buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
+            buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
 
+        //    signingConfig = signingConfigs.getByName("debug")
         }
 
         debug {
@@ -98,6 +114,28 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "CLIENT_SECRET_KEY",
+                projectProperties["CLIENT_SECRET_KEY"] as String
+            )
+            buildConfigField(
+                "String",
+                "REFRESH_TOKEN_URL",
+                projectProperties["REFRESH_TOKEN_URL"] as String
+            )
+            buildConfigField("String", "ENCRYPT_KEY", projectProperties["ENCRYPT_KEY"] as String)
+            buildConfigField(
+                "String",
+                "ENCRYPT_IV_KEY",
+                projectProperties["ENCRYPT_IV_KEY"] as String
+            )
+            buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
+            buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
+            buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
+            buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
+            buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
+            buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
 
 
         }
@@ -117,12 +155,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
-    }
-    externalNativeBuild {
-        cmake {
-            path = file("src/main/cpp/CMakeLists.txt")
-            version = "3.22.1"
-        }
     }
 
 

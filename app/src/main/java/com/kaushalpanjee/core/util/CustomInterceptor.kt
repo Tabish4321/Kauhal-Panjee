@@ -56,9 +56,9 @@ class CustomInterceptor @Inject constructor(
                     "user-agent",
                     "App/${BuildConfig.VERSION_NAME} (Android ${Build.VERSION.RELEASE})"
                 )
-                requestBuilder.addHeader("client_secret", NativeSecurity.getClientSecret())
+                requestBuilder.addHeader("client_secret", BuildConfig.CLIENT_SECRET_KEY)
                 //requestBuilder.addHeader("client_secret", SecurityUtils.getClientSecretKey())
-                requestBuilder.url(NativeSecurity.getRefreshTokenUrl())
+                requestBuilder.url(BuildConfig.REFRESH_TOKEN_URL)
                 //requestBuilder.url(SecurityUtils.getRefreshTokenUrl())
 
                 requestBuilder.post(
@@ -137,7 +137,7 @@ class CustomInterceptor @Inject constructor(
         if (isPostLogin) {
             reqBuilder.addHeader("authorization", userPreferences.getAccessToken())
         } else {
-            reqBuilder.addHeader("client_secret", NativeSecurity.getClientSecret())
+            reqBuilder.addHeader("client_secret", BuildConfig.CLIENT_SECRET_KEY)
           //  reqBuilder.addHeader("client_secret", SecurityUtils.getClientSecretKey())
         }
 
