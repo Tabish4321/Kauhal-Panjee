@@ -92,12 +92,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
-    /*    binding.ivDDGKY.setOnClickListener {
 
-
-            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToLoanFragment())
-
-        }*/
 
 
 

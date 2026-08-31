@@ -114,7 +114,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     }
 
                     val etMobile = binding.etPhone.text.toString()
-                    toastShort("API Hit")
 
                     try {
 

@@ -34,9 +34,9 @@ android {
         applicationId = "com.kaushalpanjee"
         minSdk = 28
         targetSdk = 35
-        versionCode = 64
-        versionName = "2.7.7"
-       // versionName = "2.6.6"
+        versionCode = 72
+      //  versionName = "2.7.8"
+        versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

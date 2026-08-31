@@ -1,16 +1,11 @@
 package com.kaushalpanjee.core.basecomponent
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.Window
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +17,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.kaushalpanjee.R
-import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.databinding.ActivityWelcomeBinding
@@ -100,68 +94,6 @@ abstract class BaseActivity<VB : ViewBinding>(
                 .drawable.shape_rectangle_grey)
         snackBar.show()
     }
-
-
-/*
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-
-        // -------- Tapjacking Protection --------
-        if ((event.flags and MotionEvent.FLAG_WINDOW_IS_OBSCURED) != 0) {
-
-            AlertDialog.Builder(this)
-                .setTitle("Security Warning")
-                .setMessage("Screen overlay detected. Please disable any screen overlay application and try again.")
-                .setCancelable(false)
-                .setPositiveButton("Exit") { _, _ ->
-                    finishAffinity()
-                }
-                .show()
-
-            return false
-        }
-
-        // -------- Existing Keyboard Hide Logic --------
-        if (event.action == MotionEvent.ACTION_DOWN) {
-            val v = currentFocus
-            if (v is EditText) {
-                val outRect = Rect()
-                v.getGlobalVisibleRect(outRect)
-                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
-                    v.clearFocus()
-                    val imm =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(v.windowToken, 0)
-                }
-            }
-        }
-
-        AppConstant.SessionTimeoutManager.reset()
-        return super.dispatchTouchEvent(event)
-    }
-*/
-
-
-    fun launchActivity(activityClass: Class<out AppCompatActivity>) {
-        startActivity(Intent(this, activityClass))
-    }
-
-    fun launchActivityClearTop(activityClass: Class<out AppCompatActivity>) {
-        startActivity(Intent(this, activityClass).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-    }
-
-    fun launchActivityClearTask(activityClass: Class<out AppCompatActivity>) {
-        startActivity(Intent(this, activityClass).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
-    }
-    fun launchActivityClearAndNewTask(activityClass: Class<out AppCompatActivity>) {
-        startActivity(Intent(this, activityClass).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-    }
-
-    fun launchActivity(activityClass: Class<out Any>, bundle: Bundle) {
-        val intent = Intent(this, activityClass)
-        intent.putExtras(bundle)
-        startActivity(intent)
-    }
-
 
 
 
