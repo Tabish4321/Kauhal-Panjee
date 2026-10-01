@@ -59,11 +59,16 @@ import com.kaushalpanjee.core.util.toastLong
 import com.kaushalpanjee.core.util.visible
 import com.kaushalpanjee.databinding.FragmentMainHomeBinding
 import com.kaushalpanjee.databinding.NavigationHeaderBinding
-import com.pehchaan.backend.service.AuthenticationActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import android.Manifest
+import android.content.pm.PackageManager
+import android.util.Log
+import com.nic.faceauth.sdk.FaceAuthSDK
+import com.nic.faceauth.sdk.contract.FaceAuthContract
+import com.nic.faceauth.sdk.models.FaceAuthResult
 
 @AndroidEntryPoint
 class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBinding::inflate) {
@@ -99,24 +104,22 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
 
 
-    private val startForAuthentication =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data = result.data
-                val status = data?.getStringExtra(AppConstant.Constants.RESULT_STATUS) ?: "failure"
-                val message = data?.getStringExtra(AppConstant.Constants.RESULT_MESSAGE) ?: "Unknown error"
+    private var registeredEmbedding: FloatArray? = null
 
-                if (status == "success") {
-                  commonViewModel.updateFaceApi(FaceCheckReq(BuildConfig.VERSION_NAME,"Y",userPreferences.getUseID()),AppUtil.getSavedTokenPreference(requireContext()))
+    private val faceAuthLauncher =
+        registerForActivityResult(FaceAuthContract()) { result: FaceAuthResult ->
+            handleFaceAuthResult(result)
+        }
 
-                    collectFaceUpdateResponse()
+    private val cameraPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
 
-
-                } else {
-                    showFaceRegDialog(requireContext(),"Alert","❌ Failure: $message")
-                }
+            if (isGranted) {
+                startFaceRegistration()
             } else {
-                showFaceRegDialog(requireContext(),"Alert","❌ Try Again")
+                showSnackBar("Camera permission is required for face registration")
             }
         }
 
@@ -124,6 +127,24 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val isSecure = FaceAuthSDK.init(requireContext())
+
+        if (!isSecure) {
+
+            Log.e(
+                "FaceAuth",
+                "Environment integrity check failed"
+            )
+
+            showSnackBar(
+                "Security check failed. Please try again."
+            )
+        }
+
+
+
 
         viewLifecycleOwner.lifecycleScope.launch {
 
@@ -488,10 +509,8 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                                     }
 
                                 }
-                                if (isFaceReg=="N"){
-                                    val userId = userPreferences.getUseID()
-                                    val userName = candidateName
-                                    startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId,userName)
+                                if (isFaceReg == "N") {
+                                    checkCameraPermissionAndRegister()
                                 }
 
                                 binding.ivMeter.setImageBitmap(createHalfCircleProgressBitmap(300,300,totalPercentange,
@@ -812,37 +831,9 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         builder.create().show()
     }
 
-    private fun startAuthentication(callType: String, userId: String,userName: String) {
-        val intent = Intent(requireContext(), AuthenticationActivity::class.java)
-        intent.putExtra(AppConstant.Constants.EXTRA_CLIENT_ID, AppConstant.Constants. YOUR_CLIENT_ID)
-        intent.putExtra(AppConstant.Constants.EXTRA_CALL_TYPE, callType)
-        intent.putExtra(AppConstant.Constants.EXTRA_USER_ID, userId)
-        if (callType == AppConstant.Constants.CALL_TYPE_REGISTRATION) {
-            intent.putExtra(AppConstant.Constants.EXTRA_USER_NAME, userName)
-        }
-        startForAuthentication.launch(intent)
-    }
 
-    private fun showFaceRegDialog(context: Context, title: String, message: String) {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
-        builder.setTitle(title)
-        builder.setMessage(message)
 
-        builder.setPositiveButton("Retry") { dialog, _ ->
-            val userId = userPreferences.getUseID()
-            val userName = candidateName
-            startAuthentication(AppConstant.Constants.CALL_TYPE_REGISTRATION, userId, userName)
-        }
 
-          builder.setNegativeButton("Try later") { dialog, _ ->
-              dialog.dismiss()
-          }
-
-        val dialog = builder.create()
-        dialog.setCancelable(false)  // Prevent outside touch dismissal
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
-    }
 
     private fun showForcePasswordDialog() {
         val dialog = AlertDialog.Builder(requireContext())
@@ -1040,5 +1031,110 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
         dialog.show()
 
+    }
+
+
+
+
+    private fun handleFaceAuthResult(result: FaceAuthResult) {
+
+        if (!result.isSuccess) {
+
+            showSnackBar(
+                result.errorMessage ?: "Face registration failed"
+            )
+
+            return
+        }
+
+        when (result.eventType) {
+
+            "register" -> {
+
+                registeredEmbedding = result.generatedEmbedding
+
+                val embedding = result.generatedEmbedding
+
+                if (embedding == null || embedding.isEmpty()) {
+
+                    showSnackBar("Face embedding not generated")
+
+                    return
+                }
+
+                Log.d(
+                    "FaceAuth",
+                    "Face registration successful"
+                )
+
+                Log.d(
+                    "FaceAuth",
+                    "Embedding size = ${embedding.size}"
+                )
+
+                // Convert FloatArray to String
+                val faceEmbedding = embedding.joinToString(",")
+
+                Log.d(
+                    "FaceAuth",
+                    "Face Embedding = $faceEmbedding"
+                )
+
+                // Call your API
+                commonViewModel.updateFaceApi(
+                    FaceCheckReq(
+                        appVersion = BuildConfig.VERSION_NAME,
+                        isFaceRegistered = "Y",
+                        loginId = userPreferences.getUseID(),
+                        faceEmbedding = faceEmbedding
+                    ),
+                    AppUtil.getSavedTokenPreference(requireContext())
+                )
+
+                collectFaceUpdateResponse()
+            }
+
+            "auth" -> {
+
+                Log.d(
+                    "FaceAuth",
+                    "Authentication result received"
+                )
+            }
+        }
+    }
+
+
+
+    private fun startFaceRegistration() {
+
+        val userId = userPreferences.getUseID()
+
+        Log.d(
+            "FaceAuth",
+            "Starting face registration for userId=$userId"
+        )
+
+        FaceAuthSDK.register(faceAuthLauncher)
+    }
+
+
+    private fun checkCameraPermissionAndRegister() {
+
+        if (
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            cameraPermissionLauncher.launch(
+                Manifest.permission.CAMERA
+            )
+
+        } else {
+
+            startFaceRegistration()
+        }
     }
 }

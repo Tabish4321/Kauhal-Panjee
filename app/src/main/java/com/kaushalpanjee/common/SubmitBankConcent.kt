@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
-import com.kaushalpanjee.common.compose.SubmitBankConsentScreen
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.databinding.SubmitconscentFragmentBinding
 
@@ -38,7 +37,7 @@ class SubmitBankConcent : BaseFragment<SubmitconscentFragmentBinding>(Submitcons
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme {
-                    SubmitBankConsentScreen(candidateId,mobile,email.toString())
+                   // SubmitBankConsentScreen(candidateId,mobile,email.toString())
                 }
             }
         }

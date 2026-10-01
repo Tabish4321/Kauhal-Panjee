@@ -1059,11 +1059,12 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         val (bitmap, fileType) = decodeBase64Image(base64String)
 
         if (fileType == "pdf") {
-            downloadPdf(base64String)  // 🔹 Download instead of showing PDF
+            downloadPdf(base64String)  // Download instead of showing PDF
         } else {
             showImageDialog(bitmap)
         }
     }
+
     private fun downloadPdf(base64String: String?) {
         if (base64String.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Invalid PDF data", Toast.LENGTH_SHORT).show()

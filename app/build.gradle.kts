@@ -32,10 +32,10 @@ android {
 
     defaultConfig {
         applicationId = "com.kaushalpanjee"
-        minSdk = 28
-        targetSdk = 35
-        versionCode = 72
-      //  versionName = "2.7.8"
+        minSdk = 29
+        targetSdk = 36
+        versionCode = 78
+        //versionName = "2.8.0"
         versionName = "2.6.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -101,6 +101,31 @@ android {
             buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
             buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
 
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_BASE_URL",
+                projectProperties["SAMIKSHA_BASE_URL"] as String
+            )
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_API_KEY",
+                projectProperties["SAMIKSHA_API_KEY"] as String
+            )
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_PIN_PRIMARY",
+                projectProperties["SAMIKSHA_PIN_PRIMARY"] as String
+            )
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_PIN_BACKUP",
+                projectProperties["SAMIKSHA_PIN_BACKUP"] as String
+            )
+
         //    signingConfig = signingConfigs.getByName("debug")
         }
 
@@ -130,12 +155,41 @@ android {
                 "ENCRYPT_IV_KEY",
                 projectProperties["ENCRYPT_IV_KEY"] as String
             )
+
+
+
             buildConfigField("String", "CRYPLIBAES", projectProperties["CRYPLIBAES"] as String)
             buildConfigField("String", "CRYPT_ID", projectProperties["CRYPT_ID"] as String)
             buildConfigField("String", "CRYPT_IV", projectProperties["CRYPT_IV"] as String)
             buildConfigField("String", "WADH_KEY", projectProperties["WADH_KEY"] as String)
             buildConfigField("String", "SSL_PIN_1", projectProperties["SSL_PIN_1"] as String)
             buildConfigField("String", "SSL_PIN_2", projectProperties["SSL_PIN_2"] as String)
+
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_BASE_URL",
+                projectProperties["SAMIKSHA_BASE_URL"] as String
+            )
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_API_KEY",
+                projectProperties["SAMIKSHA_API_KEY"] as String
+            )
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_PIN_PRIMARY",
+                projectProperties["SAMIKSHA_PIN_PRIMARY"] as String
+            )
+
+            buildConfigField(
+                "String",
+                "SAMIKSHA_PIN_BACKUP",
+                projectProperties["SAMIKSHA_PIN_BACKUP"] as String
+            )
+
 
 
         }
@@ -168,7 +222,6 @@ android {
         exclude(group = "pull-parser", module = "pull-parser")
     }
 
-
 }
 
 fun readProperties(propertiesFile: File) = Properties().apply {
@@ -179,10 +232,9 @@ fun readProperties(propertiesFile: File) = Properties().apply {
 
 dependencies {
     // Local AAR Library
-    implementation(files("libs/pehchaanlib.aar"))
+    implementation(files("libs/faceauth-sdk-release.aar"))
 
-    implementation(files("libs/samiksha-release.aar"))
-
+    implementation(files("libs/samiksha.aar"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

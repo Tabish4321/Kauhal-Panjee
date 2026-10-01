@@ -49,6 +49,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertAccountConsentRequest
 import com.kaushalpanjee.common.model.request.InsertBankConsentReq
 import com.kaushalpanjee.common.model.request.InsertBankLoanReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
@@ -447,6 +448,15 @@ class CommonRepository @Inject constructor(
     }
 
 
+    suspend fun insertBankAcConsent(insertAccountConsentRequest: InsertAccountConsentRequest,header :String): Flow<Resource<out InsertRes>>{
+        return networkBoundResourceWithoutDb {
+
+            appLevelApi.insertBankAcConsent(header,insertAccountConsentRequest)
+        }
+    }
+
+
+
 
 
     suspend fun getTrainingListAPI(trainingCenterReq: TrainingCenterReq,header :String): Flow<Resource<out TrainingCenterRes>>{
@@ -682,11 +692,6 @@ class CommonRepository @Inject constructor(
         }
     }
 
-    suspend fun insertBankConsent(header: String,  insertBankConsentReq: InsertBankConsentReq): Flow<Resource<out InsertRes>> {
-        return networkBoundResourceWithoutDb {
-            appLevelApi.insertBankConsent(header, insertBankConsentReq)
-        }
-    }
 
 
     suspend fun getAebasDetails(header: String,  aebasReq: AebasReq): Flow<Resource<out  AebasRes>> {

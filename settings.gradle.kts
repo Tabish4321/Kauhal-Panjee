@@ -6,7 +6,13 @@ pluginManagement {
                 includeGroupByRegex("com\\.google.*")
                 includeGroupByRegex("androidx.*")
             }
-            maven { url = uri("https://jitpack.io") }
+            maven {
+                url = uri("https://jitpack.io")
+
+                url = uri("<path-to>/samiksha/build/repo")
+
+
+            }
 
         }
         mavenCentral()

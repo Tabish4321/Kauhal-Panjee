@@ -31,6 +31,8 @@ import java.io.File
 import kotlin.system.exitProcess
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.d2k.samiksha.SamikshaConfig
+import com.d2k.samiksha.security.PinningConfig
 import com.kaushalpanjee.core.util.AppConstant.Constants.SESSION_TIMEOUT
 import com.kaushalpanjee.core.util.AppUtil.showUpdateDialog
 import com.kaushalpanjee.core.util.Resource
@@ -113,21 +115,6 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
 
 
 
-
-        SamikshaSdk.init( this,
-            baseUrl = "https://samikshaapi.nabard.org/",
-            apiKey = "624f2281-b0f1-44e3-9d3e-24826a53e7a6",
-            calledFrom = "NABSKILL",
-            apiVersion = "2",
-            onFailure = { msg ->
-              //  Toast.makeText( this@CommonActivity, msg, Toast.LENGTH_SHORT ).show()
-                        },
-            onSuccess = {
-              //  Toast.makeText( this@CommonActivity, "Samiksha SDK initialized successfully", Toast.LENGTH_SHORT ).show()
-        }
-        )
-
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navGraphHost) as NavHostFragment
         navController = navHostFragment.navController
@@ -155,9 +142,6 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
 
 
     }
-
-
-
 
     private fun handleNotificationIntent() {
         // Always check the current intent
@@ -210,14 +194,11 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         }
     }
 
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         //   setIntent(intent)
         handleNotificationIntent(intent)
     }
-
-
 
     private fun handleNotificationIntent(intent: Intent?) {
         if (intent?.getBooleanExtra("OPEN_NOTIFICATION_LIST", false) == true) {
@@ -247,22 +228,35 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         return Build.TAGS?.contains("test-keys") == true
     }
 
-
     private fun isRunningOnEmulator(): Boolean {
+        return (
+                Build.FINGERPRINT.startsWith("generic") ||
+                        Build.FINGERPRINT.startsWith("unknown") ||
 
-        return Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || Build.BRAND.startsWith("generic")
-                || Build.DEVICE.startsWith("generic")
-                || Build.PRODUCT.contains("sdk")
-                || Build.HARDWARE.contains("goldfish")
-                || Build.HARDWARE.contains("ranchu")
+                        Build.MODEL.contains("google_sdk", true) ||
+                        Build.MODEL.contains("emulator", true) ||
+                        Build.MODEL.contains("android sdk built for x86", true) ||
+                        Build.MODEL.contains("nox", true) ||
+
+                        Build.MANUFACTURER.contains("Genymotion", true) ||
+                        Build.MANUFACTURER.contains("nox", true) ||
+
+                        Build.HARDWARE.contains("goldfish", true) ||
+                        Build.HARDWARE.contains("ranchu", true) ||
+                        Build.HARDWARE.contains("vbox", true) ||
+                        Build.HARDWARE.contains("nox", true) ||
+
+                        Build.PRODUCT.contains("sdk", true) ||
+                        Build.PRODUCT.contains("google_sdk", true) ||
+                        Build.PRODUCT.contains("emulator", true) ||
+                        Build.PRODUCT.contains("simulator", true) ||
+
+                        Build.BRAND.startsWith("generic") ||
+                        Build.DEVICE.startsWith("generic") ||
+
+                        Build.BOARD.contains("nox", true)
+                )
     }
-
 
     private fun isDeveloperModeEnabled(activity: Activity): Boolean {
         return try {
@@ -279,7 +273,6 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
             false
         }
     }
-
 
     private fun showSecurityWarning(message: String) {
         AlertDialog.Builder(this)

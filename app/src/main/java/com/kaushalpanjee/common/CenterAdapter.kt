@@ -14,7 +14,7 @@ import com.kaushalpanjee.R
 import com.kaushalpanjee.common.model.response.Center
 import com.kaushalpanjee.core.util.isNull
 
-class CenterAdapter(private val centers: List<Center>) :
+class   CenterAdapter(private val centers: List<Center>) :
     RecyclerView.Adapter<CenterAdapter.CenterViewHolder>() {
 
     class CenterViewHolder(view: View) : RecyclerView.ViewHolder(view) {

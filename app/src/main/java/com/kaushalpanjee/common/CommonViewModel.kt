@@ -43,6 +43,7 @@ import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertAccountConsentRequest
 import com.kaushalpanjee.common.model.request.InsertBankConsentReq
 import com.kaushalpanjee.common.model.request.InsertBankLoanReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
@@ -921,6 +922,29 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
+
+
+
+
+
+
+    private var _insertBankAcConsent =
+        MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
+    val insertBankAcConsent = _insertBankAcConsent.asSharedFlow()
+
+
+    fun insertBankAcConsent(insertAccountConsentRequest: InsertAccountConsentRequest, header: String) {
+        viewModelScope.launch {
+            commonRepository.insertBankAcConsent(insertAccountConsentRequest, header).collectLatest {
+                _insertBankAcConsent.emit(it)
+            }
+        }
+
+
+    }
+
+
+
     private var _getTrainingListAPI =
         MutableStateFlow<Resource<out TrainingCenterRes>>(Resource.Loading())
     val getTrainingListAPI = _getTrainingListAPI.asSharedFlow()
@@ -1343,17 +1367,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
     }
 
 
-    private var _insertBankConsent = MutableStateFlow<Resource<out InsertRes>>(Resource.Loading())
-    val insertBankConsent = _insertBankConsent.asStateFlow()
 
-
-    fun insertBankConsent(header: String, insertBankConsentReq: InsertBankConsentReq) {
-        viewModelScope.launch {
-            commonRepository.insertBankConsent(header, insertBankConsentReq).collectLatest {
-                _insertBankConsent.emit(it)
-            }
-        }
-    }
 
 
     private val _getAebasDetails = MutableSharedFlow<Resource<out AebasRes>>()

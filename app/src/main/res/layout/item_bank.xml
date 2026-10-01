@@ -106,7 +106,7 @@
         android:fontFamily="@font/avenir_next_medium"
         android:gravity="center"
         android:layout_gravity="end"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginTop="15dp"
         android:text="@string/bankConsent"
         android:textColor="@color/color_dark_green"
@@ -116,6 +116,22 @@
         app:layout_constraintStart_toStartOf="parent"
 
         />
+
+    <TextView
+        android:id="@+id/tvCheckConsentStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:padding="12dp"
+        android:visibility="visible"
+        android:text="Check Consent Status"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
+
 
 
 </LinearLayout>

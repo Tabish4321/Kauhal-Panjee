@@ -3,8 +3,6 @@ package com.kaushalpanjee.common
 import Language
 import LanguageRead
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -12,9 +10,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import android.graphics.Color
 import android.text.style.AbsoluteSizeSpan
-import android.graphics.drawable.ColorDrawable
 import com.kaushalpanjee.common.model.WrappedList
 import com.kaushalpanjee.common.model.response.BlockList
 import com.kaushalpanjee.common.model.response.DistrictList
@@ -29,7 +25,6 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import com.kaushalpanjee.R
 import com.kaushalpanjee.core.util.toastLong
-import android.Manifest // For permission constants
 import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -37,13 +32,13 @@ import android.text.style.StyleSpan
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.pm.PackageManager // For checking permissions
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.CountDownTimer
 import android.os.Environment
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -52,6 +47,7 @@ import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -61,7 +57,6 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -72,8 +67,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.d2k.samiksha.SamikshaSdk
-import com.d2k.samiksha.model.ConsentRequest
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -86,17 +79,12 @@ import com.kaushalpanjee.common.model.request.BankingReq
 import com.kaushalpanjee.common.model.request.CandidateReq
 import com.kaushalpanjee.common.model.request.EducationalInsertReq
 import com.kaushalpanjee.common.model.request.EmploymentInsertReq
-import com.kaushalpanjee.common.model.request.GetLoginIdNdPassReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
-import com.kaushalpanjee.common.model.request.InsertBankConsentReq
 import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
-import com.kaushalpanjee.common.model.request.SectorRequest
 import com.kaushalpanjee.common.model.request.ShgValidateReq
-import com.kaushalpanjee.common.model.request.TechQualification
-import com.kaushalpanjee.common.model.request.TradeReq
 import com.kaushalpanjee.common.model.request.TradeSearchReq
 import com.kaushalpanjee.common.model.request.TrainingInsertReq
 import com.kaushalpanjee.common.model.request.ULBReq
@@ -115,7 +103,6 @@ import com.kaushalpanjee.common.model.response.Secc
 import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
 import com.kaushalpanjee.common.model.response.UserIdName
-import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
 import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.createHalfCircleProgressBitmap
@@ -139,6 +126,22 @@ import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import kotlin.collections.joinToString
 import kotlin.toString
+
+
+import com.d2k.samiksha.SamikshaSdk
+import com.d2k.samiksha.domain.ConsentRequest
+import com.d2k.samiksha.domain.ConsentResult
+import com.d2k.samiksha.domain.ConsentListener
+import com.d2k.samiksha.domain.PollingPolicy
+import com.d2k.samiksha.domain.SamikshaError
+import com.d2k.samiksha.ui.ConsentApprovalOutcome
+import com.d2k.samiksha.ui.SamikshaConsentContract
+import com.kaushalpanjee.common.model.BankItem
+import com.kaushalpanjee.common.model.request.InsertAccountConsentRequest
+import com.kaushalpanjee.core.util.AESCryptography
+import com.kaushalpanjee.core.util.copyToClipboard
+import java.util.UUID
+
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -445,9 +448,131 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedbVillagePresentLgdCodeItem = ""
     private var selectedVillagePresentItem = ""
     private var unnatiFlag = ""
-    private var consentHandleId: String? = ""
-    private var consentId: String? = ""
-    private var status: String? = ""
+
+
+    private var consentId: String? = null
+    private var status: String? = null
+
+    private var observingConsentId: String? = null
+
+
+// ============================================================
+// SAMIKSHA CONSENT RESULT LAUNCHER
+// ============================================================
+
+    private val samikshaConsentLauncher =
+        registerForActivityResult(
+            SamikshaConsentContract()
+        )
+        { outcome ->
+
+            when (outcome) {
+
+                // ====================================================
+                // APPROVED
+                // ====================================================
+                is ConsentApprovalOutcome.Approved -> {
+
+                    Log.d(
+                        "Samiksha",
+                        "Consent approval result: APPROVED"
+                    )
+
+                    val returnedConsentId =
+                        outcome.result.consentId
+
+                    Log.d(
+                        "Samiksha",
+                        "Returned consentId=$returnedConsentId"
+                    )
+
+                    if (!returnedConsentId.isNullOrBlank()) {
+
+                        consentId = returnedConsentId
+
+                        watchConsent(returnedConsentId)
+
+                    } else {
+
+                        Log.e(
+                            "Samiksha",
+                            "Approved but consentId is null/empty"
+                        )
+
+                        showSnackBar(
+                            "Invalid consent ID received after approval"
+                        )
+                    }
+                }
+
+
+                // ====================================================
+                // DECLINED
+                // ====================================================
+                is ConsentApprovalOutcome.Declined -> {
+
+                    Log.d(
+                        "Samiksha",
+                        "Consent approval result: DECLINED"
+                    )
+
+                    showSnackBar(
+                        outcome.result.remarks
+                            ?: "Consent declined"
+                    )
+                }
+
+
+                // ====================================================
+                // DISMISSED
+                // ====================================================
+                is ConsentApprovalOutcome.Dismissed -> {
+
+                    Log.d(
+                        "Samiksha",
+                        "Consent approval screen dismissed"
+                    )
+
+                    /*
+                     * Do not create a new consent here.
+                     *
+                     * If consentId already exists,
+                     * continue observing that consent.
+                     */
+
+                    consentId
+                        ?.takeIf { it.isNotBlank() }
+                        ?.let { id ->
+
+                            Log.d(
+                                "Samiksha",
+                                "Dismissed -> observing consentId=$id"
+                            )
+
+                            watchConsent(id)
+                        }
+                }
+
+
+                // ====================================================
+                // FAILED
+                // ====================================================
+                is ConsentApprovalOutcome.Failed -> {
+
+                    Log.e(
+                        "Samiksha",
+                        "Consent approval failed: ${outcome.error.message}"
+                    )
+
+                    showSnackBar(
+                        outcome.error.message
+                            ?: "Consent approval failed"
+                    )
+                }
+            }
+        }
+
+
 
     private lateinit var TechEduAdapter: ArrayAdapter<String>
     private lateinit var TechEduDomaiAdapter: ArrayAdapter<String>
@@ -504,6 +629,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedSectorCode =""
     private var selectedTradeCode = ""
     private var selectedTrade = ""
+    private var decryptedUserName = ""
 
 
 
@@ -619,65 +745,1087 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         showBankListUI()
         binding.bankingView.expandBanking.visible()
 
+
     }
 
+
+    private fun showConsentStatusDialog(
+        result: ConsentResult
+    )
+    {
+
+        val message = buildString {
+
+            append("Consent ID: ${result.consentId}\n\n")
+            append("Status: ${result.status}\n")
+            append("Account Match: ${result.accountMatch}\n")
+            append("Verified: ${result.isVerified}\n")
+
+            if (!result.referenceId.isNullOrBlank()) {
+                append("Reference ID: ${result.referenceId}\n")
+            }
+
+            if (!result.aggregatorName.isNullOrBlank()) {
+                append("Aggregator: ${result.aggregatorName}\n")
+            }
+
+            if (!result.remarks.isNullOrBlank()) {
+                append("Remarks: ${result.remarks}\n")
+            }
+        }
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Consent Status")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun checkConsentStatus(
+        consentId: String,
+        item: BankItem
+    ) {
+
+        // ============================================================
+        // VALIDATE CONSENT ID
+        // ============================================================
+
+        if (consentId.isBlank()) {
+
+            showSnackBar(
+                "No consent found. Please give consent first."
+            )
+
+            return
+        }
+
+
+        // ============================================================
+        // LOG
+        // ============================================================
+
+        Log.d(
+            "SamikshaStatus",
+            "Checking consent status: consentId=$consentId"
+        )
+
+
+        // ============================================================
+        // GET CONSENT STATUS
+        // ============================================================
+
+        SamikshaSdk.getConsentStatus(
+
+            consentId = consentId,
+
+            onSuccess = { result ->
+
+
+                // ====================================================
+                // OLD VALUES FROM BANK ITEM
+                // ====================================================
+
+                val oldAccountMatch =
+                    item.accountMatch
+                        .trim()
+
+                val oldConsentStatus =
+                    item.consentStatus
+                        .trim()
+
+                val oldAccountVerified =
+                    item.accountVerified
+                        .trim()
+
+                val oldAggregator =
+                    item.aggregator
+                        .trim()
+
+
+                // ====================================================
+                // NEW VALUES FROM SAMIKSHA
+                // ====================================================
+
+                val newAccountMatch =
+                    result.accountMatch
+                        ?.toString()
+                        ?.trim()
+                        .orEmpty()
+
+                val newConsentStatus =
+                    result.status
+                        ?.toString()
+                        ?.trim()
+                        .orEmpty()
+
+                val newAccountVerified =
+                    result.isVerified
+                        .toString()
+                        .trim()
+
+                val newAggregator =
+                    result.aggregatorName
+                        ?.toString()
+                        ?.trim()
+                        .orEmpty()
+
+
+                // ====================================================
+                // FINAL RESPONSE LOG
+                // ====================================================
+
+                Log.d(
+                    "SamikshaStatus",
+                    """
+                
+                ===== CONSENT STATUS RESPONSE =====
+                
+                consentId          = ${result.consentId}
+                
+                OLD VALUES
+                accountMatch       = $oldAccountMatch
+                consentStatus      = $oldConsentStatus
+                accountVerified    = $oldAccountVerified
+                aggregator         = $oldAggregator
+                
+                NEW VALUES
+                accountMatch       = $newAccountMatch
+                consentStatus      = $newConsentStatus
+                accountVerified    = $newAccountVerified
+                aggregator         = $newAggregator
+                
+                OTHER DETAILS
+                referenceId        = ${result.referenceId}
+                remarks            = ${result.remarks}
+                isResolved         = ${result.isResolved}
+                isVerified         = ${result.isVerified}
+                
+                ====================================
+                
+                """.trimIndent()
+                )
+
+
+                // ====================================================
+                // CHECK EACH VALUE
+                // ====================================================
+
+                val accountMatchChanged =
+                    !oldAccountMatch.equals(
+                        newAccountMatch,
+                        ignoreCase = true
+                    )
+
+                val consentStatusChanged =
+                    !oldConsentStatus.equals(
+                        newConsentStatus,
+                        ignoreCase = true
+                    )
+
+                val accountVerifiedChanged =
+                    !oldAccountVerified.equals(
+                        newAccountVerified,
+                        ignoreCase = true
+                    )
+
+                val aggregatorChanged =
+                    !oldAggregator.equals(
+                        newAggregator,
+                        ignoreCase = true
+                    )
+
+
+                // ====================================================
+                // LOG CHANGE STATUS
+                // ====================================================
+
+                Log.d(
+                    "SamikshaStatus",
+                    """
+                
+                ===== VALUE CHANGE CHECK =====
+                
+                accountMatchChanged    = $accountMatchChanged
+                consentStatusChanged    = $consentStatusChanged
+                accountVerifiedChanged = $accountVerifiedChanged
+                aggregatorChanged       = $aggregatorChanged
+                
+                =================================
+                
+                """.trimIndent()
+                )
+
+
+                // ====================================================
+                // IF ANY VALUE CHANGED
+                // ====================================================
+
+                if (
+                    accountMatchChanged ||
+                    consentStatusChanged ||
+                    accountVerifiedChanged ||
+                    aggregatorChanged
+                ) {
+
+                    Log.d(
+                        "SamikshaStatus",
+                        """
+                    
+                    Account consent data has changed.
+                    Updating backend using insertBankConsent API.
+                    
+                    """.trimIndent()
+                    )
+
+
+                    // =================================================
+                    // INSERT / UPDATE BACKEND
+                    // =================================================
+
+                val decryptAcNo =   AESCryptography.decryptIntoString(
+                        item.accountNumber,
+                        AppConstant.Constants.ENCRYPT_KEY,
+                        AppConstant.Constants.ENCRYPT_IV_KEY
+                    ) ?: "N/A"
+
+
+                    saveConsentResult(result,decryptAcNo)
+
+
+                } else {
+
+                    // =================================================
+                    // NO CHANGE
+                    // =================================================
+
+                    Log.d(
+                        "SamikshaStatus",
+                        """
+                    
+                    Account consent data is unchanged.
+                    Insert API is NOT required.
+                    
+                    """.trimIndent()
+                    )
+                }
+
+
+                // ====================================================
+                // SHOW STATUS DIALOG
+                // ====================================================
+
+                showConsentStatusDialog(result)
+            },
+
+
+            // ========================================================
+            // ERROR
+            // ========================================================
+
+            onError = { error ->
+
+                Log.e(
+                    "SamikshaStatus",
+                    "Status check failed: ${error.message}"
+                )
+
+                showSnackBar(
+                    error.message
+                        ?: "Unable to check consent status"
+                )
+            }
+        )
+    }
+
+
+
     fun bankDetails() {
+
+        // Existing KP bank list API
         commonViewModel.getBankList(
             AppUtil.getSavedTokenPreference(requireContext()),
             userPreferences.getUseID()
         )
 
         lifecycleScope.launch {
+
             commonViewModel.bankList.collectLatest { resource ->
+
                 when (resource) {
+
                     is Resource.Success -> {
+
                         hideProgressBar()
+
                         val apiList = resource.data?.data ?: emptyList()
 
                         binding.bankingView.llBankContainer.removeAllViews()
+
                         if (apiList.isEmpty()) {
+
                             binding.bankingView.tvNoBank.visible()
+
                             return@collectLatest
                         }
+
                         binding.bankingView.tvNoBank.gone()
-                        apiList.map { item ->
+
+                        apiList.forEach { item ->
+
                             val itemView = layoutInflater.inflate(
                                 R.layout.item_bank,
                                 binding.bankingView.llBankContainer,
                                 false
                             )
-                            itemView.findViewById<TextView>(R.id.tvIfsc).text = item.ifscCode
-                            itemView.findViewById<TextView>(R.id.tvBankName).text = item.bankName
-                            itemView.findViewById<TextView>(R.id.tvAccount).text = item.accountNumber
-                            itemView.findViewById<TextView>(R.id.tvPan).text = AESCryptography.decryptIntoString(item.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
+
+                            // Existing bank details
+                            itemView.findViewById<TextView>(
+                                R.id.tvIfsc
+                            ).text = item.ifscCode
+
+                            itemView.findViewById<TextView>(
+                                R.id.tvBankName
+                            ).text = item.bankName
+
+                            itemView.findViewById<TextView>(
+                                R.id.tvAccount
+                            ).text = item.accountNumber
+
+                            itemView.findViewById<TextView>(
+                                R.id.tvPan
+                            ).text =
+                                AESCryptography.decryptIntoString(
+                                    item.panNo,
+                                    AppConstant.Constants.ENCRYPT_KEY,
+                                    AppConstant.Constants.ENCRYPT_IV_KEY
+                                )
+
                             binding.bankingView.llBankContainer.addView(itemView)
 
-                            itemView.findViewById<TextView>(R.id.tvConsent).setOnClickListener {
+
+                            val tvConsent = itemView.findViewById<TextView>(R.id.tvConsent)
+
+                            val accountMatch = item.accountMatch
+                                .trim()
+                                .uppercase()
+                                .replace(" ", "_")
+
+                            if (
+                                accountMatch == "MATCHED" ||
+                                accountMatch == "PARTIALLY_MATCHED"
+                            ) {
+                                tvConsent.gone()
+                            } else {
+                                tvConsent.visible()
+                            }
+
+                            // Samiksha Consent click
+                            itemView.findViewById<TextView>(
+                                R.id.tvConsent
+                            ).setOnClickListener {
 
                                 showConsentDialog(
                                     userId = userPreferences.getUseID(),
                                     mobile = decryptMobileNo,
-                                    email = decryptEmail
+                                    email = decryptEmail,
+                                    fipId = item.fipId,
+                                    bankName = item.bankName,
+                                    ifscCode = item.ifscCode,
+                                    accountNumber = AESCryptography.decryptIntoString(
+                                        item.accountNumber,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY
+                                    ) ?: "N/A",
+                                    pan = AESCryptography.decryptIntoString(
+                                        item.panNo,
+                                        AppConstant.Constants.ENCRYPT_KEY,
+                                        AppConstant.Constants.ENCRYPT_IV_KEY
+                                    ) ?: ""
+                                )
+                            }
+
+
+
+                         /*   itemView.findViewById<TextView>(
+                                R.id.tvCheckConsentStatus
+                            ).setOnClickListener {
+
+                                //checkConsentStatus("d533adbb-629c-43ba-91b8-b5ef557b65f8")
+                                //checkConsentStatus("96872b83-c2b1-483e-b6bc-0dc2bd9b64dd")
+                                //checkConsentStatus("b02f6e6c-fa44-479a-8338-54c984f143f7")
+
+                            }*/
+
+
+
+                            itemView.findViewById<TextView>(
+                                R.id.tvCheckConsentStatus
+                            ).setOnClickListener {
+
+                                if (item.consentId.isNullOrBlank()) {
+                                    showSnackBar("No consent found for this bank.")
+                                    return@setOnClickListener
+                                }
+
+                                checkConsentStatus(
+                                    item.consentId,
+                                    item
                                 )
                             }
 
                         }
                     }
 
+
                     is Resource.Error -> {
+
                         resource.error?.let { baseErrorResponse ->
-                            showSnackBar(baseErrorResponse.message ?: "Something went wrong")
+
+                            showSnackBar(
+                                baseErrorResponse.message
+                                    ?: "Something went wrong"
+                            )
                         }
+
                         hideProgressBar()
+
                         binding.bankingView.tvNoBank.visible()
                     }
 
+
                     is Resource.Loading -> {
+
                         showProgressBar()
                     }
                 }
             }
         }
+    }
+
+
+    private fun showConsentDialog(
+        userId: String,
+        mobile: String,
+        email: String,
+        fipId: String,
+        bankName: String,
+        ifscCode: String,
+        accountNumber: String,
+        pan: String
+    ) {
+
+        val dialogView = layoutInflater.inflate(
+            R.layout.dialog_submit_consent,
+            null
+        )
+
+        val etMobile =
+            dialogView.findViewById<EditText>(
+                R.id.etMobile
+            )
+
+        val btnSubmit =
+            dialogView.findViewById<TextView>(
+                R.id.btnSubmitConsent
+            )
+
+        val progressBar =
+            dialogView.findViewById<ProgressBar>(
+                R.id.progressBar
+            )
+
+        etMobile.setText(mobile)
+
+        val dialog =
+            MaterialAlertDialogBuilder(requireContext())
+                .setView(dialogView)
+                .setCancelable(true)
+                .create()
+
+        dialog.show()
+
+
+        btnSubmit.setOnClickListener {
+
+            val mobileNo =
+                etMobile.text
+                    .toString()
+                    .trim()
+
+
+            // ====================================================
+            // VALIDATION
+            // ====================================================
+
+            if (mobileNo.isEmpty()) {
+
+                etMobile.error =
+                    "Please enter mobile number"
+
+                return@setOnClickListener
+            }
+
+
+            progressBar.visible()
+
+            btnSubmit.isEnabled = false
+
+
+            // ====================================================
+            // STOP PREVIOUS OBSERVER
+            // ====================================================
+
+            stopCurrentConsentObservation()
+
+
+            // ====================================================
+            // CLEAR OLD CONSENT STATE
+            // ====================================================
+
+            consentId = null
+            status = null
+
+
+            // ====================================================
+            // CREATE NEW CONSENT REQUEST
+            // ====================================================
+
+           /* val request = ConsentRequest(
+
+                candidateId = "userId",
+              //  b02f6e6c-fa44-479a-8338-54c984f143f7
+                candidateName = "Rahul Pandey",
+
+                mobileNo = "9977418203",
+
+                userId = "123456",
+
+                fipId = "UBI-FIP",
+
+                bankName = "Union Bank Of India",
+
+                ifscCode = "UBIN0542148",
+
+                accountNumber = "421402010013093",
+
+                // New reference ID every time
+                referenceId = UUID.randomUUID().toString(),
+
+                email = email,
+
+                pan = pan
+            )*/
+
+
+            val request = ConsentRequest(
+
+                candidateId = userId,
+
+                candidateName = decryptedUserName,
+
+                mobileNo = mobileNo,
+
+                userId = userPreferences.getUseID(),
+
+                fipId = fipId,
+
+                bankName = bankName,
+
+                ifscCode = ifscCode,
+
+                accountNumber = accountNumber,
+
+                // New reference ID every time
+                referenceId = UUID.randomUUID().toString(),
+
+                email = email,
+
+                pan = pan
+            )
+
+            // ====================================================
+            // REQUEST LOG
+            // ====================================================
+
+            Log.d(
+                "SamikshaRequest",
+                """
+            ===== SAMIKSHA CONSENT REQUEST =====
+            candidateId     = ${request.candidateId}
+            candidateName   = ${request.candidateName}
+            mobileNo        = ${request.mobileNo}
+            userId          = ${request.userId}
+            fipId           = ${request.fipId}
+            bankName        = ${request.bankName}
+            ifscCode        = ${request.ifscCode}
+            accountNumber   = ${request.accountNumber}
+            referenceId     = ${request.referenceId}
+            email           = ${request.email}
+            pan             = ${request.pan}
+            ====================================
+            """.trimIndent()
+            )
+
+
+            // ====================================================
+            // CREATE CONSENT
+            // ====================================================
+
+            SamikshaSdk.requestConsent(
+
+                request = request,
+
+                onSuccess = { result ->
+
+                    progressBar.gone()
+
+                    btnSubmit.isEnabled = true
+
+
+                    val id = result.consentId
+
+
+                    // ====================================================
+                    // VALIDATE CONSENT ID
+                    // ====================================================
+
+                    if (id.isNullOrBlank()) {
+
+                        Log.e(
+                            "Samiksha",
+                            "Invalid consent ID received"
+                        )
+
+                        showSnackBar(
+                            "Invalid consent ID received"
+                        )
+
+                        return@requestConsent
+                    }
+
+
+                    // ====================================================
+                    // SAVE CONSENT
+                    // ====================================================
+
+                    consentId = id
+
+                    status =
+                        result.status?.toString()
+
+
+                    Log.d(
+                        "Samiksha",
+                        "===================================="
+                    )
+
+                    Log.d(
+                        "Samiksha",
+                        "NEW CONSENT CREATED"
+                    )
+
+                    Log.d(
+                        "Samiksha",
+                        "consentId=$id"
+                    )
+
+                    "consentId=$id".copyToClipboard(requireContext())
+
+                    Log.d(
+                        "Samiksha",
+                        "status=${result.status}"
+                    )
+
+                    Log.d(
+                        "Samiksha",
+                        "referenceId=${result.referenceId}"
+                    )
+
+                    Log.d(
+                        "Samiksha",
+                        "===================================="
+                    )
+
+
+                    // ====================================================
+                    // FINAL RESPONSE LOG
+                    // ====================================================
+
+                    Log.d(
+                        "SamikshaFinalSubmit",
+                        """
+                    ===== FINAL SUBMIT RESPONSE =====
+                    consentId      = ${result.consentId}
+                    candidateId    = ${result.candidateId}
+                    status         = ${result.status}
+                    accountMatch   = ${result.accountMatch}
+                    referenceId    = ${result.referenceId}
+                    aggregatorName = ${result.aggregatorName}
+                    redirectUrl    = ${result.redirectUrl}
+                    remarks        = ${result.remarks}
+                    isResolved     = ${result.isResolved}
+                    isVerified     = ${result.isVerified}
+                    ==================================
+                    """.trimIndent()
+                    )
+
+
+                    saveConsentResult(result,request.accountNumber)
+
+
+                    dialog.dismiss()
+
+
+                    try {
+
+                        samikshaConsentLauncher.launch(id)
+
+                    } catch (e: Exception) {
+
+                        Log.e(
+                            "Samiksha",
+                            "Failed to launch consent approval",
+                            e
+                        )
+
+                        showSnackBar(
+                            e.message
+                                ?: "Unable to open consent approval"
+                        )
+                    }
+                },
+
+
+                // ====================================================
+                // REQUEST ERROR
+                // ====================================================
+
+                onError = { error ->
+
+                    progressBar.gone()
+
+                    btnSubmit.isEnabled = true
+
+                    Log.e(
+                        "Samiksha",
+                        "Consent request failed: ${error.message}"
+                    )
+
+                    showSnackBar(
+                        error.message
+                            ?: "Unable to create consent"
+                    )
+                }
+            )
+        }
+    }
+
+
+// ============================================================
+// START CONSENT OBSERVATION
+// ============================================================
+
+    private fun watchConsent(
+        newConsentId: String
+    ) {
+
+        // ====================================================
+        // VALIDATE
+        // ====================================================
+
+        if (newConsentId.isBlank()) {
+
+            Log.e(
+                "SamikshaStatus",
+                "Consent ID is empty"
+            )
+
+            return
+        }
+
+
+        // ====================================================
+        // PREVENT DUPLICATE OBSERVER
+        // ====================================================
+
+        if (observingConsentId == newConsentId) {
+
+            Log.d(
+                "SamikshaStatus",
+                "Already observing consentId=$newConsentId"
+            )
+
+            return
+        }
+
+
+        // ====================================================
+        // STOP OLD OBSERVER
+        // ====================================================
+
+        observingConsentId?.let { oldId ->
+
+            if (oldId != newConsentId) {
+
+                Log.d(
+                    "SamikshaStatus",
+                    "Stopping previous observer: $oldId"
+                )
+
+                try {
+
+                    SamikshaSdk.stopObserving(oldId)
+
+                } catch (e: Exception) {
+
+                    Log.e(
+                        "SamikshaStatus",
+                        "Error stopping previous observer",
+                        e
+                    )
+                }
+            }
+        }
+
+
+        // ====================================================
+        // SAVE CURRENT OBSERVER ID
+        // ====================================================
+
+        observingConsentId = newConsentId
+
+
+        Log.d(
+            "SamikshaStatus",
+            "===================================="
+        )
+
+        Log.d(
+            "SamikshaStatus",
+            "STARTING CONSENT OBSERVATION"
+        )
+
+        Log.d(
+            "SamikshaStatus",
+            "consentId=$newConsentId"
+        )
+
+        Log.d(
+            "SamikshaStatus",
+            "===================================="
+        )
+
+
+        // ====================================================
+        // START OBSERVATION
+        // ====================================================
+
+        SamikshaSdk.observeConsent(
+
+            consentId = newConsentId,
+
+            listener = object : ConsentListener {
+
+
+                // =================================================
+                // STATUS CHANGED
+                // =================================================
+
+                override fun onStatusChanged(
+                    result: ConsentResult
+                ) {
+
+                    status =
+                        result.status?.toString()
+
+                    Log.d(
+                        "SamikshaStatus",
+                        """
+                    ===== CONSENT STATUS CHANGED =====
+                    consentId     = ${result.consentId}
+                    candidateId   = ${result.candidateId}
+                    status        = ${result.status}
+                    accountMatch  = ${result.accountMatch}
+                    referenceId   = ${result.referenceId}
+                    aggregator    = ${result.aggregatorName}
+                    remarks       = ${result.remarks}
+                    isResolved    = ${result.isResolved}
+                    isVerified    = ${result.isVerified}
+                    ==================================
+                    """.trimIndent()
+                    )
+                }
+
+
+                // =================================================
+                // RESOLVED
+                // =================================================
+
+                override fun onResolved(
+                    result: ConsentResult
+                ) {
+
+                    Log.d(
+                        "SamikshaStatus",
+                        """
+                    ===== CONSENT RESOLVED =====
+                    consentId     = ${result.consentId}
+                    status        = ${result.status}
+                    accountMatch  = ${result.accountMatch}
+                    referenceId   = ${result.referenceId}
+                    aggregator    = ${result.aggregatorName}
+                    remarks       = ${result.remarks}
+                    isResolved    = ${result.isResolved}
+                    isVerified    = ${result.isVerified}
+                    ============================
+                    """.trimIndent()
+                    )
+
+
+                    // =================================================
+                    // STOP OBSERVER
+                    // =================================================
+
+                    stopCurrentConsentObservation()
+
+
+                    // =================================================
+                    // VERIFIED
+                    // =================================================
+
+                    if (result.isVerified) {
+
+                        Log.d(
+                            "SamikshaStatus",
+                            "FINAL RESULT: VERIFIED"
+                        )
+
+                        showSnackBar(
+                            "Bank account verified successfully"
+                        )
+
+
+                    } else {
+
+
+
+                        showSnackBar(
+                            result.remarks
+                                ?: "Bank account Consent Requested successFully Kindly check the status"
+                        )
+                    }
+                }
+
+
+                // =================================================
+                // ERROR
+                // =================================================
+
+                override fun onError(
+                    error: SamikshaError,
+                    willRetry: Boolean
+                ) {
+
+                    Log.e(
+                        "SamikshaStatus",
+                        "Status check error: ${error.message}, willRetry=$willRetry"
+                    )
+
+                    if (!willRetry) {
+
+                        if (observingConsentId == newConsentId) {
+                            observingConsentId = null
+                        }
+
+                        showSnackBar(
+                            error.message
+                                ?: "Unable to check consent status"
+                        )
+                    }
+                }
+            },
+
+
+            // ====================================================
+            // POLLING
+            // ====================================================
+
+            policy = PollingPolicy(
+                intervalSeconds = 15,
+                maxDurationMinutes = 30
+            )
+        )
+    }
+
+
+// ============================================================
+// STOP CURRENT CONSENT OBSERVATION
+// ============================================================
+
+    private fun stopCurrentConsentObservation() {
+
+        val currentId =
+            observingConsentId
+
+
+        if (currentId.isNullOrBlank()) {
+
+            Log.d(
+                "SamikshaStatus",
+                "No active consent observer"
+            )
+
+            return
+        }
+
+
+        Log.d(
+            "SamikshaStatus",
+            "Stopping consent observation: $currentId"
+        )
+
+
+        try {
+
+            SamikshaSdk.stopObserving(currentId)
+
+        } catch (e: Exception) {
+
+            Log.e(
+                "SamikshaStatus",
+                "Error while stopping consent observation",
+                e
+            )
+        }
+
+
+        observingConsentId = null
+    }
+
+
+// ============================================================
+// IMPORTANT:
+// DO NOT STOP OBSERVER IN onStop()
+// ============================================================
+//
+// The SDK approval screen can cause Activity/Fragment lifecycle
+// changes. Calling stopObserving() from onStop() can therefore
+// interfere with the consent flow.
+//
+// Keep onStop() empty unless SDK documentation specifically
+// requires stopObserving() there.
+// ============================================================
+
+    override fun onStop() {
+        super.onStop()
+
+        Log.d(
+            "Samiksha",
+            "Fragment/Activity onStop called"
+        )
+
+        // Do NOT call:
+        // SamikshaSdk.stopObserving(...)
     }
 
     private fun showBankListUI() {
@@ -3080,6 +4228,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     userPreferences.getUseID()
                 )
 
+                district.clear()
+                block.clear()
+                gp.clear()
+                village.clear()
+                wardName.clear()
+                ulbName.clear()
+
+
+
 
                 selectedDistrictCodeItem = ""
                 selectedDistrictLgdCodeItem = ""
@@ -3192,6 +4349,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 ulbAdapter.notifyDataSetChanged()
 
 
+                block.clear()
+                gp.clear()
+                village.clear()
+                wardName.clear()
+                ulbName.clear()
+
                 selectedUlbCodeItem = ""
                 selectedUlbNameItem = ""
                 binding.spinnerUlb.clearFocus()
@@ -3277,6 +4440,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     userPreferences.getUseID()
                 )
 
+                gp.clear()
+                village.clear()
+                wardName.clear()
+                ulbName.clear()
+
                 selectedGpCodeItem = ""
                 selectedbGpLgdCodeItem = ""
                 selectedGpItem = ""
@@ -3343,7 +4511,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 
-
+                village.clear()
+                wardName.clear()
+                ulbName.clear()
 
                 selectedVillageCodeItem = ""
                 selectedbVillageLgdCodeItem = ""
@@ -3391,6 +4561,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 selectedVillageCodeItem = villageCode[position]
                 selectedbVillageLgdCodeItem = villageLgdCode[position]
 
+                ulbName.clear()
+                wardName.clear()
 
 
                 selectedVillagePresentCodeItem = ""
@@ -3466,6 +4638,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 selectedPreWardCodeItem = ""
                 selectedPreWardNameItem = ""
+
 
 
                 wardPreName.clear()
@@ -5704,6 +6877,65 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
+
+
+    private fun collectInsertConsentResponse() {
+        lifecycleScope.launch {
+            collectLatestLifecycleFlow(commonViewModel.insertBankAcConsent) {
+                when (it) {
+                    is Resource.Loading -> showProgressBar()
+                    is Resource.Error -> {
+                        hideProgressBar()
+                        it.error?.let { baseErrorResponse ->
+                            //   toastShort(baseErrorResponse.message)
+                        }
+                    }
+
+                    is Resource.Success -> {
+                        hideProgressBar()
+                        it.data?.let { insertBankAcConsent ->
+                            when (insertBankAcConsent.responseCode) {
+
+                                200 -> {
+
+
+                                    showSnackBar(insertBankAcConsent.responseMsg)
+
+
+                                }
+
+                                301 -> {
+                                    showSnackBar("Please Update from PlayStore")
+                                }
+
+                                401 -> {
+                                    AppUtil.showSessionExpiredDialog(
+                                        findNavController(),
+                                        requireContext()
+                                    )
+                                }
+
+                                else -> {
+                                    showSnackBar(insertBankAcConsent.responseDesc)
+                                }
+                            }
+                        } ?: showSnackBar("Internal Server Error")
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     private fun collectStateResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getStateList) {
@@ -6012,7 +7244,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                         for (x in userAadhaarDetailsList) {
 
                                             // Decrypt Aadhaar Details
-                                            val decryptedUserName =
+                                             decryptedUserName =
                                                 AESCryptography.decryptIntoString(
                                                     x.userName,
                                                     AppConstant.Constants.ENCRYPT_KEY,
@@ -6548,6 +7780,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun collectNregaValidateResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.nRegaValidate) {
@@ -6565,8 +7798,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         it.data?.let { getValidateStatus ->
                             if (getValidateStatus.isSuccessful) {
                                 nregaValidateStatus = getValidateStatus.body()?.Status ?: ""
-                                if (getValidateStatus.body()?.Remarks.toString()=="Some error occurred")
-                                showSnackBar("Please enter a valid Job Card Number (e.g., HR-00-000-000-000/0000).")
+                                if (getValidateStatus.body()?.Remarks.toString()=="Some error occurred"){
+
+                                    toastLong("Please enter a valid Job Card Number (e.g., HR-00-000-000-000/0000).")
+
+                                }
+
+                                else
+                                    toastLong(getValidateStatus.body()?.Remarks.toString())
+
                                 nregaJobCard = binding.etNregaValidate.text.toString()
 
 
@@ -7863,154 +9103,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
-    private fun collectInsertConsentResponse() {
-        lifecycleScope.launch {
-            collectLatestLifecycleFlow(commonViewModel.insertBankConsent) {
-                when (it) {
-                    is Resource.Loading -> showProgressBar()
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
-
-                        }
-                    }
-
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { insertBankConsent ->
-                            if (insertBankConsent.responseCode == 200) {
-
-                               toastShort(insertBankConsent.responseMsg)
-
-                            }
-                            else {
-                                toastShort(insertBankConsent.responseMsg)
-
-                            }
-                        } ?: showSnackBar("Internal Server Error")
-                    }
-                }
-            }
-        }
-    }
 
     private fun getMissingFields(fields: Map<String, String>): List<String> {
         return fields.filter { it.value.isBlank() }.map { it.key }
     }
 
-    private fun showConsentDialog(
-        userId: String,
-        mobile: String,
-        email: String
-    ) {
 
-        val dialogView = layoutInflater.inflate(
-            R.layout.dialog_submit_consent,
-            null
-        )
-
-        val etMobile = dialogView.findViewById<EditText>(R.id.etMobile)
-        val btnSubmit =
-            dialogView.findViewById<TextView>(R.id.btnSubmitConsent)
-
-        val progressBar =
-            dialogView.findViewById<ProgressBar>(R.id.progressBar)
-
-        etMobile.setText(mobile)
-
-        val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setView(dialogView)
-            .setCancelable(true)
-            .create()
-
-        dialog.show()
-
-        btnSubmit.setOnClickListener {
-
-            val mobileNo = etMobile.text.toString().trim()
-
-            if (mobileNo.isEmpty()) {
-                etMobile.error = "Enter mobile number"
-                return@setOnClickListener
-            }
-
-            progressBar.visible()
-            btnSubmit.isEnabled = false
-
-            val request = ConsentRequest(
-                mobileNo = mobileNo,
-                userId = userId,
-                fipId = "",
-                email = email,
-                pan = "",
-                candidateId = userId,
-                aadharNo = ""
-            )
-
-            SamikshaSdk.submitConsent(
-                context = requireContext(),
-                request = request,
-
-                onSuccess = { response ->
-
-                    progressBar.gone()
-                    btnSubmit.isEnabled = true
-
-
-
-                    val consentList = response.data?.consentList
-                    val accountList = response.data?.acountListStatus
-
-                    if (consentList != null) {
-                        for (x in consentList){
-
-                             consentId =x.consentId
-                             consentHandleId =x.consentHandleId
-                             status =x.status
-                        }
-                    }
-
-                    Toast.makeText(
-                        requireContext(),
-                        status,
-                        Toast.LENGTH_LONG
-                    ).show()
-
-
-                    if (accountList != null) {
-                        for (x in accountList){
-
-
-                        }
-                    }
-
-                    Toast.makeText(
-                        requireContext(),
-                        consentId,
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    //log("", consentId?:"")
-
-                    dialog.dismiss()
-                },
-
-                onError = { error ->
-
-                    progressBar.gone()
-                    btnSubmit.isEnabled = true
-
-                    Toast.makeText(
-                        requireContext(),
-                        error.message ?: "Something went wrong",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            )
-
-        }
-    }
 
     private fun collectAebasDetailsResponse() {
         lifecycleScope.launch {
@@ -8127,9 +9225,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     private fun isValidJobCard(jobCard: String): Boolean {
-        val regex = Regex("^[A-Z]{2}-\\d+$")
+        val regex = Regex("^[A-Z]{2}(?:-\\d+)+/\\d+$")
         return regex.matches(jobCard)
     }
+
+
+
+
+    private fun saveConsentResult(result: ConsentResult,acNo : String) {
+
+        val accountMatch = result.accountMatch?.toString().orEmpty()
+        val consentStatus = result.status?.toString().orEmpty()
+        val accountVerified = result.isVerified.toString()
+        val aggregator = result.aggregatorName?.toString().orEmpty()
+
+
+
+
+        val encryptedAcc =   AESCryptography.encryptIntoBase64String(acNo, AppConstant.Constants.ENCRYPT_KEY, AppConstant.Constants.ENCRYPT_IV_KEY)
+
+
+
+        commonViewModel.insertBankAcConsent(
+            InsertAccountConsentRequest(
+                BuildConfig.VERSION_NAME,
+                userPreferences.getUseID(),
+                encryptedAcc,
+                result.consentId.orEmpty(),
+                consentStatus,
+                accountMatch,
+                accountVerified,
+                aggregator
+            ),
+            AppUtil.getSavedTokenPreference(requireContext())
+        )
+    }
+
+
+
 
 }
 

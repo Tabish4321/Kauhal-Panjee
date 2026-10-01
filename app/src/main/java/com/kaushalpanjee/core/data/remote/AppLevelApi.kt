@@ -42,6 +42,7 @@ import com.kaushalpanjee.common.model.request.GetSearchTraining
 import com.kaushalpanjee.common.model.request.GramPanchayatReq
 import com.kaushalpanjee.common.model.request.ImageChangeReq
 import com.kaushalpanjee.common.model.request.InsertAadhaarTxnReq
+import com.kaushalpanjee.common.model.request.InsertAccountConsentRequest
 import com.kaushalpanjee.common.model.request.InsertBankConsentReq
 import com.kaushalpanjee.common.model.request.InsertBankLoanReq
 import com.kaushalpanjee.common.model.request.InsertOjtReq
@@ -413,6 +414,16 @@ interface AppLevelApi {
 
 
 
+
+    @POST(ApiConstant.INSERT_CONSENT)
+    suspend fun insertBankAcConsent(@Header("Authorization") token: String,
+                                     @Body insertAccountConsentRequest: InsertAccountConsentRequest): InsertRes
+
+
+
+
+
+
     @POST(ApiConstant.API_TRAINING_LIST)
     suspend fun getTrainingListAPI(@Header("Authorization") token: String,
                                    @Body trainingCenterReq: TrainingCenterReq):TrainingCenterRes
@@ -526,9 +537,6 @@ interface AppLevelApi {
                                     @Body insertBankLoanReq: InsertBankLoanReq  ) : InsertRes
 
 
-    @POST(ApiConstant.API_INSERT_FOR_BANK_Consent)
-    suspend fun insertBankConsent( @Header("Authorization") token: String,
-                                       @Body insertBankConsentReq: InsertBankConsentReq  ) : InsertRes
 
 
 

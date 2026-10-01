@@ -605,9 +605,9 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     fun isAppInstalled(context: Context, packageName: String): Boolean {
         return try {
             context.packageManager.getPackageInfo(packageName, 0)
-            true // App installed hai
+            true
         } catch (e: PackageManager.NameNotFoundException) {
-            false // App installed nahi hai
+            false
         }
     }
 

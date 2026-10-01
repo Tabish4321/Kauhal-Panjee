@@ -395,7 +395,7 @@
         android:layout_margin="20dp"
         android:text="Help Desk"
         android:textAllCaps="false"
-        android:visibility="visible"
+        android:visibility="gone"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:contentDescription="Raise Support Ticket"
