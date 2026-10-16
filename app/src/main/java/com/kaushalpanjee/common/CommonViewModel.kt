@@ -1236,7 +1236,7 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             currentList.find { it.id == notificationId } ?: return
 
         val request = InvitationApprovalRequest(
-            scheme = "RSETI",
+            scheme = "DDUGKY",
             candidateId = notification.candidateId,
             status = status,
             instituteId = notification.instituteId,
@@ -1244,7 +1244,9 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
             instituteTrade = "",
             centerName = "",
             centerTrade = "",
-            entryCode = ""
+            entryCode = "",
+            tcId = notification.tcId,
+            sanctionOrder = notification.sanctionOrderNumber,
         )
         viewModelScope.launch {
             _actionLoading.value = notificationId

@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -83,6 +82,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import android.content.Context
+
 const val CAMERA_REQUEST = 101
 
 @AndroidEntryPoint
@@ -90,6 +95,8 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private val commonViewModel: CommonViewModel by viewModels()
 
     private var stateList: MutableList<WrappedList> = mutableListOf()
+
+    private var userCreationRequestJson: String = ""
 
     private var selectedState = ""
     private var showPassword = true
@@ -865,8 +872,7 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
 
                                             if (selectedStateCode!=""){
 
-
-                                                commonViewModel.getCreateUserAPI(UserCreationReq(
+                                                val request = UserCreationReq(
                                                     encryptedAadhaarString,
                                                     encryptedName,
                                                     encryptedGender,
@@ -884,9 +890,22 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
                                                     encryptedStreet,
                                                     BuildConfig.VERSION_NAME,
                                                     photo,
-                                                    AppUtil.getAndroidId(requireContext()),encryptedLdgdCode,true
+                                                    AppUtil.getAndroidId(requireContext()),
+                                                    encryptedLdgdCode,
+                                                    true
                                                 )
-                                                )
+
+                                                val gson = GsonBuilder()
+                                                    .setPrettyPrinting()
+                                                    .serializeNulls()
+                                                    .create()
+
+
+                                                userCreationRequestJson = gson.toJson(request)
+
+
+                                                commonViewModel.getCreateUserAPI(request)
+
 
 
                                             }
@@ -1132,71 +1151,93 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
     private fun collectUserCreationResponse() {
         lifecycleScope.launch {
             collectLatestLifecycleFlow(commonViewModel.getuserCreation) {
-                when (it) {
-                    is Resource.Loading -> {}
 
+                when (it) {
+
+                    is Resource.Loading -> {
+                        // No action required
+                    }
 
                     is Resource.Error -> {
 
-                        toastShort("User creation failed try again ")
+                        // Save request + error response
+                        val errorResponse = JsonObject().apply {
+                            addProperty("type", "error")
+                            addProperty("code", it.error?.code)
+                            addProperty("message", it.error?.message)
+                        }
+
+                        saveUserCreationApiLog(errorResponse)
+
+                        toastShort("User creation failed, try again")
 
                         when (it.error?.code) {
-
-                            500 -> {
-                                showSnackBar(it.error.message)
-                            }
-
-                            401 -> {
-                                showSnackBar("Session Expired")
-                            }
-
-                            404 -> {
-                                showSnackBar("API Not Found")
-                            }
-
-                            else -> {
-                                showSnackBar(it.error?.message ?: "Unknown Error")
-                            }
+                            500 -> showSnackBar(it.error.message)
+                            401 -> showSnackBar("Session Expired")
+                            404 -> showSnackBar("API Not Found")
+                            else -> showSnackBar(
+                                it.error?.message ?: "Unknown Error"
+                            )
                         }
                     }
 
                     is Resource.Success -> {
+
+                        // Save request + actual API response
+                        saveUserCreationApiLog(it.data)
+
                         it.data?.let { getUserCreationRes ->
+
                             if (getUserCreationRes.responseCode == 200) {
 
                                 for (x in getUserCreationRes.wrappedList) {
                                     userPreferences.updateUserId(null)
                                     userPreferences.updateUserId(x.userId)
-                                    AppUtil.saveTokenPreference(requireContext(),"Bearer "+x.appCode)
 
-
+                                    AppUtil.saveTokenPreference(
+                                        requireContext(),
+                                        "Bearer " + x.appCode
+                                    )
                                 }
-                                userPhotoUIADI?.let { it1 -> showBottomSheet(it1, name, gender, dob, careOf) }
-                                AppUtil.saveEmailPreference(requireContext(),"")
 
-                                toastLong("Your username and password have been sent to your email.")
+                                userPhotoUIADI?.let {
+                                    showBottomSheet(
+                                        it,
+                                        name,
+                                        gender,
+                                        dob,
+                                        careOf
+                                    )
+                                }
 
-                            }
-                            else if (getUserCreationRes.responseCode == 301) {
+                                AppUtil.saveEmailPreference(
+                                    requireContext(),
+                                    ""
+                                )
+
+                                toastLong(
+                                    "Your username and password have been sent to your email."
+                                )
+
+                            } else if (getUserCreationRes.responseCode == 301) {
 
                                 showUpdateDialog()
-                            }
 
-                            else if (getUserCreationRes.responseCode == 333) {
+                            } else if (getUserCreationRes.responseCode == 333) {
+
+                                showSnackBar(getUserCreationRes.responseDesc)
+
+                            } else {
 
                                 showSnackBar(getUserCreationRes.responseDesc)
                             }
-                            else
-                                showSnackBar(getUserCreationRes.responseDesc)
-                           // toastShort("error in create Api")
 
-                        } ?: showSnackBar("Internal Sever Error")
+                        } ?: showSnackBar("Internal Server Error")
                     }
                 }
             }
         }
-    }
-    object AadhaarValidator {
+    }    object AadhaarValidator {
         private val multiplicationTable = arrayOf(
             intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
             intArrayOf(1, 2, 3, 4, 0, 6, 7, 8, 9, 5),
@@ -1330,4 +1371,40 @@ class EKYCFragment : BaseFragment<FragmentEkyBinding>(FragmentEkyBinding::inflat
         }
     }
 
-}
+
+
+    private fun saveUserCreationApiLog(response: Any?) {
+
+        val gson = GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .create()
+
+        val combinedJson = JsonObject().apply {
+
+            add(
+                "request",
+                JsonParser().parse(userCreationRequestJson)
+            )
+
+            add(
+                "response",
+                JsonParser().parse(gson.toJson(response))
+            )
+        }
+
+        val finalJson = gson.toJson(combinedJson)
+
+        requireContext()
+            .getSharedPreferences(
+                "app_preferences",
+                Context.MODE_PRIVATE
+            )
+            .edit()
+            .putString("user_creation_api_log", finalJson)
+            .apply()
+
+        finalJson.copyToClipboard(requireContext())
+
+        toastLong("User creation request and response saved and copied")
+    }}

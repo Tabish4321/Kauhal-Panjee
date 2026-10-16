@@ -14,5 +14,12 @@ data class InvitationApprovalRequest(
     val centerName: String?,
     val centerTrade: String?,
     val entryCode: String?,
-    val status:String?
+    val status:String?,
+    val tcId:String?,
+    val sanctionOrder:String?
+
+
+
+
+
 )

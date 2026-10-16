@@ -781,6 +781,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             .show()
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun checkConsentStatus(
         consentId: String,
         item: BankItem
@@ -1116,13 +1117,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                             ) {
                                 tvConsent.gone()
                             } else {
-                                tvConsent.visible()
+                                // uncomment for start
+
+                                //tvConsent.visible()
                             }
 
                             // Samiksha Consent click
                             itemView.findViewById<TextView>(
                                 R.id.tvConsent
                             ).setOnClickListener {
+
+
+
 
                                 showConsentDialog(
                                     userId = userPreferences.getUseID(),
@@ -1319,6 +1325,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             val request = ConsentRequest(
 
+
+
                 candidateId = userId,
 
                 candidateName = decryptedUserName,
@@ -1327,8 +1335,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 userId = userPreferences.getUseID(),
 
-                fipId = fipId,
-
+                fipId = fipId ,
                 bankName = bankName,
 
                 ifscCode = ifscCode,
@@ -1370,6 +1377,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             // ====================================================
             // CREATE CONSENT
             // ====================================================
+
+
+
 
             SamikshaSdk.requestConsent(
 
@@ -7575,6 +7585,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 )
 
                             }
+
+                            else
+                                toastLong(getSeccList.responseDesc)
                         } ?: showSnackBar("Internal Server Error")
                     }
                 }
@@ -9265,4 +9278,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
 }
+
 

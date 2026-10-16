@@ -12,6 +12,8 @@ data class UserNotification(
     // Institute info
     val instituteId: String?,
     val instituteName: String?,
+    val sanctionOrderNumber: String?,
+    val tcId: String?,
     val instituteState: String?,
     val instituteTrade: String?,
     val districtCode: String?,

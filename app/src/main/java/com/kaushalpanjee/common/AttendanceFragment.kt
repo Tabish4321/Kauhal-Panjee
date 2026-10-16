@@ -159,7 +159,6 @@ class AttendanceFragment:
 
 
             if (attendanceFlag=="checkin"){
-                //for audit
                 showProgressBar()
                 invokeCaptureIntent()
 
@@ -175,7 +174,6 @@ class AttendanceFragment:
 
             if (attendanceFlag=="checkout"){
 
-                //for audit
                 showProgressBar()
                 invokeCaptureIntent()
 
@@ -327,7 +325,6 @@ class AttendanceFragment:
         val distance = currentLocation.distanceTo(targetLocation)
         return distance <= radius
     }
-
 
 
     private fun checkCameraPermission(): Boolean {
@@ -490,8 +487,8 @@ class AttendanceFragment:
 
                                             latitude = x.latitute.toDouble()
                                             longitude = x.longitute.toDouble()
-                                           // radius = x.radius.toFloat()
-                                            radius = 1000f
+                                            radius = x.radius.toFloat()
+                                         //   radius = 1000f
 
 
                                             binding.tvAadhaarName.text=decryptedUserName

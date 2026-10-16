@@ -15,8 +15,10 @@ data class NotificationUiModel(
     val instituteTrade: String?,
     val instituteId: String?,       // backend sends String
     val entityCode: String?,
-    val candidateId: String?
-)
+    val candidateId: String?,
+    val tcId: String?,
+    val sanctionOrderNumber: String?,
+    )
 
 
 fun UserNotification.toUiModel(): NotificationUiModel =
@@ -29,7 +31,9 @@ fun UserNotification.toUiModel(): NotificationUiModel =
         instituteTrade = instituteTrade,
         instituteId = instituteId,
         entityCode = entityCode,
-        candidateId = candidateId
+        candidateId = candidateId,
+        tcId = tcId,
+        sanctionOrderNumber = sanctionOrderNumber
     )
 
 
