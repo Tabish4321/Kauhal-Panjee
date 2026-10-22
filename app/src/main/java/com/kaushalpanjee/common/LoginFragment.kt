@@ -1,3 +1,4 @@
+/*
 package com.kaushalpanjee.common
 
 import android.content.Context
@@ -58,19 +59,98 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.loginComposeView.setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+        )
 
+        binding.loginComposeView.setContent {
+            var composeLoginId by remember { mutableStateOf("") }
+            var composePassword by remember { mutableStateOf("") }
 
+            val savedLanguage = AppUtil
+                .getSavedLanguagePreference(requireContext())
 
+            LoginScreen(
+                loginId = composeLoginId,
+                password = composePassword,
+                isLoading = false,
+                errorMessage = "",
+                currentLanguage = if (savedLanguage.contains("hi")) "hi" else "en",
+                version = BuildConfig.VERSION_NAME,
 
+                onLoginIdChanged = { value ->
+                    composeLoginId = value
+                    userName = value
+                },
 
+                onPasswordChanged = { value ->
+                    composePassword = value
 
-        init()
+                    // Preserve the existing Android token-generation flow.
+                    if (value.isNotEmpty() && !isApiCalled) {
+                        isApiCalled = true
+
+                        commonViewModel.getToken(
+                            AppUtil.getAndroidId(requireContext()),
+                            BuildConfig.VERSION_NAME,
+                            composeLoginId
+                        )
+                    }
+                },
+
+                onLogin = {
+                    performLogin(composeLoginId, composePassword)
+                },
+
+                onRegister = {
+                    findNavController().navigate(
+                        LoginFragmentDirections
+                            .actionLoginFragmentToRegisterFragment()
+                    )
+                },
+
+                onForgotPassword = {
+                    findNavController().navigate(
+                        LoginFragmentDirections
+                            .actionLoginFragmentToForgotPassViaAadhaarFragment()
+                    )
+                },
+
+                onAboutUnnati = {
+                    findNavController().navigate(
+                        LoginFragmentDirections
+                            .actionLoginFragmentToAboutUnnatiFragment(
+                                ddugky.orEmpty(),
+                                rseti.orEmpty(),
+                                nrlm.orEmpty(),
+                                pmvishwakarma.orEmpty(),
+                                pmkvy.orEmpty()
+                            )
+                    )
+                },
+
+                onLanguageSelected = { language ->
+                    AppUtil.saveLanguagePreference(
+                        requireContext(),
+                        language
+                    )
+
+                    AppUtil.changeAppLanguage(
+                        requireContext(),
+                        language
+                    )
+
+                    requireActivity().recreate()
+                }
+            )
+        }
+
+        collectTokenResponse()
         handleBackPress()
-
-
     }
 
 
@@ -82,20 +162,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 
     private fun listeners() {
-
-
-     /*   binding.ivDDGKY.setOnClickListener {
-
-          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSubmitBankConcent())
-        }
-*/
-
-
-
-
-
-
-
 
 
         binding.tvVersion.text= "V-"+BuildConfig.VERSION_NAME
@@ -126,6 +192,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 rseti!!,
                 nrlm!!,
                 pmvishwakarma!!,
+                pmkvy!!
                 pmkvy!!
             )
             findNavController().navigate(action)
@@ -346,9 +413,19 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                     is Resource.Loading -> showProgressBar()
                     is Resource.Error -> {
                         hideProgressBar()
-                        it.error?.let { baseErrorResponse ->
-                            toastShort(baseErrorResponse.message)
+
+                        it.error?.let { error ->
+                            Log.e(
+                                "GENERATE_TOKEN_ERROR",
+                                "Message: ${error.message}"
+                            )
+
+                            toastShort(
+                                error.message ?: "Unable to generate token"
+                            )
                         }
+
+                        isApiCalled = false
                     }
 
                     is Resource.Success -> {
@@ -412,3 +489,4 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
 }
 
+*/

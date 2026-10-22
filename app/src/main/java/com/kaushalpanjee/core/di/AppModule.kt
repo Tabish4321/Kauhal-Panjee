@@ -15,8 +15,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Authenticator
-import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -46,33 +46,44 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesRoomDatabase(@ApplicationContext context: Context): AppDatabase {
+    fun providesRoomDatabase(
+        @ApplicationContext context: Context
+    ): AppDatabase {
         return Room.databaseBuilder(
             context,
-            AppDatabase::class.java, "Kaushal_panjee_db"
-        ).fallbackToDestructiveMigration().allowMainThreadQueries().build()
+            AppDatabase::class.java,
+            "Kaushal_panjee_db"
+        )
+            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
+            .build()
     }
 
+    // PRE-LOGIN RETROFIT
     @Provides
+    @Singleton
     @PreLoginOkHttpClient
     fun providesRetrofitForPreLogin(
         userPreferences: UserPreferences,
         @ApplicationContext context: Context
     ): Retrofit {
+
+        val client = getRetrofitClient(
+            userPreferences = userPreferences,
+            isPostLogin = false,
+            isAuthenticationRequired = false,
+            skipCustomInterceptor = true,
+            context = context
+        )
+
         return Retrofit.Builder()
-         .baseUrl(AppConstant.StaticURL.baseUrl)
-        //.baseUrl(AppConstant.StaticURL.localUrl)
-            .client(
-                getRetrofitClient(
-                    null, userPreferences = userPreferences,
-                    isPostLogin = false, context = context
-                )
-            )
+            .baseUrl(AppConstant.StaticURL.baseUrl)
+            .client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
 
-
+    // POST-LOGIN RETROFIT
     @Provides
     @Singleton
     @PostLoginOkHttpClient
@@ -80,53 +91,95 @@ object AppModule {
         userPreferences: UserPreferences,
         @ApplicationContext context: Context
     ): Retrofit {
+
+        val client = getRetrofitClient(
+            userPreferences = userPreferences,
+            isPostLogin = true,
+            isAuthenticationRequired = true,
+            skipCustomInterceptor = false,
+            context = context
+        )
+
         return Retrofit.Builder()
             .baseUrl(AppConstant.StaticURL.baseUrl)
-            .client(
-                getRetrofitClient(
-                    userPreferences = userPreferences,
-                    context = context
-                )
-            )
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            // .addConverterFactory(ScalarsConverterFactory.create()) // ONLY if needed
             .build()
     }
 
     private fun getRetrofitClient(
         authenticator: Authenticator? = null,
         userPreferences: UserPreferences,
-        isPostLogin: Boolean = true,
-        isAuthenticationRequired: Boolean = true,
+        isPostLogin: Boolean,
+        isAuthenticationRequired: Boolean,
+        skipCustomInterceptor: Boolean,
         context: Context
     ): OkHttpClient {
-        val cacheSize = (5 * 1024 * 1024).toLong()
-        val myCache = Cache(context.cacheDir, cacheSize)
 
+        val builder = OkHttpClient.Builder()
+            .connectTimeout(
+                ApiConstant.CONNECT_TIMEOUT,
+                TimeUnit.SECONDS
+            )
+            .writeTimeout(
+                ApiConstant.WRITE_TIMEOUT,
+                TimeUnit.SECONDS
+            )
+            .readTimeout(
+                ApiConstant.READ_TIMEOUT,
+                TimeUnit.SECONDS
+            )
+            .retryOnConnectionFailure(true)
 
-        return OkHttpClient.Builder().apply {
-           // certificatePinner(certificatePinner)
-            cache(myCache)
-            connectTimeout(ApiConstant.CONNECT_TIMEOUT, TimeUnit.SECONDS)
-            writeTimeout(ApiConstant.WRITE_TIMEOUT, TimeUnit.SECONDS)
-            readTimeout(ApiConstant.READ_TIMEOUT, TimeUnit.SECONDS)
-            addInterceptor(LoggingInterceptor())
-            addInterceptor(CustomInterceptor(isPostLogin, userPreferences, isAuthenticationRequired, context))
-            authenticator?.let { authenticator(it) }
-        }.build()
+        // Add Accept header to every request,
+        // including requests using the PreLogin client.
+        builder.addInterceptor { chain ->
+            val request: Request = chain.request()
+                .newBuilder()
+                .header("Accept", "application/json")
+                .build()
+
+            chain.proceed(request)
+        }
+
+        // Add custom headers only when required.
+        if (!skipCustomInterceptor) {
+            builder.addInterceptor(
+                CustomInterceptor(
+                    isPostLogin,
+                    userPreferences,
+                    isAuthenticationRequired,
+                    context
+                )
+            )
+        }
+
+        // Keep logging last to inspect the request after
+        // the preceding interceptors have modified it.
+        builder.addInterceptor(LoggingInterceptor())
+
+        authenticator?.let {
+            builder.authenticator(it)
+        }
+
+        return builder.build()
     }
 
-
-
     @Provides
+    @Singleton
     @PreLoginAppLevelApi
-    fun providePreLoginAppLevelApi(@PreLoginOkHttpClient retrofit: Retrofit) : AppLevelApi = retrofit.create(
-        AppLevelApi::class.java)
+    fun providePreLoginAppLevelApi(
+        @PreLoginOkHttpClient retrofit: Retrofit
+    ): AppLevelApi {
+        return retrofit.create(AppLevelApi::class.java)
+    }
 
     @Provides
+    @Singleton
     @PostLoginAppLevelApi
-    fun providePostLoginAppLevelApi(@PostLoginOkHttpClient retrofit: Retrofit) : AppLevelApi = retrofit.create(
-        AppLevelApi::class.java)
-
-
+    fun providePostLoginAppLevelApi(
+        @PostLoginOkHttpClient retrofit: Retrofit
+    ): AppLevelApi {
+        return retrofit.create(AppLevelApi::class.java)
+    }
 }

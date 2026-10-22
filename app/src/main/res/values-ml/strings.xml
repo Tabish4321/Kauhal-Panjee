@@ -266,4 +266,77 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+    <string name="no_data_title">ഡാറ്റ ലഭ്യമല്ല</string>
+    <string name="no_data_description">പ്രദർശിപ്പിക്കാൻ ഡാറ്റ ലഭ്യമല്ല.</string>
+    <string name="cbt_exam">CBT പരീക്ഷ</string>
+    <string name="candidate_id">സ്ഥാനാർത്ഥിയുടെ ID</string>
+    <string name="candidate_name_cbt">സ്ഥാനാർത്ഥിയുടെ പേര്</string>
+    <string name="question">ചോദ്യം</string>
+    <string name="save_next">സേവ് ചെയ്ത് അടുത്തതിലേക്ക് പോകുക</string>
+    <string name="save_review">സേവ് ചെയ്ത് അവലോകനത്തിനായി അടയാളപ്പെടുത്തുക</string>
+    <string name="mark">അടയാളപ്പെടുത്തുക</string>
+    <string name="clear">മായ്ക്കുക</string>
+    <string name="previous">മുമ്പത്തേത്</string>
+    <string name="next">അടുത്തത്</string>
+    <string name="question_index">ചോദ്യം നമ്പർ %1$s</string>
+    <string name="answered">ഉത്തരം നൽകി</string>
+    <string name="not_answered">ഉത്തരം നൽകിയിട്ടില്ല</string>
+    <string name="loading_questions">ചോദ്യങ്ങൾ ലോഡ് ചെയ്യുന്നു...</string>
+    <string name="review">അവലോകനം</string>
+    <string name="back">തിരികെ</string>
+    <string name="next_review">അടുത്ത അവലോകനം</string>
+    <string name="review_your_test">നിങ്ങളുടെ പരീക്ഷ അവലോകനം ചെയ്യുക</string>
+    <string name="total">ആകെ</string>
+    <string name="marked_for_review">അവലോകനത്തിനായി അടയാളപ്പെടുത്തി</string>
+    <string name="back_to_test">പരീക്ഷയിലേക്ക് മടങ്ങുക</string>
+    <string name="submit_test">പരീക്ഷ സമർപ്പിക്കുക</string>
+    <string name="warning">മുന്നറിയിപ്പ്</string>
+    <string name="do_you_want_to_submit_the_questions">നിങ്ങൾ പരീക്ഷ സമർപ്പിക്കാൻ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
+    <string name="mark_review">അവലോകനത്തിനായി അടയാളപ്പെടുത്തുക</string>
+
+    <string name="instruction_1">പരീക്ഷ ആരംഭിക്കുന്നതിന് മുമ്പ് എല്ലാ നിർദ്ദേശങ്ങളും ശ്രദ്ധാപൂർവ്വം വായിക്കുക.</string>
+    <string name="instruction_2">നിശ്ചിത സമയത്തിനുള്ളിൽ പരീക്ഷ പൂർത്തിയാക്കണം.</string>
+    <string name="instruction_3">പരീക്ഷ ആരംഭിക്കുന്നതിന് മുമ്പ് നിങ്ങളുടെ സ്ഥാനാർത്ഥി വിവരങ്ങൾ പരിശോധിക്കുക.</string>
+    <string name="instruction_4">ഓരോ ചോദ്യവും ശ്രദ്ധാപൂർവ്വം വായിച്ച് ശരിയായ ഉത്തരം തിരഞ്ഞെടുക്കുക.</string>
+    <string name="instruction_5">അടുത്ത ചോദ്യത്തിലേക്ക് പോകുന്നതിന് മുമ്പ് നിങ്ങളുടെ ഉത്തരം സേവ് ചെയ്യുക.</string>
+    <string name="instruction_6">ആവശ്യമെങ്കിൽ ചോദ്യങ്ങൾ അവലോകനത്തിനായി അടയാളപ്പെടുത്താം.</string>
+    <string name="instruction_7">ഉത്തരം മാറ്റാൻ ബന്ധപ്പെട്ട ചോദ്യത്തിലേക്ക് മടങ്ങി പുതിയ ഉത്തരം തിരഞ്ഞെടുക്കുക.</string>
+    <string name="instruction_8">പരീക്ഷയ്ക്കിടെ ശേഷിക്കുന്ന സമയം സ്ക്രീനിൽ കാണിക്കും.</string>
+    <string name="instruction_9">പരീക്ഷ സമർപ്പിക്കുന്നതിന് മുമ്പ് നിങ്ങളുടെ ഉത്തരങ്ങൾ അവലോകനം ചെയ്യുക.</string>
+    <string name="instruction_10">പരീക്ഷ സമർപ്പിച്ച ശേഷം ഉത്തരങ്ങൾ മാറ്റാൻ കഴിയില്ല.</string>
+    <string name="instruction_11">പരീക്ഷയ്ക്കിടെ പേജ് റിഫ്രഷ് ചെയ്യുകയോ ആപ്പ് അടയ്ക്കുകയോ ചെയ്യരുത്.</string>
+    <string name="instruction_12">പരീക്ഷയ്ക്കിടെ മറ്റ് ആപ്പുകളോ അനുമതിയില്ലാത്ത സാമഗ്രികളോ ഉപയോഗിക്കരുത്.</string>
+    <string name="instruction_13">സമയം അവസാനിക്കുമ്പോൾ പരീക്ഷ സ്വയമേവ സമർപ്പിക്കപ്പെട്ടേക്കാം.</string>
+    <string name="instruction_14">പരീക്ഷയ്ക്കിടെ എന്തെങ്കിലും പ്രശ്നമുണ്ടായാൽ ബന്ധപ്പെട്ട അധികാരിയെ ബന്ധപ്പെടുക.</string>
+
+    <string name="exam_instructions">പരീക്ഷാ നിർദ്ദേശങ്ങൾ</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">പരീക്ഷ ആരംഭിക്കുന്നതിന് മുമ്പ് നിർദ്ദേശങ്ങൾ ശ്രദ്ധാപൂർവ്വം വായിക്കുക.</string>
+    <string name="declaration">പ്രഖ്യാപനം</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">ഞാൻ നിർദ്ദേശങ്ങൾ വായിച്ച് മനസ്സിലാക്കിയിട്ടുണ്ട്, പരീക്ഷ തുടരാൻ ആഗ്രഹിക്കുന്നു.</string>
+    <string name="exam_starts_in">പരീക്ഷ ആരംഭിക്കാൻ</string>
+    <string name="start_now">ഇപ്പോൾ ആരംഭിക്കുക</string>
+    <string name="submit_exam">പരീക്ഷ സമർപ്പിക്കുക</string>
+    <string name="success">വിജയകരം</string>
+    <string name="time_is_over">സമയം അവസാനിച്ചു</string>
+    <string name="app_department">ഗ്രാമവികസന മന്ത്രാലയം</string>
+    <string name="login_secure">നിങ്ങളുടെ വിവരങ്ങൾ സുരക്ഷിതമായി സംരക്ഷിച്ചിരിക്കുന്നു</string>
+    <string name="please_submit_options">ദയവായി നിങ്ങളുടെ ഉത്തരങ്ങൾ സമർപ്പിക്കുക.</string>
+    <string name="exit_exam">പരീക്ഷയിൽ നിന്ന് പുറത്തുകടക്കുക</string>
+    <string name="do_you_want_to_exit_exam">നിങ്ങൾ പരീക്ഷയിൽ നിന്ന് പുറത്തുകടക്കാൻ ആഗ്രഹിക്കുന്നുണ്ടോ?</string>
+    <string name="no_questions_available">ചോദ്യങ്ങൾ ലഭ്യമല്ല</string>
+    <string name="no_questions_are_available_for_this_user">ഈ ഉപയോക്താവിന് ചോദ്യങ്ങളൊന്നും ലഭ്യമല്ല.</string>
+
+    <string name="login_title">ലോഗിൻ</string>
+    <string name="login_subtitle">തുടരാൻ നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് ലോഗിൻ ചെയ്യുക</string>
+    <string name="login_id_enter">നിങ്ങളുടെ ലോഗിൻ ID നൽകുക</string>
+    <string name="login_password_enter">നിങ്ങളുടെ പാസ്‌വേഡ് നൽകുക</string>
+    <string name="login_show_password">പാസ്‌വേഡ് കാണിക്കുക</string>
+    <string name="login_hide_password">പാസ്‌വേഡ് മറയ്ക്കുക</string>
+    <string name="login_ddugky_logo">DDU-GKY ലോഗോ</string>
+    <string name="login_rseti_logo">RSETI ലോഗോ</string>
+    <string name="common_version">പതിപ്പ് %1$s</string>
+
 </resources>

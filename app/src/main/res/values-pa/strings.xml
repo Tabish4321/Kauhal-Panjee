@@ -266,4 +266,77 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+    <string name="no_data_title">ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਹੈ</string>
+    <string name="no_data_description">ਦਿਖਾਉਣ ਲਈ ਕੋਈ ਡਾਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।</string>
+    <string name="cbt_exam">CBT ਪ੍ਰੀਖਿਆ</string>
+    <string name="candidate_id">ਉਮੀਦਵਾਰ ID</string>
+    <string name="candidate_name_cbt">ਉਮੀਦਵਾਰ ਦਾ ਨਾਮ</string>
+    <string name="question">ਸਵਾਲ</string>
+    <string name="save_next">ਸੇਵ ਕਰੋ ਅਤੇ ਅੱਗੇ ਵਧੋ</string>
+    <string name="save_review">ਸੇਵ ਕਰੋ ਅਤੇ ਸਮੀਖਿਆ ਲਈ ਨਿਸ਼ਾਨ ਲਗਾਓ</string>
+    <string name="mark">ਨਿਸ਼ਾਨ ਲਗਾਓ</string>
+    <string name="clear">ਸਾਫ਼ ਕਰੋ</string>
+    <string name="previous">ਪਿਛਲਾ</string>
+    <string name="next">ਅਗਲਾ</string>
+    <string name="question_index">ਸਵਾਲ ਨੰਬਰ %1$s</string>
+    <string name="answered">ਜਵਾਬ ਦਿੱਤਾ ਗਿਆ</string>
+    <string name="not_answered">ਜਵਾਬ ਨਹੀਂ ਦਿੱਤਾ ਗਿਆ</string>
+    <string name="loading_questions">ਸਵਾਲ ਲੋਡ ਹੋ ਰਹੇ ਹਨ...</string>
+    <string name="review">ਸਮੀਖਿਆ</string>
+    <string name="back">ਵਾਪਸ ਜਾਓ</string>
+    <string name="next_review">ਅਗਲੀ ਸਮੀਖਿਆ</string>
+    <string name="review_your_test">ਆਪਣੀ ਪ੍ਰੀਖਿਆ ਦੀ ਸਮੀਖਿਆ ਕਰੋ</string>
+    <string name="total">ਕੁੱਲ</string>
+    <string name="marked_for_review">ਸਮੀਖਿਆ ਲਈ ਨਿਸ਼ਾਨ ਲਗਾਇਆ ਗਿਆ</string>
+    <string name="back_to_test">ਪ੍ਰੀਖਿਆ ਤੇ ਵਾਪਸ ਜਾਓ</string>
+    <string name="submit_test">ਪ੍ਰੀਖਿਆ ਜਮ੍ਹਾਂ ਕਰੋ</string>
+    <string name="warning">ਚੇਤਾਵਨੀ</string>
+    <string name="do_you_want_to_submit_the_questions">ਕੀ ਤੁਸੀਂ ਪ੍ਰੀਖਿਆ ਜਮ੍ਹਾਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+    <string name="mark_review">ਸਮੀਖਿਆ ਲਈ ਨਿਸ਼ਾਨ ਲਗਾਓ</string>
+
+    <string name="instruction_1">ਪ੍ਰੀਖਿਆ ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਸਾਰੀਆਂ ਹਦਾਇਤਾਂ ਧਿਆਨ ਨਾਲ ਪੜ੍ਹੋ।</string>
+    <string name="instruction_2">ਤੁਹਾਨੂੰ ਨਿਰਧਾਰਤ ਸਮੇਂ ਦੇ ਅੰਦਰ ਪ੍ਰੀਖਿਆ ਪੂਰੀ ਕਰਨੀ ਹੋਵੇਗੀ।</string>
+    <string name="instruction_3">ਪ੍ਰੀਖਿਆ ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਆਪਣੇ ਉਮੀਦਵਾਰ ਦੇ ਵੇਰਵਿਆਂ ਦੀ ਜਾਂਚ ਕਰੋ।</string>
+    <string name="instruction_4">ਹਰੇਕ ਸਵਾਲ ਧਿਆਨ ਨਾਲ ਪੜ੍ਹੋ ਅਤੇ ਸਹੀ ਜਵਾਬ ਚੁਣੋ।</string>
+    <string name="instruction_5">ਅਗਲੇ ਸਵਾਲ ਤੇ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ ਆਪਣਾ ਜਵਾਬ ਸੇਵ ਕਰੋ।</string>
+    <string name="instruction_6">ਲੋੜ ਪੈਣ ਤੇ ਤੁਸੀਂ ਸਵਾਲਾਂ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਨਿਸ਼ਾਨਬੱਧ ਕਰ ਸਕਦੇ ਹੋ।</string>
+    <string name="instruction_7">ਜਵਾਬ ਬਦਲਣ ਲਈ ਸੰਬੰਧਿਤ ਸਵਾਲ ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ ਨਵਾਂ ਜਵਾਬ ਚੁਣੋ।</string>
+    <string name="instruction_8">ਪ੍ਰੀਖਿਆ ਦੌਰਾਨ ਬਾਕੀ ਸਮਾਂ ਸਕ੍ਰੀਨ ਤੇ ਦਿਖਾਇਆ ਜਾਵੇਗਾ।</string>
+    <string name="instruction_9">ਪ੍ਰੀਖਿਆ ਜਮ੍ਹਾਂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਆਪਣੇ ਜਵਾਬਾਂ ਦੀ ਸਮੀਖਿਆ ਕਰੋ।</string>
+    <string name="instruction_10">ਪ੍ਰੀਖਿਆ ਜਮ੍ਹਾਂ ਕਰਨ ਤੋਂ ਬਾਅਦ ਤੁਸੀਂ ਆਪਣੇ ਜਵਾਬ ਨਹੀਂ ਬਦਲ ਸਕੋਗੇ।</string>
+    <string name="instruction_11">ਪ੍ਰੀਖਿਆ ਦੌਰਾਨ ਪੇਜ ਰਿਫ੍ਰੈਸ਼ ਨਾ ਕਰੋ ਅਤੇ ਨਾ ਹੀ ਐਪ ਬੰਦ ਕਰੋ।</string>
+    <string name="instruction_12">ਪ੍ਰੀਖਿਆ ਦੌਰਾਨ ਹੋਰ ਐਪਾਂ ਜਾਂ ਬਿਨਾਂ ਅਧਿਕਾਰ ਵਾਲੀ ਸਮੱਗਰੀ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰੋ।</string>
+    <string name="instruction_13">ਸਮਾਂ ਪੂਰਾ ਹੋਣ ਤੇ ਪ੍ਰੀਖਿਆ ਆਪਣੇ ਆਪ ਜਮ੍ਹਾਂ ਹੋ ਸਕਦੀ ਹੈ।</string>
+    <string name="instruction_14">ਪ੍ਰੀਖਿਆ ਦੌਰਾਨ ਕੋਈ ਸਮੱਸਿਆ ਆਉਣ ਤੇ ਸੰਬੰਧਿਤ ਅਧਿਕਾਰੀ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।</string>
+
+    <string name="exam_instructions">ਪ੍ਰੀਖਿਆ ਦੀਆਂ ਹਦਾਇਤਾਂ</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">ਪ੍ਰੀਖਿਆ ਸ਼ੁਰੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਕਿਰਪਾ ਕਰਕੇ ਹਦਾਇਤਾਂ ਧਿਆਨ ਨਾਲ ਪੜ੍ਹੋ।</string>
+    <string name="declaration">ਘੋਸ਼ਣਾ</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">ਮੈਂ ਹਦਾਇਤਾਂ ਪੜ੍ਹ ਅਤੇ ਸਮਝ ਲਈਆਂ ਹਨ ਅਤੇ ਪ੍ਰੀਖਿਆ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦਾ/ਚਾਹੁੰਦੀ ਹਾਂ।</string>
+    <string name="exam_starts_in">ਪ੍ਰੀਖਿਆ ਸ਼ੁਰੂ ਹੋਣ ਵਿੱਚ</string>
+    <string name="start_now">ਹੁਣੇ ਸ਼ੁਰੂ ਕਰੋ</string>
+    <string name="submit_exam">ਪ੍ਰੀਖਿਆ ਜਮ੍ਹਾਂ ਕਰੋ</string>
+    <string name="success">ਸਫਲਤਾ</string>
+    <string name="time_is_over">ਸਮਾਂ ਪੂਰਾ ਹੋ ਗਿਆ ਹੈ</string>
+    <string name="please_submit_options">ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਜਵਾਬ ਜਮ੍ਹਾਂ ਕਰੋ।</string>
+    <string name="exit_exam">ਪ੍ਰੀਖਿਆ ਤੋਂ ਬਾਹਰ ਜਾਓ</string>
+    <string name="do_you_want_to_exit_exam">ਕੀ ਤੁਸੀਂ ਪ੍ਰੀਖਿਆ ਤੋਂ ਬਾਹਰ ਜਾਣਾ ਚਾਹੁੰਦੇ ਹੋ?</string>
+    <string name="no_questions_available">ਕੋਈ ਸਵਾਲ ਉਪਲਬਧ ਨਹੀਂ ਹਨ</string>
+    <string name="app_department">ਪੇਂਡੂ ਵਿਕਾਸ ਮੰਤਰਾਲਾ</string>
+    <string name="login_secure">ਤੁਹਾਡੀ ਜਾਣਕਾਰੀ ਸੁਰੱਖਿਅਤ ਢੰਗ ਨਾਲ ਸੁਰੱਖਿਅਤ ਰੱਖੀ ਗਈ ਹੈ</string>
+    <string name="no_questions_are_available_for_this_user">ਇਸ ਵਰਤੋਂਕਾਰ ਲਈ ਕੋਈ ਸਵਾਲ ਉਪਲਬਧ ਨਹੀਂ ਹਨ।</string>
+
+    <string name="login_title">ਲੌਗਇਨ</string>
+    <string name="login_subtitle">ਅੱਗੇ ਵਧਣ ਲਈ ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰੋ</string>
+    <string name="login_id_enter">ਆਪਣਾ ਲੌਗਇਨ ID ਦਰਜ ਕਰੋ</string>
+    <string name="login_password_enter">ਆਪਣਾ ਪਾਸਵਰਡ ਦਰਜ ਕਰੋ</string>
+    <string name="login_show_password">ਪਾਸਵਰਡ ਦਿਖਾਓ</string>
+    <string name="login_hide_password">ਪਾਸਵਰਡ ਲੁਕਾਓ</string>
+    <string name="login_ddugky_logo">DDU-GKY ਲੋਗੋ</string>
+    <string name="login_rseti_logo">RSETI ਲੋਗੋ</string>
+    <string name="common_version">ਵਰਜਨ %1$s</string>
+
 </resources>

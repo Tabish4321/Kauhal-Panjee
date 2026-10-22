@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name">Kaushal Panjee</string>
-    <string name="login_id">Login Id</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="welcome_back">Hey, Let\'s shine today!</string>
     <string name="welcome_msg">Hi there, You\'ve been missed.</string>
-    <string name="register"><u>Register</u></string>
     <string name="bankConsent" translatable="false"><u>Give Consent</u></string>
     <string name="forgot_password"><u>Forgot id and Password?</u></string>
     <string name="forgot_id"><u>Forgot id?</u></string>
@@ -219,7 +217,6 @@
     <string name="ward">Ward</string>
     <string name="ulbn">ULB<font color='#FF0000'>*</font></string>
     <string name="wardn">Ward<font color='#FF0000'>*</font></string>
-    <string name="about_unnati"><u>About Unnati</u></string>
     <string name="unnati_schemes">Unnati Schemes</string>
 
     <string name="ddugky_title">DDUGKY</string>
@@ -330,4 +327,29 @@
     <string name="do_you_want_to_exit_exam">Do you want to exit exam?</string>
     <string name="no_questions_available">No Questions Available</string>
     <string name="no_questions_are_available_for_this_user">No questions are available for this user.</string>
+
+
+    <string name="login_title">Login to your account</string>
+    <string name="login_subtitle">Enter your credentials to securely continue</string>
+    <string name="login_id_enter">Enter Login ID</string>
+    <string name="login_password_enter">Enter Password</string>
+    <string name="login_show_password">Show password</string>
+    <string name="login_hide_password">Hide password</string>
+    <string name="login_ddugky_logo">DDU-GKY logo</string>
+    <string name="login_rseti_logo">RSETI logo</string>
+    <string name="common_version">Version %1$s</string>
+
+    <string name="login_id">Login ID</string>
+    <string name="login_password">Password</string>
+
+    <string name="common_or">OR</string>
+    <string name="register">Register</string>
+
+    <string name="about_unnati">About Unnati</string>
+
+    <string name="app_department">Department of Rural Development</string>
+    <string name="login_secure">Your information is securely protected </string>
 </resources>
+
+
+

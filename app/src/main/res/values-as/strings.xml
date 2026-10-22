@@ -268,4 +268,76 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+    <string name="no_data_title">কোনো তথ্য পোৱা নগল</string>
+    <string name="no_data_description">এই মুহূৰ্তত দেখুৱাবলৈ একো নাই। অনুগ্ৰহ কৰি পিছত আকৌ চেষ্টা কৰক।</string>
+    <string name="cbt_exam">CBT পৰীক্ষা</string>
+    <string name="candidate_id">প্ৰাৰ্থীৰ ID :</string>
+    <string name="candidate_name_cbt">প্ৰাৰ্থীৰ নাম</string>
+    <string name="question">প্ৰশ্ন</string>
+    <string name="save_next">সংৰক্ষণ কৰি পৰৱৰ্তী</string>
+    <string name="save_review">সংৰক্ষণ কৰি পৰ্যালোচনা</string>
+    <string name="mark">চিহ্নিত কৰক</string>
+    <string name="clear">আঁতৰাওক</string>
+    <string name="previous">পূৰ্বৱৰ্তী</string>
+    <string name="next">পৰৱৰ্তী</string>
+    <string name="question_index">প্ৰশ্নৰ সূচী</string>
+    <string name="answered">উত্তৰ দিয়া হৈছে</string>
+    <string name="not_answered">উত্তৰ দিয়া হোৱা নাই</string>
+    <string name="loading_questions">প্ৰশ্নসমূহ লোড হৈ আছে...</string>
+    <string name="review">পৰ্যালোচনা</string>
+    <string name="back">পিছলৈ</string>
+    <string name="next_review"><![CDATA[পৰৱৰ্তী আৰু পৰ্যালোচনা]]></string>
+    <string name="review_your_test">আপোনাৰ পৰীক্ষা পৰ্যালোচনা কৰক</string>
+    <string name="total">মুঠ</string>
+    <string name="marked_for_review">পৰ্যালোচনাৰ বাবে চিহ্নিত</string>
+    <string name="back_to_test">পৰীক্ষালৈ উভতি যাওক</string>
+    <string name="submit_test">পৰীক্ষা জমা দিয়ক</string>
+    <string name="warning">সতৰ্কবাণী</string>
+    <string name="do_you_want_to_submit_the_questions">আপুনি প্ৰশ্নসমূহ জমা দিব বিচাৰে নেকি?</string>
+    <string name="mark_review"><![CDATA[চিহ্নিত কৰি পৰ্যালোচনা]]></string>
+
+    <string name="instruction_1">কম্পিউটাৰ ভিত্তিক পৰীক্ষাত ৫০টা বহুবিকল্পী প্ৰশ্ন (MCQ) থাকিব। প্ৰতিটো প্ৰশ্নৰ ২ নম্বৰ।</string>
+    <string name="instruction_2">পৰীক্ষাৰ মুঠ সময় ৬০ মিনিট।</string>
+    <string name="instruction_3">৬০ মিনিটৰ পিছত বা প্ৰাৰ্থীয়ে আগতেই জমা দিলে পৰীক্ষা স্বয়ংক্ৰিয়ভাৱে জমা হ’ব।</string>
+    <string name="instruction_4">ঋণাত্মক নম্বৰ নাই।</string>
+    <string name="instruction_5">প্ৰতিটো প্ৰশ্নত চাৰিটা বিকল্প আছে। মাত্ৰ এটা বিকল্প সঠিক।</string>
+    <string name="instruction_6">প্ৰশ্নৰ নম্বৰত ক্লিক কৰি যিকোনো প্ৰশ্নলৈ যাব পাৰিব। প্ৰশ্নসমূহ ক্ৰম অনুসৰি কৰাৰ প্ৰয়োজন নাই।</string>
+    <string name="instruction_7">প্ৰশ্নৰ মাজত যাবলৈ পৰৱৰ্তী আৰু পূৰ্বৱৰ্তী বুটাম ব্যৱহাৰ কৰক।</string>
+    <string name="instruction_8">উত্তৰ নিদিয়া প্ৰশ্নসমূহ সোঁফালৰ পেনেলত বগা বা ৰঙা ৰঙেৰে দেখুওৱা হ’ব।</string>
+    <string name="instruction_9">উত্তৰ দিয়া প্ৰশ্নসমূহ সেউজীয়া ৰঙেৰে দেখুওৱা হ’ব।</string>
+    <string name="instruction_10">উত্তৰ দিয়া আৰু পৰ্যালোচনাৰ বাবে চিহ্নিত প্ৰশ্নসমূহ কমলা ৰঙেৰে দেখুওৱা হ’ব।</string>
+    <string name="instruction_11">পৰ্যালোচনাৰ বাবে চিহ্নিত প্ৰশ্নসমূহ নীলা ৰঙেৰে দেখুওৱা হ’ব।</string>
+    <string name="instruction_12">যদি কোনো প্ৰশ্ন পৰ্যালোচনাৰ বাবে চিহ্নিত কৰা হয় আৰু এটা বিকল্প বাছনি কৰা হয়, তেন্তে শেষত জমা দিওঁতে বা সময় শেষ হ’লে ইয়াক উত্তৰ দিয়া বুলি গণ্য কৰা হ’ব।</string>
+    <string name="instruction_13">অৱশিষ্ট সময় পৰ্দাৰ ওপৰৰ বাওঁফালে প্ৰাৰ্থীৰ তথ্যৰ কাষত দেখুওৱা হয়।</string>
+    <string name="instruction_14">পৰীক্ষাৰ সময়ত ESC বুটাম টিপিব নালাগে। দুবাৰ চেষ্টা কৰাৰ পিছত পৰীক্ষা জোৰকৈ জমা হ’ব আৰু ব্যৱহাৰকাৰীক লগ আউট কৰা হ’ব।</string>
+
+    <string name="exam_instructions">পৰীক্ষাৰ নিৰ্দেশনা</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">পৰীক্ষা আৰম্ভ কৰাৰ আগতে অনুগ্ৰহ কৰি নিৰ্দেশনাসমূহ ভালদৰে পঢ়ক।</string>
+    <string name="declaration">ঘোষণা</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">মই নিৰ্দেশনাসমূহ পঢ়ি বুজিছোঁ আৰু পৰীক্ষা আগবঢ়াই নিব বিচাৰোঁ।</string>
+    <string name="exam_starts_in">পৰীক্ষা আৰম্ভ হ’ব: %1$s</string>
+    <string name="start_now">এতিয়াই আৰম্ভ কৰক</string>
+    <string name="submit_exam">পৰীক্ষা জমা দিয়ক</string>
+    <string name="success">সফল</string>
+    <string name="time_is_over">সময় শেষ</string>
+    <string name="please_submit_options">অনুগ্ৰহ কৰি বিকল্পসমূহ জমা দিয়ক</string>
+    <string name="exit_exam">পৰীক্ষাৰ পৰা ওলাই যাওক</string>
+    <string name="do_you_want_to_exit_exam">আপুনি পৰীক্ষাৰ পৰা ওলাই যাব বিচাৰে নেকি?</string>
+    <string name="no_questions_available">কোনো প্ৰশ্ন উপলব্ধ নহয়</string>
+
+    <string name="app_department">গ্ৰামোন্নয়ন মন্ত্ৰালয়</string>
+    <string name="login_secure">আপোনাৰ তথ্য সুৰক্ষিতভাৱে সংৰক্ষিত আছে</string>
+    <string name="no_questions_are_available_for_this_user">এই ব্যৱহাৰকাৰীৰ বাবে কোনো প্ৰশ্ন উপলব্ধ নহয়।</string>
+
+    <string name="login_title">আপোনাৰ একাউণ্টত লগইন কৰক</string>
+    <string name="login_subtitle">নিৰাপদে আগবাঢ়িবলৈ আপোনাৰ প্ৰমাণপত্ৰ দিয়ক</string>
+    <string name="login_id_enter">লগইন ID দিয়ক</string>
+    <string name="login_password_enter">পাছৱৰ্ড দিয়ক</string>
+    <string name="login_show_password">পাছৱৰ্ড দেখুৱাওক</string>
+    <string name="login_hide_password">পাছৱৰ্ড লুকুৱাওক</string>
+    <string name="login_ddugky_logo">DDU-GKY ল’গ’</string>
+    <string name="login_rseti_logo">RSETI ল’গ’</string>
+    <string name="common_version">সংস্কৰণ %1$s</string>
+
 </resources>

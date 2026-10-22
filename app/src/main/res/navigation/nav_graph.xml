@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.kaushalpanjee.common.LoginFragment"
+        android:name="com.kaushalpanjee.common.compose.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
 
@@ -20,9 +20,7 @@
         <action
             android:id="@+id/action_loginFragment_to_mainHomePage"
             app:destination="@id/mainHomePage" />
-        <action
-            android:id="@+id/action_mainHomePage_to_languageChangeFragment"
-            app:destination="@id/languageChangeFragment" />
+
 
         <action
             android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
@@ -53,6 +51,9 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotPassViaAadhaarFragment"
             app:destination="@id/forgotPassViaAadhaarFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_languageChangeFragment"
+            app:destination="@id/languageChangeFragment" />
 
 
     </fragment>
@@ -136,16 +137,14 @@
     </fragment>
     <fragment
         android:id="@+id/mainHomePage"
-        android:name="com.kaushalpanjee.common.MainHomePage"
+        android:name="com.kaushalpanjee.common.compose.home.MainHomePage"
         android:label="MainHomePage"
         tools:layout="@layout/fragment_main_home">
         <action
             android:id="@+id/action_mainHomePage_to_homeFragment"
             app:destination="@id/homeFragment" />
 
-        <action
-            android:id="@+id/action_mainHomePage_to_homeFragment2"
-            app:destination="@id/homeFragment" />
+
         <action
             android:id="@+id/action_mainHomePage_to_languageChangeFragment"
             app:destination="@id/languageChangeFragment" />
@@ -321,4 +320,5 @@
         android:name="com.kaushalpanjee.common.HelpDeskFragment"
         android:label="HelpDeskFragment"
         tools:layout="@layout/help_desk_fragment"/>
+
 </navigation>

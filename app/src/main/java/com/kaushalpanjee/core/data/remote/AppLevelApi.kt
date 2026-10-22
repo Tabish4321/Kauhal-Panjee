@@ -174,7 +174,7 @@ interface AppLevelApi {
     suspend fun updatePasswordForget(@Body updatePasswordForReq: UpdatePasswordForReq):UpdatePasswordForRes
 
 
-    @POST(ApiConstant.API_SMS_OTP)
+    @POST(ApiConstant. API_SMS_OTP)
     suspend fun sendMobileOTP(@Body sendOTPRequest: SendOTPRequest):SendMobileOTPResponse
 
 

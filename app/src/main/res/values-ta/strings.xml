@@ -271,4 +271,78 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+    <string name="no_data_title">தரவு இல்லை</string>
+    <string name="no_data_description">காண்பிக்க தரவு எதுவும் கிடைக்கவில்லை.</string>
+    <string name="cbt_exam">CBT தேர்வு</string>
+    <string name="candidate_id">விண்ணப்பதாரர் ID</string>
+    <string name="candidate_name_cbt">விண்ணப்பதாரரின் பெயர்</string>
+    <string name="question">கேள்வி</string>
+    <string name="save_next">சேமித்து அடுத்ததற்குச் செல்லவும்</string>
+    <string name="save_review">சேமித்து மறுபரிசீலனைக்குக் குறிக்கவும்</string>
+    <string name="mark">குறிக்கவும்</string>
+    <string name="clear">அழிக்கவும்</string>
+    <string name="previous">முந்தையது</string>
+    <string name="next">அடுத்தது</string>
+    <string name="question_index">கேள்வி எண் %1$s</string>
+    <string name="answered">பதிலளிக்கப்பட்டது</string>
+    <string name="not_answered">பதிலளிக்கப்படவில்லை</string>
+    <string name="loading_questions">கேள்விகள் ஏற்றப்படுகின்றன...</string>
+    <string name="review">மறுபரிசீலனை</string>
+    <string name="back">பின்செல்</string>
+    <string name="next_review">அடுத்த மறுபரிசீலனை</string>
+    <string name="review_your_test">உங்கள் தேர்வை மறுபரிசீலனை செய்யவும்</string>
+    <string name="total">மொத்தம்</string>
+    <string name="marked_for_review">மறுபரிசீலனைக்குக் குறிக்கப்பட்டது</string>
+    <string name="back_to_test">தேர்வுக்குத் திரும்பவும்</string>
+    <string name="submit_test">தேர்வைச் சமர்ப்பிக்கவும்</string>
+    <string name="warning">எச்சரிக்கை</string>
+    <string name="do_you_want_to_submit_the_questions">தேர்வைச் சமர்ப்பிக்க விரும்புகிறீர்களா?</string>
+    <string name="mark_review">மறுபரிசீலனைக்குக் குறிக்கவும்</string>
+
+    <string name="instruction_1">தேர்வைத் தொடங்குவதற்கு முன் அனைத்து வழிமுறைகளையும் கவனமாகப் படிக்கவும்.</string>
+    <string name="instruction_2">நிர்ணயிக்கப்பட்ட நேரத்திற்குள் தேர்வை முடிக்க வேண்டும்.</string>
+    <string name="instruction_3">தேர்வைத் தொடங்குவதற்கு முன் உங்கள் விண்ணப்பதாரர் விவரங்களைச் சரிபார்க்கவும்.</string>
+    <string name="instruction_4">ஒவ்வொரு கேள்வியையும் கவனமாகப் படித்து சரியான பதிலைத் தேர்ந்தெடுக்கவும்.</string>
+    <string name="instruction_5">அடுத்த கேள்விக்குச் செல்வதற்கு முன் உங்கள் பதிலைச் சேமிக்கவும்.</string>
+    <string name="instruction_6">தேவைப்பட்டால் கேள்விகளை மறுபரிசீலனைக்குக் குறிக்கலாம்.</string>
+    <string name="instruction_7">பதிலை மாற்ற, தொடர்புடைய கேள்விக்குத் திரும்பிச் சென்று புதிய பதிலைத் தேர்ந்தெடுக்கவும்.</string>
+    <string name="instruction_8">தேர்வின்போது மீதமுள்ள நேரம் திரையில் காட்டப்படும்.</string>
+    <string name="instruction_9">தேர்வைச் சமர்ப்பிப்பதற்கு முன் உங்கள் பதில்களை மறுபரிசீலனை செய்யவும்.</string>
+    <string name="instruction_10">தேர்வைச் சமர்ப்பித்த பிறகு உங்கள் பதில்களை மாற்ற முடியாது.</string>
+    <string name="instruction_11">தேர்வின்போது பக்கத்தைப் புதுப்பிக்கவோ செயலியை மூடவோ வேண்டாம்.</string>
+    <string name="instruction_12">தேர்வின்போது பிற செயலிகள் அல்லது அங்கீகரிக்கப்படாத பொருட்களைப் பயன்படுத்த வேண்டாம்.</string>
+    <string name="instruction_13">நேரம் முடிந்ததும் தேர்வு தானாகவே சமர்ப்பிக்கப்படலாம்.</string>
+    <string name="instruction_14">தேர்வின்போது ஏதேனும் சிக்கல் ஏற்பட்டால் சம்பந்தப்பட்ட அதிகாரியைத் தொடர்புகொள்ளவும்.</string>
+
+    <string name="exam_instructions">தேர்வு வழிமுறைகள்</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">தேர்வைத் தொடங்குவதற்கு முன் வழிமுறைகளை கவனமாகப் படிக்கவும்.</string>
+    <string name="declaration">உறுதிமொழி</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">நான் வழிமுறைகளைப் படித்துப் புரிந்துகொண்டேன்; தேர்வைத் தொடர விரும்புகிறேன்.</string>
+    <string name="exam_starts_in">தேர்வு தொடங்க இன்னும்</string>
+    <string name="start_now">இப்போதே தொடங்கவும்</string>
+    <string name="submit_exam">தேர்வைச் சமர்ப்பிக்கவும்</string>
+    <string name="success">வெற்றி</string>
+    <string name="time_is_over">நேரம் முடிந்துவிட்டது</string>
+    <string name="please_submit_options">உங்கள் பதில்களைச் சமர்ப்பிக்கவும்.</string>
+
+    <string name="app_department">ஊரக வளர்ச்சி அமைச்சகம்</string>
+    <string name="login_secure">உங்கள் தகவல்கள் பாதுகாப்பாகப் பாதுகாக்கப்படுகின்றன</string>
+    <string name="exit_exam">தேர்விலிருந்து வெளியேறவும்</string>
+    <string name="do_you_want_to_exit_exam">தேர்விலிருந்து வெளியேற விரும்புகிறீர்களா?</string>
+    <string name="no_questions_available">கேள்விகள் எதுவும் கிடைக்கவில்லை</string>
+    <string name="no_questions_are_available_for_this_user">இந்தப் பயனருக்கு எந்தக் கேள்விகளும் கிடைக்கவில்லை.</string>
+
+    <string name="login_title">உள்நுழைவு</string>
+    <string name="login_subtitle">தொடர உங்கள் கணக்கில் உள்நுழையவும்</string>
+    <string name="login_id_enter">உங்கள் உள்நுழைவு ID-ஐ உள்ளிடவும்</string>
+    <string name="login_password_enter">உங்கள் கடவுச்சொல்லை உள்ளிடவும்</string>
+    <string name="login_show_password">கடவுச்சொல்லைக் காட்டு</string>
+    <string name="login_hide_password">கடவுச்சொல்லை மறை</string>
+    <string name="login_ddugky_logo">DDU-GKY லோகோ</string>
+    <string name="login_rseti_logo">RSETI லோகோ</string>
+    <string name="common_version">பதிப்பு %1$s</string>
+
 </resources>

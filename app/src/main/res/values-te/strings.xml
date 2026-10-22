@@ -271,4 +271,74 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+
+    <string name="no_data_title">డేటా అందుబాటులో లేదు</string>
+    <string name="no_data_description">ప్రస్తుతం ప్రదర్శించడానికి డేటా అందుబాటులో లేదు.</string>
+    <string name="cbt_exam">CBT పరీక్ష</string>
+    <string name="candidate_id">అభ్యర్థి ID</string>
+    <string name="candidate_name_cbt">అభ్యర్థి పేరు</string>
+    <string name="question">ప్రశ్న</string>
+    <string name="save_next">సేవ్ చేసి తదుపరి</string>
+    <string name="save_review">సేవ్ చేసి సమీక్షించండి</string>
+    <string name="mark">గుర్తించండి</string>
+    <string name="clear">తొలగించండి</string>
+    <string name="previous">మునుపటి</string>
+    <string name="next">తదుపరి</string>
+    <string name="question_index">ప్రశ్న %1$s</string>
+    <string name="answered">సమాధానం ఇచ్చినవి</string>
+    <string name="not_answered">సమాధానం ఇవ్వనివి</string>
+    <string name="loading_questions">ప్రశ్నలు లోడ్ అవుతున్నాయి...</string>
+    <string name="review">సమీక్ష</string>
+    <string name="back">వెనుకకు</string>
+    <string name="next_review">తదుపరి సమీక్ష</string>
+    <string name="review_your_test">మీ పరీక్షను సమీక్షించండి</string>
+    <string name="total">మొత్తం</string>
+    <string name="marked_for_review">సమీక్ష కోసం గుర్తించినవి</string>
+    <string name="back_to_test">పరీక్షకు తిరిగి వెళ్లండి</string>
+    <string name="submit_test">పరీక్షను సమర్పించండి</string>
+    <string name="warning">హెచ్చరిక</string>
+    <string name="do_you_want_to_submit_the_questions">మీరు పరీక్షను సమర్పించాలనుకుంటున్నారా?</string>
+    <string name="mark_review">సమీక్ష కోసం గుర్తించండి</string>
+    <string name="instruction_1">పరీక్ష ప్రారంభించే ముందు అన్ని సూచనలను జాగ్రత్తగా చదవండి.</string>
+    <string name="instruction_2">ప్రతి ప్రశ్నను జాగ్రత్తగా చదివి సరైన సమాధానాన్ని ఎంచుకోండి.</string>
+    <string name="instruction_3">మీ సమాధానాన్ని సేవ్ చేయడానికి సంబంధిత బటన్‌ను నొక్కండి.</string>
+    <string name="instruction_4">తదుపరి ప్రశ్నకు వెళ్లడానికి తదుపరి బటన్‌ను నొక్కండి.</string>
+    <string name="instruction_5">మీరు ప్రశ్నను తర్వాత సమీక్షించడానికి గుర్తించవచ్చు.</string>
+    <string name="instruction_6">మునుపటి బటన్‌ను ఉపయోగించి మునుపటి ప్రశ్నకు వెళ్లవచ్చు.</string>
+    <string name="instruction_7">మీరు సమాధానం ఇచ్చిన మరియు సమాధానం ఇవ్వని ప్రశ్నల స్థితిని చూడవచ్చు.</string>
+    <string name="instruction_8">సమీక్ష కోసం గుర్తించిన ప్రశ్నలను మళ్లీ పరిశీలించండి.</string>
+    <string name="instruction_9">పరీక్ష సమయం ముగిసేలోపు అన్ని ప్రశ్నలకు సమాధానాలు ఇవ్వడానికి ప్రయత్నించండి.</string>
+    <string name="instruction_10">పరీక్షను సమర్పించే ముందు మీ సమాధానాలను పరిశీలించండి.</string>
+    <string name="instruction_11">పరీక్షను సమర్పించిన తర్వాత మీరు సమాధానాలను మార్చలేరు.</string>
+    <string name="instruction_12">పరీక్ష సమయంలో పేజీని రిఫ్రెష్ చేయవద్దు లేదా పరీక్ష నుండి బయటకు వెళ్లవద్దు.</string>
+    <string name="instruction_13">పరీక్షను పూర్తి చేసిన తర్వాత సమర్పించు బటన్‌ను నొక్కండి.</string>
+    <string name="instruction_14">పరీక్ష సమయంలో మిగిలిన సమయాన్ని గమనించండి.</string>
+    <string name="exam_instructions">పరీక్ష సూచనలు</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">పరీక్ష ప్రారంభించే ముందు దయచేసి సూచనలను జాగ్రత్తగా చదవండి.</string>
+    <string name="declaration">ప్రకటన</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">నేను సూచనలను చదివి అర్థం చేసుకున్నాను. పరీక్షను కొనసాగించాలనుకుంటున్నాను.</string>
+    <string name="exam_starts_in">పరీక్ష ప్రారంభమయ్యే సమయం</string>
+    <string name="start_now">ఇప్పుడే ప్రారంభించండి</string>
+    <string name="submit_exam">పరీక్షను సమర్పించండి</string>
+    <string name="success">విజయవంతం</string>
+
+    <string name="app_department">గ్రామీణాభివృద్ధి మంత్రిత్వ శాఖ</string>
+    <string name="login_secure">మీ సమాచారం సురక్షితంగా భద్రపరచబడింది</string>
+    <string name="time_is_over">సమయం ముగిసింది</string>
+    <string name="please_submit_options">దయచేసి మీ సమాధానాలను సమర్పించండి.</string>
+    <string name="exit_exam">పరీక్ష నుండి నిష్క్రమించండి</string>
+    <string name="do_you_want_to_exit_exam">మీరు పరీక్ష నుండి నిష్క్రమించాలనుకుంటున్నారా?</string>
+    <string name="no_questions_available">ప్రశ్నలు అందుబాటులో లేవు</string>
+    <string name="no_questions_are_available_for_this_user">ఈ వినియోగదారునికి ప్రశ్నలు అందుబాటులో లేవు.</string>
+    <string name="login_title">లాగిన్</string>
+    <string name="login_subtitle">కొనసాగించడానికి మీ వివరాలను నమోదు చేయండి</string>
+    <string name="login_id_enter">మీ లాగిన్ IDని నమోదు చేయండి</string>
+    <string name="login_password_enter">మీ పాస్‌వర్డ్‌ను నమోదు చేయండి</string>
+    <string name="login_show_password">పాస్‌వర్డ్ చూపించండి</string>
+    <string name="login_hide_password">పాస్‌వర్డ్ దాచండి</string>
+    <string name="login_ddugky_logo">DDU-GKY లోగో</string>
+    <string name="login_rseti_logo">RSETI లోగో</string>
+    <string name="common_version">వెర్షన్ %1$s</string>
 </resources>

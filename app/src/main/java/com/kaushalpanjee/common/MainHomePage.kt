@@ -1,3 +1,4 @@
+/*
 package com.kaushalpanjee.common
 
 import android.app.Activity
@@ -92,8 +93,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
     private var candidateName = ""
     private var totalPercentange =0.0f
     private var certUrl = ""
-    private var attendanceFlag = ""
-    private var cbtExam = ""
+    private var attendanceFlag = ""    private var cbtExam = ""
     private var schemeType = ""
     private var roleName = ""
     private var stateCode = ""
@@ -251,11 +251,13 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                  }
 
 
-                /* R.id.bankLoan -> {
+                */
+/* R.id.bankLoan -> {
 
                      findNavController().navigate(MainHomePageDirections.actionMainHomePageToLoanFragment())
 
-                 }*/
+                 }*//*
+
 
                  R.id.rekyc -> {
 
@@ -1138,3 +1140,4 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
         }
     }
 }
+*/

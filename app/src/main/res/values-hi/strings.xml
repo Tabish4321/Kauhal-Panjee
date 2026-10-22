@@ -1,4 +1,7 @@
 <resources>
+    <string name="app_department">ग्रामीण विकास मंत्रालय</string>
+    <string name="login_secure">आपकी जानकारी सुरक्षित रूप से संरक्षित है</string>
+
     <string name="app_name">कौशल पंजी</string>
     <string name="login_id">लॉगिन आईडी</string>
     <string name="login">लॉगिन</string>
@@ -320,12 +323,6 @@
     <string name="instruction_13">शेष समय स्क्रीन के ऊपरी-बाएं कोने में उम्मीदवार के विवरण के पास प्रदर्शित होता है।</string>
     <string name="instruction_14">परीक्षा के दौरान ESC बटन न दबाएं, 2 प्रयासों के बाद परीक्षा जबरन सबमिट हो जाएगी और उपयोगकर्ता को लॉग आउट कर दिया जाएगा।</string>
 
-
-
-
-
-
-
     <string name="exam_instructions">परीक्षा निर्देश</string>
     <string name="please_read_the_instructions_carefully_before_starting_the_exam">परीक्षा शुरू करने से पहले निर्देशों को ध्यानपूर्वक पढ़ें।</string>
     <string name="declaration">घोषणा</string>
@@ -334,4 +331,27 @@
     <string name="start_now">अभी शुरू करें</string>
     <string name="submit_exam">परीक्षा सबमिट करें</string>
     <string name="success">सफलता</string>
+
+
+
+
+
+    <string name="no_data_title">कोई डेटा नहीं है</string>
+    <string name="no_data_description">दिखाने के लिए कोई डेटा उपलब्ध नहीं है।</string>
+    <string name="time_is_over">समय समाप्त हो गया</string>
+    <string name="please_submit_options">कृपया अपने उत्तर सबमिट करें।</string>
+    <string name="exit_exam">परीक्षा से बाहर निकलें</string>
+    <string name="do_you_want_to_exit_exam">क्या आप परीक्षा से बाहर निकलना चाहते हैं?</string>
+    <string name="no_questions_available">कोई प्रश्न उपलब्ध नहीं है</string>
+    <string name="no_questions_are_available_for_this_user">इस उपयोगकर्ता के लिए कोई प्रश्न उपलब्ध नहीं है।</string>
+
+    <string name="login_title">लॉगिन</string>
+    <string name="login_subtitle">आगे बढ़ने के लिए अपने खाते में लॉगिन करें</string>
+    <string name="login_id_enter">अपनी लॉगिन आईडी दर्ज करें</string>
+    <string name="login_password_enter">अपना पासवर्ड दर्ज करें</string>
+    <string name="login_show_password">पासवर्ड दिखाएँ</string>
+    <string name="login_hide_password">पासवर्ड छिपाएँ</string>
+    <string name="login_ddugky_logo">DDU-GKY लोगो</string>
+    <string name="login_rseti_logo">RSETI लोगो</string>
+    <string name="common_version">संस्करण %1$s</string>
 </resources>

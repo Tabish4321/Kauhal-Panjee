@@ -266,4 +266,81 @@
     <string name="attendance_marked">Attendance Marked</string>
     <string name="careof">"Care Of: "</string>
 
+
+
+    <string name="no_data_title">कोणताही डेटा नाही</string>
+    <string name="no_data_description">दाखवण्यासाठी कोणताही डेटा उपलब्ध नाही.</string>
+    <string name="cbt_exam">CBT परीक्षा</string>
+    <string name="candidate_id">उमेदवार ID</string>
+    <string name="candidate_name_cbt">उमेदवाराचे नाव</string>
+    <string name="question">प्रश्न</string>
+    <string name="save_next">जतन करा आणि पुढे जा</string>
+    <string name="save_review">जतन करा आणि पुनरावलोकनासाठी चिन्हांकित करा</string>
+    <string name="mark">चिन्हांकित करा</string>
+    <string name="clear">पुसून टाका</string>
+    <string name="previous">मागील</string>
+    <string name="next">पुढील</string>
+    <string name="question_index">प्रश्न क्रमांक %1$s</string>
+    <string name="answered">उत्तर दिले आहे</string>
+    <string name="not_answered">उत्तर दिलेले नाही</string>
+    <string name="loading_questions">प्रश्न लोड होत आहेत...</string>
+    <string name="review">पुनरावलोकन</string>
+    <string name="back">मागे जा</string>
+    <string name="next_review">पुढील पुनरावलोकन</string>
+    <string name="review_your_test">तुमच्या परीक्षेचे पुनरावलोकन करा</string>
+    <string name="total">एकूण</string>
+    <string name="marked_for_review">पुनरावलोकनासाठी चिन्हांकित</string>
+    <string name="back_to_test">परीक्षेकडे परत जा</string>
+    <string name="submit_test">परीक्षा सबमिट करा</string>
+    <string name="warning">चेतावणी</string>
+    <string name="do_you_want_to_submit_the_questions">तुम्हाला परीक्षा सबमिट करायची आहे का?</string>
+    <string name="mark_review">पुनरावलोकनासाठी चिन्हांकित करा</string>
+
+    <string name="instruction_1">परीक्षा सुरू करण्यापूर्वी सर्व सूचना काळजीपूर्वक वाचा.</string>
+    <string name="instruction_2">तुम्हाला निर्धारित वेळेत परीक्षा पूर्ण करावी लागेल.</string>
+    <string name="instruction_3">परीक्षा सुरू करण्यापूर्वी तुमच्या उमेदवाराच्या तपशीलांची पडताळणी करा.</string>
+    <string name="instruction_4">प्रत्येक प्रश्न काळजीपूर्वक वाचा आणि योग्य उत्तर निवडा.</string>
+    <string name="instruction_5">पुढील प्रश्नावर जाण्यापूर्वी तुमचे उत्तर जतन करा.</string>
+    <string name="instruction_6">आवश्यक असल्यास प्रश्न पुनरावलोकनासाठी चिन्हांकित करू शकता.</string>
+    <string name="instruction_7">उत्तर बदलण्यासाठी संबंधित प्रश्नाकडे परत जा आणि नवीन उत्तर निवडा.</string>
+    <string name="instruction_8">परीक्षेदरम्यान उर्वरित वेळ स्क्रीनवर दाखवला जाईल.</string>
+    <string name="instruction_9">परीक्षा सबमिट करण्यापूर्वी तुमच्या उत्तरांचे पुनरावलोकन करा.</string>
+    <string name="instruction_10">परीक्षा सबमिट केल्यानंतर तुम्ही उत्तरे बदलू शकणार नाही.</string>
+    <string name="instruction_11">परीक्षेदरम्यान पेज रिफ्रेश करू नका किंवा ॲप बंद करू नका.</string>
+    <string name="instruction_12">परीक्षेदरम्यान इतर ॲप्स किंवा अनधिकृत साहित्य वापरू नका.</string>
+    <string name="instruction_13">वेळ संपल्यावर परीक्षा आपोआप सबमिट होऊ शकते.</string>
+    <string name="instruction_14">परीक्षेदरम्यान काही समस्या आल्यास संबंधित अधिकाऱ्याशी संपर्क साधा.</string>
+
+    <string name="exam_instructions">परीक्षेच्या सूचना</string>
+    <string name="please_read_the_instructions_carefully_before_starting_the_exam">परीक्षा सुरू करण्यापूर्वी कृपया सूचना काळजीपूर्वक वाचा.</string>
+    <string name="declaration">घोषणा</string>
+    <string name="i_have_read_and_understood_the_instructions_and_wish_to_proceed_with_the_test">मी सूचना वाचल्या आणि समजून घेतल्या आहेत आणि मला परीक्षा पुढे सुरू ठेवायची आहे.</string>
+    <string name="exam_starts_in">परीक्षा सुरू होण्यासाठी</string>
+    <string name="start_now">आता सुरू करा</string>
+    <string name="submit_exam">परीक्षा सबमिट करा</string>
+    <string name="success">यशस्वी</string>
+    <string name="time_is_over">वेळ संपली आहे</string>
+    <string name="please_submit_options">कृपया तुमची उत्तरे सबमिट करा.</string>
+    <string name="exit_exam">परीक्षेतून बाहेर पडा</string>
+    <string name="app_department">ग्रामीण विकास मंत्रालय</string>
+    <string name="login_secure">तुमची माहिती सुरक्षितपणे संरक्षित आहे</string>
+    <string name="do_you_want_to_exit_exam">तुम्हाला परीक्षेतून बाहेर पडायचे आहे का?</string>
+    <string name="no_questions_available">कोणतेही प्रश्न उपलब्ध नाहीत</string>
+    <string name="no_questions_are_available_for_this_user">या वापरकर्त्यासाठी कोणतेही प्रश्न उपलब्ध नाहीत.</string>
+
+    <string name="login_title">लॉगिन</string>
+    <string name="login_subtitle">पुढे जाण्यासाठी तुमच्या खात्यात लॉगिन करा</string>
+    <string name="login_id_enter">तुमचा लॉगिन ID प्रविष्ट करा</string>
+    <string name="login_password_enter">तुमचा पासवर्ड प्रविष्ट करा</string>
+    <string name="login_show_password">पासवर्ड दाखवा</string>
+    <string name="login_hide_password">पासवर्ड लपवा</string>
+    <string name="login_ddugky_logo">DDU-GKY लोगो</string>
+    <string name="login_rseti_logo">RSETI लोगो</string>
+    <string name="common_version">आवृत्ती %1$s</string>
+
+
+
+
+
+
 </resources>
