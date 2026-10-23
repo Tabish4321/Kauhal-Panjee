@@ -1,5 +1,7 @@
 package com.kaushalpanjee.common
 
+import android.provider.Settings
+import androidx.activity.result.ActivityResultLauncher
 import Language
 import LanguageRead
 import android.annotation.SuppressLint
@@ -32,6 +34,7 @@ import android.text.style.StyleSpan
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -141,6 +144,8 @@ import com.kaushalpanjee.common.model.request.InsertAccountConsentRequest
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.copyToClipboard
 import java.util.UUID
+import android.Manifest
+import android.content.Intent
 
 
 @AndroidEntryPoint
@@ -455,6 +460,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private var observingConsentId: String? = null
 
+    private val requestCameraPermission: ActivityResultLauncher<String> =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                launchDocumentCamera()
+            } else {
+                showCameraPermissionDeniedDialog()
+            }
+        }
 
 // ============================================================
 // SAMIKSHA CONSENT RESULT LAUNCHER
@@ -630,6 +645,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedTradeCode = ""
     private var selectedTrade = ""
     private var decryptedUserName = ""
+
+
+
 
 
 
@@ -8051,11 +8069,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun openCameraForDocument(purpose: String) {
-
         currentRequestPurpose = purpose
 
+        if (
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            launchDocumentCamera()
+        } else {
+            requestCameraPermission.launch(Manifest.permission.CAMERA)
+        }
+    }
+    private fun launchDocumentCamera() {
         val file = File(
-            requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            requireContext().getExternalFilesDir(
+                Environment.DIRECTORY_PICTURES
+            ),
             "captured_image.jpg"
         )
 
@@ -8067,7 +8098,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         takePicture.launch(cameraImageUri)
     }
-
     // Select Image from Gallery
     private fun openGalleryForDocument(purpose: String) {
 
@@ -9275,8 +9305,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
+    private fun showCameraPermissionDeniedDialog() {
+        val shouldShowRationale =
+            shouldShowRequestPermissionRationale(
+                Manifest.permission.CAMERA
+            )
 
-
+        AlertDialog.Builder(requireContext())
+            .setTitle("Camera Permission Required")
+            .setMessage(
+                "Camera permission is required to capture the document. Please allow camera access."
+            )
+            .setPositiveButton(
+                if (shouldShowRationale) "Allow Camera" else "Open Settings"
+            ) { _, _ ->
+                if (shouldShowRationale) {
+                    requestCameraPermission.launch(
+                        Manifest.permission.CAMERA
+                    )
+                } else {
+                    val intent = Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts(
+                            "package",
+                            requireContext().packageName,
+                            null
+                        )
+                    )
+                    startActivity(intent)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
 }
 
 
