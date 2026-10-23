@@ -9,8 +9,9 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
-    id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 
 }
 
@@ -387,8 +388,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.4")
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation ("com.google.firebase:firebase-messaging")
+
     implementation("androidx.compose.material:material-icons-extended:1.6.0")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
@@ -397,11 +397,14 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
 
 
+        // Import the BoM for the Firebase platform
+        implementation(platform("com.google.firebase:firebase-bom:35.0.2"))
 
+        // Add the dependencies for the Crashlytics and Analytics libraries
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation("com.google.firebase:firebase-crashlytics")
+        implementation("com.google.firebase:firebase-analytics")
 
-    // Required Firebase libs (IMPORTANT)
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-config-ktx")
 
 }
 

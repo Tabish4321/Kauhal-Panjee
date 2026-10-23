@@ -41,7 +41,9 @@ fun LoginScreen(
     onRegister: () -> Unit,
     onAboutUnnati: () -> Unit,
     onForgotPassword: () -> Unit,
-    onLanguageSelected: (String) -> Unit
+    onLanguageSelected: (String) -> Unit,
+
+    //onRsetiLogoClick: () -> Unit = {}
 ) {
     BoxWithConstraints(
         modifier = Modifier
@@ -100,6 +102,12 @@ fun LoginScreen(
             )
 
             LoginHeader()
+
+           /* LoginHeader(
+                onRsetiLogoClick = {
+                    onRsetiLogoClick()
+                }
+            )*/
 
             Spacer(
                 Modifier.height(

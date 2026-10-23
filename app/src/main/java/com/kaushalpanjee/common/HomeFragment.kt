@@ -1156,7 +1156,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 R.id.tvCheckConsentStatus
                             ).setOnClickListener {
 
-                                //checkConsentStatus("d533adbb-629c-43ba-91b8-b5ef557b65f8")
+                                checkConsentStatus("d533adbb-629c-43ba-91b8-b5ef557b65f8")
                                 //checkConsentStatus("96872b83-c2b1-483e-b6bc-0dc2bd9b64dd")
                                 //checkConsentStatus("b02f6e6c-fa44-479a-8338-54c984f143f7")
 
@@ -1177,6 +1177,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     item.consentId,
                                     item
                                 )
+
+                               // checkConsentStatus("9671747c-02a3-4273-87a2-25dcca7c2d1d",item)
+
                             }
 
                         }
