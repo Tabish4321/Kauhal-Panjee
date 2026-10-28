@@ -1156,9 +1156,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 R.id.tvCheckConsentStatus
                             ).setOnClickListener {
 
-                                checkConsentStatus("d533adbb-629c-43ba-91b8-b5ef557b65f8")
-                                //checkConsentStatus("96872b83-c2b1-483e-b6bc-0dc2bd9b64dd")
-                                //checkConsentStatus("b02f6e6c-fa44-479a-8338-54c984f143f7")
+
 
                             }*/
 
@@ -1178,7 +1176,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     item
                                 )
 
-                               // checkConsentStatus("9671747c-02a3-4273-87a2-25dcca7c2d1d",item)
+                               // checkConsentStatus("2d84bcd3-b77a-457b-a718-1ca4f75eeb1b",item) //Ajit
+                              //  checkConsentStatus("1ba9c646-6168-4181-b069-af3ed21a963f",item) //Ajit
+                              //  checkConsentStatus("6fa70c59-7b01-4b92-9a39-4ebba3607068",item) //Ajit
+                              //  checkConsentStatus("ae83d22d-26be-49b8-9183-54c753d98695",item)// ravi
+                              // 3ec248a3-94e7-453e-9fb5-59515abb7dec
+                              // checkConsentStatus("b02f6e6c-fa44-479a-8338-54c984f143f7",item) //rahul
 
                             }
 
@@ -1338,7 +1341,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 userId = userPreferences.getUseID(),
 
-                fipId = fipId ,
+             //   fipId = "KotakMahindraBank-FIP",
+                fipId = fipId,
                 bankName = bankName,
 
                 ifscCode = ifscCode,
@@ -1443,6 +1447,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     )
 
                     "consentId=$id".copyToClipboard(requireContext())
+
+                    saveConsentResult(result,request.accountNumber)
 
                     Log.d(
                         "Samiksha",

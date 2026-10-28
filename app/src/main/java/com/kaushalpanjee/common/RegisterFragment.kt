@@ -1,3 +1,4 @@
+/*
 package com.kaushalpanjee.common
 
 import android.annotation.SuppressLint
@@ -782,4 +783,76 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         toastLong("Crash log copied to clipboard")
     }
 
+}*/
+
+
+package com.kaushalpanjee.common
+
+
+
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.kaushalpanjee.common.compose.registration.RegistrationComposeScreen
+import com.kaushalpanjee.core.basecomponent.BaseFragment
+import com.kaushalpanjee.databinding.FragmentRegisterBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterBinding::inflate) {
+
+
+    private val commonViewModel: CommonViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+
+            setContent {
+                MaterialTheme {
+                    RegistrationComposeScreen(
+                        commonViewModel = commonViewModel,
+                        onBack = {
+                            val navController = findNavController()
+                            if (!navController.popBackStack()) {
+                                requireActivity().finish()
+                            }
+                        },
+                        onAadhaarCheckSuccess = { aadhaar,
+                                                  stateCode,
+                                                  stateLgdCode,
+                                                  candidateId ->
+
+                            // TODO: Yahan existing FaceRD eKYC flow connect karna hai.
+                            // Abhi purana EKYCFragment delete mat karna.
+                            Log.d(
+                                "RegisterCompose",
+                                "Aadhaar check successful; candidateId=$candidateId"
+                            )
+
+                            Toast.makeText(
+                                requireContext(),
+                                "Aadhaar verified. Face authentication flow connect karna baaki hai.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    )
+                }
+            }
+        }
+    }
 }

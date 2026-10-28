@@ -125,7 +125,6 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
             navGraph.setStartDestination(R.id.mainHomePage)
         } else {
             navGraph.setStartDestination(R.id.loginFragment)
-//            navGraph.setStartDestination(R.id.cbtFragment)
         }
 
         navController?.graph = navGraph

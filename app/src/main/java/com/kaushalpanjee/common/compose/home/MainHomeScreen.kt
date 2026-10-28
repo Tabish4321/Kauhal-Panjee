@@ -1,5 +1,6 @@
 package com.kaushalpanjee.common.compose.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -106,6 +107,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -193,7 +195,7 @@ private sealed interface HomeDialog {
 }
 
 private enum class StepStatus(val label: String) {
-    Completed("Completed"), InProgress("In Progress"), Upcoming("Upcoming")
+    Completed("Completed"), InProgress("InProgress"), Upcoming("Upcoming")
 }
 
 private data class JourneyStep(val title: String, val status: StepStatus)
@@ -385,7 +387,7 @@ fun MainHomeRoute(
         val searchText = query.trim()
         // Suggestions disappear immediately as soon as the user edits/clears the field.
         searchResults = emptyList()
-        if (searchText.length >= 4) {
+        if (searchText.length >= 2) {
             delay(400)
             // Query may have changed during debounce; never submit a stale value.
             if (query.trim() == searchText) {
@@ -416,6 +418,7 @@ fun MainHomeRoute(
     MainHomeScreen(
         state = state,
         query = query,
+        userId = userId,
         onQueryChange = {
             query = it
             // Do not keep showing the previous query's list while a new query is typed.
@@ -564,10 +567,12 @@ private suspend fun decodeBase64Image(data: String?): ImageBitmap? =
 
 /* ───────────────────────── Screen (stateless UI) ───────────────────────── */
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun MainHomeScreen(
     state: HomeUiState,
     query: String,
+    userId: String,
     onQueryChange: (String) -> Unit,
     searchResults: List<SearchItem>,
     snackbar: SnackbarHostState,
@@ -611,6 +616,7 @@ fun MainHomeScreen(
                 Box(Modifier.fillMaxWidth()) {
                     HomeHeader(
                         name = state.candidateName,
+                        userId = userId,
                         profile = state.profileImage,
                         compact = compact,
                         onLanguage = onLanguage,
@@ -633,34 +639,51 @@ fun MainHomeScreen(
                     Spacer(Modifier.height(12.dp))
                 }
 
-                BannerCarousel(
+              /*  BannerCarousel(
                     banners = state.banners,
                     compact = compact,
                     onExplore = onTrainingDetails,
                     modifier = Modifier.content().padding(horizontal = 16.dp)
-                )
+                )*/
                 Spacer(Modifier.height(16.dp))
 
                 ProfileCard(
                     percent = state.totalPercentage,
                     compact = compact,
                     onCompleteNow = onCandidateDetails,
-                    modifier = Modifier.content().padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .content()
+                        .padding(horizontal = 16.dp)
                 )
+
                 Spacer(Modifier.height(16.dp))
 
-                val steps = listOf(
-                    JourneyStep(
-                        "Register",
-                        if (state.registerKey == "Y") StepStatus.Completed else StepStatus.InProgress
-                    ),
-                    // baki static, API key aane par replace
-                    JourneyStep("Batch Enrolled", StepStatus.Completed),
-                    JourneyStep("Batch Completed", StepStatus.Completed),
-                    JourneyStep("Assessment Completed", StepStatus.InProgress),
-                    JourneyStep("Certificate Generated", StepStatus.Upcoming)
+                val schemeType = "RSETI" // API se actual schemeType lena
+
+                val steps = buildList {
+                    // Common journey steps
+                    add(JourneyStep("Enrolled", StepStatus.Completed))
+                    add(JourneyStep("Trained", StepStatus.Completed))
+                    add(JourneyStep("Assessed", StepStatus.Completed))
+                    add(JourneyStep("Certified", StepStatus.InProgress))
+
+                    // Scheme-based journey steps
+                    if (schemeType.equals("RSETI", ignoreCase = true)) {
+                        add(JourneyStep("Settled", StepStatus.Upcoming))
+                    } else if (schemeType.equals("DDUGKY", ignoreCase = true)) {
+                        add(JourneyStep("Appointed", StepStatus.Upcoming))
+                        add(JourneyStep("Placed", StepStatus.Upcoming))
+                    }
+                }
+
+                JourneyCard(
+                    steps = steps,
+                    compact = compact,
+                    modifier = Modifier
+                        .content()
+                        .padding(horizontal = 16.dp)
                 )
-                JourneyCard(steps, compact, Modifier.content().padding(horizontal = 16.dp))
+
                 Spacer(Modifier.height(22.dp))
 
                 Text(
@@ -681,7 +704,7 @@ fun MainHomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         ServiceCard(
-                            title = "Candidate Details", subtitle = "View & update your profile",
+                            title = "My Details", subtitle = "View & update your profile",
                             icon = Icons.Outlined.Badge, compact = compact,
                             bg = Color(0xFFE6F6EF), border = Color(0xFFBFE6D4),
                             iconBg = Color(0xFFC9EEDB), iconTint = GreenMid,
@@ -738,6 +761,7 @@ fun MainHomeScreen(
 @Composable
 private fun HomeHeader(
     name: String,
+    userId: String,
     profile: ImageBitmap?,
     compact: Boolean,
     onLanguage: () -> Unit,
@@ -746,85 +770,219 @@ private fun HomeHeader(
     Box(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomStart = 36.dp, bottomEnd = 36.dp))
-            .background(Brush.verticalGradient(listOf(GreenMid, GreenDark)))
+            .clip(
+                RoundedCornerShape(
+                    bottomStart = 36.dp,
+                    bottomEnd = 36.dp
+                )
+            )
+            .background(
+                Brush.verticalGradient(
+                    listOf(GreenMid, GreenDark)
+                )
+            )
             .drawBehind {
-                // soft decorative shapes (leaf / circles) like the reference
-                drawCircle(Color(0x12FFFFFF), size.width * 0.55f, Offset(size.width * 1.0f, size.height * 1.05f))
-                drawCircle(Color(0x0DFFFFFF), size.width * 0.38f, Offset(size.width * 0.05f, -size.height * 0.1f))
+                drawCircle(
+                    Color(0x12FFFFFF),
+                    size.width * 0.55f,
+                    Offset(size.width * 1.0f, size.height * 1.05f)
+                )
+
+                drawCircle(
+                    Color(0x0DFFFFFF),
+                    size.width * 0.38f,
+                    Offset(size.width * 0.05f, -size.height * 0.1f)
+                )
+
                 val cx = size.width * 0.84f
                 val cy = size.height * 0.62f
                 val lw = 26.dp.toPx()
                 val lh = 78.dp.toPx()
+
                 rotate(-28f, Offset(cx, cy)) {
-                    drawOval(Color(0x1CFFFFFF), Offset(cx - lw / 2, cy - lh / 2), Size(lw, lh))
+                    drawOval(
+                        Color(0x1CFFFFFF),
+                        Offset(cx - lw / 2, cy - lh / 2),
+                        Size(lw, lh)
+                    )
                 }
+
                 rotate(28f, Offset(cx, cy)) {
-                    drawOval(Color(0x16FFFFFF), Offset(cx - lw / 2 + 12.dp.toPx(), cy - lh / 2 + 10.dp.toPx()), Size(lw, lh))
+                    drawOval(
+                        Color(0x16FFFFFF),
+                        Offset(
+                            cx - lw / 2 + 12.dp.toPx(),
+                            cy - lh / 2 + 10.dp.toPx()
+                        ),
+                        Size(lw, lh)
+                    )
                 }
-                drawCircle(Color(0x24FFFFFF), 11.dp.toPx(), Offset(cx, cy - lh / 2 - 6.dp.toPx()))
+
+                drawCircle(
+                    Color(0x24FFFFFF),
+                    11.dp.toPx(),
+                    Offset(cx, cy - lh / 2 - 6.dp.toPx())
+                )
             }
             .statusBarsPadding()
     ) {
         Column(
-            Modifier
+            modifier = Modifier
                 .align(Alignment.TopCenter)
-                .content()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 52.dp)
+                .fillMaxWidth()
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = 12.dp,
+                    bottom = 52.dp
+                )
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+
+            // Logo + App Name + Language + Profile + Notification
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                // Rounded App Logo
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.app_icon
+                    ),
+                    contentDescription = "App Logo",
+                    modifier = Modifier
+                        .size(if (compact) 34.dp else 38.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentScale = ContentScale.Crop
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                // App Name
                 Text(
                     text = stringResource(R.string.app_name),
                     modifier = Modifier.weight(1f),
                     color = Color.White,
-                    fontSize = if (compact) 18.sp else 20.sp,
-                    fontWeight = FontWeight.Medium
+                    fontSize = if (compact) 17.sp else 19.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-                // Language
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                // Language Button
                 Box(
-                    Modifier.size(30.dp).clip(RoundedCornerShape(10.dp))
-                        .border(2.dp, Color.White, RoundedCornerShape(10.dp))
+                    modifier = Modifier
+                        .size(34.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .border(
+                            width = 1.5.dp,
+                            color = Color.White,
+                            shape = RoundedCornerShape(10.dp)
+                        )
                         .clickable(onClick = onLanguage),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Aअ", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Aअ",
+                        color = Color.White,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
-                Spacer(Modifier.width(if (compact) 10.dp else 16.dp))
-                // Avatar
+
+                Spacer(
+                    modifier = Modifier.width(
+                        if (compact) 10.dp else 12.dp
+                    )
+                )
+
+                // Profile Avatar
                 Box(
-                    Modifier.size(if (compact) 44.dp else 52.dp).clip(CircleShape)
+                    modifier = Modifier
+                        .size(if (compact) 42.dp else 46.dp)
+                        .clip(CircleShape)
                         .border(2.dp, Color.White, CircleShape)
                         .background(Color(0xFFCFE8DF)),
                     contentAlignment = Alignment.Center
                 ) {
                     if (profile != null) {
-                        Image(profile, null, Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
+                        Image(
+                            bitmap = profile,
+                            contentDescription = "Profile",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
                     } else {
-                        Icon(Icons.Filled.Person, null, tint = GreenDark)
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Profile",
+                            tint = GreenDark,
+                            modifier = Modifier.size(24.dp)
+                        )
                     }
                 }
-                Spacer(Modifier.width(if (compact) 8.dp else 14.dp))
-                // Bell
-                Box(Modifier.size(42.dp).clip(CircleShape).clickable(onClick = onNotification), contentAlignment = Alignment.Center) {
-                    Icon(Icons.Filled.Notifications, null, tint = Color.White, modifier = Modifier.size(30.dp))
+
+                Spacer(
+                    modifier = Modifier.width(
+                        if (compact) 8.dp else 10.dp
+                    )
+                )
+
+                // Notification Bell
+                Box(
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clip(CircleShape)
+                        .clickable(onClick = onNotification),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Notifications,
+                        contentDescription = "Notifications",
+                        tint = Color.White,
+                        modifier = Modifier.size(26.dp)
+                    )
+
+                    // Notification Indicator
                     Box(
-                        Modifier.align(Alignment.TopEnd).padding(top = 5.dp, end = 7.dp)
-                            .size(11.dp).clip(CircleShape).background(Color(0xFFFF4D4D))
-                            .border(1.5.dp, GreenMid, CircleShape)
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(top = 3.dp, end = 3.dp)
+                            .size(10.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFFF4D4D))
+                            .border(
+                                1.5.dp,
+                                GreenMid,
+                                CircleShape
+                            )
                     )
                 }
             }
-            Spacer(Modifier.height(if (compact) 14.dp else 20.dp))
-            Text(
-                "Hi, ${name.ifBlank { "Candidate" }} ",
-                color = Color.White,
-                fontSize = if (compact) 24.sp else 29.sp,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1, overflow = TextOverflow.Ellipsis
+
+            Spacer(
+                modifier = Modifier.height(
+                    if (compact) 14.dp else 20.dp
+                )
             )
+
+            // Greeting
             Text(
-                "Continue your skilling journey",
-                color = Color.White, fontSize = if (compact) 14.sp else 16.sp
+                text = "Hi, ${name.ifBlank { "Candidate" }}",
+                color = Color.White,
+                fontSize = if (compact) 18.sp else 20.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+            // Subtitle
+            Text(
+                text = "Kp ID - ${userId}",
+                color = Color.White,
+                fontSize = if (compact) 14.sp else 16.sp
             )
         }
     }
@@ -1027,6 +1185,9 @@ private fun BannerCarousel(
 
 /* ───────────────────────── Profile completion ───────────────────────── */
 
+
+
+
 @Composable
 private fun ProfileCard(
     percent: Float,
@@ -1035,73 +1196,147 @@ private fun ProfileCard(
     modifier: Modifier = Modifier
 ) {
     val complete = percent >= 100f
-    val shape = RoundedCornerShape(20.dp)
+    val shape = RoundedCornerShape(22.dp)
+
+    val ringSize = if (compact) 76.dp else 86.dp
+    val ringStroke = if (compact) 9.dp else 11.dp
+
+    // Left icon slightly smaller
+    val iconBoxSize = if (compact) 46.dp else 52.dp
+    val iconSize = if (compact) 25.dp else 29.dp
+    val iconContainerSize = if (compact) 56.dp else 60.dp
+    val checkSize = if (compact) 20.dp else 22.dp
+
     Row(
-        modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .clip(shape)
-            .background(Brush.horizontalGradient(listOf(Color(0xFFE4F6EC), Color(0xFFF1FAF6))))
-            .border(1.dp, Color(0xFFCDEBDD), shape)
-            .padding(start = 14.dp, top = 10.dp, bottom = 10.dp, end = 6.dp),
+            .background(
+                Brush.horizontalGradient(
+                    listOf(
+                        Color(0xFFE2F7EC),
+                        Color(0xFFF2FBF6)
+                    )
+                )
+            )
+            .border(1.dp, Color(0xFFC5E8D7), shape)
+            .padding(
+                start = 12.dp,
+                top = if (compact) 14.dp else 18.dp,
+                bottom = if (compact) 14.dp else 18.dp,
+                end = 10.dp
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (!compact) {
-            Box(Modifier.size(52.dp)) {          // bahar wala box: clip nahi, badge ko jagah milti hai
+            Box(
+                modifier = Modifier.size(iconContainerSize),
+                contentAlignment = Alignment.Center
+            ) {
                 Box(
-                    Modifier
-                        .align(Alignment.Center)
-                        .size(46.dp)
+                    modifier = Modifier
+                        .size(iconBoxSize)
                         .clip(CircleShape)
-                        .background(Color(0xFFC9EEDB)),
+                        .background(Color(0xFFC8F0DC)),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        Icons.Outlined.Badge, null,
+                        imageVector = Icons.Outlined.Badge,
+                        contentDescription = "Profile",
                         tint = GreenDark,
-                        modifier = Modifier.size(26.dp)
+                        modifier = Modifier.size(iconSize)
                     )
                 }
-                // Check badge: ab pura dikhega
+
                 Box(
-                    Modifier
+                    modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .size(19.dp)
+                        .size(checkSize)
                         .clip(CircleShape)
                         .background(GreenDark)
                         .border(1.5.dp, Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Filled.Check, null, tint = Color.White, modifier = Modifier.size(11.dp))
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = "Complete",
+                        tint = Color.White,
+                        modifier = Modifier.size(12.dp)
+                    )
                 }
             }
+
             Spacer(Modifier.width(10.dp))
         }
-        Column(Modifier.weight(1f)) {
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(vertical = 2.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
             Text(
-                if (complete) "Your profile is complete!" else "Complete your profile",
-                color = TextDark, fontSize = if (compact) 13.sp else 14.sp,
-                fontWeight = FontWeight.Bold, lineHeight = if (compact) 16.sp else 17.sp,
-                maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis
+                text = if (complete) {
+                    "Your profile is complete!"
+                } else {
+                    "Complete your profile"
+                },
+                color = TextDark,
+                fontSize = if (compact) 13.sp else 15.sp,
+                fontWeight = FontWeight.Bold,
+                lineHeight = if (compact) 17.sp else 19.sp,
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
             )
-            Spacer(Modifier.height(2.dp))
+
+            Spacer(Modifier.height(5.dp))
+
             Text(
-                if (complete) "All set to access training, assessments and certification services."
-                else "Finish your profile to access training, assessments and certification.",
-                color = TextGrey, fontSize = if (compact) 10.sp else 11.sp, lineHeight = if (compact) 13.sp else 14.sp,
-                maxLines = 2, overflow = TextOverflow.Ellipsis
+                text = if (complete) {
+                    "All set to access training, assessments and certification services."
+                } else {
+                    "Finish your profile to access training, assessments and certification."
+                },
+                color = TextGrey,
+                fontSize = if (compact) 11.sp else 12.sp,
+                lineHeight = if (compact) 15.sp else 16.sp,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis
             )
+
             if (!complete) {
                 Spacer(Modifier.height(6.dp))
+
                 Text(
-                    "Complete now →",
-                    color = GreenDark, fontSize = 12.sp, fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable(onClick = onCompleteNow)
+                    text = "Complete now →",
+                    color = GreenDark,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .clickable(onClick = onCompleteNow)
+                        .padding(vertical = 3.dp)
                 )
             }
         }
-        Spacer(Modifier.width(4.dp))
-        ProgressRing(percent, if (compact) 66.dp else 72.dp, if (compact) 9.dp else 10.dp)
+
+        Spacer(Modifier.width(6.dp))
+
+        Box(
+            modifier = Modifier.size(ringSize),
+            contentAlignment = Alignment.Center
+        ) {
+            ProgressRing(
+                percent = percent,
+                boxSize = ringSize,
+                inset = 4.dp,
+                strokeWidth = ringStroke
+            )
+        }
     }
 }
+
 
 private val confettiSpec = listOf(
     -75f to Color(0xFFFF5A5F), -35f to Color(0xFFB04CE0), 5f to Color(0xFF1FA34A),
@@ -1110,43 +1345,142 @@ private val confettiSpec = listOf(
 )
 
 @Composable
-private fun ProgressRing(percent: Float, boxSize: Dp, inset: Dp) {
+private fun ProgressRing(
+    percent: Float,
+    boxSize: Dp,
+    inset: Dp,
+    strokeWidth: Dp = 7.dp
+) {
     val p = percent.coerceIn(0f, 100f)
-    var target by remember { mutableFloatStateOf(0f) }
-    LaunchedEffect(p) { target = p }
-    val sweep by animateFloatAsState(360f * target / 100f, tween(1200), label = "ring")
 
-    Box(Modifier.size(boxSize), contentAlignment = Alignment.Center) {
-        Canvas(Modifier.fillMaxSize()) {
+    var target by remember {
+        mutableFloatStateOf(0f)
+    }
+
+    LaunchedEffect(p) {
+        target = p
+    }
+
+    val sweep by animateFloatAsState(
+        targetValue = 360f * target / 100f,
+        animationSpec = tween(durationMillis = 1200),
+        label = "ring"
+    )
+
+    Box(
+        modifier = Modifier.size(boxSize),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(
+            modifier = Modifier.fillMaxSize()
+        ) {
             val c = center
-            val stroke = 7.dp.toPx()
-            val ringR = size.minDimension / 2 - inset.toPx()
-            val tl = Offset(c.x - ringR, c.y - ringR)
-            val sz = Size(ringR * 2, ringR * 2)
+            val stroke = strokeWidth.toPx()
+            val insetPx = inset.toPx()
 
-            drawCircle(Color.White, ringR)
-            drawArc(Color(0xFFD3EDE0), -90f, 360f, false, tl, sz, style = Stroke(stroke))
-            drawArc(GreenAccent, -90f, sweep, false, tl, sz, style = Stroke(stroke, cap = StrokeCap.Round))
+            // Ring ko canvas ke andar properly fit rakhein
+            val ringR = (size.minDimension / 2f - insetPx - stroke / 2f)
+                .coerceAtLeast(0f)
 
+            val tl = Offset(
+                x = c.x - ringR,
+                y = c.y - ringR
+            )
+
+            val arcSize = Size(
+                width = ringR * 2f,
+                height = ringR * 2f
+            )
+
+            // White background
+            drawCircle(
+                color = Color.White,
+                radius = ringR
+            )
+
+            // Background ring
+            drawArc(
+                color = Color(0xFFD3EDE0),
+                startAngle = -90f,
+                sweepAngle = 360f,
+                useCenter = false,
+                topLeft = tl,
+                size = arcSize,
+                style = Stroke(width = stroke)
+            )
+
+            // Animated progress ring
+            drawArc(
+                color = GreenAccent,
+                startAngle = -90f,
+                sweepAngle = sweep,
+                useCenter = false,
+                topLeft = tl,
+                size = arcSize,
+                style = Stroke(
+                    width = stroke,
+                    cap = StrokeCap.Round
+                )
+            )
+
+            // Confetti when profile is complete
             if (p >= 100f) {
                 confettiSpec.forEach { (deg, col) ->
                     val rad = Math.toRadians(deg.toDouble())
-                    val d = Offset(cos(rad).toFloat(), sin(rad).toFloat())
-                    val r1 = ringR + stroke / 2 + 4.dp.toPx()
+
+                    val d = Offset(
+                        x = cos(rad).toFloat(),
+                        y = sin(rad).toFloat()
+                    )
+
+                    val r1 = ringR + stroke / 2f + 4.dp.toPx()
                     val r2 = r1 + 6.dp.toPx()
-                    drawLine(col, c + d * r1, c + d * r2, 3.dp.toPx(), StrokeCap.Round)
+
+                    drawLine(
+                        color = col,
+                        start = c + d * r1,
+                        end = c + d * r2,
+                        strokeWidth = 3.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
                 }
             }
         }
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("${p.toInt()}%", color = TextDark, fontSize = 15.sp, lineHeight = 17.sp, fontWeight = FontWeight.ExtraBold, maxLines = 1)
+
+        // Percentage and label
+        Column(
+            modifier = Modifier.padding(horizontal = 2.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
             Text(
-                "Profile\nCompletion", color = TextDark, fontSize = 7.sp,
-                textAlign = TextAlign.Center, lineHeight = 8.sp, maxLines = 2
+                text = "${p.toInt()}%",
+                color = TextDark,
+                fontSize = if (boxSize < 80.dp) 14.sp else 17.sp,
+                lineHeight = if (boxSize < 80.dp) 16.sp else 20.sp,
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                softWrap = false
+            )
+
+            Spacer(
+                modifier = Modifier.height(1.dp)
+            )
+
+            Text(
+                text = "Profile\nCompleted",
+                color = TextDark,
+                fontSize = if (boxSize < 80.dp) 7.sp else 8.sp,
+                textAlign = TextAlign.Center,
+                lineHeight = if (boxSize < 80.dp) 8.sp else 9.sp,
+                maxLines = 2,
+                softWrap = true
             )
         }
     }
 }
+
 
 /* ───────────────────────── Skilling journey ───────────────────────── */
 
@@ -1192,23 +1526,49 @@ private fun JourneyCard(steps: List<JourneyStep>, compact: Boolean, modifier: Mo
                             color = GreenAccent
                         )
                     }
-                    Spacer(Modifier.height(5.dp))
-                    Text("${i + 1}", color = TextDark, fontSize = 14.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+
+                    Spacer(Modifier.height(8.dp))
+
                     Text(
-                        step.title, color = TextDark,
-                        fontSize = if (compact) 8.sp else 10.sp, fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center, lineHeight = if (compact) 10.sp else 12.sp,
-                        minLines = 2, maxLines = 2
+                        text = "${i + 1}",
+                        color = TextDark,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
                     )
+
+                    Spacer(Modifier.height(3.dp))
+
                     Text(
-                        step.status.label, fontSize = if (compact) 10.sp else 11.sp,
-                        textAlign = TextAlign.Center, maxLines = 1,
+                        text = step.title,
+                        color = TextDark,
+                        fontSize = if (compact) 9.sp else 10.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center,
+                        lineHeight = 13.sp,
+                        minLines = 2,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    //Spacer(Modifier.height(10.dp))
+
+                    Text(
+                        text = step.status.label,
+                        fontSize = if (compact) 9.sp else 10.sp,
+                        lineHeight = 13.sp,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        minLines = 2,
+                        softWrap = true,
+                        overflow = TextOverflow.Ellipsis,
                         color = when (step.status) {
                             StepStatus.Completed -> GreenAccent
                             StepStatus.InProgress -> BlueStatus
                             StepStatus.Upcoming -> TextGrey
                         }
                     )
+
                 }
             }
         }
