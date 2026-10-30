@@ -124,7 +124,7 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
         if (isLoggedIn) {
             navGraph.setStartDestination(R.id.mainHomePage)
         } else {
-            navGraph.setStartDestination(R.id.loginFragment)
+            navGraph.setStartDestination(R.id.registerFragment)
         }
 
         navController?.graph = navGraph
@@ -182,10 +182,10 @@ class CommonActivity : BaseActivity<ActivityCommonBinding>(ActivityCommonBinding
                         putBoolean("redirect_to_notifications", true)
                     }
                     navController?.navigate(
-                        R.id.loginFragment,
+                        R.id.registerFragment,
                         bundle,
                         NavOptions.Builder()
-                            .setPopUpTo(R.id.loginFragment, true)
+                            .setPopUpTo(R.id.registerFragment, true)
                             .build()
                     )
                 }

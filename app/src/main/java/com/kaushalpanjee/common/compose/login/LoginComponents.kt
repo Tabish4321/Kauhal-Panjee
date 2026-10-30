@@ -225,7 +225,7 @@ fun LoginLockBadge(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    Icons.Outlined.Security,
+                    Icons.Outlined.Lock,
                     contentDescription = "Secure login",
                     tint = LoginColors.DarkGreen,
                     modifier = Modifier.size(24.dp)

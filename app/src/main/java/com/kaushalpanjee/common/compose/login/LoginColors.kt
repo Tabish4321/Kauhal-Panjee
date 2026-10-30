@@ -16,6 +16,7 @@ object LoginColors {
     val Placeholder = Color(0xFFAAB2AC)
     val Error = Color(0xFFB3261E)
     val Divider = Color(0xFFD8E2DB)
+
 }
 
 object LoginDimensions {

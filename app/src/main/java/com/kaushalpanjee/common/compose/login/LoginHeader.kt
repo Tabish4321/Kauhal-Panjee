@@ -81,6 +81,8 @@ fun LoginHeader(
             Box(
                 Modifier
                     .padding(horizontal = 7.dp)
+
+
                     .size(5.dp)
                     .clip(CircleShape)
                     .background(LoginColors.DarkGreen)

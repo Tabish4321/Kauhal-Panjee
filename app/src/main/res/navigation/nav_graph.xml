@@ -86,6 +86,9 @@
                 app:argType="string" />
 
         </action>
+        <action
+            android:id="@+id/action_registerFragment_to_mainHomePage"
+            app:destination="@id/mainHomePage" />
     </fragment>
 
     <fragment
