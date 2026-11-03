@@ -74,9 +74,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
 import com.kaushalpanjee.common.CommonViewModel
-import com.kaushalpanjee.common.RegisterFragmentDirections
 import com.kaushalpanjee.common.compose.login.LoginColors
-import com.kaushalpanjee.common.compose.login.LoginFooter
 import com.kaushalpanjee.common.compose.login.LoginLockBadge
 import com.kaushalpanjee.common.compose.login.LoginRuralBackground
 import com.kaushalpanjee.common.model.request.AadhaarCheckReq
