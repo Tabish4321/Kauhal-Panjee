@@ -11,5 +11,6 @@ data class WrappedList(
     val stateName: String,
     val stateCode: String,
     val lgdStateCode:String,
+    val stateShortName:String,
     var isSelected: Boolean = false
 )

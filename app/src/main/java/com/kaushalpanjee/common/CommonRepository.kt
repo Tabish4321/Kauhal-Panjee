@@ -62,6 +62,7 @@ import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.PiaListReq
 import com.kaushalpanjee.common.model.request.PiaTradeReq
 import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
+import com.kaushalpanjee.common.model.request.SaveShgMobReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -82,6 +83,8 @@ import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.WardReq
+import com.kaushalpanjee.common.model.request.getShgDetailsReq
+import com.kaushalpanjee.common.model.request.getShgReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -109,6 +112,7 @@ import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.PiaListResponse
 import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
 import com.kaushalpanjee.common.model.response.PiaTrainingRes
+import com.kaushalpanjee.common.model.response.SaveShgRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -124,6 +128,9 @@ import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
+import com.kaushalpanjee.common.model.response.getShgDetailsRes
+import com.kaushalpanjee.common.model.response.getShgRes
+import com.kaushalpanjee.core.util.AppUtil
 import com.kaushalpanjee.core.util.MultipartUtil
 import com.kaushalpanjee.core.util.networkBoundResourceWithoutDbn
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
@@ -741,6 +748,52 @@ class CommonRepository @Inject constructor(
                     name = "file",
                     file = file
                 )
+            )
+        }
+    }
+
+
+    suspend fun getShgByBlock(
+        header: String,
+        getShgReq: getShgReq
+
+    ): Flow<Resource<out getShgRes>> {
+
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getShgByBlock(
+                header = header,
+                getShgReq
+
+            )
+        }
+    }
+
+
+    suspend fun getShgDetails(
+        header: String,
+        getShgDetailsReq: getShgDetailsReq
+
+    ): Flow<Resource<out getShgDetailsRes>> {
+
+        return networkBoundResourceWithoutDb {
+            appLevelApi.getShgDetails(
+                header = header,
+                getShgDetailsReq
+
+            )
+        }
+    }
+
+
+    suspend fun saveSelectedShgMember(
+        SaveShgMobReq: SaveShgMobReq,
+        header: String,
+    ): Flow<Resource<out SaveShgRes>> {
+
+        return networkBoundResourceWithoutDb {
+            appLevelApi.saveSelectedShgMember(
+                header = header,
+                SaveShgMobReq
             )
         }
     }

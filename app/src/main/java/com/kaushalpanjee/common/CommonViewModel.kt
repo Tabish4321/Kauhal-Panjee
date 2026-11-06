@@ -56,6 +56,7 @@ import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.PiaListReq
 import com.kaushalpanjee.common.model.request.PiaTradeReq
 import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
+import com.kaushalpanjee.common.model.request.SaveShgMobReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -72,6 +73,8 @@ import com.kaushalpanjee.common.model.request.UpdatePasswordForReq
 import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.WardReq
+import com.kaushalpanjee.common.model.request.getShgDetailsReq
+import com.kaushalpanjee.common.model.request.getShgReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -99,6 +102,7 @@ import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.PiaListResponse
 import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
 import com.kaushalpanjee.common.model.response.PiaTrainingRes
+import com.kaushalpanjee.common.model.response.SaveShgRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -114,17 +118,21 @@ import com.kaushalpanjee.common.model.response.UpdateEmailRes
 import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
+import com.kaushalpanjee.common.model.response.getShgDetailsRes
+import com.kaushalpanjee.common.model.response.getShgRes
 import com.kaushalpanjee.core.util.UserPreferences
 import com.kaushalpanjee.notification.with_api.NotificationUiEvent
 import com.kaushalpanjee.notification.with_api.model.NotificationUiModel
 import com.kaushalpanjee.notification.with_api.model.req.InvitationApprovalRequest
 import com.kaushalpanjee.notification.with_api.model.toUiModel
 import com.utilize.core.domain.model.response.BaseErrorResponse
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import java.io.File
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class CommonViewModel @Inject constructor(private val commonRepository: CommonRepository,
@@ -1444,5 +1452,102 @@ class CommonViewModel @Inject constructor(private val commonRepository: CommonRe
                 }
         }
     }
+// ======================================
+// SHG LIST API
+// ======================================
 
+    private val _shgByBlock =
+        MutableStateFlow<Resource<out getShgRes>>(Resource.Loading())
+
+    val shgByBlock = _shgByBlock.asStateFlow()
+
+    private var shgByBlockJob: Job? = null
+
+    fun getShgByBlock(
+        header: String,
+        getShgReq: getShgReq
+    ) {
+        shgByBlockJob?.cancel()
+
+        shgByBlockJob = viewModelScope.launch {
+            _shgByBlock.value = Resource.Loading()
+
+            try {
+                commonRepository.getShgByBlock(
+                    header = header,
+                    getShgReq
+                ).collectLatest { result ->
+                    _shgByBlock.value = result
+                }
+            } catch (e: CancellationException) {
+                throw e
+            }
+        }
+    }
+// ======================================
+// SHG DETAILS API
+// ======================================
+
+    private val _shgDetails =
+        MutableStateFlow<Resource<out getShgDetailsRes>>(Resource.Loading())
+
+    val shgDetails = _shgDetails.asStateFlow()
+
+    private var shgDetailsJob: Job? = null
+
+    fun getShgDetails(
+        header: String,
+        getShgDetailsReq: getShgDetailsReq
+    ) {
+        shgDetailsJob?.cancel()
+
+        shgDetailsJob = viewModelScope.launch {
+            _shgDetails.value = Resource.Loading()
+
+            try {
+                commonRepository.getShgDetails(
+                    header = header,
+                    getShgDetailsReq
+                ).collectLatest { result ->
+                    _shgDetails.value = result
+                }
+            } catch (e: CancellationException) {
+                throw e
+            }
+        }
+    }
+// ======================================
+// SAVE SELECTED SHG MEMBER API
+// ======================================
+
+    private val _saveSelectedShgMember =
+        MutableStateFlow<Resource<out SaveShgRes>>(Resource.Loading())
+
+    val saveSelectedShgMember = _saveSelectedShgMember.asStateFlow()
+
+    private var saveShgMemberJob: Job? = null
+
+    fun saveSelectedShgMember(
+        SaveShgMobReq: SaveShgMobReq,
+        header: String
+
+    ) {
+        saveShgMemberJob?.cancel()
+
+        saveShgMemberJob = viewModelScope.launch {
+            _saveSelectedShgMember.value = Resource.Loading()
+
+            try {
+                commonRepository.saveSelectedShgMember(
+                    SaveShgMobReq,
+                    header = header
+
+                ).collectLatest { result ->
+                    _saveSelectedShgMember.value = result
+                }
+            } catch (e: CancellationException) {
+                throw e
+            }
+        }
+    }
 }

@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="20dp">
 
+    <!-- Header with Close Icon -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Submit Consent"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/color_dark_green" />
+
+        <ImageButton
+            android:id="@+id/btnCloseConsent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_close"
+            android:contentDescription="Close"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:tint="@color/color_dark_green" />
+
+    </LinearLayout>
+
+    <!-- Mobile Number Label -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit Consent"
-        android:textStyle="bold"
-        android:textSize="18sp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_16"
         android:fontFamily="@font/avenir_next_demi_bold"
         android:padding="@dimen/dp_4"
         android:text="@string/enter_phone"
         android:textColor="@color/color_dark_green" />
 
-
-
+    <!-- Mobile Number Input -->
     <EditText
         android:id="@+id/etMobile"
         style="@style/EditText"
@@ -33,27 +54,25 @@
         android:imeOptions="actionNext"
         android:inputType="number" />
 
-
+    <!-- Submit Button -->
     <TextView
         android:id="@+id/btnSubmitConsent"
         style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
         android:layout_marginBottom="@dimen/dp_20"
         android:drawablePadding="@dimen/dp_20"
         android:text="Submit Consent"
-        android:layout_marginTop="@dimen/dp_20"
-        app:drawableEndCompat="@drawable/ic_right_arrow"
-        app:layout_constraintBottom_toTopOf="@+id/tvRegister"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:drawableEndCompat="@drawable/ic_right_arrow" />
 
-        />
-
+    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
 
 </LinearLayout>

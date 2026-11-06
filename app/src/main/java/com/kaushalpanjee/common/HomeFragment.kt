@@ -146,6 +146,17 @@ import com.kaushalpanjee.core.util.copyToClipboard
 import java.util.UUID
 import android.Manifest
 import android.content.Intent
+import com.kaushalpanjee.common.model.request.SaveShgMobReq
+import com.kaushalpanjee.common.model.request.getShgDetailsReq
+import com.kaushalpanjee.common.model.request.getShgReq
+import com.kaushalpanjee.common.model.response.ShgItem
+import com.kaushalpanjee.common.model.response.ShgMember
+import com.kaushalpanjee.common.model.response.shgMemberList
+import kotlin.collections.addAll
+import kotlin.compareTo
+import kotlin.text.clear
+import kotlin.text.mapNotNull
+import kotlin.text.orEmpty
 
 
 @AndroidEntryPoint
@@ -160,6 +171,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     //Boolean Values
     private var isPersonalVisible = true
+    private var isShgMobVisible = true
     private var isAddressVisible = true
     private var isEducationalInfoVisible = true
     private var isEmploymentInfoVisible = true
@@ -246,6 +258,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var totalPercentange = 0.0f
     private var previouslycompletedduring = ""
     private var personalStatus = ""
+    private var mobShgStatus = "0"
     private var isPermanentStatus = ""
     private var educationalStatus = ""
     private var trainingStatus = ""
@@ -284,6 +297,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var accLenghth = ""
     private var decryptMobileNo = ""
     private var decryptEmail = ""
+
+
+    private var userCandidateShgDetailsDetailsList: List<shgMemberList> = mutableListOf()
+
+    var memberStateName: String =""
+
+  /*  var memberPanchayatCode: String =""
+    var memberStateName: String =""
+    var memberName: String=""
+    var nicShgCode: String=""
+    var memberDistrictName: String=""
+    var shgCodeMob: String=""
+    var rtoken: String=""
+    var memberVillageName: String=""
+    var memberStateCode: String=""
+    var memberId: String=""
+    var memberCode: String=""
+    var memberGender: String=""
+    var memberAadharVerified: String=""
+    var shgId: String=""
+    var shgNameMob: String=""
+    var memberBlockName: String=""
+    var memberDistrictCode: String=""
+    var stateShortName: String=""
+    var memberBlockCode: String=""
+    var memberGramPanchayatName: String=""
+    var relationName: String=""
+    var phone: String=""
+    var dob: String=""
+    var designation: String=""
+    var shgNameLocal: String=""
+    var memberVillageCode: String=""*/
+
 
 
 
@@ -346,11 +392,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private lateinit var stateAdapter: ArrayAdapter<String>
     private lateinit var seccAdapter: SeccAdapter
 
+
+    // SHG dropdown
+    private val shgMobShgNames = arrayListOf<String>()
+    private val shgMobShgItems = arrayListOf<ShgItem>()
+    private lateinit var shgMobShgAdapter: ArrayAdapter<String>
+
+    private var selectedShgMobShgCode = ""
+    private var selectedShgMobShgName = ""
+
+    // SHG Member dropdown
+    private val shgMobMemberNames = arrayListOf<String>()
+    private val shgMobMemberItems = arrayListOf<ShgMember>()
+    private lateinit var shgMobMemberAdapter: ArrayAdapter<String>
+
+    private var selectedShgMobMemberId = 0L
+    private var selectedShgMobMemberName = ""
+
+
+
     private var state = ArrayList<String>()
     private var stateCode = ArrayList<String>()
+    private var stateShortNameList = ArrayList<String>()
     private var stateLgdCode = ArrayList<String>()
     private var selectedStateCodeItem = ""
     private var selectedStateLgdCodeItem = ""
+    private var selectedStateShortNameItem = ""
+    private var selectedShgCode = ""
     private var selectedStateItem = ""
     private var stateRegCode = ""
     private var bottomSheetDialog: BottomSheetDialog? = null
@@ -453,6 +521,54 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var selectedbVillagePresentLgdCodeItem = ""
     private var selectedVillagePresentItem = ""
     private var unnatiFlag = ""
+
+
+
+    // ==========================================
+// MOBILIZED BY SHG MEMBER - STEP 1 VARIABLES
+// ==========================================
+
+    // State
+    private val shgMobStateList = mutableListOf<String>()
+    private val shgMobStateCodeList = mutableListOf<String>()
+    private val shgMobStateLgdCodeList = mutableListOf<String>()
+    private lateinit var shgMobStateAdapter: ArrayAdapter<String>
+
+    private var selectedShgMobStateName = ""
+    private var selectedShgMobStateCode = ""
+    private var selectedShgMobStateLgdCode = ""
+
+    // District
+    private val shgMobDistrictList = mutableListOf<String>()
+    private val shgMobDistrictCodeList = mutableListOf<String>()
+    private val shgMobDistrictLgdCodeList = mutableListOf<String>()
+    private lateinit var shgMobDistrictAdapter: ArrayAdapter<String>
+
+    private var selectedShgMobDistrictName = ""
+    private var selectedShgMobDistrictCode = ""
+    private var selectedShgMobDistrictLgdCode = ""
+
+    // Block
+    private val shgMobBlockList = mutableListOf<String>()
+    private val shgMobBlockCodeList = mutableListOf<String>()
+    private val shgMobBlockLgdCodeList = mutableListOf<String>()
+    private lateinit var shgMobBlockAdapter: ArrayAdapter<String>
+
+    private var selectedShgMobBlockName = ""
+    private var selectedShgMobBlockCode = ""
+    private var selectedShgMobBlockLgdCode = ""
+
+    // Gram Panchayat
+    private val shgMobGpList = mutableListOf<String>()
+    private val shgMobGpCodeList = mutableListOf<String>()
+    private val shgMobGpLgdCodeList = mutableListOf<String>()
+    private lateinit var shgMobGpAdapter: ArrayAdapter<String>
+
+    private var selectedShgMobGpName = ""
+    private var selectedShgMobGpCode = ""
+    private var selectedShgMobGpLgdCode = ""
+
+
 
 
     private var consentId: String? = null
@@ -647,6 +763,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private var decryptedUserName = ""
 
 
+    // Selected SHG details
+    private var selectedShgId: Long = 0L
+    private var selectedShgNameLocal: String = ""
+    private var selectedNicShgCode: String = ""
+
+    // Complete selected member object
+    private var selectedShgMember: ShgMember? = null
+
+
 
 
 
@@ -706,6 +831,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
         init()
+
+
+        setupShgMobDropdownListeners()
+        setupShgMobListeners()
+        collectShgByBlockResponse()
+        collectShgDetailsResponse()
+        collectSaveSelectedShgMemberResponse()
+
+        setupShgMobDropdowns()
+
         collectStateResponse()
         collectDistrictResponse()
         collectBlockResponse()
@@ -1227,6 +1362,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
 
+
     private fun showConsentDialog(
         userId: String,
         mobile: String,
@@ -1244,31 +1380,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         )
 
         val etMobile =
-            dialogView.findViewById<EditText>(
-                R.id.etMobile
-            )
+            dialogView.findViewById<EditText>(R.id.etMobile)
 
         val btnSubmit =
-            dialogView.findViewById<TextView>(
-                R.id.btnSubmitConsent
-            )
+            dialogView.findViewById<TextView>(R.id.btnSubmitConsent)
 
         val progressBar =
-            dialogView.findViewById<ProgressBar>(
-                R.id.progressBar
-            )
+            dialogView.findViewById<ProgressBar>(R.id.progressBar)
+
+        val btnClose =
+            dialogView.findViewById<ImageButton>(R.id.btnCloseConsent)
 
         etMobile.setText(mobile)
 
-        val dialog =
-            MaterialAlertDialogBuilder(requireContext())
-                .setView(dialogView)
-                .setCancelable(true)
-                .create()
+        // Create Dialog
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
 
         dialog.show()
 
+        // Outside touch se dialog close nahi hoga
+        dialog.setCanceledOnTouchOutside(false)
 
+        // Close icon click par dialog close hoga
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Submit Consent
         btnSubmit.setOnClickListener {
 
             val mobileNo =
@@ -1313,32 +1454,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             // ====================================================
             // CREATE NEW CONSENT REQUEST
             // ====================================================
-
-           /* val request = ConsentRequest(
-
-                candidateId = "userId",
-              //  b02f6e6c-fa44-479a-8338-54c984f143f7
-                candidateName = "Rahul Pandey",
-
-                mobileNo = "9977418203",
-
-                userId = "123456",
-
-                fipId = "UBI-FIP",
-
-                bankName = "Union Bank Of India",
-
-                ifscCode = "UBIN0542148",
-
-                accountNumber = "421402010013093",
-
-                // New reference ID every time
-                referenceId = UUID.randomUUID().toString(),
-
-                email = email,
-
-                pan = pan
-            )*/
 
 
             val request = ConsentRequest(
@@ -1457,7 +1572,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         "consentId=$id"
                     )
 
-                    "consentId=$id".copyToClipboard(requireContext())
+                   // "consentId=$id".copyToClipboard(requireContext())
 
                     Log.d(
                         "Samiksha",
@@ -2717,7 +2832,69 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.profileView.viewDetails.setText(R.string.view_profile)
 
 
+        binding.shgMobView.llTopShgMob.setOnClickListener {
+
+
+            if (isShgMobVisible && mobShgStatus.contains("0")) {
+
+
+                isShgMobVisible = false
+                binding.shgMobView.expandShgMob.visible()
+                binding.shgMobView.viewShgMob.visible()
+
+            }
+
+            else{
+
+                isShgMobVisible = true
+                binding.shgMobView.expandShgMob.gone()
+                binding.shgMobView.viewShgMob.gone()
+
+            }
+
+            if (mobShgStatus.contains("1"))
+
+            {
+
+                showYesNoDialog(
+                    context = requireContext(),  // Use your context here (e.g., `requireContext()` in fragments)
+                    title = "Confirmation",
+                    message = "Do you want to edit your personal info?",
+                    onYesClicked = {
+                        // Action for Yes button
+                        isShgMobVisible = false
+                        binding.shgMobView.expandShgMob.visible()
+                        binding.shgMobView.viewShgMob.visible()
+
+
+                        for (x in userCandidateShgDetailsDetailsList) {
+                            try {
+                                selectedStateShortNameItem = x.stateShortName
+                                selectedShgId = x.shgId.toLong()
+
+                                selectedShgMobShgName = x.shgName
+
+
+                            } catch (e: Exception) {
+                                showSnackBar("Error setting data: ${e.message}")
+                            }
+                        }
+
+                    },
+                    onNoClicked = {
+
+                    }
+                )
+
+
+
+            }
+        }
+
+
+
         // open llTop by 1 change 0
+
 
 
         binding.llTopPersonal.setOnClickListener {
@@ -2728,7 +2905,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 binding.personalExpand.visible()
                 binding.viewSecc.visible()
 
-            } else {
+            }
+            else {
                 isPersonalVisible = true
                 binding.personalExpand.gone()
                 binding.viewSecc.gone()
@@ -6985,12 +7163,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 stateCode.clear()
                                 stateLgdCode.clear()
 
+                                shgMobStateList.clear()
+                                shgMobStateCodeList.clear()
+                                shgMobStateLgdCodeList.clear()
+
                                 for (x in stateList) {
                                     state.add(x.stateName)
                                     statePer.add(x.stateName)
                                     stateCode.add(x.stateCode) // Replace with actual field
+                                    stateShortNameList.add(x.stateShortName) // Replace with actual field
                                     stateLgdCode.add(x.lgdStateCode) // Replace with actual field
+
+                                    shgMobStateList.add(x.stateName)
+                                    shgMobStateCodeList.add(x.stateCode)
+                                    shgMobStateLgdCodeList.add(x.lgdStateCode)
                                 }
+                                shgMobStateAdapter.notifyDataSetChanged()
 
                                 //     stateAdapter.notifyDataSetChanged()
                             } else if (getStateResponse.responseCode == 301) {
@@ -7028,10 +7216,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 district.clear()
                                 districtCode.clear()
 
+                                shgMobDistrictList.clear()
+                                shgMobDistrictCodeList.clear()
+                                shgMobDistrictLgdCodeList.clear()
+
                                 for (x in districtList) {
                                     district.add(x.districtName)
                                     districtCode.add(x.districtCode)
                                     districtLgdCode.add(x.lgdDistrictCode)
+
+                                    shgMobDistrictList.add(x.districtName)
+                                    shgMobDistrictCodeList.add(x.districtCode)
+                                    shgMobDistrictLgdCodeList.add(x.lgdDistrictCode)
                                 }
 
 
@@ -7042,6 +7238,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     districtAdapter.notifyDataSetChanged()
                                     districtSeccAdapter.notifyDataSetChanged()
                                     districtPresentAdapter.notifyDataSetChanged()
+                                    shgMobDistrictAdapter.notifyDataSetChanged()
 
                                 }
                             } else if (getDistrictResponse.responseCode == 301) {
@@ -7084,14 +7281,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 blockPer.clear()
                                 blockCode.clear()
                                 blockLgdCode.clear()
+                                shgMobBlockList.clear()
+                                shgMobBlockCodeList.clear()
+                                shgMobBlockLgdCodeList.clear()
 
                                 for (x in blockList) {
                                     block.add(x.blockName)
                                     blockPer.add(x.blockName)
                                     blockCode.add(x.blockCode) // Replace with actual field
                                     blockLgdCode.add(x.lgdBlockCode) // Replace with actual field
+                                    shgMobBlockList.add(x.blockName)
+                                    shgMobBlockCodeList.add(x.blockCode)
+                                    shgMobBlockLgdCodeList.add(x.lgdBlockCode)
                                 }
                                 blockAdapter.notifyDataSetChanged()
+                                shgMobBlockAdapter.notifyDataSetChanged()
                             } else if (getBlockResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else if (getBlockResponse.responseCode == 303) {
@@ -7134,14 +7338,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 gpPer.clear()
                                 gpCode.clear()
                                 gpLgdCode.clear()
+                                shgMobGpList.clear()
+                                shgMobGpCodeList.clear()
+                                shgMobGpLgdCodeList.clear()
 
                                 for (x in gpList) {
                                     gp.add(x.gpName)
                                     gpPer.add(x.gpName)
                                     gpCode.add(x.gpCode) // Replace with actual field
                                     gpLgdCode.add(x.lgdGpCode) // Replace with actual field
+                                    shgMobGpList.add(x.gpName)
+                                    shgMobGpCodeList.add(x.gpCode)
+                                    shgMobGpLgdCodeList.add(x.lgdGpCode)
                                 }
                                 blockAdapter.notifyDataSetChanged()
+                                gpAdapter.notifyDataSetChanged()
+                                shgMobGpAdapter.notifyDataSetChanged()
+
                             } else if (getGpResponse.responseCode == 301) {
                                 showSnackBar("Please Update from PlayStore")
                             } else if (getGpResponse.responseCode == 401) {
@@ -7641,6 +7854,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                     employmentStatus = x.employmentStatus.toString()
                                     bankingStatus = x.bankingStatus.toString()
                                     totalPercentange = x.totalPercentage
+                                    mobShgStatus = x.shgSectionStatus
 
                                     val decAadhaar = AESCryptography.decryptIntoString(x.aadhaarEnc,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
 
@@ -7742,6 +7956,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                                 if (trainingStatus.contains("1")) {
 
                                     binding.tvTraining.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(
+                                            requireContext(),
+                                            R.drawable.ic_verified
+                                        ), null
+                                    )
+
+                                }
+
+                                if (mobShgStatus.contains("1")) {
+
+                                    binding.shgMobView.tvNew.setDrawable(
                                         null, null,
                                         AppCompatResources.getDrawable(
                                             requireContext(),
@@ -9338,6 +9564,831 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             .setNegativeButton("Cancel", null)
             .show()
     }
-}
+
+
+
+    private fun setupShgMobDropdowns() {
+
+        shgMobStateAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            shgMobStateList
+        )
+        binding.shgMobView.spinnerShgMobState.setAdapter(shgMobStateAdapter)
+
+        shgMobDistrictAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            shgMobDistrictList
+        )
+        binding.shgMobView.spinnerShgMobDistrict.setAdapter(shgMobDistrictAdapter)
+
+        shgMobBlockAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            shgMobBlockList
+        )
+        binding.shgMobView.spinnerShgMobBlock.setAdapter(shgMobBlockAdapter)
+
+        shgMobGpAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            shgMobGpList
+        )
+        binding.shgMobView.spinnerShgMobGp.setAdapter(shgMobGpAdapter)
+
+        // SHG and SHG Member API will be connected in Step 2.
+        binding.shgMobView.spinnerShg.setText("", false)
+        binding.shgMobView.spinnerShgMember.setText("", false)
+
+
+        shgMobShgAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            shgMobShgNames
+        )
+        binding.shgMobView.spinnerShg.setAdapter(shgMobShgAdapter)
+
+        shgMobMemberAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            shgMobMemberNames
+        )
+        binding.shgMobView.spinnerShgMember.setAdapter(shgMobMemberAdapter)
+
+        binding.shgMobView.spinnerShg.setText("", false)
+        binding.shgMobView.spinnerShgMember.setText("", false)
+
+        binding.shgMobView.spinnerShg.isEnabled = false
+        binding.shgMobView.spinnerShgMember.isEnabled = false
+        binding.shgMobView.btnShgMobSubmit.isEnabled = false
+    }
+
+
+    private fun setupShgMobDropdownListeners() {
+
+        // =====================================
+        // STATE SELECTION
+        // =====================================
+
+        binding.shgMobView.spinnerShgMobState.setOnItemClickListener { parent, _, position, _ ->
+
+            if (position !in shgMobStateList.indices) return@setOnItemClickListener
+
+            selectedShgMobStateName = parent.getItemAtPosition(position).toString()
+            selectedShgMobStateCode = shgMobStateCodeList[position]
+            selectedShgMobStateLgdCode = shgMobStateLgdCodeList[position]
+            selectedStateShortNameItem = stateShortNameList[position]
+
+            // Clear dependent selections
+            selectedShgMobDistrictName = ""
+            selectedShgMobDistrictCode = ""
+            selectedShgMobDistrictLgdCode = ""
+
+            selectedShgMobBlockName = ""
+            selectedShgMobBlockCode = ""
+            selectedShgMobBlockLgdCode = ""
+
+            selectedShgMobGpName = ""
+            selectedShgMobGpCode = ""
+            selectedShgMobGpLgdCode = ""
+
+            binding.shgMobView.spinnerShgMobDistrict.setText("", false)
+            binding.shgMobView.spinnerShgMobBlock.setText("", false)
+            binding.shgMobView.spinnerShgMobGp.setText("", false)
+
+            shgMobDistrictList.clear()
+            shgMobDistrictCodeList.clear()
+            shgMobDistrictLgdCodeList.clear()
+            shgMobDistrictAdapter.notifyDataSetChanged()
+
+            shgMobBlockList.clear()
+            shgMobBlockCodeList.clear()
+            shgMobBlockLgdCodeList.clear()
+            shgMobBlockAdapter.notifyDataSetChanged()
+
+            shgMobGpList.clear()
+            shgMobGpCodeList.clear()
+            shgMobGpLgdCodeList.clear()
+            shgMobGpAdapter.notifyDataSetChanged()
+
+            // Existing District API
+            commonViewModel.getDistrictListApi(
+                selectedShgMobStateCode,
+                AppUtil.getSavedTokenPreference(requireContext()),
+                userPreferences.getUseID()
+            )
+
+            Log.d(
+                "SHG_MOBILIZED",
+                "State: $selectedShgMobStateName | Code: $selectedShgMobStateCode | LGD: $selectedShgMobStateLgdCode"
+            )
+        }
+
+
+        // =====================================
+        // DISTRICT SELECTION
+        // =====================================
+
+        binding.shgMobView.spinnerShgMobDistrict.setOnItemClickListener { parent, _, position, _ ->
+
+            if (position !in shgMobDistrictList.indices) return@setOnItemClickListener
+
+            selectedShgMobDistrictName = parent.getItemAtPosition(position).toString()
+            selectedShgMobDistrictCode = shgMobDistrictCodeList[position]
+            selectedShgMobDistrictLgdCode = shgMobDistrictLgdCodeList[position]
+
+            // Clear dependent selections
+            selectedShgMobBlockName = ""
+            selectedShgMobBlockCode = ""
+            selectedShgMobBlockLgdCode = ""
+
+            selectedShgMobGpName = ""
+            selectedShgMobGpCode = ""
+            selectedShgMobGpLgdCode = ""
+
+            binding.shgMobView.spinnerShgMobBlock.setText("", false)
+            binding.shgMobView.spinnerShgMobGp.setText("", false)
+
+            shgMobBlockList.clear()
+            shgMobBlockCodeList.clear()
+            shgMobBlockLgdCodeList.clear()
+            shgMobBlockAdapter.notifyDataSetChanged()
+
+            shgMobGpList.clear()
+            shgMobGpCodeList.clear()
+            shgMobGpLgdCodeList.clear()
+            shgMobGpAdapter.notifyDataSetChanged()
+
+            // Existing Block API
+            commonViewModel.getBlockListApi(
+                selectedShgMobDistrictCode,
+                AppUtil.getSavedTokenPreference(requireContext()),
+                userPreferences.getUseID()
+            )
+
+            Log.d(
+                "SHG_MOBILIZED",
+                "District: $selectedShgMobDistrictName | Code: $selectedShgMobDistrictCode | LGD: $selectedShgMobDistrictLgdCode"
+            )
+        }
+
+
+        // =====================================
+        // BLOCK SELECTION
+        // =====================================
+
+        binding.shgMobView.spinnerShgMobBlock.setOnItemClickListener { parent, _, position, _ ->
+
+            if (position !in shgMobBlockList.indices) return@setOnItemClickListener
+
+            selectedShgMobBlockName = parent.getItemAtPosition(position).toString()
+            selectedShgMobBlockCode = shgMobBlockCodeList[position]
+            selectedShgMobBlockLgdCode = shgMobBlockLgdCodeList[position]
+
+            // Clear dependent GP
+            selectedShgMobGpName = ""
+            selectedShgMobGpCode = ""
+            selectedShgMobGpLgdCode = ""
+
+            binding.shgMobView.spinnerShgMobGp.setText("", false)
+
+            shgMobGpList.clear()
+            shgMobGpCodeList.clear()
+            shgMobGpLgdCodeList.clear()
+            shgMobGpAdapter.notifyDataSetChanged()
+
+            // Existing GP API
+            commonViewModel.getGpListApi(
+                selectedShgMobBlockCode,
+                AppUtil.getSavedTokenPreference(requireContext()),
+                userPreferences.getUseID()
+            )
+
+            Log.d(
+                "SHG_MOBILIZED",
+                "Block: $selectedShgMobBlockName | Code: $selectedShgMobBlockCode | LGD: $selectedShgMobBlockLgdCode"
+            )
+        }
+
+        // GRAM PANCHAYAT SELECTION
+        binding.shgMobView.spinnerShgMobGp.setOnItemClickListener { parent, _, position, _ ->
+
+            if (position !in shgMobGpList.indices) {
+                return@setOnItemClickListener
+            }
+
+            selectedShgMobGpName = parent.getItemAtPosition(position).toString()
+            selectedShgMobGpCode = shgMobGpCodeList[position]
+            selectedShgMobGpLgdCode = shgMobGpLgdCodeList[position]
+
+            // Reset selected SHG and member data
+            selectedShgMobShgCode = ""
+            selectedShgMobShgName = ""
+            selectedShgCode = ""
+
+            selectedShgId = 0L
+            selectedShgNameLocal = ""
+            selectedNicShgCode = ""
+
+            selectedShgMobMemberId = 0L
+            selectedShgMobMemberName = ""
+            selectedShgMember = null
+
+            // Clear SHG dropdown
+            shgMobShgItems.clear()
+            shgMobShgNames.clear()
+            shgMobShgAdapter.notifyDataSetChanged()
+
+            binding.shgMobView.spinnerShg.setText("", false)
+            binding.shgMobView.spinnerShg.isEnabled = false
+
+            // Clear member dropdown
+            shgMobMemberItems.clear()
+            shgMobMemberNames.clear()
+            shgMobMemberAdapter.notifyDataSetChanged()
+
+            binding.shgMobView.spinnerShgMember.setText("", false)
+            binding.shgMobView.spinnerShgMember.isEnabled = false
+
+            binding.shgMobView.btnShgMobSubmit.isEnabled = false
+
+            if (
+                selectedStateShortNameItem.isNotBlank() &&
+                selectedShgMobBlockLgdCode.isNotBlank() &&
+                selectedShgMobGpLgdCode.isNotBlank()
+            ) {
+
+                commonViewModel.getShgByBlock(
+                    header = AppUtil.getSavedTokenPreference(requireContext()),
+                    getShgReq = getShgReq(
+                        appVersion = BuildConfig.VERSION_NAME,
+                        stateShortName = selectedStateShortNameItem.trim().lowercase(),
+                        blockCode = selectedShgMobBlockLgdCode,
+                        gpCode = selectedShgMobGpLgdCode
+                    )
+                )
+
+            } else {
+                showSnackBar("Please select valid State, Block and Gram Panchayat")
+            }
+
+            Log.d(
+                "SHG_MOBILIZED",
+                "State=${selectedStateShortNameItem}, " +
+                        "Block=${selectedShgMobBlockLgdCode}, " +
+                        "GP=${selectedShgMobGpLgdCode}"
+            )
+        }
+    }
+
+
+    // ============================================
+// COLLECT SHG LIST RESPONSE
+// ============================================
+
+    private fun collectShgByBlockResponse() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            commonViewModel.shgByBlock.collectLatest { result ->
+
+                when (result) {
+
+                    is Resource.Loading -> {
+
+                        showProgressBar()
+
+                        binding.shgMobView.spinnerShg.isEnabled = false
+                    }
+
+                    is Resource.Error -> {
+
+                        hideProgressBar()
+
+                        shgMobShgItems.clear()
+                        shgMobShgNames.clear()
+
+                        shgMobShgAdapter.notifyDataSetChanged()
+
+                        binding.shgMobView.spinnerShg.setText("", false)
+                        binding.shgMobView.spinnerShg.isEnabled = false
+
+                        Log.e(
+                            "SHG_DEBUG",
+                            "SHG List Error: ${result.error?.message}"
+                        )
+
+                        showSnackBar(
+                            result.error?.message ?: "Unable to load SHG list"
+                        )
+                    }
+
+                    is Resource.Success -> {
+
+                        hideProgressBar()
+
+                        val response = result.data
+
+                        shgMobShgItems.clear()
+                        shgMobShgNames.clear()
+
+                        if (response?.responseCode == 200) {
+
+                            val shgList = response.wrappedList.orEmpty()
+
+                            shgMobShgItems.addAll(shgList)
+
+                            shgMobShgNames.addAll(
+                                shgList.mapNotNull { shg ->
+                                    shg.name
+                                        ?.trim()
+                                        ?.takeIf { it.isNotEmpty() }
+                                }
+                            )
+
+                            shgMobShgAdapter.notifyDataSetChanged()
+
+                            binding.shgMobView.spinnerShg.isEnabled =
+                                shgMobShgNames.isNotEmpty()
+
+                            Log.d(
+                                "SHG_DEBUG",
+                                "SHG Count=${shgMobShgItems.size}, Names=$shgMobShgNames"
+                            )
+
+                            if (shgMobShgNames.isEmpty()) {
+                                showSnackBar("No SHG found for selected GP")
+                            }
+
+                        } else {
+
+                            shgMobShgAdapter.notifyDataSetChanged()
+
+                            binding.shgMobView.spinnerShg.isEnabled = false
+
+                            showSnackBar(
+                                response?.responseDesc ?: "SHG list not available"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    // ============================================
+// SHG AND MEMBER DROPDOWN LISTENERS
+// ============================================
+
+    private fun setupShgMobListeners() {
+
+        // ========================================
+        // SHG SELECTED
+        // ========================================
+
+        binding.shgMobView.spinnerShg.setOnItemClickListener { _, _, position, _ ->
+
+            if (position !in shgMobShgItems.indices) {
+                return@setOnItemClickListener
+            }
+
+            val selectedShg = shgMobShgItems[position]
+
+            selectedShgMobShgCode = selectedShg.code.orEmpty().trim()
+            selectedShgMobShgName = selectedShg.name.orEmpty().trim()
+            selectedShgCode = selectedShgMobShgCode
+
+            selectedShgNameLocal = selectedShg.shgNameLocal.orEmpty()
+
+            // Reset previous SHG details
+            selectedShgId = 0L
+            selectedNicShgCode = ""
+
+            // Reset member selection
+            selectedShgMobMemberId = 0L
+            selectedShgMobMemberName = ""
+            selectedShgMember = null
+
+            // Clear previous member list
+            shgMobMemberItems.clear()
+            shgMobMemberNames.clear()
+
+            shgMobMemberAdapter.notifyDataSetChanged()
+
+            binding.shgMobView.spinnerShgMember.setText("", false)
+            binding.shgMobView.spinnerShgMember.isEnabled = false
+            binding.shgMobView.btnShgMobSubmit.isEnabled = false
+
+            Log.d(
+                "SHG_DEBUG",
+                "Selected SHG: $selectedShgMobShgName, Code: $selectedShgMobShgCode"
+            )
+
+            if (selectedShgMobShgCode.isNotBlank()) {
+
+                commonViewModel.getShgDetails(
+                    header = AppUtil.getSavedTokenPreference(requireContext()),
+                    getShgDetailsReq = getShgDetailsReq(
+                        appVersion = BuildConfig.VERSION_NAME,
+                        stateShortName = selectedStateShortNameItem.trim().lowercase(),
+                        shgCode = selectedShgMobShgCode
+                    )
+                )
+
+            } else {
+                showSnackBar("Invalid SHG selected")
+            }
+        }
+
+
+        // ========================================
+        // SHG MEMBER SELECTED
+        // ========================================
+
+        binding.shgMobView.spinnerShgMember.setOnItemClickListener { _, _, position, _ ->
+
+            if (position !in shgMobMemberItems.indices) {
+                return@setOnItemClickListener
+            }
+
+            val member = shgMobMemberItems[position]
+
+            val memberId = member.member_id
+            val memberName = member.member_name.orEmpty().trim()
+
+            if (memberId == null || memberId <= 0L || memberName.isBlank()) {
+
+                selectedShgMobMemberId = 0L
+                selectedShgMobMemberName = ""
+                selectedShgMember = null
+
+                binding.shgMobView.btnShgMobSubmit.isEnabled = false
+
+                showSnackBar("Invalid SHG member selected")
+                return@setOnItemClickListener
+            }
+
+            // Store complete member object for submit API
+            selectedShgMember = member
+
+            selectedShgMobMemberId = memberId
+            selectedShgMobMemberName = memberName
+
+            binding.shgMobView.btnShgMobSubmit.isEnabled = true
+
+            Log.d(
+                "SHG_MOBILIZED",
+                "Selected Member: $memberName, ID: $memberId"
+            )
+        }
+
+
+        // ========================================
+        // SUBMIT
+        // ========================================
+
+        binding.shgMobView.btnShgMobSubmit.setOnClickListener {
+            submitMobilizedByShgMember()
+        }
+    }
+
+    // ============================================
+// COLLECT SHG DETAILS / MEMBER LIST RESPONSE
+// ============================================
+
+    private fun collectShgDetailsResponse() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            commonViewModel.shgDetails.collectLatest { result ->
+
+                when (result) {
+
+                    is Resource.Loading -> {
+
+                        showProgressBar()
+
+                        binding.shgMobView.spinnerShgMember.isEnabled = false
+                        binding.shgMobView.btnShgMobSubmit.isEnabled = false
+                    }
+
+                    is Resource.Error -> {
+
+                        hideProgressBar()
+
+                        shgMobMemberItems.clear()
+                        shgMobMemberNames.clear()
+
+                        shgMobMemberAdapter.notifyDataSetChanged()
+
+                        binding.shgMobView.spinnerShgMember.setText("", false)
+                        binding.shgMobView.spinnerShgMember.isEnabled = false
+                        binding.shgMobView.btnShgMobSubmit.isEnabled = false
+
+                        Log.e(
+                            "SHG_DEBUG",
+                            "SHG Details Error: ${result.error?.message}"
+                        )
+
+                        showSnackBar(
+                            result.error?.message ?: "Unable to load SHG members"
+                        )
+                    }
+
+                    is Resource.Success -> {
+
+                        hideProgressBar()
+
+                        val response = result.data
+
+                        shgMobMemberItems.clear()
+                        shgMobMemberNames.clear()
+
+                        if (response?.responseCode == 200) {
+
+                            val shgDetails = response.wrappedList.orEmpty()
+                                .firstOrNull()
+
+                            if (shgDetails != null) {
+
+                                // Store SHG details for submit request
+                                selectedShgId = shgDetails.id ?: 0L
+                                selectedShgMobShgName =
+                                    shgDetails.shg_name ?: selectedShgMobShgName
+
+                                selectedShgNameLocal =
+                                    shgDetails.shg_name_local ?: selectedShgNameLocal
+
+                                selectedNicShgCode =
+                                    shgDetails.nic_shg_code.orEmpty()
+
+                                // Extract all members
+                                val members = shgDetails.shg_members.orEmpty()
+
+                                shgMobMemberItems.addAll(members)
+
+                                shgMobMemberNames.addAll(
+                                    members.mapNotNull { member ->
+                                        member.member_name
+                                            ?.trim()
+                                            ?.takeIf { it.isNotEmpty() }
+                                    }
+                                )
+
+                                shgMobMemberAdapter.notifyDataSetChanged()
+
+                                binding.shgMobView.spinnerShgMember.isEnabled =
+                                    shgMobMemberNames.isNotEmpty()
+
+                                binding.shgMobView.btnShgMobSubmit.isEnabled = false
+
+                                Log.d(
+                                    "SHG_DEBUG",
+                                    """
+                                SHG ID: $selectedShgId
+                                SHG Name: $selectedShgMobShgName
+                                SHG Local Name: $selectedShgNameLocal
+                                NIC SHG Code: $selectedNicShgCode
+                                Member Count: ${members.size}
+                                Member Names: $shgMobMemberNames
+                                """.trimIndent()
+                                )
+
+                                if (shgMobMemberNames.isEmpty()) {
+                                    showSnackBar("No members found in selected SHG")
+                                }
+
+                            } else {
+
+                                binding.shgMobView.spinnerShgMember.isEnabled = false
+
+                                showSnackBar("SHG details not found")
+                            }
+
+                        } else {
+
+                            binding.shgMobView.spinnerShgMember.isEnabled = false
+
+                            showSnackBar(
+                                response?.responseDesc ?: "SHG details not available"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ============================================
+// SUBMIT MOBILIZED BY SHG MEMBER
+// ============================================
+
+    private fun submitMobilizedByShgMember() {
+
+        // Validate State
+        if (selectedShgMobStateCode.isBlank()) {
+            binding.shgMobView.spinnerShgMobState.error = "Please select State"
+            return
+        }
+
+        // Validate District
+        if (selectedShgMobDistrictCode.isBlank()) {
+            binding.shgMobView.spinnerShgMobDistrict.error = "Please select District"
+            return
+        }
+
+        // Validate Block
+        if (selectedShgMobBlockCode.isBlank()) {
+            binding.shgMobView.spinnerShgMobBlock.error = "Please select Block"
+            return
+        }
+
+        // Validate GP
+        if (selectedShgMobGpCode.isBlank()) {
+            binding.shgMobView.spinnerShgMobGp.error = "Please select Gram Panchayat"
+            return
+        }
+
+        // Validate SHG
+        if (
+            selectedShgMobShgCode.isBlank() ||
+            selectedShgId <= 0L
+        ) {
+            binding.shgMobView.spinnerShg.error = "Please select SHG"
+            return
+        }
+
+        // Validate Member
+        val member = selectedShgMember
+
+        if (member == null || selectedShgMobMemberId <= 0L) {
+            binding.shgMobView.spinnerShgMember.error = "Please select SHG Member"
+            return
+        }
+
+        // Candidate ID
+        val candidateId = userPreferences.getUseID()
+
+        if (candidateId.isBlank()) {
+            showSnackBar("Candidate ID not found. Please login again.")
+            return
+        }
+
+        // Extract nested member details
+        val address = member.member_addresses?.firstOrNull()
+        val phone = member.member_phones?.firstOrNull()?.phone_no.orEmpty()
+        val designation =
+            member.member_designations?.firstOrNull()?.designation.orEmpty()
+
+        // Build complete save request
+        val request = SaveShgMobReq(
+            appVersion = BuildConfig.VERSION_NAME,
+            candidateId = candidateId,
+            stateShortName = selectedStateShortNameItem.trim().uppercase(),
+
+            shgId = selectedShgId,
+            shgCode = selectedShgMobShgCode,
+            shgName = selectedShgMobShgName,
+            shgNameLocal = selectedShgNameLocal,
+            nicShgCode = selectedNicShgCode,
+
+            memberId = member.member_id ?: 0L,
+            memberCode = member.member_code.orEmpty(),
+            memberName = member.member_name.orEmpty(),
+            aadharVerified = member.aadhar_verified ?: false,
+            gender = member.gender.orEmpty(),
+            relationName = member.relation_name.orEmpty(),
+            dob = member.dob.orEmpty(),
+            designation = designation,
+            phone = phone,
+            rtoken = member.rtoken.orEmpty(),
+
+            memberStateCode = address?.state_code.orEmpty(),
+            districtCode = address?.district_code.orEmpty(),
+            blockCode = address?.block_code.orEmpty(),
+            panchayatCode = address?.panchayat_code.orEmpty(),
+            villageCode = address?.village_code?.trim().orEmpty()
+        )
+
+        Log.d(
+            "SHG_MOBILIZED_SUBMIT",
+            """
+        Candidate ID: ${request.candidateId}
+        State: ${request.stateShortName}
+        SHG ID: ${request.shgId}
+        SHG Code: ${request.shgCode}
+        SHG Name: ${request.shgName}
+        NIC SHG Code: ${request.nicShgCode}
+        Member ID: ${request.memberId}
+        Member Name: ${request.memberName}
+        Gender: ${request.gender}
+        Phone: ${request.phone}
+        Designation: ${request.designation}
+        Address: ${request.memberStateCode},
+                 ${request.districtCode},
+                 ${request.blockCode},
+                 ${request.panchayatCode},
+                 ${request.villageCode}
+        """.trimIndent()
+        )
+
+        binding.shgMobView.btnShgMobSubmit.isEnabled = false
+
+        commonViewModel.saveSelectedShgMember(
+            SaveShgMobReq = request,
+            header = AppUtil.getSavedTokenPreference(requireContext())
+        )
+    }
+
+
+    // ============================================
+// COLLECT SAVE SHG MEMBER RESPONSE
+// ============================================
+
+    private fun collectSaveSelectedShgMemberResponse() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            commonViewModel.saveSelectedShgMember.collectLatest { result ->
+
+                when (result) {
+
+                    is Resource.Loading -> {
+
+                        showProgressBar()
+                        binding.shgMobView.btnShgMobSubmit.isEnabled = false
+                    }
+
+                    is Resource.Error -> {
+
+                        hideProgressBar()
+
+                        binding.shgMobView.btnShgMobSubmit.isEnabled =
+                            selectedShgMember != null
+
+                        Log.e(
+                            "SHG_SAVE",
+                            "Save Error: ${result.error?.message}"
+                        )
+
+                        showSnackBar(
+                            result.error?.message ?: "Unable to save SHG member"
+                        )
+                    }
+
+                    is Resource.Success -> {
+
+                        hideProgressBar()
+
+                        val response = result.data
+
+                        if (response?.responseCode == 200) {
+
+                            val message = response.responseMsg
+                                ?: "SHG member updated successfully."
+
+
+
+                            if (isShgMobVisible && mobShgStatus.contains("0")) {
+
+
+                                isShgMobVisible = false
+                                binding.shgMobView.expandShgMob.visible()
+                                binding.shgMobView.viewShgMob.visible()
+
+                            }
+
+                            else{
+
+                                isShgMobVisible = true
+                                binding.shgMobView.expandShgMob.gone()
+                                binding.shgMobView.viewShgMob.gone()
+
+                            }
+
+                        } else {
+
+                            binding.shgMobView.btnShgMobSubmit.isEnabled =
+                                selectedShgMember != null
+
+                            showSnackBar(
+                                response?.responseMsg
+                                    ?: response?.responseDesc
+                                    ?: "Unable to save selected SHG member"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    }
+
+
+
+
 
 

@@ -9,6 +9,7 @@ data class CandidateDetails(
     val employementList: List<Employment> = emptyList(),
     val trainingList: List<Training> = emptyList(),
     val bankList: List<Bank> = emptyList(),
+    val shgMemberList: List<shgMemberList> = emptyList(),
     val responseCode: Int,
     val responseDesc: String
 )
@@ -163,3 +164,34 @@ data class Bank(
     val bankName: String,
     val ifscCode: String
 )
+
+data class shgMemberList(
+    val memberPanchayatCode: String,
+    val memberStateName: String,
+    val memberName: String,
+    val nicShgCode: String,
+    val memberDistrictName: String,
+    val shgCode: String,
+    val rtoken: String,
+    val memberVillageName: String,
+    val memberStateCode: String,
+    val memberId: String,
+    val memberCode: String,
+    val memberGender: String,
+    val memberAadharVerified: String,
+    val shgId: String,
+    val shgName: String,
+    val memberBlockName: String,
+    val memberDistrictCode: String,
+    val stateShortName: String,
+    val memberBlockCode: String,
+    val memberGramPanchayatName: String,
+    val relationName: String,
+    val phone: String,
+    val dob: String,
+    val designation: String,
+    val shgNameLocal: String,
+    val memberVillageCode: String,
+)
+
+

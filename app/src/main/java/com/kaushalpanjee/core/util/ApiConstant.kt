@@ -88,6 +88,12 @@ object ApiConstant {
     const val CREATE_TICKET= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}createTicket"
     const val INSERT_CONSENT= "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}insertBankAcConsent"
 
+    const val API_GET_SHG_BY_BLOCK = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getshgbyblock"
+
+    const val API_GET_SHG_DETAILS ="${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}getshgdetails"
+
+    const val API_SAVE_SELECTED_SHG_MEMBER = "${API_FOLDER_BACKEND}${API_FOLDER_CITIZEN}saveSelectedShgMember"
+
 
 
 }

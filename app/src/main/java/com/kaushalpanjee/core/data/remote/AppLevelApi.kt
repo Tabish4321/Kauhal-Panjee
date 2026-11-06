@@ -55,6 +55,7 @@ import com.kaushalpanjee.common.model.request.PersonalInsertReq
 import com.kaushalpanjee.common.model.request.PiaListReq
 import com.kaushalpanjee.common.model.request.PiaTradeReq
 import com.kaushalpanjee.common.model.request.PiaTrainingCenterReq
+import com.kaushalpanjee.common.model.request.SaveShgMobReq
 import com.kaushalpanjee.common.model.request.SeccInsertReq
 import com.kaushalpanjee.common.model.request.SeccReq
 import com.kaushalpanjee.common.model.request.SectionAndPerReq
@@ -76,6 +77,8 @@ import com.kaushalpanjee.common.model.request.UserCreationReq
 import com.kaushalpanjee.common.model.request.ValidateOtpReq
 import com.kaushalpanjee.common.model.request.VillageReq
 import com.kaushalpanjee.common.model.request.WardReq
+import com.kaushalpanjee.common.model.request.getShgDetailsReq
+import com.kaushalpanjee.common.model.request.getShgReq
 import com.kaushalpanjee.common.model.response.AadhaarCheckForRes
 import com.kaushalpanjee.common.model.response.AadhaarCheckRes
 import com.kaushalpanjee.common.model.response.AadhaarDetailRes
@@ -105,6 +108,7 @@ import com.kaushalpanjee.common.model.response.OtpValidateResponse
 import com.kaushalpanjee.common.model.response.PiaListResponse
 import com.kaushalpanjee.common.model.response.PiaTrainingCenterRes
 import com.kaushalpanjee.common.model.response.PiaTrainingRes
+import com.kaushalpanjee.common.model.response.SaveShgRes
 import com.kaushalpanjee.common.model.response.SeccDetailsRes
 import com.kaushalpanjee.common.model.response.SectionAndPer
 import com.kaushalpanjee.common.model.response.SectorResponse
@@ -121,6 +125,8 @@ import com.kaushalpanjee.common.model.response.UpdatePasswordForRes
 import com.kaushalpanjee.common.model.response.VillageResponse
 import com.kaushalpanjee.common.model.response.WardRes
 import com.kaushalpanjee.common.model.response.WhereHaveYouHeardRes
+import com.kaushalpanjee.common.model.response.getShgDetailsRes
+import com.kaushalpanjee.common.model.response.getShgRes
 import com.kaushalpanjee.common.model.response.grampanchayatResponse
 import com.kaushalpanjee.core.util.ApiConstant.API_APPROVECONDIDATE
 import com.kaushalpanjee.core.util.ApiConstant.API_GET_BANKLIST
@@ -568,5 +574,28 @@ interface AppLevelApi {
         @Part file: MultipartBody.Part?
     ): CreateTicketResponse
 
+
+    // 1. Get SHG list by selected State, Block and GP
+    @POST(ApiConstant.API_GET_SHG_BY_BLOCK)
+    suspend fun getShgByBlock(
+        @Header("Authorization") header: String,
+        @Body getShgReq: getShgReq
+    ): getShgRes
+
+
+    // 2. Get SHG details and member list
+    @POST(ApiConstant.API_GET_SHG_DETAILS)
+    suspend fun getShgDetails(
+        @Header("Authorization") header: String,
+        @Body getShgDetailsReq: getShgDetailsReq
+    ): getShgDetailsRes
+
+
+    // 3. Save selected SHG Member
+    @POST(ApiConstant.API_SAVE_SELECTED_SHG_MEMBER)
+    suspend fun saveSelectedShgMember(
+        @Header("Authorization") header: String,
+        @Body SaveShgMobReq: SaveShgMobReq
+    ): SaveShgRes
 
 }

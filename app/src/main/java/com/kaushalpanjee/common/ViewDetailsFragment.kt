@@ -43,6 +43,7 @@ import com.kaushalpanjee.common.model.response.PersonalDetail
 import com.kaushalpanjee.common.model.response.Secc
 import com.kaushalpanjee.common.model.response.Training
 import com.kaushalpanjee.common.model.response.UserDetails
+import com.kaushalpanjee.common.model.response.shgMemberList
 import com.kaushalpanjee.core.basecomponent.BaseFragment
 import com.kaushalpanjee.core.util.AESCryptography
 import com.kaushalpanjee.core.util.AppConstant
@@ -85,6 +86,36 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var userCandidateEmploymentDetailsList: List<Employment> = mutableListOf()
     private var userCandidateTrainingDetailsList: List<Training> = mutableListOf()
     private var userCandidateBankDetailsList: List<Bank> = mutableListOf()
+    private var userCandidateShgDetailsDetailsList: List<shgMemberList> = mutableListOf()
+
+    val memberPanchayatCode: String =""
+    val memberStateName: String =""
+    val memberName: String=""
+    val nicShgCode: String=""
+    val memberDistrictName: String=""
+    val shgCode: String=""
+    val rtoken: String=""
+    val memberVillageName: String=""
+    val memberStateCode: String=""
+    val memberId: String=""
+    val memberCode: String=""
+    val memberGender: String=""
+    val memberAadharVerified: String=""
+    val shgId: String=""
+    val shgName: String=""
+    val memberBlockName: String=""
+    val memberDistrictCode: String=""
+    val stateShortName: String=""
+    val memberBlockCode: String=""
+    val memberGramPanchayatName: String=""
+    val relationName: String=""
+    val phone: String=""
+    val dob: String=""
+    val designation: String=""
+    val shgNameLocal: String=""
+    val memberVillageCode: String=""
+
+
 
     private var personalStatus = ""
     private var educationalStatus = ""
@@ -616,6 +647,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         userCandidateEmploymentDetailsList = getCandidateDetailsAPI.employementList
                                         userCandidateTrainingDetailsList = getCandidateDetailsAPI.trainingList
                                         userCandidateBankDetailsList = getCandidateDetailsAPI.bankList
+                                        userCandidateShgDetailsDetailsList = getCandidateDetailsAPI.shgMemberList
 
                                         for (x in userCandidatePersonalDetailsList) {
                                             userCandidatePersonalDetailsList2 = x.personaldetails
@@ -968,20 +1000,13 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         }
 
 
-//                                        for (x in userCandidateBankDetailsList){
-//                                            val DecIfscCode = AESCryptography.decryptIntoString(x.ifscCode,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-//                                            val DecBankName = AESCryptography.decryptIntoString(x.bankName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-//                                            val DecbankBranchName = AESCryptography.decryptIntoString(x.bankBranchName,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-//                                            val DecbankbankAccNumber = AESCryptography.decryptIntoString(x.bankAccNumber,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-//                                            val DecpanNo = AESCryptography.decryptIntoString(x.panNo,AppConstant.Constants.ENCRYPT_KEY,AppConstant.Constants.ENCRYPT_IV_KEY)
-//                                            val maskedAccountNo= maskString(DecbankbankAccNumber)
-//
-//                                            binding.etIfsc.setText(DecIfscCode)
-//                                            binding.etBankName.setText(DecBankName)
-//                                            binding.etBranchName.setText(DecbankBranchName)
-//                                            binding.etBankAcNo.setText(maskedAccountNo)
-//                                            binding.etPanNumber.setText(DecpanNo)
-//                                        }
+                                        for (x in userCandidateShgDetailsDetailsList){
+
+
+
+
+                                        }
+
 
                                     } else if (getCandidateDetailsAPI.responseCode == 301) {
                                         showSnackBar("Please Update from PlayStore")
