@@ -88,36 +88,15 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var userCandidateBankDetailsList: List<Bank> = mutableListOf()
     private var userCandidateShgDetailsDetailsList: List<shgMemberList> = mutableListOf()
 
-    val memberPanchayatCode: String =""
-    val memberStateName: String =""
-    val memberName: String=""
-    val nicShgCode: String=""
-    val memberDistrictName: String=""
-    val shgCode: String=""
-    val rtoken: String=""
-    val memberVillageName: String=""
-    val memberStateCode: String=""
-    val memberId: String=""
-    val memberCode: String=""
-    val memberGender: String=""
-    val memberAadharVerified: String=""
-    val shgId: String=""
-    val shgName: String=""
-    val memberBlockName: String=""
-    val memberDistrictCode: String=""
-    val stateShortName: String=""
-    val memberBlockCode: String=""
-    val memberGramPanchayatName: String=""
-    val relationName: String=""
+
     val phone: String=""
     val dob: String=""
-    val designation: String=""
-    val shgNameLocal: String=""
-    val memberVillageCode: String=""
+
 
 
 
     private var personalStatus = ""
+    private var shgMobStatus = ""
     private var educationalStatus = ""
     private var trainingStatus = ""
     private var seccStatus = ""
@@ -129,7 +108,6 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
     private var pmaygImage=  ""
     private var pipImage=  ""
     private var dlImage=  ""
-    private var pwdType=  ""
     private var categoryImage=  ""
     private var minorityImage =  ""
     private var pwdImage =  ""
@@ -522,6 +500,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                 for (x in percentageList) {
 
                                     personalStatus= x.personalStatus.toString()
+                                    shgMobStatus= x.shgSectionStatus
                                     educationalStatus= x.educationalStatus.toString()
                                     trainingStatus= x.trainingStatus.toString()
                                     seccStatus= x.seccStatus .toString()
@@ -553,6 +532,21 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                     )
 
                                 }
+
+
+
+
+
+                                if (shgMobStatus.contains("1")){
+
+                                    binding.tvNew.setDrawable(
+                                        null, null,
+                                        AppCompatResources.getDrawable(requireContext(), R.drawable.ic_verified), null
+                                    )
+
+                                }
+
+
                                 if (addressStatus.contains("1")){
 
                                     binding.tv.setDrawable(
@@ -1003,6 +997,12 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                         for (x in userCandidateShgDetailsDetailsList){
 
 
+                                            binding.spinnerShgMobState.text = x.memberStateName
+                                            binding.spinnerShgMobDistrict.text = x.memberDistrictName
+                                            binding.spinnerShgMobBlock.text = x.memberBlockName
+                                            binding.spinnerShgMobGp.text = x.memberGramPanchayatName
+                                            binding.spinnerShg.text = x.shgName
+                                            binding.spinnerShgMember.text = x.memberName
 
 
                                         }

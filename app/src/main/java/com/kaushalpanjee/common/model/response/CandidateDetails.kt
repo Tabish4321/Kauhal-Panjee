@@ -166,32 +166,46 @@ data class Bank(
 )
 
 data class shgMemberList(
-    val memberPanchayatCode: String,
-    val memberStateName: String,
-    val memberName: String,
-    val nicShgCode: String,
-    val memberDistrictName: String,
-    val shgCode: String,
-    val rtoken: String,
-    val memberVillageName: String,
-    val memberStateCode: String,
-    val memberId: String,
-    val memberCode: String,
-    val memberGender: String,
-    val memberAadharVerified: String,
-    val shgId: String,
-    val shgName: String,
-    val memberBlockName: String,
-    val memberDistrictCode: String,
-    val stateShortName: String,
-    val memberBlockCode: String,
-    val memberGramPanchayatName: String,
-    val relationName: String,
-    val phone: String,
-    val dob: String,
-    val designation: String,
-    val shgNameLocal: String,
-    val memberVillageCode: String,
+    val memberPanchayatCode: String? = null,
+    val lgdBlockCode: String? = null,
+    val memberStateName: String? = null,
+    val lgdGpCode: String? = null,
+
+    val memberName: String? = null,
+    val nicShgCode: String? = null,
+    val memberDistrictName: String? = null,
+    val shgCode: String? = null,
+
+    val rtoken: String? = null,
+    val memberVillageName: String? = null,
+    val memberStateCode: String? = null,
+
+    val lgdDistrictCode: String? = null,
+    val lgdVillageCode: String? = null,
+
+    val memberId: String? = null,
+    val memberCode: String? = null,
+    val memberGender: String? = null,
+    val memberAadharVerified: String? = null,
+
+    val shgId: String? = null,
+    val shgName: String? = null,
+
+    val memberBlockName: String? = null,
+    val lgdStateCode: String? = null,
+    val memberDistrictCode: String? = null,
+
+    val stateShortName: String? = null,
+    val memberBlockCode: String? = null,
+    val memberGramPanchayatName: String? = null,
+
+    val relationName: String? = null,
+    val phone: String? = null,
+    val dob: String? = null,
+    val designation: String? = null,
+
+    val shgNameLocal: String? = null,
+    val memberVillageCode: String? = null
 )
 
 
