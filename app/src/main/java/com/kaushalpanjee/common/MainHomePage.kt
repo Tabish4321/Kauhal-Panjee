@@ -1033,9 +1033,6 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
 
     }
 
-
-
-
     private fun handleFaceAuthResult(result: FaceAuthResult) {
 
         if (!result.isSuccess) {
