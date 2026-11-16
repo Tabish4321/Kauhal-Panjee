@@ -26,6 +26,20 @@ data class StatusItem(
     val schemeType: String,
     val stateCode: String,
     val ojtFlag: String,
-    val cbtExam: String
+    val cbtExam: String,
+    val settledStatus: String,
+    val batchEnrollment: String,
+    val batchCompletion: String,
+    val assessmentStatus: String,
+    val certifiedStatus: String,
+    val placementStatus: String
+
+
+
+
+
+
+
+
 
 )

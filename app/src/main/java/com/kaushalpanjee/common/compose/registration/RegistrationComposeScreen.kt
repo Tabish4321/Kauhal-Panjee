@@ -156,7 +156,14 @@ private class RegDims(private val compact: Boolean, private val veryCompact: Boo
 fun RegistrationComposeScreen(
     commonViewModel: CommonViewModel,
     onBack: () -> Unit,
-    onAadhaarCheckSuccess: (aadhaar: String, stateCode: String, stateLgdCode: String, candidateId: String) -> Unit,
+    onAadhaarCheckSuccess: (
+        aadhaar: String,
+        stateCode: String,
+        stateLgdCode: String,
+        candidateId: String,
+        verifiedEmail: String,
+        verifiedMobile: String
+    ) -> Unit,
     onLoginClick: () -> Unit = {},
     onLanguageClick: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -211,6 +218,9 @@ fun RegistrationComposeScreen(
     var step by remember { mutableStateOf(RegistrationStep.WELCOME) }
     var email by remember { mutableStateOf("") }
     var mobile by remember { mutableStateOf("") }
+    // These values are captured only after the corresponding OTP succeeds.
+    var verifiedEmail by remember { mutableStateOf("") }
+    var verifiedMobile by remember { mutableStateOf("") }
     var otp by remember { mutableStateOf("") }
     var aadhaar by remember { mutableStateOf("") }
     var aadhaarVisible by remember { mutableStateOf(false) }
@@ -251,8 +261,14 @@ fun RegistrationComposeScreen(
         commonViewModel.sendEmailOTP.collect { result ->
             when (result) {
                 is Resource.Loading -> if (activeRequest) loading = true
-                is Resource.Error -> { loading = false; activeRequest = false; error = result.error?.message ?: "Unable to send email OTP." }
+                is Resource.Error -> {
+                    if (!activeRequest) return@collect
+                    loading = false
+                    activeRequest = false
+                    error = result.error?.message ?: "Unable to send email OTP."
+                }
                 is Resource.Success -> {
+                    if (!activeRequest) return@collect
                     loading = false
                     activeRequest = false
                     val data = result.data
@@ -266,8 +282,14 @@ fun RegistrationComposeScreen(
         commonViewModel.sendMobileOTP.collect { result ->
             when (result) {
                 is Resource.Loading -> if (activeRequest) loading = true
-                is Resource.Error -> { loading = false; activeRequest = false; error = result.error?.message ?: "Unable to send mobile OTP." }
+                is Resource.Error -> {
+                    if (!activeRequest) return@collect
+                    loading = false
+                    activeRequest = false
+                    error = result.error?.message ?: "Unable to send mobile OTP."
+                }
                 is Resource.Success -> {
+                    if (!activeRequest) return@collect
                     loading = false
                     activeRequest = false
                     val data = result.data
@@ -281,15 +303,25 @@ fun RegistrationComposeScreen(
         commonViewModel.getOtpValidateApi.collect { result ->
             when (result) {
                 is Resource.Loading -> if (activeRequest) loading = true
-                is Resource.Error -> { loading = false; activeRequest = false; error = result.error?.message ?: "OTP verification failed." }
+                is Resource.Error -> {
+                    if (!activeRequest) return@collect
+                    loading = false
+                    activeRequest = false
+                    error = result.error?.message ?: "OTP verification failed."
+                }
                 is Resource.Success -> {
+                    if (!activeRequest) return@collect
                     loading = false
                     activeRequest = false
                     val data = result.data
                     if (data?.responseCode == 200) {
                         error = ""; otp = ""
-                        if (step == RegistrationStep.EMAIL_OTP) step = RegistrationStep.MOBILE
+                        if (step == RegistrationStep.EMAIL_OTP) {
+                            verifiedEmail = email.trim()
+                            step = RegistrationStep.MOBILE
+                        }
                         else if (step == RegistrationStep.MOBILE_OTP) {
+                            verifiedMobile = mobile
                             candidateId = data.candidateId.orEmpty()
                             if (candidateId.isBlank()) error = "Candidate ID was not returned by the server."
                             else {
@@ -308,8 +340,14 @@ fun RegistrationComposeScreen(
         commonViewModel.stateOtpList.collect { result ->
             when (result) {
                 is Resource.Loading -> if (activeRequest) loading = true
-                is Resource.Error -> { loading = false; activeRequest = false; error = result.error?.message ?: "Could not load states." }
+                is Resource.Error -> {
+                    if (!activeRequest) return@collect
+                    loading = false
+                    activeRequest = false
+                    error = result.error?.message ?: "Could not load states."
+                }
                 is Resource.Success -> {
+                    if (!activeRequest) return@collect
                     loading = false
                     activeRequest = false
                     val data = result.data
@@ -330,15 +368,31 @@ fun RegistrationComposeScreen(
 
             when (result) {
                 is Resource.Loading -> if (activeRequest) loading = true
-                is Resource.Error -> { Log.e("AADHAAR_VERIFY", "API failed: ${error}") }
+                is Resource.Error -> {
+                    loading = false
+                    activeRequest = false
+                    error = result.error?.message ?: "Aadhaar verification failed. Please try again."
+                    Log.e("AADHAAR_VERIFY", "API failed: ${error}")
+                }
                 is Resource.Success -> {
+                    if (!activeRequest || step != RegistrationStep.AADHAAR) return@collect
                     loading = false
                     activeRequest = false
                     val data = result.data
                     if (data?.responseCode == 200) {
                         error = ""
-                        onAadhaarCheckSuccess(aadhaar, selectedStateCode, selectedStateLgd, candidateId)
-                    } else error = data?.responseDesc?.takeIf { it.isNotBlank() } ?: "Aadhaar verification failed."
+                        onAadhaarCheckSuccess(
+                            aadhaar,
+                            selectedStateCode,
+                            selectedStateLgd,
+                            candidateId,
+                            verifiedEmail,
+                            verifiedMobile
+                        )
+                    } else {
+                        error = data?.responseDesc?.takeIf { it.isNotBlank() }
+                            ?: "Aadhaar verification failed."
+                    }
                 }
             }
         }
@@ -351,7 +405,12 @@ fun RegistrationComposeScreen(
 
     // ---------- Navigation ----------
     fun goBackStep() {
-        error = ""; info = ""
+        // A user may leave a step while its request is in progress.
+        // Reset the screen state so no button remains stuck in loading mode.
+        activeRequest = false
+        loading = false
+        error = ""
+        info = ""
         when (step) {
             RegistrationStep.WELCOME -> onBack()
             RegistrationStep.EMAIL -> step = RegistrationStep.WELCOME
@@ -374,8 +433,13 @@ fun RegistrationComposeScreen(
     }
 
     fun sendEmailOtp() {
-        activeRequest = true; loading = true; error = ""; info = ""
-        commonViewModel.sendEmailOTP(email.trim(), BuildConfig.VERSION_NAME, AppUtil.getAndroidId(context))
+        val value = email.trim()
+        email = value
+        activeRequest = true
+        loading = true
+        error = ""
+        info = ""
+        commonViewModel.sendEmailOTP(value, BuildConfig.VERSION_NAME, AppUtil.getAndroidId(context))
     }
 
     fun sendMobileOtp() {
@@ -535,7 +599,7 @@ fun RegistrationComposeScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Surface(
-                                        modifier = Modifier.size(36.dp).clickable(enabled = !loading) { goBackStep() },
+                                        modifier = Modifier.size(36.dp).clickable { goBackStep() },
                                         shape = CircleShape,
                                         color = LoginColors.LightGreen,
                                         border = BorderStroke(1.dp, LoginColors.Border)
@@ -617,7 +681,7 @@ fun RegistrationComposeScreen(
                                                 d = d
                                             ) { sendEmailOtp() }
                                             TextButton(
-                                                onClick = { email = ""; error = ""; step = RegistrationStep.MOBILE },
+                                                onClick = { email = ""; verifiedEmail = ""; error = ""; step = RegistrationStep.MOBILE },
                                                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
                                             ) {
                                                 Text("Skip email", color = LoginColors.Primary, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
@@ -1267,3 +1331,4 @@ private object AadhaarValidator {
         return checksum == 0
     }
 }
+

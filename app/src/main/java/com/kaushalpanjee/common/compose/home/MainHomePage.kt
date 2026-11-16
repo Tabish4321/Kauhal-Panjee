@@ -69,7 +69,7 @@ class MainHomePage : BaseFragment<FragmentMainHomeBinding>(FragmentMainHomeBindi
                             findNavController().navigate(MainHomePageDirections.actionMainHomePageToChangePasswordFragment())
                         },
                         onLanguage = {
-                            findNavController().navigate(MainHomePageDirections.actionMainHomePageToTrainingFragment())
+                            findNavController().navigate(MainHomePageDirections.actionMainHomePageToLanguageChangeFragment())
                         },
                         onNotification = {
                             findNavController().navigate(MainHomePageDirections.actionMainHomePageToNotificationListFragment())

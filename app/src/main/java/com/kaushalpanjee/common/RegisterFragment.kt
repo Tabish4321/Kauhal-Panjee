@@ -69,6 +69,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private var selectedStateCode = ""
     private var selectedStateLgdCode = ""
     private var candidateId = ""
+    private var verifiedPhone = ""
+    private var verifiedEmail = ""
     private var appTxn = ""
     private var userCreationRequestJson = ""
 
@@ -137,8 +139,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     RegistrationComposeScreen(
                         commonViewModel = commonViewModel,
                         onBack = { findNavController().popBackStack() },
-                        onAadhaarCheckSuccess = { aadhaar, stateCode, stateLgdCode, candidate ->
+                        onAadhaarCheckSuccess = { aadhaar, stateCode, stateLgdCode, candidate, email, mobile ->
                             currentAadhaar = aadhaar
+                            verifiedEmail = email
+                            verifiedPhone = mobile
                             selectedStateCode = stateCode
                             selectedStateLgdCode = stateLgdCode
                             candidateId = candidate
@@ -151,6 +155,11 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                         },
                         onWelcomeStateChanged = { isWelcomeScreen = it }
                     )
+
+
+
+
+
                 }
             }
         }
@@ -339,8 +348,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private fun createUserAfterFaceAuth() {
         lifecycleScope.launch {
             try {
-                val email = AppUtil.getSavedEmailPreference(requireContext())
-                val phone = AppUtil.getSavedMobileNoPreference(requireContext())
+
 
                 userPreferences.updateUserStateLgdCode(null)
                 userPreferences.updateUserStateLgdCode(selectedStateLgdCode)
@@ -364,8 +372,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     encrypt(po),
                     encrypt(village),
                     encrypt(pinCode),
-                    encrypt(phone),
-                    encrypt(email),
+                    encrypt(verifiedPhone),
+                    encrypt(verifiedEmail),
                     encrypt(careOf),
                     encrypt(street),
                     BuildConfig.VERSION_NAME,
@@ -397,17 +405,17 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                     is Resource.Loading -> {}
                     is Resource.Error -> {
                         hideProgressBar()
-                        toastShort("Error in Aadhaar transaction API.")
+                        //toastShort("Error in Aadhaar transaction API.")
                     }
                     is Resource.Success -> {
-                        hideProgressBar()
+                  /*      hideProgressBar()
                         it.data?.let { response ->
                             when (response.responseCode) {
                                 200 -> toastShort(response.responseMsg)
                                 301 -> toastShort("Please update from Play Store.")
                                 else -> toastShort(response.responseDesc)
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -426,12 +434,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                             addProperty("code", result.error?.code)
                             addProperty("message", result.error?.message)
                         }
-                        saveUserCreationApiLog(error)
+                      //  saveUserCreationApiLog(error)
                         toastShort("User creation failed, please try again.")
                     }
                     is Resource.Success -> {
                         hideProgressBar()
-                        saveUserCreationApiLog(result.data)
+                      //  saveUserCreationApiLog(result.data)
                         val response = result.data ?: return@collectLatestLifecycleFlow
                         when (response.responseCode) {
                             200 -> {
@@ -443,7 +451,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                                         "Bearer " + item.appCode
                                     )
                                 }
-                                AppUtil.saveEmailPreference(requireContext(), "")
+
                                 userPhotoUIADI?.let { bitmap ->
                                     showRegistrationSuccess(bitmap, name, gender, dob, careOf)
                                 } ?: toastLong("Registration completed. Please login.")
@@ -563,3 +571,4 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
     }
 }
+

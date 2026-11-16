@@ -162,6 +162,7 @@ data class HomeUiState(
     val cbtExam: String = "N",
     val schemeType: String = "",
     val stateCode: String = "",
+    val isFaceRegistred: String = "",
     // TODO: journey ke liye API key aane par yaha se replace karna. Abhi manually Y/N.
     val registerKey: String = "Y",
     val banners: List<ImageBitmap> = emptyList()
@@ -287,7 +288,8 @@ fun MainHomeRoute(
                                     attendanceFlag = x.ojtFlag ?: "N",
                                     cbtExam = x.cbtExam ?: "N",
                                     schemeType = x.schemeType ?: "",
-                                    stateCode = x.stateCode ?: ""
+                                    stateCode = x.stateCode ?: "",
+                                    isFaceRegistred = x.isFaceRegistred ?: ""
                                 )
                                 if (x.firstLogin == "N") dialog = HomeDialog.ForcePassword
                             }
