@@ -9,7 +9,10 @@ import android.net.Uri
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -83,12 +86,22 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listeners() {
 
+/*
+        binding.ivDDGKY.setOnClickListener {
 
-     /*   binding.ivDDGKY.setOnClickListener {
+            // Analytics event
+            Firebase.analytics.logEvent("ddgky_button_clicked") {
+                param("screen_name", "Login")
+            }
 
-          findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSubmitBankConcent())
-        }
-*/
+            // Crashlytics log
+            FirebaseCrashlytics.getInstance().log(
+                "DDGKY button clicked on Login screen"
+            )
+
+            // Intentional test crash
+            throw RuntimeException("Kaushal Panjee Crashlytics Test")
+        }*/
 
 
 

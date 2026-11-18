@@ -5,6 +5,7 @@ import android.util.Log
 import com.d2k.samiksha.SamikshaConfig
 import com.d2k.samiksha.SamikshaSdk
 import com.d2k.samiksha.security.PinningConfig
+import com.kaushalpanjee.core.util.FirebaseCrashManager
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -12,6 +13,11 @@ class KaushalPanjeeApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+
+        // Firebase Crashlytics Initialization
+        FirebaseCrashManager.initialize()
+
 
         SamikshaSdk.initialize(
             config = SamikshaConfig(

@@ -11,13 +11,14 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.google.firebase.crashlytics")
+
 
 }
 
 android {
     namespace = "com.kaushalpanjee"
     compileSdk = 35
-
 
     // FIX: 16 KB page-size Play Store rejection bypass
 
@@ -35,8 +36,8 @@ android {
         minSdk = 29
         targetSdk = 36
         versionCode = 82
-        //versionName = "2.8.4"
-        versionName = "2.8.2"
+        versionName = "2.8.4"
+        //versionName = "2.8.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -402,6 +403,8 @@ dependencies {
     // Required Firebase libs (IMPORTANT)
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-config-ktx")
+    implementation("com.google.firebase:firebase-crashlytics")
+
 
 }
 
