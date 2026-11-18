@@ -160,11 +160,15 @@ data class HomeUiState(
     val certFlag: String = "N",
     val attendanceFlag: String = "N",
     val cbtExam: String = "N",
-    val schemeType: String = "",
+    val schemeType: String = "RSETI",
     val stateCode: String = "",
     val isFaceRegistred: String = "",
-    // TODO: journey ke liye API key aane par yaha se replace karna. Abhi manually Y/N.
-    val registerKey: String = "Y",
+    val batchEnrollment: String = "N",
+    val batchCompletion: String = "N",
+    val assessmentStatus: String = "N",
+    val certifiedStatus: String = "N",
+    val settledStatus: String = "N",
+    val placementStatus: String = "N",
     val banners: List<ImageBitmap> = emptyList()
 )
 
@@ -185,6 +189,8 @@ data class HomeActions(
     val onSessionExpired: () -> Unit = {},
     val onLogoutSuccess: (message: String) -> Unit = {},
     val onStateLgdCode: (String?) -> Unit = {},
+    val onFaceRegistrationRequired: () -> Unit = {},
+    val onHelpDesk: () -> Unit = {},
     val onExit: () -> Unit = {}
 )
 
@@ -227,6 +233,7 @@ fun MainHomeRoute(
     var query by remember { mutableStateOf("") }
     var searchResults by remember { mutableStateOf<List<SearchItem>>(emptyList()) }
     var dialog by remember { mutableStateOf<HomeDialog?>(null) }
+    var faceRegistrationRequested by remember { mutableStateOf(false) }
     var lastBackPress by remember { mutableLongStateOf(0L) }
 
     // Keep the latest text visible to the long-lived API response collector.
@@ -289,9 +296,23 @@ fun MainHomeRoute(
                                     cbtExam = x.cbtExam ?: "N",
                                     schemeType = x.schemeType ?: "",
                                     stateCode = x.stateCode ?: "",
-                                    isFaceRegistred = x.isFaceRegistred ?: ""
+                                    isFaceRegistred = x.isFaceRegistred ?: "",
+                                    batchEnrollment = x.batchEnrollment ?: "N",
+                                    batchCompletion = x.batchCompletion ?: "N",
+                                    assessmentStatus = x.assessmentStatus ?: "N",
+                                    certifiedStatus = x.certifiedStatus ?: "N",
+                                    settledStatus = x.settledStatus ?: "N",
+                                    placementStatus = x.placementStatus ?: "N"
                                 )
-                                if (x.firstLogin == "N") dialog = HomeDialog.ForcePassword
+                                if (x.firstLogin == "N") {
+                                    dialog = HomeDialog.ForcePassword
+                                } else if (
+                                    x.isFaceRegistred.equals("N", ignoreCase = true) &&
+                                    !faceRegistrationRequested
+                                ) {
+                                    faceRegistrationRequested = true
+                                    actions.onFaceRegistrationRequired()
+                                }
                             }
                         }
                         301 -> dialog = HomeDialog.Update
@@ -483,6 +504,10 @@ fun MainHomeRoute(
         onLogout = {
             clearTrainingSearch()
             dialog = HomeDialog.Logout
+        },
+        onHelpDesk = {
+            clearTrainingSearch()
+            actions.onHelpDesk()
         }
     )
 
@@ -588,7 +613,8 @@ fun MainHomeScreen(
     onCbt: () -> Unit,
     onReKyc: () -> Unit,
     onChangePassword: () -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onHelpDesk: () -> Unit
 ) {
     // Floating bottom bar: Attendance OJT, ReKYC, [Home], Change Password, Logout
     val left = listOf(
@@ -641,17 +667,18 @@ fun MainHomeScreen(
                     Spacer(Modifier.height(12.dp))
                 }
 
-              /*  BannerCarousel(
-                    banners = state.banners,
-                    compact = compact,
-                    onExplore = onTrainingDetails,
-                    modifier = Modifier.content().padding(horizontal = 16.dp)
-                )*/
+                /*  BannerCarousel(
+                      banners = state.banners,
+                      compact = compact,
+                      onExplore = onTrainingDetails,
+                      modifier = Modifier.content().padding(horizontal = 16.dp)
+                  )*/
                 Spacer(Modifier.height(16.dp))
 
                 ProfileCard(
                     percent = state.totalPercentage,
                     compact = compact,
+                    enrolled = state.batchEnrollment,
                     onCompleteNow = onCandidateDetails,
                     modifier = Modifier
                         .content()
@@ -660,23 +687,16 @@ fun MainHomeScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                val schemeType = "RSETI" // API se actual schemeType lena
-
-                val steps = buildList {
-                    // Common journey steps
-                    add(JourneyStep("Enrolled", StepStatus.Completed))
-                    add(JourneyStep("Trained", StepStatus.Completed))
-                    add(JourneyStep("Assessed", StepStatus.Completed))
-                    add(JourneyStep("Certified", StepStatus.InProgress))
-
-                    // Scheme-based journey steps
-                    if (schemeType.equals("RSETI", ignoreCase = true)) {
-                        add(JourneyStep("Settled", StepStatus.Upcoming))
-                    } else if (schemeType.equals("DDUGKY", ignoreCase = true)) {
-                        add(JourneyStep("Appointed", StepStatus.Upcoming))
-                        add(JourneyStep("Placed", StepStatus.Upcoming))
-                    }
-                }
+                // Scheme is intentionally static as requested; make it dynamic later.
+                val steps = buildJourneySteps(
+                    batchEnrollment = state.batchEnrollment,
+                    batchCompletion = state.batchCompletion,
+                    assessmentStatus = state.assessmentStatus,
+                    certifiedStatus = state.certifiedStatus,
+                    settledStatus = state.settledStatus,
+                    placementStatus = state.placementStatus,
+                    schemeType = state.schemeType
+                )
 
                 JourneyCard(
                     steps = steps,
@@ -706,7 +726,7 @@ fun MainHomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         ServiceCard(
-                            title = "My Details", subtitle = "View & update your profile",
+                            title = "My Details", subtitle = "View your profile",
                             icon = Icons.Outlined.Badge, compact = compact,
                             bg = Color(0xFFE6F6EF), border = Color(0xFFBFE6D4),
                             iconBg = Color(0xFFC9EEDB), iconTint = GreenMid,
@@ -742,6 +762,20 @@ fun MainHomeScreen(
                             onClick = onCbt,
                             modifier = Modifier.weight(1f).fillMaxHeight()
                         )
+                    }
+                    Row(
+                        Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        ServiceCard(
+                            title = "Helpdesk", subtitle = "Raise or track your request",
+                            icon = Icons.Outlined.Tune, compact = compact,
+                            bg = Color(0xFFEAF3FF), border = Color(0xFFC9DDF8),
+                            iconBg = Color(0xFFD8E8FF), iconTint = Color(0xFF2865A8),
+                            onClick = onHelpDesk,
+                            modifier = Modifier.weight(1f).fillMaxHeight()
+                        )
+                        Spacer(Modifier.weight(1f))
                     }
                 }
                 Spacer(Modifier.height(20.dp))
@@ -835,7 +869,7 @@ private fun HomeHeader(
                 .padding(
                     start = 16.dp,
                     end = 16.dp,
-                    top = 12.dp,
+                    top = 24.dp,
                     bottom = 52.dp
                 )
         ) {
@@ -1194,10 +1228,11 @@ private fun BannerCarousel(
 private fun ProfileCard(
     percent: Float,
     compact: Boolean,
+    enrolled: String,
     onCompleteNow: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val complete = percent >= 100f
+    val complete = enrolled == "Y"
     val shape = RoundedCornerShape(22.dp)
 
     val ringSize = if (compact) 76.dp else 86.dp
@@ -1485,6 +1520,60 @@ private fun ProgressRing(
 
 
 /* ───────────────────────── Skilling journey ───────────────────────── */
+
+private fun buildJourneySteps(
+    batchEnrollment: String,
+    batchCompletion: String,
+    assessmentStatus: String,
+    certifiedStatus: String,
+    settledStatus: String,
+    placementStatus: String,
+    schemeType: String
+): List<JourneyStep> {
+    val common = listOf(
+        "Enrolled" to batchEnrollment,
+        "Trained" to batchCompletion,
+        "Assessed" to assessmentStatus,
+        "Certified" to certifiedStatus
+    )
+
+    var firstPendingFound = false
+    val steps = common.map { (title, flag) ->
+        val completed = flag.equals("Y", ignoreCase = true)
+        val status = when {
+            completed -> StepStatus.Completed
+            !firstPendingFound -> {
+                firstPendingFound = true
+                StepStatus.InProgress
+            }
+            else -> StepStatus.Upcoming
+        }
+        JourneyStep(title, status)
+    }.toMutableList()
+
+    val finalTitle: String
+    val finalFlag: String
+    when {
+        schemeType.equals("RSETI", ignoreCase = true) -> {
+            finalTitle = "Settled"
+            finalFlag = settledStatus
+        }
+        schemeType.equals("DDUGKY", ignoreCase = true) -> {
+            finalTitle = "Placed"
+            finalFlag = placementStatus
+        }
+        else -> return steps
+    }
+
+    val finalCompleted = finalFlag.equals("Y", ignoreCase = true)
+    val finalStatus = when {
+        finalCompleted -> StepStatus.Completed
+        !firstPendingFound -> StepStatus.InProgress
+        else -> StepStatus.Upcoming
+    }
+    steps.add(JourneyStep(finalTitle, finalStatus))
+    return steps
+}
 
 @Composable
 private fun JourneyCard(steps: List<JourneyStep>, compact: Boolean, modifier: Modifier = Modifier) {

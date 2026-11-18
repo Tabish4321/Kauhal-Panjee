@@ -29,6 +29,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kaushalpanjee.BuildConfig
 import com.kaushalpanjee.R
+import com.kaushalpanjee.common.compose.home.MainHomePageDirections
 import com.kaushalpanjee.common.model.BankItem
 import com.kaushalpanjee.common.model.request.AdharDetailsReq
 import com.kaushalpanjee.common.model.request.CandidateReq
@@ -122,14 +123,8 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // Custom behavior when back is pressed
 
-                // Example: Navigate to HomeFragment and clear back stack
-                findNavController().navigate(
-                    R.id.homeFragment,
-                    null,
-                    NavOptions.Builder().setPopUpTo(R.id.viewDetailsFragment, true).build()
-                )
+                findNavController().navigateUp()
             }
         })
 
@@ -211,7 +206,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
         }
 
 
-        binding.profileView.viewDetails.setText(R.string.edit)
+        binding.profileView.viewDetails.gone()
 
 
 
@@ -522,6 +517,7 @@ class ViewDetailsFragment : BaseFragment<FragmentViewDetailsBinding>(FragmentVie
                                     )
 
                                 }
+
                                 if (addressStatus.contains("1")){
 
                                     binding.tv.setDrawable(

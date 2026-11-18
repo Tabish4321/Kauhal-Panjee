@@ -89,7 +89,7 @@ private val RegButtonGradient = listOf(LoginColors.Primary, LoginColors.Primary,
 
 private val ScreenPadding = 20.dp
 
-private enum class RegistrationStep { WELCOME, EMAIL, EMAIL_OTP, MOBILE, MOBILE_OTP, AADHAAR, COMPLETE }
+private enum class RegistrationStep { WELCOME, MOBILE, MOBILE_OTP, EMAIL, EMAIL_OTP, AADHAAR, COMPLETE }
 
 private data class RegState(val name: String, val code: String, val lgd: String)
 
@@ -232,6 +232,7 @@ fun RegistrationComposeScreen(
     var loading by remember { mutableStateOf(false) }
     // Prevents stale/replayed Loading emissions from showing a spinner when the screen opens.
     var activeRequest by remember { mutableStateOf(false) }
+    var stateRequestInProgress by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf("") }
     var info by remember { mutableStateOf("") }
     var stateRows by remember { mutableStateOf<List<RegState>>(emptyList()) }
@@ -316,20 +317,20 @@ fun RegistrationComposeScreen(
                     val data = result.data
                     if (data?.responseCode == 200) {
                         error = ""; otp = ""
-                        if (step == RegistrationStep.EMAIL_OTP) {
-                            verifiedEmail = email.trim()
-                            step = RegistrationStep.MOBILE
-                        }
-                        else if (step == RegistrationStep.MOBILE_OTP) {
+                        if (step == RegistrationStep.MOBILE_OTP) {
                             verifiedMobile = mobile
                             candidateId = data.candidateId.orEmpty()
-                            if (candidateId.isBlank()) error = "Candidate ID was not returned by the server."
-                            else {
-                                activeRequest = true
-                                loading = true
+                            if (candidateId.isBlank()) {
+                                error = "Candidate ID was not returned by the server."
+                            } else {
+                                // Load states in the background while the user completes email verification.
+                                stateRequestInProgress = true
                                 commonViewModel.getOtpStateListApi(candidateId)
-                                step = RegistrationStep.AADHAAR
+                                step = RegistrationStep.EMAIL
                             }
+                        } else if (step == RegistrationStep.EMAIL_OTP) {
+                            verifiedEmail = email.trim()
+                            step = RegistrationStep.AADHAAR
                         }
                     } else error = data?.responseDesc?.takeIf { it.isNotBlank() } ?: "Invalid OTP. Please try again."
                 }
@@ -339,24 +340,24 @@ fun RegistrationComposeScreen(
     LaunchedEffect(commonViewModel) {
         commonViewModel.stateOtpList.collect { result ->
             when (result) {
-                is Resource.Loading -> if (activeRequest) loading = true
+                is Resource.Loading -> if (stateRequestInProgress && step == RegistrationStep.AADHAAR) loading = true
                 is Resource.Error -> {
-                    if (!activeRequest) return@collect
+                    if (!stateRequestInProgress) return@collect
+                    stateRequestInProgress = false
                     loading = false
-                    activeRequest = false
-                    error = result.error?.message ?: "Could not load states."
+                    if (step == RegistrationStep.AADHAAR) error = result.error?.message ?: "Could not load states."
                 }
                 is Resource.Success -> {
-                    if (!activeRequest) return@collect
+                    if (!stateRequestInProgress) return@collect
+                    stateRequestInProgress = false
                     loading = false
-                    activeRequest = false
                     val data = result.data
                     if (data?.responseCode == 200) {
                         stateRows = data.stateList.orEmpty().map { row ->
                             RegState(row.stateName.orEmpty(), row.stateCode.orEmpty(), row.lgdStateCode.orEmpty())
                         }
-                        if (stateRows.isEmpty()) error = "No states were returned by the server."
-                    } else error = data?.responseDesc?.takeIf { it.isNotBlank() } ?: "Could not load states."
+                        if (stateRows.isEmpty() && step == RegistrationStep.AADHAAR) error = "No states were returned by the server."
+                    } else if (step == RegistrationStep.AADHAAR) error = data?.responseDesc?.takeIf { it.isNotBlank() } ?: "Could not load states."
                 }
             }
         }
@@ -413,11 +414,11 @@ fun RegistrationComposeScreen(
         info = ""
         when (step) {
             RegistrationStep.WELCOME -> onBack()
-            RegistrationStep.EMAIL -> step = RegistrationStep.WELCOME
-            RegistrationStep.EMAIL_OTP -> step = RegistrationStep.EMAIL
-            RegistrationStep.MOBILE -> step = if (email.isBlank()) RegistrationStep.EMAIL else RegistrationStep.EMAIL_OTP
+            RegistrationStep.MOBILE -> step = RegistrationStep.WELCOME
             RegistrationStep.MOBILE_OTP -> step = RegistrationStep.MOBILE
-            RegistrationStep.AADHAAR -> step = RegistrationStep.MOBILE
+            RegistrationStep.EMAIL -> step = RegistrationStep.MOBILE_OTP
+            RegistrationStep.EMAIL_OTP -> step = RegistrationStep.EMAIL
+            RegistrationStep.AADHAAR -> step = RegistrationStep.EMAIL
             RegistrationStep.COMPLETE -> step = RegistrationStep.AADHAAR
         }
     }
@@ -426,8 +427,8 @@ fun RegistrationComposeScreen(
     // COMPLETE = 5 so every circle shows a check.
     val stepNumber = when (step) {
         RegistrationStep.WELCOME -> 0
-        RegistrationStep.EMAIL, RegistrationStep.EMAIL_OTP -> 1
-        RegistrationStep.MOBILE, RegistrationStep.MOBILE_OTP -> 2
+        RegistrationStep.MOBILE, RegistrationStep.MOBILE_OTP -> 1
+        RegistrationStep.EMAIL, RegistrationStep.EMAIL_OTP -> 2
         RegistrationStep.AADHAAR -> 3
         RegistrationStep.COMPLETE -> 5
     }
@@ -616,10 +617,10 @@ fun RegistrationComposeScreen(
                                     Spacer(Modifier.width(10.dp))
                                     Text(
                                         text = when (step) {
-                                            RegistrationStep.EMAIL -> "Email verification"
-                                            RegistrationStep.EMAIL_OTP -> "Verify email"
                                             RegistrationStep.MOBILE -> "Mobile verification"
                                             RegistrationStep.MOBILE_OTP -> "Verify mobile"
+                                            RegistrationStep.EMAIL -> "Email verification"
+                                            RegistrationStep.EMAIL_OTP -> "Verify email"
                                             RegistrationStep.AADHAAR -> "Identity verification"
                                             RegistrationStep.COMPLETE -> "Registration status"
                                             RegistrationStep.WELCOME -> ""
@@ -659,7 +660,7 @@ fun RegistrationComposeScreen(
                                             WelcomeFeature(Icons.Default.BarChart, "Track Your Progress", d)
                                             PrimaryButton("Get Started", loading, true, d) {
                                                 error = ""; info = ""
-                                                step = RegistrationStep.EMAIL
+                                                step = RegistrationStep.MOBILE
                                             }
                                         }
 
@@ -681,10 +682,40 @@ fun RegistrationComposeScreen(
                                                 d = d
                                             ) { sendEmailOtp() }
                                             TextButton(
-                                                onClick = { email = ""; verifiedEmail = ""; error = ""; step = RegistrationStep.MOBILE },
-                                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+                                                onClick = {
+                                                    email = ""
+                                                    verifiedEmail = ""
+                                                    error = ""
+                                                    info = ""
+                                                    step = RegistrationStep.AADHAAR
+                                                },
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(top = 12.dp)
+                                                    .height(46.dp),
+                                                shape = RoundedCornerShape(14.dp),
+                                                colors = ButtonDefaults.textButtonColors(contentColor = LoginColors.Primary),
+                                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
                                             ) {
-                                                Text("Skip email", color = LoginColors.Primary, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                                                Row(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    horizontalArrangement = Arrangement.Center,
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                    Text(
+                                                        "Skip email & continue",
+                                                        color = LoginColors.Primary,
+                                                        fontWeight = FontWeight.Bold,
+                                                        fontSize = 15.sp
+                                                    )
+                                                    Spacer(Modifier.width(7.dp))
+                                                    Icon(
+                                                        Icons.AutoMirrored.Filled.ArrowForward,
+                                                        contentDescription = null,
+                                                        tint = LoginColors.Primary,
+                                                        modifier = Modifier.size(18.dp)
+                                                    )
+                                                }
                                             }
                                         }
 
@@ -806,7 +837,7 @@ fun RegistrationComposeScreen(
                                                 ) {
                                                     if (stateRows.isEmpty()) {
                                                         DropdownMenuItem(
-                                                            text = { Text(if (loading) "Loading states…" else "State list unavailable") },
+                                                            text = { Text(if (stateRequestInProgress) "Loading states…" else "State list unavailable") },
                                                             onClick = { stateDropdownExpanded = false },
                                                             enabled = false
                                                         )
@@ -833,7 +864,7 @@ fun RegistrationComposeScreen(
                                                 TextButton(
                                                     onClick = {
                                                         if (candidateId.isNotBlank()) {
-                                                            activeRequest = true
+                                                            stateRequestInProgress = true
                                                             loading = true
                                                             commonViewModel.getOtpStateListApi(candidateId)
                                                         }
@@ -1015,7 +1046,7 @@ private fun WelcomeFeature(icon: ImageVector, label: String, d: RegDims) {
 
 @Composable
 private fun StepProgress(current: Int, d: RegDims) {
-    val labels = listOf("Email", "Mobile", "Aadhaar", "Complete")
+    val labels = listOf("Mobile", "Email", "Aadhaar", "Complete")
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top
@@ -1331,4 +1362,5 @@ private object AadhaarValidator {
         return checksum == 0
     }
 }
+
 
